@@ -21,6 +21,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
         title: 'Flutter bottomNavigationBar',
+        debugShowCheckedModeBanner:false,
         theme: ThemeData.light(),
         home: BottomNavigationWidget());
   }

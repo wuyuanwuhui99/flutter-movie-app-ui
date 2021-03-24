@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import '../component/common.dart';
 import '../service/server_method.dart';
 import 'package:provider/provider.dart';
 import '../provider/UserInfoProvider.dart';
@@ -8,6 +7,10 @@ import 'package:flutter_easyrefresh/material_footer.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import '../config/global.dart';
 import '../utils/LocalStroageUtils.dart';
+import '../component/SearchCommponent.dart';
+import '../component/AvaterComponent.dart';
+import '../component/CategoryComponent.dart';
+import '../component/SwiperComponent.dart';
 
 /*-----------------------分类图标------------------------*/
 class TopNavigators extends StatelessWidget {

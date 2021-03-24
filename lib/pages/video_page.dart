@@ -1,10 +1,14 @@
 import 'package:flutter/material.dart';
-import '../component/common.dart';
+
 import 'package:flutter_easyrefresh/easy_refresh.dart';
 import '../service/server_method.dart';
 import 'dart:convert';
 import 'package:flutter_easyrefresh/material_footer.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import '../component/SearchCommponent.dart';
+import '../component/AvaterComponent.dart';
+import '../component/CategoryComponent.dart';
+import '../component/SwiperComponent.dart';
 
 class VideoPage extends StatefulWidget {
   VideoPage({Key key}) : super(key: key);
