@@ -1,7 +1,10 @@
-# movie
+# flutter电影APP
 
-movie
+开发者：吴怨吴悔
 
+=============================界面预览==========================
+![app首页](https://raw.githubusercontent.com/wuyuanwuhui99/vue_music/main/music.jpg)
+=============================界面预览==========================
 ## Getting Started
 
 This project is a starting point for a Flutter application.
