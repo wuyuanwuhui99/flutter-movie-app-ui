@@ -3,7 +3,7 @@
 开发者：吴怨吴悔
 
 =============================界面预览==========================
-![app首页](https://raw.githubusercontent.com/wuyuanwuhui99/vue_music/main/music.jpg)
+![app首页](https://github.com/wuyuanwuhui99/flutter-movie-app-ui/raw/main/movie1.png)
 =============================界面预览==========================
 ## 使用的插件
 轮播：flutter_swiper: ^1.0.6
