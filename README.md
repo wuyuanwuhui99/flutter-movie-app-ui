@@ -4,7 +4,11 @@
 
 =============================界面预览==========================
 
-![app首页](https://github.com/wuyuanwuhui99/flutter-movie-app-ui/raw/main/movie1.png)
+![app首页](https://github.com/wuyuanwuhui99/react-native-app-ui/raw/main/movie1.png)
+![app首页](https://github.com/wuyuanwuhui99/react-native-app-ui/raw/main/movie2.png)
+![app首页](https://github.com/wuyuanwuhui99/react-native-app-ui/raw/main/movie3.png)
+![app首页](https://github.com/wuyuanwuhui99/react-native-app-ui/raw/main/movie4.png)
+![app首页](https://github.com/wuyuanwuhui99/react-native-app-ui/raw/main/movie5.png)
 
 =============================界面预览==========================
 ## 使用的插件
