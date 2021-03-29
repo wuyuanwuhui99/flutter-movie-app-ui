@@ -9,7 +9,7 @@
 ![app首页](https://github.com/wuyuanwuhui99/react-native-app-ui/raw/main/movie3.png)
 ![app首页](https://github.com/wuyuanwuhui99/react-native-app-ui/raw/main/movie4.png)
 ![app首页](https://github.com/wuyuanwuhui99/react-native-app-ui/raw/main/movie5.png)
-
+![app首页](https://github.com/wuyuanwuhui99/react-native-app-ui/raw/main/movie6.png)
 =============================界面预览==========================
 ## 使用的插件
 
