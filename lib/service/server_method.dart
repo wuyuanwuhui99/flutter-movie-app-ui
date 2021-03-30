@@ -4,6 +4,7 @@ import 'package:movie/config/Global.dart';
 import '../config/service_url.dart';
 import '../utils/LocalStroageUtils.dart';
 import 'package:dio/dio.dart';
+import '../config/common.dart';
 
 BaseOptions options = new BaseOptions(
   connectTimeout: 1000 * 10,
@@ -28,7 +29,7 @@ Future getUserData() async {
     String token = await LocalStroageUtils.getToken(); //从缓存中获取
     options.headers["Authorization"] = token;
     response = await dio.get(servicePath["getUserData"]);
-    if (response.statusCode == 200) {
+    if (response.statusCode == 200 && response.data["status"] == SUCCESS) {
       options.headers["Authorization"] = response.data["token"];
       dio = Dio(options);
       return response.data;
@@ -45,7 +46,7 @@ Future getCategoryList(String category, String classify) async {
     Response response;
     response = await dio.get(servicePath['getCategoryList'],
         queryParameters: {"category": category, "classify": classify});
-    if (response.statusCode == 200) {
+    if (response.statusCode == 200 && response.data["status"] == SUCCESS) {
       return response.data;
     } else {
       throw Exception('后端接口出现异常，请检测代码和服务器情况.........');
@@ -60,7 +61,7 @@ Future getKeyWord(String classify) async {
     Response response;
     response = await dio.get(servicePath['getKeyWord'],
         queryParameters: {"classify": classify});
-    if (response.statusCode == 200) {
+    if (response.statusCode == 200 && response.data["status"] == SUCCESS) {
       return response.data;
     } else {
       throw Exception('后端接口出现异常，请检测代码和服务器情况.........');
@@ -76,7 +77,7 @@ Future getAllCategoryByClassify(String classify) async {
     Response response;
     response = await dio.get(servicePath['getAllCategoryByClassify'],
         queryParameters: {"classify": classify});
-    if (response.statusCode == 200) {
+    if (response.statusCode == 200 && response.data["status"] == SUCCESS) {
       return response.data;
     } else {
       throw Exception('后端接口出现异常，请检测代码和服务器情况.........');
@@ -92,7 +93,7 @@ Future getAllCategoryListByPageName(String pageName) async {
     Response response;
     response = await dio.get(servicePath['getAllCategoryListByPageName'],
         queryParameters: {"pageName": pageName});
-    if (response.statusCode == 200) {
+    if (response.statusCode == 200 && response.data["status"] == SUCCESS) {
       return response.data;
     } else {
       throw Exception('后端接口出现异常，请检测代码和服务器情况.........');
@@ -108,7 +109,7 @@ Future getUserMsg(String userId) async {
     Response response;
     response = await dio
         .get(servicePath['getUserMsg'], queryParameters: {"userId": userId});
-    if (response.statusCode == 200) {
+    if (response.statusCode == 200 && response.data["status"] == SUCCESS) {
       return response.data;
     } else {
       throw Exception('后端接口出现异常，请检测代码和服务器情况.........');
@@ -124,7 +125,7 @@ Future getHistory(String userId) async {
     Response response;
     response = await dio
         .get(servicePath['getHistory'], queryParameters: {"userId": userId});
-    if (response.statusCode == 200) {
+    if (response.statusCode == 200 && response.data["status"] == SUCCESS) {
       return response.data;
     } else {
       throw Exception('后端接口出现异常，请检测代码和服务器情况.........');
@@ -144,7 +145,7 @@ Future getSearchResult(String keyword,
       "pageSize": pageSize,
       "pageNum": pageNum
     });
-    if (response.statusCode == 200) {
+    if (response.statusCode == 200 && response.data["status"] == SUCCESS) {
       return response.data;
     } else {
       throw Exception('后端接口出现异常，请检测代码和服务器情况.........');
@@ -164,7 +165,7 @@ Future login(String userId, String password) async {
     map['password'] = password;
 
     response = await dio.post(servicePath['login'], data: map);
-    if (response.statusCode == 200) {
+    if (response.statusCode == 200 && response.data["status"] == SUCCESS) {
       return response.data;
     } else {
       throw Exception('后端接口出现异常，请检测代码和服务器情况.........');
@@ -181,7 +182,7 @@ Future getStar(String movieId) async {
     response = await dio.get(servicePath['getStar'], queryParameters: {
       "movieId": movieId,
     });
-    if (response.statusCode == 200) {
+    if (response.statusCode == 200  && response.data["status"] == SUCCESS) {
       return response.data;
     } else {
       throw Exception('后端接口出现异常，请检测代码和服务器情况.........');
@@ -192,13 +193,13 @@ Future getStar(String movieId) async {
 }
 
 //按classify大类查询所有catory小类
-Future getMovieUrl(String id) async {
+Future getMovieUrl(String movieId) async {
   try {
     Response response;
     response = await dio.get(servicePath['getMovieUrl'], queryParameters: {
-      "id": id,
+      "movieId": "11389"//movieId,
     });
-    if (response.statusCode == 200) {
+    if (response.statusCode == 200 && response.data["status"] == SUCCESS) {
       return response.data;
     } else {
       throw Exception('后端接口出现异常，请检测代码和服务器情况.........');
@@ -217,7 +218,7 @@ Future saveViewRecord(Map movieEntity) async {
   try {
     Response response;
     response = await dio.post(servicePath['saveViewRecord'],data:movieEntity);
-    if (response.statusCode == 200) {
+    if (response.statusCode == 200 && response.data["status"] == SUCCESS) {
       return response.data;
     } else {
       throw Exception('后端接口出现异常，请检测代码和服务器情况.........');
@@ -236,7 +237,7 @@ Future getViewRecord(Map movieEntity) async {
   try {
     Response response;
     response = await dio.get(servicePath['getViewRecord']);
-    if (response.statusCode == 200) {
+    if (response.statusCode == 200 && response.data["status"] == SUCCESS) {
       return response.data;
     } else {
       throw Exception('后端接口出现异常，请检测代码和服务器情况.........');
@@ -255,7 +256,7 @@ Future savePlayRecord(Map movieEntity) async {
   try {
     Response response;
     response = await dio.post(servicePath['savePlayRecord'],data:movieEntity);
-    if (response.statusCode == 200) {
+    if (response.statusCode == 200 && response.data["status"] == SUCCESS) {
       return response.data;
     } else {
       throw Exception('后端接口出现异常，请检测代码和服务器情况.........');
@@ -274,7 +275,7 @@ Future getPlayRecord() async {
   try {
     Response response;
     response = await dio.get(servicePath['getPlayRecord']);
-    if (response.statusCode == 200) {
+    if (response.statusCode == 200 && response.data["status"] == SUCCESS) {
       return response.data;
     } else {
       throw Exception('后端接口出现异常，请检测代码和服务器情况.........');
@@ -293,7 +294,7 @@ Future saveFavorite(Map movieEntity) async {
   try {
     Response response;
     response = await dio.post(servicePath['saveFavorite'],data:movieEntity);
-    if (response.statusCode == 200) {
+    if (response.statusCode == 200 && response.data["status"] == SUCCESS) {
       return response.data;
     } else {
       throw Exception('后端接口出现异常，请检测代码和服务器情况.........');
@@ -312,7 +313,7 @@ Future getFavorite() async {
   try {
     Response response;
     response = await dio.get(servicePath['getFavorite']);
-    if (response.statusCode == 200) {
+    if (response.statusCode == 200 && response.data["status"] == SUCCESS) {
       return response.data;
     } else {
       throw Exception('后端接口出现异常，请检测代码和服务器情况.........');
@@ -331,7 +332,7 @@ Future deleteFavorite(String movieId) async {
   try {
     Response response;
     response = await dio.delete(servicePath['getFavorite'],queryParameters:{movieId:movieId});
-    if (response.statusCode == 200) {
+    if (response.statusCode == 200 && response.data["status"] == SUCCESS) {
       return response.data;
     } else {
       throw Exception('后端接口出现异常，请检测代码和服务器情况.........');

@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import './player_page.dart';
 import '../service/server_method.dart';
 import '../component/ScoreComponent.dart';
-import '../config/global.dart';
 
 class DetailPage extends StatefulWidget {
   final Map movieItem;

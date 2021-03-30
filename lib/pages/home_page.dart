@@ -117,7 +117,7 @@ class _HomePageState extends State<HomePage>
               Container(
                 width: MediaQuery.of(context).size.width,
                 child: Padding(
-                  padding: EdgeInsets.all(20),
+                  padding: EdgeInsets.only(left: 20,right: 20,top: 0,bottom: 20),
                   child: Row(
                     children: <Widget>[
                       AvaterComponent(),

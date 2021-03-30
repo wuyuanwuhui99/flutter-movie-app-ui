@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 import '../component/ScoreComponent.dart';
@@ -12,8 +13,8 @@ class PlayerPage extends StatefulWidget {
 }
 
 class _PlayerPageState extends State<PlayerPage> {
-  String currentIndex = "1-1";
   String url = "";
+  int currentIndex = 0;
   List<Widget> playGroupWidget = [];
 
   @override
@@ -36,7 +37,7 @@ class _PlayerPageState extends State<PlayerPage> {
   }
 
   void _getPlayUrl() {
-    getMovieUrl(widget.movieItem["id"]).then((res) {
+    getMovieUrl(widget.movieItem["id"].toString()).then((res) {
       setState(() {
         List<Map> playList = (res["data"] as List).cast();
         if (playList.length == 0) {
@@ -53,11 +54,117 @@ class _PlayerPageState extends State<PlayerPage> {
           }
           playGroupList[playGroup - 1].add(playList[i]);
         }
-        for (int j = 0; j < playGroupList.length; j++) {
-          playGroupWidget.add(_renderPlayList(playGroupList[j], j + 1));
-        }
+        playGroupWidget..add(_renderTab(playGroupList.length))..add(_getPlaySeries(playGroupList));
+
       });
     });
+  }
+
+  Widget _renderTab(int length){
+    List<Widget> tabs = <Widget>[];
+    for(int i = 0;i<length; i++){
+      tabs.add(
+        InkWell(
+            onTap:(){
+              setState(() {
+                currentIndex = i;
+              });
+            },
+            child: Container(
+            decoration: BoxDecoration(
+                border: currentIndex == i ? Border(
+                    left: BorderSide(
+                      width: 1,//宽度
+                      color:  Color.fromRGBO(187, 187, 187, 1), //边框颜色
+                    ),
+                    right: BorderSide(
+                      width: 1,//宽度
+                      color:  Color.fromRGBO(187, 187, 187, 1), //边框颜色
+                    ),
+                    top: BorderSide(
+                      width: 1,//宽度
+                      color:  Color.fromRGBO(187, 187, 187, 1), //边框颜色
+                    ),
+                    bottom: BorderSide(
+                      width: 1,//宽度
+                      color: Colors.white, //边框颜色
+                    )
+                ): Border(
+                    bottom: BorderSide(
+                      width: 1,//宽度
+                      color: Color.fromRGBO(187, 187, 187, 1), //边框颜色
+                    )
+                )
+            ),
+            height: 40,
+            padding:EdgeInsets.all(10),
+            child: Text("播放地址${(i+1).toString()}")
+            )
+        )
+      );
+
+    }
+    tabs.add(
+        Expanded(
+            flex: 1,
+            child:
+              Container(
+                height: 40,
+                decoration: BoxDecoration(
+                    border: Border(
+                        bottom: BorderSide(
+                            width: 1,
+                            color: Color.fromRGBO(187, 187, 187, 1)
+                        )
+                    )
+                )
+              )
+        )
+    );
+    return
+      Padding(
+          padding: EdgeInsets.only(left: 10, top: 0),
+          child: Row(
+          children: tabs
+      ));
+  }
+
+  Widget _getPlaySeries(List playGroupList){
+    return Container(
+        height: 80,
+        width: MediaQuery.of(context).size.width - 40,
+        child: ListView.builder(
+            scrollDirection: Axis.horizontal,
+            itemCount:  playGroupList[currentIndex].length,
+            itemBuilder: (content, index) {
+              return InkWell(
+                  onTap: () {
+                    setState(() {
+                      url =  playGroupList[currentIndex][index]["url"];
+                    });
+                  },
+                  child: Container(
+                    width: 80,
+                    height: 80,
+                    decoration: BoxDecoration(
+                        border: Border.all(
+                            color: url ==  playGroupList[currentIndex][index]["url"]
+                                ? Colors.orange
+                                : Color.fromRGBO(187, 187, 187, 1)),
+                        borderRadius:
+                        BorderRadius.all(Radius.circular(80))),
+                    child: Center(
+                        child: Text(
+                          playGroupList[currentIndex][index]["label"],
+                          style: TextStyle(
+                              color:url ==  playGroupList[currentIndex][index]["url"]
+                                  ? Colors.orange
+                                  : Colors.black),
+                        )),
+                  ));
+            }),
+      );
+
   }
 
   Widget webView() {
@@ -136,69 +243,69 @@ class _PlayerPageState extends State<PlayerPage> {
                 ])));
   }
 
-  Widget _renderPlayList(List<Map> urlList, int playGroup) {
-    return Container(
-        width: MediaQuery.of(context).size.width,
-        decoration: BoxDecoration(
-            border: Border(
-          bottom: BorderSide(
-            width: 0.5, //宽度
-            color: Color.fromRGBO(187, 187, 187, 1), //边框颜色
-          ),
-        )),
-        child: Padding(
-          padding: EdgeInsets.all(20),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[
-              Row(
-                children: <Widget>[
-                  Text(
-                    "播放地址${playGroup}",
-                    style: TextStyle(fontWeight: FontWeight.bold),
-                  ),
-                ],
-              ),
-              SizedBox(height: 10),
-              Container(
-                height: 80,
-                width: MediaQuery.of(context).size.width - 40,
-                child: ListView.builder(
-                    scrollDirection: Axis.horizontal,
-                    itemCount: urlList.length,
-                    itemBuilder: (content, index) {
-                      return InkWell(
-                          onTap: () {
-                            setState(() {
-                              currentIndex = "${playGroup}-${index + 1}";
-                              url = urlList[index]["url"];
-                            });
-                          },
-                          child: Container(
-                            width: 80,
-                            height: 80,
-                            decoration: BoxDecoration(
-                                border: Border.all(
-                                    color: currentIndex ==
-                                            "${playGroup}-${index + 1}"
-                                        ? Colors.orange
-                                        : Color.fromRGBO(187, 187, 187, 1)),
-                                borderRadius:
-                                    BorderRadius.all(Radius.circular(80))),
-                            child: Center(
-                                child: Text(
-                              urlList[index]["label"],
-                              style: TextStyle(
-                                  color: currentIndex ==
-                                          "${playGroup}-${index + 1}"
-                                      ? Colors.orange
-                                      : Colors.black),
-                            )),
-                          ));
-                    }),
-              ),
-            ],
-          ),
-        ));
-  }
+//  Widget _renderPlayList(List<Map> urlList, String playGroup) {
+//    return Container(
+//        width: MediaQuery.of(context).size.width,
+//        decoration: BoxDecoration(
+//            border: Border(
+//          bottom: BorderSide(
+//            width: 0.5, //宽度
+//            color: Color.fromRGBO(187, 187, 187, 1), //边框颜色
+//          ),
+//        )),
+//        child: Padding(
+//          padding: EdgeInsets.all(20),
+//          child: Column(
+//            crossAxisAlignment: CrossAxisAlignment.start,
+//            children: <Widget>[
+//              Row(
+//                children: <Widget>[
+//                  Text(
+//                    "播放地址$playGroup",
+//                    style: TextStyle(fontWeight: FontWeight.bold),
+//                  ),
+//                ],
+//              ),
+//              SizedBox(height: 10),
+//              Container(
+//                height: 80,
+//                width: MediaQuery.of(context).size.width - 40,
+//                child: ListView.builder(
+//                    scrollDirection: Axis.horizontal,
+//                    itemCount: urlList.length,
+//                    itemBuilder: (content, index) {
+//                      return InkWell(
+//                          onTap: () {
+//                            setState(() {
+//                              currentIndex = "${playGroup}-${index + 1}";
+//                              url = urlList[index]["url"];
+//                            });
+//                          },
+//                          child: Container(
+//                            width: 80,
+//                            height: 80,
+//                            decoration: BoxDecoration(
+//                                border: Border.all(
+//                                    color: currentIndex ==
+//                                            "${playGroup}-${index + 1}"
+//                                        ? Colors.orange
+//                                        : Color.fromRGBO(187, 187, 187, 1)),
+//                                borderRadius:
+//                                    BorderRadius.all(Radius.circular(80))),
+//                            child: Center(
+//                                child: Text(
+//                              urlList[index]["label"],
+//                              style: TextStyle(
+//                                  color: currentIndex ==
+//                                          "${playGroup}-${index + 1}"
+//                                      ? Colors.orange
+//                                      : Colors.black),
+//                            )),
+//                          ));
+//                    }),
+//              ),
+//            ],
+//          ),
+//        ));
+//  }
 }

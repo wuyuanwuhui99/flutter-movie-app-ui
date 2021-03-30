@@ -39,7 +39,7 @@ class _SearchPageState extends State<SearchPage> {
       body: Padding(
         padding: EdgeInsets.only(
             left: 20,
-            top: 20 + MediaQuery.of(context).padding.top,
+            top: MediaQuery.of(context).padding.top,
             bottom: 20,
             right: 20),
         child: Column(
@@ -170,7 +170,7 @@ class _SearchPageState extends State<SearchPage> {
                   borderRadius: new BorderRadius.all(new Radius.circular(20.0)),
                 ),
                 alignment: Alignment.center,
-                padding: EdgeInsets.fromLTRB(10.0, 0.0, 0.0, 0.0),
+                padding: EdgeInsets.only(left: 10,top:0),
                 child: Row(
                   children: <Widget>[
                     Expanded(
@@ -182,7 +182,7 @@ class _SearchPageState extends State<SearchPage> {
                               hintText: widget.keyword,
                               hintStyle:
                                   TextStyle(fontSize: 14, color: Colors.grey),
-                              contentPadding: EdgeInsets.only(left: 0.0),
+                              contentPadding: EdgeInsets.only(left: 10,top: 0),
                               border: InputBorder.none,
                             ))),
                     showClearIcon
