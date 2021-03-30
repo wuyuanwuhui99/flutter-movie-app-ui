@@ -1,16 +1,32 @@
-# movie
+# flutter电影APP
 
-movie
+开发者：吴怨吴悔
 
-## Getting Started
+=============================界面预览==========================
 
-This project is a starting point for a Flutter application.
+![app首页](https://github.com/wuyuanwuhui99/react-native-app-ui/raw/main/movie1.png)
+![app首页](https://github.com/wuyuanwuhui99/react-native-app-ui/raw/main/movie2.png)
+![app首页](https://github.com/wuyuanwuhui99/react-native-app-ui/raw/main/movie3.png)
+![app首页](https://github.com/wuyuanwuhui99/react-native-app-ui/raw/main/movie4.png)
+![app首页](https://github.com/wuyuanwuhui99/react-native-app-ui/raw/main/movie5.png)
+![app首页](https://github.com/wuyuanwuhui99/react-native-app-ui/raw/main/movie6.png)
+=============================界面预览==========================
+## 使用的插件
 
-A few resources to get you started if this is your first Flutter project:
+轮播：flutter_swiper: ^1.0.6
 
-- [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://flutter.dev/docs/cookbook)
+网络请求：dio: ^3.0.10
 
-For help getting started with Flutter, view our
-[online documentation](https://flutter.dev/docs), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+屏幕相关：flutter_screenutil: ^0.5.1
+
+状态管理器: provider: ^3.1.0+1	
+
+下拉加载：flutter_easyrefresh: ^2.1.5
+
+提示组件fluttertoast: ^3.0.3
+
+缓存：shared_preferences: ^0.4.1
+
+webvie：webview_flutter: ^0.3.10+4
+
+后端接口项目和sql语句：https://github.com/wuyuanwuhui99/springboot-app-service
