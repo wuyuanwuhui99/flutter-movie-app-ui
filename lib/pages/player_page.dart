@@ -31,6 +31,7 @@ class _PlayerPageState extends State<PlayerPage> {
         webView(),
         handle(),
         title(),
+        SizedBox(height: 20),
         Column(children: playGroupWidget)
       ]),
     );
@@ -75,15 +76,15 @@ class _PlayerPageState extends State<PlayerPage> {
                 border: currentIndex == i ? Border(
                     left: BorderSide(
                       width: 1,//宽度
-                      color:  Color.fromRGBO(187, 187, 187, 1), //边框颜色
+                      color:  Color.fromRGBO(221, 221, 221, 1), //边框颜色
                     ),
                     right: BorderSide(
                       width: 1,//宽度
-                      color:  Color.fromRGBO(187, 187, 187, 1), //边框颜色
+                      color:  Color.fromRGBO(221, 221, 221, 1), //边框颜色
                     ),
                     top: BorderSide(
                       width: 1,//宽度
-                      color:  Color.fromRGBO(187, 187, 187, 1), //边框颜色
+                      color:  Color.fromRGBO(221, 221, 221, 1), //边框颜色
                     ),
                     bottom: BorderSide(
                       width: 1,//宽度
@@ -92,7 +93,7 @@ class _PlayerPageState extends State<PlayerPage> {
                 ): Border(
                     bottom: BorderSide(
                       width: 1,//宽度
-                      color: Color.fromRGBO(187, 187, 187, 1), //边框颜色
+                      color: Color.fromRGBO(221, 221, 221, 1), //边框颜色
                     )
                 )
             ),
@@ -114,7 +115,7 @@ class _PlayerPageState extends State<PlayerPage> {
                     border: Border(
                         bottom: BorderSide(
                             width: 1,
-                            color: Color.fromRGBO(187, 187, 187, 1)
+                            color: Color.fromRGBO(221, 221, 221, 1)
                         )
                     )
                 )
