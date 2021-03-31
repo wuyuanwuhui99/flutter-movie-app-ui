@@ -281,7 +281,7 @@ class _HistoryComponentState extends State<HistoryComponent> {
                                         : categoryList[index]["img"]))),
                         SizedBox(height: 10),
                         Text(
-                          categoryList[index]["name"],
+                          categoryList[index]["movieName"],
                           softWrap: true,
                           textAlign: TextAlign.left,
                           overflow: TextOverflow.ellipsis,

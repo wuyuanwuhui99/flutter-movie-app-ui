@@ -111,7 +111,7 @@ class MovieInfoComponent extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: <Widget>[
                     Text(
-                      movieInfo["name"],
+                      movieInfo["movieName"],
                       style: TextStyle(
                           fontSize: 20,
                           color: Colors.black,

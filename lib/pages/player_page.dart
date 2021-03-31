@@ -1,8 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:movie/component/CategoryComponent.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 import '../component/ScoreComponent.dart';
 import '../service/server_method.dart';
+import '../component/RecommendComponent.dart';
 
 class PlayerPage extends StatefulWidget {
   final Map movieItem;
@@ -16,12 +18,28 @@ class _PlayerPageState extends State<PlayerPage> {
   String url = "";
   int currentIndex = 0;
   List<Widget> playGroupWidget = [];
+  List <Map> movieList = [];
 
   @override
   void initState() {
     super.initState();
     _getPlayUrl();
+    _getYourLikes();
     saveViewRecord(widget.movieItem);
+  }
+
+
+  void _getYourLikes(){
+    if(widget.movieItem["label"] != null){
+      getYourLikes(widget.movieItem["label"]).then((res){
+        if(res != null){
+          setState((){
+            movieList = res.data;
+          });
+        }
+      });
+    }
+
   }
 
   @override
@@ -32,31 +50,33 @@ class _PlayerPageState extends State<PlayerPage> {
         handle(),
         title(),
         SizedBox(height: 20),
-        Column(children: playGroupWidget)
+//        Column(children: playGroupWidget),
+        RecommendComponent(movieList:movieList,category: "猜你想看",horizontal: true)
       ]),
     );
   }
 
-  void _getPlayUrl() {
-    getMovieUrl(widget.movieItem["id"].toString()).then((res) {
+  Future<void> _getPlayUrl() async {
+    await getMovieUrl(widget.movieItem["id"].toString()).then((res) {
+      List<Map> playList = (res["data"] as List).cast();
+      if (playList.length == 0) {
+        return;
+      }
+      List<List<Map>> playGroupList = [];
+      for (int i = 0; i < playList.length; i++) {
+        if(i == 0){
+          url = playList[0]["url"];
+        }
+        var playGroup = playList[i]["playGroup"];
+        if (playGroupList.length < playGroup) {
+          playGroupList.add(<Map>[]);
+        }
+        playGroupList[playGroup - 1].add(playList[i]);
+      }
+      Widget tabs = _renderTab(playGroupList.length);
+      Widget series = _getPlaySeries(playGroupList);
       setState(() {
-        List<Map> playList = (res["data"] as List).cast();
-        if (playList.length == 0) {
-          return;
-        }
-        List<List<Map>> playGroupList = [];
-        for (int i = 0; i < playList.length; i++) {
-          if(i == 0){
-            url = playList[0]["url"];
-          }
-          var playGroup = playList[i]["playGroup"];
-          if (playGroupList.length < playGroup) {
-            playGroupList.add(<Map>[]);
-          }
-          playGroupList[playGroup - 1].add(playList[i]);
-        }
-        playGroupWidget..add(_renderTab(playGroupList.length))..add(_getPlaySeries(playGroupList));
-
+        playGroupWidget..add(tabs)..add(series);
       });
     });
   }
@@ -243,70 +263,4 @@ class _PlayerPageState extends State<PlayerPage> {
                   ScoreComponent(score: widget.movieItem["score"]),
                 ])));
   }
-
-//  Widget _renderPlayList(List<Map> urlList, String playGroup) {
-//    return Container(
-//        width: MediaQuery.of(context).size.width,
-//        decoration: BoxDecoration(
-//            border: Border(
-//          bottom: BorderSide(
-//            width: 0.5, //宽度
-//            color: Color.fromRGBO(187, 187, 187, 1), //边框颜色
-//          ),
-//        )),
-//        child: Padding(
-//          padding: EdgeInsets.all(20),
-//          child: Column(
-//            crossAxisAlignment: CrossAxisAlignment.start,
-//            children: <Widget>[
-//              Row(
-//                children: <Widget>[
-//                  Text(
-//                    "播放地址$playGroup",
-//                    style: TextStyle(fontWeight: FontWeight.bold),
-//                  ),
-//                ],
-//              ),
-//              SizedBox(height: 10),
-//              Container(
-//                height: 80,
-//                width: MediaQuery.of(context).size.width - 40,
-//                child: ListView.builder(
-//                    scrollDirection: Axis.horizontal,
-//                    itemCount: urlList.length,
-//                    itemBuilder: (content, index) {
-//                      return InkWell(
-//                          onTap: () {
-//                            setState(() {
-//                              currentIndex = "${playGroup}-${index + 1}";
-//                              url = urlList[index]["url"];
-//                            });
-//                          },
-//                          child: Container(
-//                            width: 80,
-//                            height: 80,
-//                            decoration: BoxDecoration(
-//                                border: Border.all(
-//                                    color: currentIndex ==
-//                                            "${playGroup}-${index + 1}"
-//                                        ? Colors.orange
-//                                        : Color.fromRGBO(187, 187, 187, 1)),
-//                                borderRadius:
-//                                    BorderRadius.all(Radius.circular(80))),
-//                            child: Center(
-//                                child: Text(
-//                              urlList[index]["label"],
-//                              style: TextStyle(
-//                                  color: currentIndex ==
-//                                          "${playGroup}-${index + 1}"
-//                                      ? Colors.orange
-//                                      : Colors.black),
-//                            )),
-//                          ));
-//                    }),
-//              ),
-//            ],
-//          ),
-//        ));
-//  }
 }

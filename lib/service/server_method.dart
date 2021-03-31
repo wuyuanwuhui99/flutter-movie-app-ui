@@ -341,3 +341,24 @@ Future deleteFavorite(String movieId) async {
     return print('ERROR:======>${e}');
   }
 }
+
+
+/**
+ * @author: wuwenqiang
+ * @description: 删除收藏
+ *  @date: 2021-03-04 23:08
+ */
+Future getYourLikes(String labels) async {
+  try {
+    Response response;
+    String path = servicePath['getYourLikes'];
+    response = await dio.get(servicePath['getYourLikes'],queryParameters:{labels:labels});
+    if (response.statusCode == 200 && response.data["status"] == SUCCESS) {
+      return response.data;
+    } else {
+      throw Exception('后端接口出现异常，请检测代码和服务器情况.........');
+    }
+  } catch (e) {
+    return print('ERROR:======>${e}');
+  }
+}

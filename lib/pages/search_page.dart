@@ -102,7 +102,7 @@ class _SearchPageState extends State<SearchPage> {
                               mainAxisAlignment: MainAxisAlignment.start,
                               children: <Widget>[
                                 Text(
-                                  searchResult[index]["name"],
+                                  searchResult[index]["movieName"],
                                   style: TextStyle(fontSize: 20),
                                   maxLines: 1,
                                   overflow: TextOverflow.ellipsis,

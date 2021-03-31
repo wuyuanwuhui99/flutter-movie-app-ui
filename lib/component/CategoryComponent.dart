@@ -85,7 +85,7 @@ class CategoryComponent extends StatelessWidget {
                                                         ["img"]))),
                                             SizedBox(height: 10),
                                             Text(
-                                              categoryList[index]["name"],
+                                              categoryList[index]["movieName"],
                                               softWrap: true,
                                               textAlign: TextAlign.left,
                                               overflow: TextOverflow.ellipsis,
