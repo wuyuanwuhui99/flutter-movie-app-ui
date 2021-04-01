@@ -250,7 +250,7 @@ class _PlayerPageState extends State<PlayerPage> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
                   Text(
-                    widget.movieItem["name"],
+                    widget.movieItem["movieName"],
                     style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
                   ),
                   SizedBox(height: 10),

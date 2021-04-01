@@ -351,8 +351,7 @@ Future deleteFavorite(String movieId) async {
 Future getYourLikes(String labels) async {
   try {
     Response response;
-    String path = servicePath['getYourLikes'];
-    response = await dio.get(servicePath['getYourLikes'],queryParameters:{labels:labels});
+    response = await dio.get(servicePath['getYourLikes'],queryParameters:{"labels":labels});
     if (response.statusCode == 200 && response.data["status"] == SUCCESS) {
       return response.data;
     } else {

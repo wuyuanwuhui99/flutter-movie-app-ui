@@ -11,7 +11,7 @@ class RecommendComponent extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    if(movieList.length == 0)return null;
+    if(movieList.length == 0)return Container();
     return Container(
       child: Padding(
           padding: EdgeInsets.all(20),
