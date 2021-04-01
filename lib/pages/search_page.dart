@@ -166,42 +166,42 @@ class _SearchPageState extends State<SearchPage> {
       children: <Widget>[
         Expanded(
             child: Container(
-                height: 40,
+                height: 50,
                 //修饰黑色背景与圆角
                 decoration: new BoxDecoration(
                   border: Border.all(
                       color: Color.fromARGB(255, 241, 242, 246),
                       width: 1.0), //灰色的一层边框
                   color: Color.fromARGB(255, 230, 230, 230),
-                  borderRadius: new BorderRadius.all(new Radius.circular(20.0)),
+                  borderRadius: new BorderRadius.all(new Radius.circular(30.0)),
                 ),
                 alignment: Alignment.center,
                 padding: EdgeInsets.only(left: 10,top:0),
-                child: Row(
-                  children: <Widget>[
-                    Expanded(
-                        flex: 1,
-                        child: TextField(
-                            controller: keywordController,
-                            cursorColor: Colors.grey, //设置光标
-                            decoration: InputDecoration(
-                              hintText: widget.keyword,
-                              hintStyle:
-                                  TextStyle(fontSize: 14, color: Colors.grey),
-                              contentPadding: EdgeInsets.only(left: 10,top: 0),
-                              border: InputBorder.none,
-                            ))),
-                    showClearIcon
-                        ? InkWell(
-                            onTap: () {
-                              setState(() {
-                                keywordController.text = ""; //清除输入框的值
-                                searching = false;
-                                showClearIcon = false;
-                              });
-                            },
-                            child: Image.asset(
-                              "lib/assets/images/icon-clear.png",
+                                child: Row(
+                            children: <Widget>[
+                            Expanded(
+                                flex: 1,
+                                child: TextField(
+                                    controller: keywordController,
+                                    cursorColor: Colors.grey, //设置光标
+                                    decoration: InputDecoration(
+                                      hintText: widget.keyword,
+                                      hintStyle:
+                                      TextStyle(fontSize: 14, color: Colors.grey),
+                                      contentPadding: EdgeInsets.only(left: 10,top: 0),
+                                      border: InputBorder.none,
+                                    ))),
+                      showClearIcon
+                          ? InkWell(
+                          onTap: () {
+                            setState(() {
+                              keywordController.text = ""; //清除输入框的值
+                              searching = false;
+                              showClearIcon = false;
+                            });
+                          },
+                          child: Image.asset(
+                            "lib/assets/images/icon-clear.png",
                               height: 20,
                               width: 20,
                             ))
@@ -211,36 +211,39 @@ class _SearchPageState extends State<SearchPage> {
                 )),
             flex: 1),
         SizedBox(width: 10),
-        RaisedButton(
-          color: Theme.of(context).accentColor,
-          onPressed: () async {
-            if (keywordController.text == "")
-              keywordController.text = widget.keyword;
-            SharedPreferences prefs = await SharedPreferences.getInstance();
-            int index = myHistoryLabelsName.indexOf(keywordController.text);
-            if (index != -1) {
-              myHistoryLabelsName.removeAt(index);
-              myHistoryLabelsName.insert(0, keywordController.text);
-            } else {
-              myHistoryLabelsName.add(keywordController.text);
-            }
-            prefs.setString("historyLabel", json.encode(myHistoryLabelsName));
-            setState(() {
-              showClearIcon = true;
-              myHistoryLabels.insert(0, Label(keywordController.text));
-            });
-            goSearch();
-          },
-          child: Text(
-            '搜索',
-            style: TextStyle(fontSize: 16.0, color: Colors.white),
-          ),
+        Container(
+          height: 50,
+          child: RaisedButton(
+            color: Theme.of(context).accentColor,
+            onPressed: () async {
+              if (keywordController.text == "")
+                keywordController.text = widget.keyword;
+              SharedPreferences prefs = await SharedPreferences.getInstance();
+              int index = myHistoryLabelsName.indexOf(keywordController.text);
+              if (index != -1) {
+                myHistoryLabelsName.removeAt(index);
+                myHistoryLabelsName.insert(0, keywordController.text);
+              } else {
+                myHistoryLabelsName.add(keywordController.text);
+              }
+              prefs.setString("historyLabel", json.encode(myHistoryLabelsName));
+              setState(() {
+                showClearIcon = true;
+                myHistoryLabels.insert(0, Label(keywordController.text));
+              });
+              goSearch();
+            },
+            child: Text(
+              '搜索',
+              style: TextStyle(fontSize: 16.0, color: Colors.white),
+            ),
 
-          ///圆角
-          shape: RoundedRectangleBorder(
-              side: BorderSide.none,
-              borderRadius: BorderRadius.all(Radius.circular(50))),
-        )
+            ///圆角
+            shape: RoundedRectangleBorder(
+                side: BorderSide.none,
+                borderRadius: BorderRadius.all(Radius.circular(50))),
+          ))
+
       ],
     );
   }
