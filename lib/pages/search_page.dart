@@ -6,6 +6,7 @@ import '../config/service_url.dart';
 import '../service/server_method.dart';
 import "./detail_page.dart";
 import '../component/ScoreComponent.dart';
+import '../component/RecommendComponent.dart';
 
 class SearchPage extends StatefulWidget {
   final String keyword;
@@ -22,7 +23,6 @@ class _SearchPageState extends State<SearchPage> {
   List<Widget> myHistoryLabels = [];
   List<String> myHistoryLabelsName = [];
   TextEditingController keywordController = TextEditingController();
-
   @override
   void initState() {
     keywordController.addListener(() {
@@ -30,7 +30,7 @@ class _SearchPageState extends State<SearchPage> {
         showClearIcon = keywordController.text != "";
       });
     });
-    this.getHistory();
+    _getHistory();
   }
 
   @override
@@ -55,11 +55,17 @@ class _SearchPageState extends State<SearchPage> {
                             style: TextStyle(fontSize: 20),
                           ))
                         : SearchResult())
-                : HistorySearchComponent()
-          ],
+                : Expanded(flex: 1,
+                child: SingleChildScrollView(
+                  child: Column(
+                    children:<Widget>[
+                      HistorySearchComponent(),
+                      SizedBox(height: 20),
+                      SingleChildScrollView(child: RecommendComponent(),)
+                ]))
         ),
-      ),
-    );
+      ]),
+    ));
   }
 
   Widget SearchResult() {
@@ -278,7 +284,7 @@ class _SearchPageState extends State<SearchPage> {
     );
   }
 
-  getHistory() async {
+  _getHistory() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String historyLabels = prefs.getString('historyLabels');
     if (historyLabels != null) {
@@ -312,10 +318,16 @@ class _SearchPageState extends State<SearchPage> {
                 child: Text("历史搜索"))
           ]),
           SizedBox(height: 15),
+          myHistoryLabels.length > 0 ?
           Wrap(
             spacing: 10,
             children: myHistoryLabels,
-          )
+          ):
+              Container(
+                  height: 80,
+                  child: Text("暂时搜索记录"),
+                  alignment: Alignment.center,
+              )
         ]);
   }
 }

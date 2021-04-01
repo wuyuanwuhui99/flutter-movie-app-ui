@@ -21,4 +21,5 @@ const servicePath = {
   "saveFavorite": serviceUrl + "/service/movie/saveFavorite", //添加收藏
   "deleteFavorite": serviceUrl + "/service/movie/saveFavorite", //删除收藏
   "getYourLikes": serviceUrl + '/service/movie/getYourLikes',//猜你想看
+  "getRecommend": serviceUrl + '/service/movie/getRecommend',//获取推荐
 };

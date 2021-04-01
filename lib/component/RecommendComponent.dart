@@ -1,93 +1,93 @@
 import 'package:flutter/material.dart';
+import 'package:movie/service/server_method.dart';
 import '../pages/detail_page.dart';
 import '../config/service_url.dart';
 
 /*-----------------------获取推荐的影片------------------------*/
 class RecommendComponent extends StatelessWidget {
-  final List<Map> movieList;//电影列表
-  final String category;//标题
-  final bool horizontal;//表示横向或者纵向
-  const RecommendComponent({Key key,this.movieList,this.category,this.horizontal}) : super(key: key);
+
+  const RecommendComponent({Key key}) : super(key: key);
+
+  List<Widget> _items(List movieList,BuildContext context) {
+    var tempList = movieList.map((item) {
+      return InkWell(
+            onTap: () {
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) =>
+                          DetailPage(
+                              movieItem: item)));
+            },
+            child: Container(
+              alignment: Alignment.center,
+              child: Container(
+              child: Column(
+                children: <Widget>[
+                  ClipRRect(
+                      borderRadius:
+                      BorderRadius.circular(10),
+                      child: Image(
+                          width: 180,
+                          image: NetworkImage(
+                              item[
+                              "localImg"] !=
+                                  null
+                                  ? serviceUrl +
+                                  item
+                                  ["localImg"]
+                                  :item
+                              ["img"]))),
+                  SizedBox(height: 10),
+                  Text(
+                    item["movieName"],
+                    softWrap: true,
+                    textAlign: TextAlign.left,
+                    overflow: TextOverflow.ellipsis,
+                    maxLines: 1,
+                  )
+                ],
+              ),
+            ),));
+    });
+    return tempList.toList();
+  }
 
   @override
   Widget build(BuildContext context) {
-    if(movieList.length == 0)return Container();
-    return Container(
-      child: Padding(
-          padding: EdgeInsets.all(20),
-          child: Column(
+    return FutureBuilder(
+      future: getRecommend("电影"),
+      builder: (context, snapshot) {
+        if (snapshot.data == null) {
+          return Container();
+        }else{
+          List movieList = snapshot.data["data"];
+          return  Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
-                Row(children: <Widget>[
-                  Container(
-                      padding: EdgeInsets.only(left: 5),
-                      decoration: BoxDecoration(
-                        border: Border(
-                          left: BorderSide(
-                            width: 3, //宽度
-                            color: Colors.blue, //边框颜色
-                          ),
+                Container(
+                    padding: EdgeInsets.only(left: 5),
+                    decoration: BoxDecoration(
+                      border: Border(
+                        left: BorderSide(
+                          width: 3, //宽度
+                          color: Colors.blue, //边框颜色
                         ),
                       ),
-                      child: Text(this.category))
-                ]),
+                    ),
+                    child: Text("推荐")),
                 SizedBox(height: 15),
-                Row(
-                  children: <Widget>[
-                    Container(
-                      width: MediaQuery.of(context).size.width - 40,
-                      height: 240,
-                      child: ListView.builder(
-                          scrollDirection: Axis.horizontal,
-                          itemCount: movieList.length,
-                          itemBuilder: (context, index) {
-                            return InkWell(
-                                onTap: () {
-                                  Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                          builder: (context) =>
-                                              DetailPage(
-                                                  movieItem: movieList[
-                                                  index])));
-                                },
-                                child: Container(
-                                  width: 150,
-                                  margin: EdgeInsets.only(left: 10),
-                                  child: Column(
-                                    children: <Widget>[
-                                      ClipRRect(
-                                          borderRadius:
-                                          BorderRadius.circular(10),
-                                          child: Image(
-                                              image: NetworkImage(
-                                                  movieList[index][
-                                                  "localImg"] !=
-                                                      null
-                                                      ? serviceUrl +
-                                                      movieList[
-                                                      index]
-                                                      ["localImg"]
-                                                      : movieList[
-                                                  index]
-                                                  ["img"]))),
-                                      SizedBox(height: 10),
-                                      Text(
-                                        movieList[index]["movieName"],
-                                        softWrap: true,
-                                        textAlign: TextAlign.left,
-                                        overflow: TextOverflow.ellipsis,
-                                        maxLines: 1,
-                                      )
-                                    ],
-                                  ),
-                                ));
-                          }),
-                    )
-                  ],
-                )
-              ])),
-    );
+                 GridView.count(
+                      crossAxisSpacing: 0, //水平子 Widget 之间间距
+                      crossAxisCount: 2, //一行的 Widget 数量
+                      physics: NeverScrollableScrollPhysics(),
+                      shrinkWrap: true,
+                      childAspectRatio:0.7,
+                      children: this._items(movieList,context))
+              ]
+          );
+        }
+      });
   }
 }
 /*-----------------------获取推荐的影片------------------------*/

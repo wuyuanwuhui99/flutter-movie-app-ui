@@ -1,6 +1,4 @@
 import 'dart:async';
-import 'package:movie/config/Global.dart';
-
 import '../config/service_url.dart';
 import '../utils/LocalStroageUtils.dart';
 import 'package:dio/dio.dart';
@@ -345,13 +343,33 @@ Future deleteFavorite(String movieId) async {
 
 /**
  * @author: wuwenqiang
- * @description: 删除收藏
+ * @description: 获取猜你想看
  *  @date: 2021-03-04 23:08
  */
 Future getYourLikes(String labels) async {
   try {
     Response response;
     response = await dio.get(servicePath['getYourLikes'],queryParameters:{"labels":labels});
+    if (response.statusCode == 200 && response.data["status"] == SUCCESS) {
+      return response.data;
+    } else {
+      throw Exception('后端接口出现异常，请检测代码和服务器情况.........');
+    }
+  } catch (e) {
+    return print('ERROR:======>${e}');
+  }
+}
+
+
+/**
+ * @author: wuwenqiang
+ * @description: 获取推荐影片
+ *  @date: 2021-03-04 23:08
+ */
+Future getRecommend(String classify) async {
+  try {
+    Response response;
+    response = await dio.get(servicePath['getRecommend'],queryParameters:{"classify":classify});
     if (response.statusCode == 200 && response.data["status"] == SUCCESS) {
       return response.data;
     } else {

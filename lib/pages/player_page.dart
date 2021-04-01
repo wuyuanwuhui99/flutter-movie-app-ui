@@ -25,7 +25,7 @@ class _PlayerPageState extends State<PlayerPage> {
     super.initState();
     _getPlayUrl();
     _getYourLikes();
-    saveViewRecord(widget.movieItem);
+    savePlayRecord(widget.movieItem);
   }
 
 
@@ -51,7 +51,7 @@ class _PlayerPageState extends State<PlayerPage> {
         title(),
         SizedBox(height: 20),
 //        Column(children: playGroupWidget),
-        RecommendComponent(movieList:movieList,category: "猜你想看",horizontal: true)
+        RecommendComponent()
       ]),
     );
   }
