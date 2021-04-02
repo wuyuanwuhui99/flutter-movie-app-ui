@@ -27,7 +27,7 @@
 
 缓存：shared_preferences: ^0.4.1
 
-webvie：webview_flutter: ^0.3.10+4
+webview：webview_flutter: ^0.3.10+4
 
 后端接口项目和sql语句：https://github.com/wuyuanwuhui99/springboot-app-service
 
