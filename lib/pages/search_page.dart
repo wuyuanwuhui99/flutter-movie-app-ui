@@ -61,7 +61,7 @@ class _SearchPageState extends State<SearchPage> {
                     children:<Widget>[
                       HistorySearchComponent(),
                       SizedBox(height: 20),
-                      SingleChildScrollView(child: RecommendComponent(),)
+                      RecommendComponent(classify: "电影",direction: "vertical",)
                 ]))
         ),
       ]),

@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import './player_page.dart';
 import '../service/server_method.dart';
 import '../component/ScoreComponent.dart';
+import '../component/YouLikesComponent.dart';
+import '../component/RecommendComponent.dart';
 
 class DetailPage extends StatefulWidget {
   final Map movieItem;
@@ -21,17 +23,19 @@ class _DetailPageState extends State<DetailPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        body: SingleChildScrollView(
+        body:  SingleChildScrollView(
             child: Column(
-      children: <Widget>[
-        BannerComponent(
-          movieItem: widget.movieItem,
-        ),
-        MovieInfoComponent(movieInfo: widget.movieItem),
-        PlotComponent(plot: widget.movieItem["plot"]),
-        StarComponent(movieId: widget.movieItem["movieId"]),
-      ],
-    )));
+              children: <Widget>[
+                BannerComponent(
+                  movieItem: widget.movieItem,
+                ),
+                MovieInfoComponent(movieInfo: widget.movieItem),
+                PlotComponent(plot: widget.movieItem["plot"]),
+                StarComponent(movieId: widget.movieItem["movieId"]),
+                widget.movieItem["label"] != null ? YouLikesComponent(label:widget.movieItem["label"]) : SizedBox(),
+                RecommendComponent(classify: widget.movieItem["classify"],direction: "horizontal")
+              ],
+            )));
   }
 }
 

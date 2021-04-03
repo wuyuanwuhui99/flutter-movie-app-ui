@@ -1,10 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:movie/component/CategoryComponent.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 import '../component/ScoreComponent.dart';
 import '../service/server_method.dart';
 import '../component/RecommendComponent.dart';
+import '../component/YouLikesComponent.dart';
 
 class PlayerPage extends StatefulWidget {
   final Map movieItem;
@@ -18,67 +18,61 @@ class _PlayerPageState extends State<PlayerPage> {
   String url = "";
   int currentIndex = 0;
   List<Widget> playGroupWidget = [];
-  List <Map> movieList = [];
 
   @override
   void initState() {
     super.initState();
-    _getPlayUrl();
-    _getYourLikes();
     savePlayRecord(widget.movieItem);
   }
 
-
-  void _getYourLikes(){
-    if(widget.movieItem["label"] != null){
-      getYourLikes(widget.movieItem["label"]).then((res){
-        if(res != null){
-          setState((){
-            movieList = res.data;
-          });
-        }
-      });
-    }
-
-  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: ListView(children: <Widget>[
-        webView(),
-        handle(),
-        title(),
+        webViewWidget(),
+        handleWidget(),
+        titleWidget(),
         SizedBox(height: 20),
-//        Column(children: playGroupWidget),
-        RecommendComponent()
+        playUrlWidget(),
+        Padding(
+          padding: EdgeInsets.only(left: 10,right: 10),
+          child: Column(children: <Widget>[
+            widget.movieItem["label"] != null ? YouLikesComponent(label :widget.movieItem["label"]) : SizedBox(),
+            RecommendComponent(classify: widget.movieItem["classify"],direction: "horizontal")
+        ],),)
       ]),
     );
   }
 
-  Future<void> _getPlayUrl() async {
-    await getMovieUrl(widget.movieItem["id"].toString()).then((res) {
-      List<Map> playList = (res["data"] as List).cast();
-      if (playList.length == 0) {
-        return;
-      }
-      List<List<Map>> playGroupList = [];
-      for (int i = 0; i < playList.length; i++) {
-        if(i == 0){
-          url = playList[0]["url"];
+  Widget playUrlWidget() {
+    return FutureBuilder(
+        future:  getMovieUrl(widget.movieItem["id"].toString()),
+        builder: (context, snapshot) {
+          if (snapshot.data == null) {
+            return Container();
+          }else{
+            List<Map> playList = (snapshot.data["data"] as List).cast();
+            if (playList.length == 0) {
+              return Container();
+            }
+            List<List<Map>> playGroupList = [];
+            for (int i = 0; i < playList.length; i++) {
+              if(i == 0){
+                url = playList[0]["url"];
+              }
+              var playGroup = playList[i]["playGroup"];
+              if (playGroupList.length < playGroup) {
+                playGroupList.add(<Map>[]);
+              }
+              playGroupList[playGroup - 1].add(playList[i]);
+            }
+            Widget tabs = _renderTab(playGroupList.length);
+            Widget series = _getPlaySeries(playGroupList);
+            return Column(children:[tabs,series]);
+          }
         }
-        var playGroup = playList[i]["playGroup"];
-        if (playGroupList.length < playGroup) {
-          playGroupList.add(<Map>[]);
-        }
-        playGroupList[playGroup - 1].add(playList[i]);
-      }
-      Widget tabs = _renderTab(playGroupList.length);
-      Widget series = _getPlaySeries(playGroupList);
-      setState(() {
-        playGroupWidget..add(tabs)..add(series);
-      });
-    });
+    );
   }
 
   Widget _renderTab(int length){
@@ -188,23 +182,24 @@ class _PlayerPageState extends State<PlayerPage> {
 
   }
 
-  Widget webView() {
+  Widget webViewWidget() {
     return Container(
       width: MediaQuery.of(context).size.width,
       height: MediaQuery.of(context).size.width / 16 * 9,
       decoration: BoxDecoration(
         color: Colors.black,
       ),
-      child: url != ""
+      child: /*url != ""
           ? WebView(
               initialUrl: url,
               javascriptMode: JavascriptMode.unrestricted,
             )
-          : SizedBox(),
+          : SizedBox(),*/
+        SizedBox()
     );
   }
 
-  Widget handle() {
+  Widget handleWidget() {
     return Container(
       decoration: BoxDecoration(
           border: Border(
@@ -235,7 +230,7 @@ class _PlayerPageState extends State<PlayerPage> {
     );
   }
 
-  Widget title() {
+  Widget titleWidget() {
     return Container(
         decoration: BoxDecoration(
             border: Border(
