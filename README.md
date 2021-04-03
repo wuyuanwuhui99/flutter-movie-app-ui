@@ -4,12 +4,12 @@
 
 =============================界面预览==========================
 
-![app首页](https://github.com/wuyuanwuhui99/react-native-app-ui/raw/main/movie1.png)
-![app首页](https://github.com/wuyuanwuhui99/react-native-app-ui/raw/main/movie2.png)
-![app首页](https://github.com/wuyuanwuhui99/react-native-app-ui/raw/main/movie3.png)
-![app首页](https://github.com/wuyuanwuhui99/react-native-app-ui/raw/main/movie4.png)
-![app首页](https://github.com/wuyuanwuhui99/react-native-app-ui/raw/main/movie5.png)
-![app首页](https://github.com/wuyuanwuhui99/react-native-app-ui/raw/main/movie6.png)
+![app首页](https://github.com/wuyuanwuhui99/flutter-movie-app-ui/raw/main/movie1.png)
+![app首页](https://github.com/wuyuanwuhui99/flutter-movie-app-ui/raw/main/movie2.png)
+![app首页](https://github.com/wuyuanwuhui99/flutter-movie-app-ui/raw/main/movie3.png)
+![app首页](https://github.com/wuyuanwuhui99/flutter-movie-app-ui/raw/main/movie4.png)
+![app首页](https://github.com/wuyuanwuhui99/flutter-movie-app-ui/raw/main/movie5.png)
+![app首页](https://github.com/wuyuanwuhui99/flutter-movie-app-ui/raw/main/movie6.png)
 =============================界面预览==========================
 ## 使用的插件
 
@@ -27,6 +27,8 @@
 
 缓存：shared_preferences: ^0.4.1
 
-webvie：webview_flutter: ^0.3.10+4
+webview：webview_flutter: ^0.3.10+4
 
 后端接口项目和sql语句：https://github.com/wuyuanwuhui99/springboot-app-service
+
+react native版本参见: https://github.com/wuyuanwuhui99/react-native-app-ui
