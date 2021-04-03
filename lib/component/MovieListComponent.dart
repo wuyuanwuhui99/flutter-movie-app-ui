@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:movie/service/server_method.dart';
 import '../pages/detail_page.dart';
 import '../config/service_url.dart';
 
@@ -8,7 +7,7 @@ class MovieListComponent extends StatelessWidget {
   final String title;
   final List movieList;
   final String direction;
-  const MovieListComponent({Key key,this.movieList,this.title,this.direction}) : super(key: key);
+  const MovieListComponent({Key key,this.movieList,this.title="",this.direction}) : super(key: key);
 
   List<Widget> _items(BuildContext context) {
     int index = -1;
@@ -69,7 +68,7 @@ class MovieListComponent extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
               SizedBox(height: 15),
-              Container(
+              title != "" ? Container(
                   padding: EdgeInsets.only(left: 5),
                   decoration: BoxDecoration(
                     border: Border(
@@ -79,8 +78,9 @@ class MovieListComponent extends StatelessWidget {
                       ),
                     ),
                   ),
-                  child: Text(title)),
-              SizedBox(height: 15),
+                  child: Text(title))
+              : SizedBox(),
+              SizedBox(height: title != "" ? 15 : 0),
               direction == "vertical" ?
                GridView.count(
                     crossAxisSpacing: 0, //水平子 Widget 之间间距

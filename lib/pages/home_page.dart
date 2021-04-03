@@ -94,8 +94,7 @@ class _HomePageState extends State<HomePage>
   @override
   void initState() {
     getAllCategoryListByPageName("首页").then((res) {
-      Map result = res;
-      allCategoryLists = (result["data"] as List).cast(); // 顶部轮播组件数
+      allCategoryLists = (res["data"] as List).cast(); // 顶部轮播组件数
       setState(() {
         allCategoryLists.sublist(0, 2).forEach((item) {
           categoryList.add(CategoryComponent(

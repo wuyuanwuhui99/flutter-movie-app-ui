@@ -30,9 +30,9 @@ class _VideoPageState extends State<VideoPage>
 
   @override
   void initState() {
+    super.initState();
     getAllCategoryByClassify("电视剧").then((res) {
-      Map result = json.decode(res.toString());
-      allCategoryLists = (result["data"] as List).cast(); // 顶部轮播组件数
+      allCategoryLists = (res["data"] as List).cast(); // 顶部轮播组件数
       setState(() {
         allCategoryLists.sublist(0, 2).forEach((item) {
           categoryList.add(CategoryComponent(
@@ -42,7 +42,6 @@ class _VideoPageState extends State<VideoPage>
         });
       });
     });
-    super.initState();
   }
 
   void _getCategoryItem() {

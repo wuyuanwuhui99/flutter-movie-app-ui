@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_easyrefresh/easy_refresh.dart';
 import '../service/server_method.dart';
-import 'dart:convert';
 import 'package:flutter_easyrefresh/material_footer.dart';
 import '../component/SearchCommponent.dart';
 import '../component/AvaterComponent.dart';
@@ -20,18 +19,16 @@ class _MoviePageState extends State<MoviePage>
     with AutomaticKeepAliveClientMixin {
   @override
   bool get wantKeepAlive => true;
-
   List<Widget> categoryList = [];
-
   List<Map> allCategoryLists = [];
 
   int pageNum = 1;
 
   @override
   void initState() {
+    super.initState();
     getAllCategoryByClassify("电影").then((res) {
-      Map result = json.decode(res.toString());
-      allCategoryLists = (result["data"] as List).cast(); // 顶部轮播组件数
+      allCategoryLists = (res["data"] as List).cast(); //
       setState(() {
         allCategoryLists.sublist(0, 2).forEach((item) {
           categoryList.add(CategoryComponent(
@@ -41,7 +38,7 @@ class _MoviePageState extends State<MoviePage>
         });
       });
     });
-    super.initState();
+
   }
 
   void _getCategoryItem() {
@@ -66,7 +63,7 @@ class _MoviePageState extends State<MoviePage>
               Container(
                 width: MediaQuery.of(context).size.width,
                 child: Padding(
-                  padding: EdgeInsets.all(20),
+                  padding: EdgeInsets.only(left: 20,right: 20,bottom: 20),
                   child: Row(
                     children: <Widget>[
                       AvaterComponent(),
@@ -103,6 +100,7 @@ class _MoviePageState extends State<MoviePage>
                 child: ListView(
                   children: <Widget>[
                     Column(children: <Widget>[SwiperComponent(classify: "电影")]),
+                    SizedBox(height: 10),
                     Column(
                       children: categoryList,
                     )

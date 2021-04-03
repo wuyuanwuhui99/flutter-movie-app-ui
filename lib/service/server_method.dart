@@ -102,27 +102,10 @@ Future getAllCategoryListByPageName(String pageName) async {
 }
 
 //按classify大类查询所有catory小类
-Future getUserMsg(String userId) async {
+Future getUserMsg() async {
   try {
     Response response;
-    response = await dio
-        .get(servicePath['getUserMsg'], queryParameters: {"userId": userId});
-    if (response.statusCode == 200 && response.data["status"] == SUCCESS) {
-      return response.data;
-    } else {
-      throw Exception('后端接口出现异常，请检测代码和服务器情况.........');
-    }
-  } catch (e) {
-    return print('ERROR:======>${e}');
-  }
-}
-
-//按classify大类查询所有catory小类
-Future getHistory(String userId) async {
-  try {
-    Response response;
-    response = await dio
-        .get(servicePath['getHistory'], queryParameters: {"userId": userId});
+    response = await dio.get(servicePath['getUserMsg']);
     if (response.statusCode == 200 && response.data["status"] == SUCCESS) {
       return response.data;
     } else {
