@@ -28,7 +28,7 @@ class _PlayerPageState extends State<PlayerPage> {
 
   void _isFavorite() {
     isFavorite(widget.movieItem["movieId"]).then((res) {
-      if (res.data > 0) {
+      if (res["data"] > 0) {
         setState(() {
           isFavoriteFlag = true;
         });
@@ -239,9 +239,7 @@ class _PlayerPageState extends State<PlayerPage> {
                   }
                 },
                 child: Image.asset(
-                    isFavoriteFlag
-                        ? "lib/assets/images/icon-collection.png"
-                        : "lib/assets/images/icon-collection-active.png",
+                    isFavoriteFlag ? "lib/assets/images/icon-collection-active.png" :"lib/assets/images/icon-collection.png",
                     width: 30,
                     height: 30),
               ),

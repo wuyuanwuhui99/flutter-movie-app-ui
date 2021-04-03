@@ -331,7 +331,7 @@ Future deleteFavorite(String movieId) async {
   try {
     Response response;
     response = await dio.delete(servicePath['deleteFavorite'],
-        queryParameters: {movieId: movieId});
+        queryParameters: {"movieId": movieId});
     if (response.statusCode == 200 && response.data["status"] == SUCCESS) {
       return response.data;
     } else {
