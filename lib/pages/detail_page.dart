@@ -14,6 +14,7 @@ class DetailPage extends StatefulWidget {
 }
 
 class _DetailPageState extends State<DetailPage> {
+  bool isFavoriteFlag = false;
   @override
   void initState() {
     super.initState();

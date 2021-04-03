@@ -180,7 +180,7 @@ Future getStar(String movieId) async {
     response = await dio.get(servicePath['getStar'], queryParameters: {
       "movieId": movieId,
     });
-    if (response.statusCode == 200  && response.data["status"] == SUCCESS) {
+    if (response.statusCode == 200 && response.data["status"] == SUCCESS) {
       return response.data;
     } else {
       throw Exception('后端接口出现异常，请检测代码和服务器情况.........');
@@ -195,7 +195,7 @@ Future getMovieUrl(String movieId) async {
   try {
     Response response;
     response = await dio.get(servicePath['getMovieUrl'], queryParameters: {
-      "movieId": "11389"//movieId,
+      "movieId": "11389" //movieId,
     });
     if (response.statusCode == 200 && response.data["status"] == SUCCESS) {
       return response.data;
@@ -215,7 +215,7 @@ Future getMovieUrl(String movieId) async {
 Future saveViewRecord(Map movieEntity) async {
   try {
     Response response;
-    response = await dio.post(servicePath['saveViewRecord'],data:movieEntity);
+    response = await dio.post(servicePath['saveViewRecord'], data: movieEntity);
     if (response.statusCode == 200 && response.data["status"] == SUCCESS) {
       return response.data;
     } else {
@@ -253,7 +253,7 @@ Future getViewRecord(Map movieEntity) async {
 Future savePlayRecord(Map movieEntity) async {
   try {
     Response response;
-    response = await dio.post(servicePath['savePlayRecord'],data:movieEntity);
+    response = await dio.post(servicePath['savePlayRecord'], data: movieEntity);
     if (response.statusCode == 200 && response.data["status"] == SUCCESS) {
       return response.data;
     } else {
@@ -291,7 +291,8 @@ Future getPlayRecord() async {
 Future saveFavorite(Map movieEntity) async {
   try {
     Response response;
-    response = await dio.post(servicePath['saveFavorite'],data:movieEntity);
+    response = await dio.post(servicePath['saveFavorite'], data: movieEntity);
+    print(response);
     if (response.statusCode == 200 && response.data["status"] == SUCCESS) {
       return response.data;
     } else {
@@ -329,7 +330,8 @@ Future getFavorite() async {
 Future deleteFavorite(String movieId) async {
   try {
     Response response;
-    response = await dio.delete(servicePath['getFavorite'],queryParameters:{movieId:movieId});
+    response = await dio.delete(servicePath['deleteFavorite'],
+        queryParameters: {movieId: movieId});
     if (response.statusCode == 200 && response.data["status"] == SUCCESS) {
       return response.data;
     } else {
@@ -340,6 +342,25 @@ Future deleteFavorite(String movieId) async {
   }
 }
 
+/**
+ * @author: wuwenqiang
+ * @description: 获取推荐影片
+ *  @date: 2021-03-04 23:08
+ */
+Future isFavorite(String movieId) async {
+  try {
+    Response response;
+    response = await dio.get(servicePath['isFavorite'],
+        queryParameters: {"movieId": movieId.toString()});
+    if (response.statusCode == 200 && response.data["status"] == SUCCESS) {
+      return response.data;
+    } else {
+      throw Exception('后端接口出现异常，请检测代码和服务器情况.........');
+    }
+  } catch (e) {
+    return print('ERROR:======>${e}');
+  }
+}
 
 /**
  * @author: wuwenqiang
@@ -349,7 +370,8 @@ Future deleteFavorite(String movieId) async {
 Future getYourLikes(String labels) async {
   try {
     Response response;
-    response = await dio.get(servicePath['getYourLikes'],queryParameters:{"labels":labels});
+    response = await dio
+        .get(servicePath['getYourLikes'], queryParameters: {"labels": labels});
     if (response.statusCode == 200 && response.data["status"] == SUCCESS) {
       return response.data;
     } else {
@@ -360,7 +382,6 @@ Future getYourLikes(String labels) async {
   }
 }
 
-
 /**
  * @author: wuwenqiang
  * @description: 获取推荐影片
@@ -369,7 +390,8 @@ Future getYourLikes(String labels) async {
 Future getRecommend(String classify) async {
   try {
     Response response;
-    response = await dio.get(servicePath['getRecommend'],queryParameters:{"classify":classify});
+    response = await dio.get(servicePath['getRecommend'],
+        queryParameters: {"classify": classify});
     if (response.statusCode == 200 && response.data["status"] == SUCCESS) {
       return response.data;
     } else {

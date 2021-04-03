@@ -13,13 +13,14 @@ const servicePath = {
   "login": serviceUrl + "/service/movie/login", //登录
   "getStar": serviceUrl + "/service/movie/getStar", //获取演员
   "getMovieUrl": serviceUrl + "/service/movie/getMovieUrl", //获取演员
-  "getViewRecord": serviceUrl + "/service/movie/getViewRecord", //获取浏览记录
-  "saveViewRecord": serviceUrl + "/service/movie/saveViewRecord", //浏览历史
-  "getPlayRecord": serviceUrl + "/service/movie/getPlayRecord", //获取农房记录
-  "savePlayRecord": serviceUrl + "/service/movie/savePlayRecord", //播放记录
-  "getFavorite": serviceUrl + "/service/movie/getFavorite", //获取收藏电影
-  "saveFavorite": serviceUrl + "/service/movie/saveFavorite", //添加收藏
-  "deleteFavorite": serviceUrl + "/service/movie/saveFavorite", //删除收藏
+  "getViewRecord": serviceUrl + "/service/movie-getway/getViewRecord", //获取浏览记录
+  "saveViewRecord": serviceUrl + "/service/movie-getway/saveViewRecord", //浏览历史
+  "getPlayRecord": serviceUrl + "/service/movie-getway/getPlayRecord", //获取农房记录
+  "savePlayRecord": serviceUrl + "/service/movie-getway/savePlayRecord", //播放记录
+  "getFavorite": serviceUrl + "/service/movie-getway/getFavorite", //获取收藏电影
+  "saveFavorite": serviceUrl + "/service/movie-getway/saveFavorite", //添加收藏
+  "deleteFavorite": serviceUrl + "/service/movie-getway/deleteFavorite", //删除收藏
   "getYourLikes": serviceUrl + '/service/movie/getYourLikes',//猜你想看
   "getRecommend": serviceUrl + '/service/movie/getRecommend',//获取推荐
+  "isFavorite": serviceUrl + '/service//movie-getway/isFavorite',//查询是否已经收藏
 };

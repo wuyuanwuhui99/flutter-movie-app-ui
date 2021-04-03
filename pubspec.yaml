@@ -60,6 +60,7 @@ flutter:
    - lib/assets/images/icon-app.png
    - lib/assets/images/icon-arrow.png
    - lib/assets/images/icon-collection.png
+   - lib/assets/images/icon-collection-active.png
    - lib/assets/images/icon-history.png
    - lib/assets/images/icon-music.png
    - lib/assets/images/icon-record.png
@@ -84,6 +85,8 @@ flutter:
   # "family" key with the font family name, and a "fonts" key with a
   # list giving the asset and other descriptors for the font. For
   # example:
+
+
   # fonts:
   #   - family: Schyler
   #     fonts:
