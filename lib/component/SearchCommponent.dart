@@ -19,7 +19,7 @@ class SearchCommponent extends StatelessWidget {
           var result = snapshot.data;
           String keyword = "";
           if (result != null && result['data'] != null) {
-            keyword = result["data"]["movie_name"];
+            keyword = result["data"]["movieName"];
           }
           return InkWell(
               onTap: () {
