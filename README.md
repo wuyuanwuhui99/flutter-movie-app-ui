@@ -12,6 +12,8 @@
 ![app首页](https://github.com/wuyuanwuhui99/flutter-movie-app-ui/raw/main/movie6.png)
 ![app首页](https://github.com/wuyuanwuhui99/flutter-movie-app-ui/raw/main/movie7.png)
 ![app首页](https://github.com/wuyuanwuhui99/flutter-movie-app-ui/raw/main/movie8.png)
+![app首页](https://github.com/wuyuanwuhui99/flutter-movie-app-ui/raw/main/movie9.png)
+![app首页](https://github.com/wuyuanwuhui99/flutter-movie-app-ui/raw/main/movie10.png)
 =============================界面预览==========================
 ## 使用的插件
 
