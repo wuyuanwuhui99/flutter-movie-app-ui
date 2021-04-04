@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 
 import 'package:flutter_easyrefresh/easy_refresh.dart';
 import '../service/server_method.dart';
-import 'dart:convert';
 import 'package:flutter_easyrefresh/material_footer.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import '../component/SearchCommponent.dart';
@@ -66,7 +65,7 @@ class _VideoPageState extends State<VideoPage>
               Container(
                 width: MediaQuery.of(context).size.width,
                 child: Padding(
-                  padding: EdgeInsets.all(20),
+                  padding: EdgeInsets.only(left: 20,right: 20,bottom: 20),
                   child: Row(
                     children: <Widget>[
                       AvaterComponent(),
