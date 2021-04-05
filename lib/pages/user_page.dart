@@ -16,6 +16,7 @@ class UserPage extends StatelessWidget {
             decoration: BoxDecoration(color: Color.fromRGBO(237, 237, 237, 1)),
             child: Column(
               children: <Widget>[
+                SizedBox(height: 20),
                 Container(
                   padding: EdgeInsets.fromLTRB(15.0, 0, 15.0, 0),
                   decoration:

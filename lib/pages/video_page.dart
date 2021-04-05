@@ -65,7 +65,7 @@ class _VideoPageState extends State<VideoPage>
               Container(
                 width: MediaQuery.of(context).size.width,
                 child: Padding(
-                  padding: EdgeInsets.only(left: 20,right: 20,bottom: 20),
+                  padding: EdgeInsets.only(left: 20,right: 20,bottom: 20,top:20),
                   child: Row(
                     children: <Widget>[
                       AvaterComponent(),

@@ -21,7 +21,7 @@ class _RegisterPageState extends State<RegisterPage> {
     return Scaffold(
         body: Form(
             child: Padding(
-      padding: EdgeInsets.all(20),
+      padding: EdgeInsets.only(left: 20,right: 20,top: 20),
       child: Column(
         children: <Widget>[
           Row(

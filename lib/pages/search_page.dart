@@ -39,7 +39,8 @@ class _SearchPageState extends State<SearchPage> {
       body: Padding(
         padding: EdgeInsets.only(
             left: 20,
-            top: MediaQuery.of(context).padding.top,
+//            top: MediaQuery.of(context).padding.top,
+            top: 40,
             bottom: 20,
             right: 20),
         child: Column(
