@@ -3,7 +3,7 @@
 开发者：吴怨吴悔
 
 =============================界面预览==========================
-
+![app首页](https://github.com/wuyuanwuhui99/flutter-movie-app-ui/raw/main/%E7%94%B5%E5%BD%B1app%E6%95%B4%E4%BD%93%E9%A2%84%E8%A7%88.jpg)
 ![app首页](https://github.com/wuyuanwuhui99/flutter-movie-app-ui/raw/main/movie1.png)
 ![app首页](https://github.com/wuyuanwuhui99/flutter-movie-app-ui/raw/main/movie2.png)
 ![app首页](https://github.com/wuyuanwuhui99/flutter-movie-app-ui/raw/main/movie3.png)
