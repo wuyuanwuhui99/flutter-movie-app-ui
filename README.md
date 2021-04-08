@@ -43,16 +43,12 @@ vue在线音乐项目：https://github.com/wuyuanwuhui99/vue-music-app-ui
 
 nginx配置
 
-server{
-    listen       5001;
-    #静态资源，包括系统所需要的图片，js、css等静态资源
-    location / {
-        alias E:/vue/mymusic/dist/;
+    server{
+        listen       5001;
+        location /service/ {
+            proxy_pass http://127.0.0.1:5000;
+        }
+        location /static/ {
+            alias E:/static/;
+        }
     }
-    location /service/ {
-        proxy_pass http://127.0.0.1:5000;
-    }
-    location /static/ {
-        alias E:/static/;
-    }
-}
