@@ -16,7 +16,7 @@ class LoginPage extends StatelessWidget {
     final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
     Map userInfo = Provider.of<UserInfoProvider>(context).userInfo;
     String userId = userInfo["userId"];
-    String password = "";
+    String password = "123456";
     return Scaffold(
         body: Container(
       padding: EdgeInsets.all(20),
@@ -26,8 +26,9 @@ class LoginPage extends StatelessWidget {
             key: _formKey,
             child: Column(
               children: <Widget>[
+                SizedBox(height:150),
                 Container(
-                    padding: EdgeInsets.all(15),
+                    padding: EdgeInsets.all(10),
                     decoration: BoxDecoration(
                         borderRadius: BorderRadius.all(Radius.circular(30)),
                         border: Border.all(
@@ -56,7 +57,7 @@ class LoginPage extends StatelessWidget {
                         ))),
                 SizedBox(height: 20),
                 Container(
-                    padding: EdgeInsets.all(15),
+                    padding: EdgeInsets.all(10),
                     decoration: BoxDecoration(
                         borderRadius: BorderRadius.all(Radius.circular(30)),
                         border: Border.all(
@@ -66,6 +67,7 @@ class LoginPage extends StatelessWidget {
                         onChanged: (value) {
                           password = value;
                         },
+                        initialValue: "123456",
                         validator: (value) {
                           if (value.isEmpty) {
                             return '请输入密码';
@@ -102,7 +104,7 @@ class LoginPage extends StatelessWidget {
                   onPressed: () {
                     if (_formKey.currentState.validate()) {
                       login(userId, generateMd5(password)).then((res) async {
-                        if (res["data"] != null) {
+                        if (res != null && res["data"] != null) {
                           await LocalStroageUtils.setToken(res["token"]);
                           await Fluttertoast.showToast(
                               msg: "登录成功",

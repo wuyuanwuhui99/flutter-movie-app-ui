@@ -39,15 +39,15 @@ class UserPage extends StatelessWidget {
                               child: Text("头像"),
                               flex: 1,
                             ),
-                            ClipRRect(
-                                borderRadius: BorderRadius.circular(10),
-                                child: Image.network(
-                                  //从全局的provider中获取用户信息
-                                  serviceUrl + userInfo["avater"],
-                                  height: 60,
-                                  width: 60,
-                                  fit: BoxFit.cover,
-                                )),
+                            ClipOval(
+                              child: Image.network(
+                                //从全局的provider中获取用户信息
+                                serviceUrl + userInfo["avater"],
+                                height: 60,
+                                width: 60,
+                                fit: BoxFit.cover,
+                              ),
+                            ),
                             SizedBox(width: 10),
                             Image.asset("lib/assets/images/icon-arrow.png",
                                 height: 15, width: 15, fit: BoxFit.cover),
