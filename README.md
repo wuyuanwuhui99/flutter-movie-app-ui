@@ -2,7 +2,7 @@
 
 开发者：吴怨吴悔
 
-=============================界面预览==========================
+=============================界面预览（如果无法预览，请查看项目根目录png文件）==========================
 ![app首页](https://github.com/wuyuanwuhui99/flutter-movie-app-ui/raw/main/%E7%94%B5%E5%BD%B1app%E6%95%B4%E4%BD%93%E9%A2%84%E8%A7%88.jpg)
 ![app首页](https://github.com/wuyuanwuhui99/flutter-movie-app-ui/raw/main/movie1.png)
 ![app首页](https://github.com/wuyuanwuhui99/flutter-movie-app-ui/raw/main/movie2.png)
@@ -14,7 +14,7 @@
 ![app首页](https://github.com/wuyuanwuhui99/flutter-movie-app-ui/raw/main/movie8.png)
 ![app首页](https://github.com/wuyuanwuhui99/flutter-movie-app-ui/raw/main/movie9.png)
 ![app首页](https://github.com/wuyuanwuhui99/flutter-movie-app-ui/raw/main/movie10.png)
-=============================界面预览==========================
+=============================界面预览（如果无法预览，请查看项目根目录png文件）==========================
 ## 使用的插件
 
 轮播：flutter_swiper: ^1.0.6
@@ -40,3 +40,15 @@ react native版本参见: https://github.com/wuyuanwuhui99/react-native-app-ui
 vue在线音乐项目：https://github.com/wuyuanwuhui99/vue-music-app-ui
 
 在线音乐后端项目：https://github.com/wuyuanwuhui99/koa2-music-app-service
+
+nginx配置
+
+    server{
+        listen       5001;
+        location /service/ {
+            proxy_pass http://127.0.0.1:5000;
+        }
+        location /static/ {
+            alias E:/static/;
+        }
+    }
