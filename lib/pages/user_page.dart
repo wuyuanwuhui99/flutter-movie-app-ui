@@ -4,6 +4,7 @@ import '../provider/UserInfoProvider.dart';
 import 'package:provider/provider.dart';
 import './login_page.dart';
 import 'package:flutter/cupertino.dart';
+import './edit_page.dart';
 
 class UserPage extends StatelessWidget {
   const UserPage({Key key}) : super(key: key);
@@ -63,7 +64,11 @@ class UserPage extends StatelessWidget {
                             color: Color.fromRGBO(221, 221, 221, 1), //边框颜色
                           ),
                         )),
-                        child: Row(
+                        child: InkWell(
+                          onTap: (){
+                            Navigator.push(context,MaterialPageRoute( builder: (context) => EditPage( title: "昵称")));
+                          },
+                          child: Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: <Widget>[
                             Expanded(
@@ -75,7 +80,7 @@ class UserPage extends StatelessWidget {
                             Image.asset("lib/assets/images/icon-arrow.png",
                                 height: 15, width: 15, fit: BoxFit.cover),
                           ],
-                        ),
+                        ),),
                       ),
                       Container(
                         padding: EdgeInsets.fromLTRB(15.0, 20.0, 15.0, 20),
@@ -86,7 +91,12 @@ class UserPage extends StatelessWidget {
                             color: Color.fromRGBO(221, 221, 221, 1), //边框颜色
                           ),
                         )),
-                        child: Row(
+                        child:
+                        InkWell(
+                            onTap:(){
+                              Navigator.push(context,MaterialPageRoute( builder: (context) => EditPage( title: "电话")));
+                            },
+                            child:Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: <Widget>[
                             Expanded(
@@ -98,7 +108,8 @@ class UserPage extends StatelessWidget {
                             Image.asset("lib/assets/images/icon-arrow.png",
                                 height: 15, width: 15, fit: BoxFit.cover),
                           ],
-                        ),
+                        ))
+
                       ),
                       Container(
                         padding: EdgeInsets.fromLTRB(15.0, 20.0, 15.0, 20),
@@ -109,7 +120,11 @@ class UserPage extends StatelessWidget {
                             color: Color.fromRGBO(221, 221, 221, 1), //边框颜色
                           ),
                         )),
-                        child: Row(
+                        child: InkWell(
+                          onTap: (){
+                            Navigator.push(context,MaterialPageRoute( builder: (context) => EditPage( title: "邮箱")));
+                          },
+                          child: Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: <Widget>[
                             Expanded(
@@ -121,7 +136,7 @@ class UserPage extends StatelessWidget {
                             Image.asset("lib/assets/images/icon-arrow.png",
                                 height: 15, width: 15, fit: BoxFit.cover),
                           ],
-                        ),
+                        ),),
                       ),
                       Container(
                         padding: EdgeInsets.fromLTRB(15.0, 20.0, 15.0, 20),
