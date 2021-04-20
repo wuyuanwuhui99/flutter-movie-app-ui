@@ -20,4 +20,6 @@ const servicePath = {
   "getYourLikes": serviceUrl + '/service/movie/getYourLikes',//猜你想看
   "getRecommend": serviceUrl + '/service/movie/getRecommend',//获取推荐
   "isFavorite": serviceUrl + '/service//movie-getway/isFavorite',//查询是否已经收藏
+  "updateUser": serviceUrl + '/service//movie-getway/updateUser',//更新用户信息
+  "updatePassword": serviceUrl + '/service//movie-getway/updatePassword',//更新密码
 };

@@ -384,3 +384,43 @@ Future getRecommend(String classify) async {
     return print('ERROR:======>${e}');
   }
 }
+
+
+/**
+ * @author: wuwenqiang
+ * @description: 更新用户信息
+ *  @date: 2021-04-20 23:57
+ */
+Future updateUserData(Map map) async {
+  try {
+    Response response;
+    response = await dio.put(servicePath['updateUser'],data: map);
+    if (response.statusCode == 200 && response.data["status"] == SUCCESS) {
+      return response.data;
+    } else {
+      throw Exception('后端接口出现异常，请检测代码和服务器情况.........');
+    }
+  } catch (e) {
+    return print('ERROR:======>${e}');
+  }
+}
+
+
+/**
+ * @author: wuwenqiang
+ * @description: 更新密码
+ *  @date: 2021-04-20 23:57
+ */
+Future updatePassword(Map map) async {
+  try {
+    Response response;
+    response = await dio.put(servicePath['updatePassword'],data: map);
+    if (response.statusCode == 200 && response.data["status"] == SUCCESS) {
+      return response.data;
+    } else {
+      throw Exception('后端接口出现异常，请检测代码和服务器情况.........');
+    }
+  } catch (e) {
+    return print('ERROR:======>${e}');
+  }
+}

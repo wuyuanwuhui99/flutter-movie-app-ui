@@ -66,7 +66,7 @@ class UserPage extends StatelessWidget {
                         )),
                         child: InkWell(
                           onTap: (){
-                            Navigator.push(context,MaterialPageRoute( builder: (context) => EditPage( title: "昵称")));
+                            Navigator.push(context,MaterialPageRoute( builder: (context) => EditPage( title: "昵称",value: userInfo["username"],type: "input",)));
                           },
                           child: Row(
                           mainAxisAlignment: MainAxisAlignment.center,
@@ -94,7 +94,7 @@ class UserPage extends StatelessWidget {
                         child:
                         InkWell(
                             onTap:(){
-                              Navigator.push(context,MaterialPageRoute( builder: (context) => EditPage( title: "电话")));
+                              Navigator.push(context,MaterialPageRoute( builder: (context) => EditPage( title: "电话",value:userInfo["telphone"],type: "input",)));
                             },
                             child:Row(
                           mainAxisAlignment: MainAxisAlignment.center,
@@ -122,7 +122,7 @@ class UserPage extends StatelessWidget {
                         )),
                         child: InkWell(
                           onTap: (){
-                            Navigator.push(context,MaterialPageRoute( builder: (context) => EditPage( title: "邮箱")));
+                            Navigator.push(context,MaterialPageRoute( builder: (context) => EditPage( title: "邮箱",value: userInfo["email"],type:"input")));
                           },
                           child: Row(
                           mainAxisAlignment: MainAxisAlignment.center,
@@ -147,19 +147,23 @@ class UserPage extends StatelessWidget {
                             color: Color.fromRGBO(221, 221, 221, 1), //边框颜色
                           ),
                         )),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: <Widget>[
-                            Expanded(
-                              child: Text("出生年月日"),
-                              flex: 1,
-                            ),
-                            Text(userInfo["birthday"]),
-                            SizedBox(width: 10),
-                            Image.asset("lib/assets/images/icon-arrow.png",
-                                height: 15, width: 15, fit: BoxFit.cover),
-                          ],
-                        ),
+                        child: InkWell(
+                          onTap: (){
+                            Navigator.push(context,MaterialPageRoute( builder: (context) => EditPage( title: "出生年月日",value: userInfo["bitthday"],type:"date")));
+                          },
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: <Widget>[
+                              Expanded(
+                                child: Text("出生年月日"),
+                                flex: 1,
+                              ),
+                              Text(userInfo["birthday"]),
+                              SizedBox(width: 10),
+                              Image.asset("lib/assets/images/icon-arrow.png",
+                                  height: 15, width: 15, fit: BoxFit.cover),
+                            ],
+                          )),
                       ),
                       Container(
                         padding: EdgeInsets.fromLTRB(15.0, 20.0, 15.0, 20),
@@ -170,7 +174,11 @@ class UserPage extends StatelessWidget {
                             color: Color.fromRGBO(221, 221, 221, 1), //边框颜色
                           ),
                         )),
-                        child: Row(
+                        child: InkWell(
+                          onTap: (){
+                            Navigator.push(context,MaterialPageRoute( builder: (context) => EditPage( title: "性别",value: userInfo["bitthday"],type:"radio")));
+                          },
+                          child:Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: <Widget>[
                             Expanded(
@@ -183,6 +191,7 @@ class UserPage extends StatelessWidget {
                                 height: 15, width: 15, fit: BoxFit.cover),
                           ],
                         ),
+                      )
                       ),
                     ],
                   ),
