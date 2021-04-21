@@ -66,7 +66,9 @@ class UserPage extends StatelessWidget {
                         )),
                         child: InkWell(
                           onTap: (){
-                            Navigator.push(context,MaterialPageRoute( builder: (context) => EditPage( title: "昵称",value: userInfo["username"],type: "input",)));
+                            Navigator.push(context,MaterialPageRoute( builder: (context) => EditPage(
+                              title: "昵称",value: userInfo["username"],type: "input",isAllowEmpty: false,field: "username",
+                            )));
                           },
                           child: Row(
                           mainAxisAlignment: MainAxisAlignment.center,
@@ -94,7 +96,9 @@ class UserPage extends StatelessWidget {
                         child:
                         InkWell(
                             onTap:(){
-                              Navigator.push(context,MaterialPageRoute( builder: (context) => EditPage( title: "电话",value:userInfo["telphone"],type: "input",)));
+                              Navigator.push(context,MaterialPageRoute( builder: (context) => EditPage(
+                                title: "电话",value: userInfo["telphone"],type: "input",isAllowEmpty: false,field: "telphone",
+                              )));
                             },
                             child:Row(
                           mainAxisAlignment: MainAxisAlignment.center,
@@ -122,8 +126,10 @@ class UserPage extends StatelessWidget {
                         )),
                         child: InkWell(
                           onTap: (){
-                            Navigator.push(context,MaterialPageRoute( builder: (context) => EditPage( title: "邮箱",value: userInfo["email"],type:"input")));
-                          },
+                            Navigator.push(context,MaterialPageRoute( builder: (context) => EditPage(
+                              title: "邮箱",value: userInfo["email"],type: "input",isAllowEmpty: false,field: "email",
+                            )));
+                            },
                           child: Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: <Widget>[
@@ -149,7 +155,9 @@ class UserPage extends StatelessWidget {
                         )),
                         child: InkWell(
                           onTap: (){
-                            Navigator.push(context,MaterialPageRoute( builder: (context) => EditPage( title: "出生年月日",value: userInfo["bitthday"],type:"date")));
+                            Navigator.push(context,MaterialPageRoute( builder: (context) => EditPage(
+                              title: "出生年月日",value: userInfo["birthday"],type: "date",isAllowEmpty: true,field: "birthday",
+                            )));
                           },
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.center,
@@ -176,8 +184,10 @@ class UserPage extends StatelessWidget {
                         )),
                         child: InkWell(
                           onTap: (){
-                            Navigator.push(context,MaterialPageRoute( builder: (context) => EditPage( title: "性别",value: userInfo["bitthday"],type:"radio")));
-                          },
+                            Navigator.push(context,MaterialPageRoute( builder: (context) => EditPage(
+                              title: "性别",value: userInfo["sex"],type: "radio",isAllowEmpty: false,field: "sex",
+                            )));
+                            },
                           child:Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: <Widget>[
@@ -192,6 +202,66 @@ class UserPage extends StatelessWidget {
                           ],
                         ),
                       )
+                      ),
+                      Container(
+                          padding: EdgeInsets.fromLTRB(15.0, 20.0, 15.0, 20),
+                          decoration: BoxDecoration(
+                              border: Border(
+                                bottom: BorderSide(
+                                  width: 1, //宽度
+                                  color: Color.fromRGBO(221, 221, 221, 1), //边框颜色
+                                ),
+                              )),
+                          child: InkWell(
+                            onTap: (){
+                              Navigator.push(context,MaterialPageRoute( builder: (context) => EditPage(
+                                title: "个性签名",value: userInfo["sign"],type: "input",isAllowEmpty: false,field: "sign",
+                              )));
+                            },
+                            child:Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: <Widget>[
+                                Expanded(
+                                  child: Text("个性签名"),
+                                  flex: 1,
+                                ),
+                                Text(userInfo["sign"] != null ? userInfo["sign"] : ""),
+                                SizedBox(width: 10),
+                                Image.asset("lib/assets/images/icon-arrow.png",
+                                    height: 15, width: 15, fit: BoxFit.cover),
+                              ],
+                            ),
+                          )
+                      ),
+                      Container(
+                          padding: EdgeInsets.fromLTRB(15.0, 20.0, 15.0, 20),
+                          decoration: BoxDecoration(
+                              border: Border(
+                                bottom: BorderSide(
+                                  width: 1, //宽度
+                                  color: Color.fromRGBO(221, 221, 221, 1), //边框颜色
+                                ),
+                              )),
+                          child: InkWell(
+                            onTap: (){
+                              Navigator.push(context,MaterialPageRoute( builder: (context) => EditPage(
+                                title: "地区",value: userInfo["region"],type: "input",isAllowEmpty: false,field: "region",
+                              )));
+                            },
+                            child:Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: <Widget>[
+                                Expanded(
+                                  child: Text("地区"),
+                                  flex: 1,
+                                ),
+                                Text(userInfo["region"] != null ? userInfo["region"] : ""),
+                                SizedBox(width: 10),
+                                Image.asset("lib/assets/images/icon-arrow.png",
+                                    height: 15, width: 15, fit: BoxFit.cover),
+                              ],
+                            ),
+                          )
                       ),
                     ],
                   ),
