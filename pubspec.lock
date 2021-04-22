@@ -83,13 +83,13 @@ packages:
     description: flutter
     source: sdk
     version: "0.0.0"
-  flutter_datetime_picker:
+  flutter_easyloading:
     dependency: "direct main"
     description:
-      name: flutter_datetime_picker
+      name: flutter_easyloading
       url: "https://pub.flutter-io.cn"
     source: hosted
-    version: "1.2.6"
+    version: "2.2.2"
   flutter_easyrefresh:
     dependency: "direct main"
     description:
@@ -111,6 +111,13 @@ packages:
       url: "https://pub.flutter-io.cn"
     source: hosted
     version: "0.5.3"
+  flutter_spinkit:
+    dependency: transitive
+    description:
+      name: flutter_spinkit
+      url: "https://pub.flutter-io.cn"
+    source: hosted
+    version: "4.1.2+1"
   flutter_swiper:
     dependency: "direct main"
     description:
@@ -276,5 +283,5 @@ packages:
     source: hosted
     version: "3.5.0"
 sdks:
-  dart: ">2.4.0 <3.0.0"
+  dart: ">=2.5.0 <3.0.0"
   flutter: ">=1.9.1+hotfix.5 <2.0.0"

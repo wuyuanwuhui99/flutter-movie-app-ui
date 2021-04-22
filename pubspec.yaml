@@ -33,7 +33,7 @@ dependencies:
   shared_preferences: ^0.4.1
   webview_flutter: ^0.3.10+4
   crypto: ^2.1.1+1
-  flutter_datetime_picker: 1.2.6
+  flutter_easyloading: ^2.2.2
 
 dev_dependencies:
   flutter_test:
