@@ -22,6 +22,8 @@ class _EditPageState extends State<EditPage> {
 
   TextEditingController myController = new TextEditingController();
   bool hasChange = false;
+  int tabIndex = 0;
+  String checkValue = "";
 
   void initState() {
     myController.text = widget.value;
@@ -39,9 +41,9 @@ class _EditPageState extends State<EditPage> {
       FlutterEasyLoading(
         child: Scaffold(
           body:
-          Padding(padding: EdgeInsets.only(left: 20,right: 20,top: 20),child: Column(
+         Column(
             children: <Widget>[
-              Container(
+              Padding(padding: EdgeInsets.all(20),child: Container(
                 height: 40,
                 child:
                 Stack(
@@ -89,16 +91,70 @@ class _EditPageState extends State<EditPage> {
                               )
                           )
                       )]),
-              ),
-              TextField(
-                controller: myController,
-                onChanged: (value){
-                  setState(() {
-                    hasChange = true;
-                  });
-                },)
+              ),),
+              
+              Options()
             ],
           ),)
-      ),);
+      );
+  }
+
+  Widget Options(){
+    if(widget.field == "sex"){//性别判断
+      checkValue = widget.value;
+      return Container(
+        decoration: BoxDecoration(color: Colors.white),
+        child:
+          Column(
+              children: <Widget>[
+                InkWell(
+                    onTap: (){
+                      setState(() {
+                        hasChange = true;
+                        checkValue = "男";
+                      });
+                    },
+                    child:
+                    Padding(
+                      padding: EdgeInsets.all(20),
+                      child: Row(children: <Widget>[
+                      Expanded(flex: 1,child: Text("男")),
+                      checkValue == "男" ? Icon(
+                        Icons.check,
+                        color: Color.fromRGBO(24, 144, 255, 1),
+                      ):SizedBox()
+                    ],),)),
+                Container(height: 1,decoration: BoxDecoration(color: Color.fromRGBO(204, 204, 204, 1)),),
+                InkWell(
+                    onTap: (){
+                      setState(() {
+                        hasChange = true;
+                        checkValue = "女";
+                      });
+                    },
+                    child:
+                    Padding(
+                      padding: EdgeInsets.all(20),
+                      child:  Row(children: <Widget>[
+                      Expanded(flex: 1,child: Text("女")),
+                        checkValue == "女"  ? Icon(
+                        Icons.check,
+                        color: Color.fromRGBO(24, 144, 255, 1),
+                      ):SizedBox()
+                    ],),)
+                   )
+              ]),);
+    }else{
+      return 
+        Padding(
+          padding: EdgeInsets.all(20),
+          child: TextField(
+          controller: myController,
+          onChanged: (value){
+            setState(() {
+              hasChange = true;
+            });
+          },),);
+    }
   }
 }
