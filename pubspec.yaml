@@ -74,6 +74,7 @@ flutter:
    - lib/assets/images/icon-password.png
    - lib/assets/images/icon-user.png
    - lib/assets/images/icon-clear.png
+   - lib/assets/images/icon-back.png
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.
 

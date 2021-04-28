@@ -195,7 +195,7 @@ class UserPage extends StatelessWidget {
                               child: Text("性别"),
                               flex: 1,
                             ),
-                            Text(userInfo["birthday"]),
+                            Text(userInfo["sex"]),
                             SizedBox(width: 10),
                             Image.asset("lib/assets/images/icon-arrow.png",
                                 height: 15, width: 15, fit: BoxFit.cover),
