@@ -4,7 +4,7 @@ import 'package:provider/provider.dart';
 import '../provider/UserInfoProvider.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
-
+import '../model/UserInfoModel.dart';
 class EditPage extends StatefulWidget {
   final String title;//编辑的标题
   final String type;//编辑框的类型
@@ -80,7 +80,7 @@ class _EditPageState extends State<EditPage> {
                                   setState(() {
                                     hasChange = false;
                                   });
-                                  Provider.of<UserInfoProvider>(context).setUserInfo(myUserInfo);
+                                  Provider.of<UserInfoProvider>(context).setUserInfo(UserInfoModel.fromJson(myUserInfo));
                                   await EasyLoading.dismiss(animation: true);
                                   Navigator.pop(context);
                                 }).catchError((){

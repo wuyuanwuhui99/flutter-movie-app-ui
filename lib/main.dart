@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'bottom_navigation_widget.dart';
 import 'package:provider/provider.dart';
 import 'provider/UserInfoProvider.dart';
+import 'model/UserInfoModel.dart';
 
 // void main() => runApp(MyApp());
 
@@ -9,7 +10,7 @@ void main() {
   runApp(
     MultiProvider(
       providers: [
-        ChangeNotifierProvider.value(value: UserInfoProvider({})), //初始化默认值
+        ChangeNotifierProvider.value(value: UserInfoProvider(UserInfoModel.fromJson({}))), //初始化默认值
       ],
       child: MyApp(),
     ),

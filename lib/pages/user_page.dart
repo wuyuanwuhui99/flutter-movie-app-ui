@@ -5,13 +5,14 @@ import 'package:provider/provider.dart';
 import './login_page.dart';
 import 'package:flutter/cupertino.dart';
 import './edit_page.dart';
+import '../model/UserInfoModel.dart';
 
 class UserPage extends StatelessWidget {
   const UserPage({Key key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    Map userInfo = Provider.of<UserInfoProvider>(context).userInfo;
+    UserInfoModel userInfo = Provider.of<UserInfoProvider>(context).userInfo;
     return Scaffold(
         body: Container(
             decoration: BoxDecoration(color: Color.fromRGBO(237, 237, 237, 1)),
@@ -43,7 +44,7 @@ class UserPage extends StatelessWidget {
                             ClipOval(
                               child: Image.network(
                                 //从全局的provider中获取用户信息
-                                serviceUrl + userInfo["avater"],
+                                serviceUrl + userInfo.avater,
                                 height: 60,
                                 width: 60,
                                 fit: BoxFit.cover,
@@ -67,7 +68,7 @@ class UserPage extends StatelessWidget {
                         child: InkWell(
                           onTap: (){
                             Navigator.push(context,MaterialPageRoute( builder: (context) => EditPage(
-                              title: "昵称",value: userInfo["username"],type: "input",isAllowEmpty: false,field: "username",
+                              title: "昵称",value: userInfo.username,type: "input",isAllowEmpty: false,field: "username",
                             )));
                           },
                           child: Row(
@@ -77,7 +78,7 @@ class UserPage extends StatelessWidget {
                               child: Text("昵称"),
                               flex: 1,
                             ),
-                            Text(userInfo["username"]),
+                            Text(userInfo.username),
                             SizedBox(width: 10),
                             Image.asset("lib/assets/images/icon-arrow.png",
                                 height: 15, width: 15, fit: BoxFit.cover),
@@ -97,7 +98,7 @@ class UserPage extends StatelessWidget {
                         InkWell(
                             onTap:(){
                               Navigator.push(context,MaterialPageRoute( builder: (context) => EditPage(
-                                title: "电话",value: userInfo["telphone"],type: "input",isAllowEmpty: false,field: "telphone",
+                                title: "电话",value: userInfo.telephone,type: "input",isAllowEmpty: false,field: "telphone",
                               )));
                             },
                             child:Row(
@@ -107,7 +108,7 @@ class UserPage extends StatelessWidget {
                               child: Text("电话"),
                               flex: 1,
                             ),
-                            Text(userInfo["telephone"]),
+                            Text(userInfo.telephone),
                             SizedBox(width: 10),
                             Image.asset("lib/assets/images/icon-arrow.png",
                                 height: 15, width: 15, fit: BoxFit.cover),
@@ -127,7 +128,7 @@ class UserPage extends StatelessWidget {
                         child: InkWell(
                           onTap: (){
                             Navigator.push(context,MaterialPageRoute( builder: (context) => EditPage(
-                              title: "邮箱",value: userInfo["email"],type: "input",isAllowEmpty: false,field: "email",
+                              title: "邮箱",value: userInfo.email,type: "input",isAllowEmpty: false,field: "email",
                             )));
                             },
                           child: Row(
@@ -137,7 +138,7 @@ class UserPage extends StatelessWidget {
                               child: Text("邮箱"),
                               flex: 1,
                             ),
-                            Text(userInfo["email"]),
+                            Text(userInfo.email),
                             SizedBox(width: 10),
                             Image.asset("lib/assets/images/icon-arrow.png",
                                 height: 15, width: 15, fit: BoxFit.cover),
@@ -156,7 +157,7 @@ class UserPage extends StatelessWidget {
                         child: InkWell(
                           onTap: (){
                             Navigator.push(context,MaterialPageRoute( builder: (context) => EditPage(
-                              title: "出生年月日",value: userInfo["birthday"],type: "date",isAllowEmpty: true,field: "birthday",
+                              title: "出生年月日",value: userInfo.birthday,type: "date",isAllowEmpty: true,field: "birthday",
                             )));
                           },
                           child: Row(
@@ -166,7 +167,7 @@ class UserPage extends StatelessWidget {
                                 child: Text("出生年月日"),
                                 flex: 1,
                               ),
-                              Text(userInfo["birthday"]),
+                              Text(userInfo.birthday),
                               SizedBox(width: 10),
                               Image.asset("lib/assets/images/icon-arrow.png",
                                   height: 15, width: 15, fit: BoxFit.cover),
@@ -185,7 +186,7 @@ class UserPage extends StatelessWidget {
                         child: InkWell(
                           onTap: (){
                             Navigator.push(context,MaterialPageRoute( builder: (context) => EditPage(
-                              title: "性别",value: userInfo["sex"],type: "radio",isAllowEmpty: false,field: "sex",
+                              title: "性别",value: userInfo.sex,type: "radio",isAllowEmpty: false,field: "sex",
                             )));
                             },
                           child:Row(
@@ -195,7 +196,7 @@ class UserPage extends StatelessWidget {
                               child: Text("性别"),
                               flex: 1,
                             ),
-                            Text(userInfo["sex"]),
+                            Text(userInfo.sex),
                             SizedBox(width: 10),
                             Image.asset("lib/assets/images/icon-arrow.png",
                                 height: 15, width: 15, fit: BoxFit.cover),
@@ -215,7 +216,7 @@ class UserPage extends StatelessWidget {
                           child: InkWell(
                             onTap: (){
                               Navigator.push(context,MaterialPageRoute( builder: (context) => EditPage(
-                                title: "个性签名",value: userInfo["sign"],type: "input",isAllowEmpty: false,field: "sign",
+                                title: "个性签名",value: userInfo.sign,type: "input",isAllowEmpty: false,field: "sign",
                               )));
                             },
                             child:Row(
@@ -225,7 +226,7 @@ class UserPage extends StatelessWidget {
                                   child: Text("个性签名"),
                                   flex: 1,
                                 ),
-                                Text(userInfo["sign"] != null ? userInfo["sign"] : ""),
+                                Text(userInfo.sign != null ? userInfo.sign : ""),
                                 SizedBox(width: 10),
                                 Image.asset("lib/assets/images/icon-arrow.png",
                                     height: 15, width: 15, fit: BoxFit.cover),
@@ -245,7 +246,7 @@ class UserPage extends StatelessWidget {
                           child: InkWell(
                             onTap: (){
                               Navigator.push(context,MaterialPageRoute( builder: (context) => EditPage(
-                                title: "地区",value: userInfo["region"],type: "input",isAllowEmpty: false,field: "region",
+                                title: "地区",value: userInfo.region,type: "input",isAllowEmpty: false,field: "region",
                               )));
                             },
                             child:Row(
@@ -255,7 +256,7 @@ class UserPage extends StatelessWidget {
                                   child: Text("地区"),
                                   flex: 1,
                                 ),
-                                Text(userInfo["region"] != null ? userInfo["region"] : ""),
+                                Text(userInfo.region != null ? userInfo.region : ""),
                                 SizedBox(width: 10),
                                 Image.asset("lib/assets/images/icon-arrow.png",
                                     height: 15, width: 15, fit: BoxFit.cover),

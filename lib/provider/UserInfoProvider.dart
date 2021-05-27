@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-
+import '../model/UserInfoModel.dart';
 class UserInfoProvider with ChangeNotifier {
-  Map _userInfo;
+  UserInfoModel _userInfo;
   UserInfoProvider(this._userInfo);
 
-  void setUserInfo(Map userInfo) {
+  void setUserInfo(UserInfoModel userInfo) {
     _userInfo = userInfo;
     notifyListeners(); //2
   }

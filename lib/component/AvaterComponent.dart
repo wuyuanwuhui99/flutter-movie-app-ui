@@ -22,7 +22,7 @@ class AvaterComponent extends StatelessWidget {
             child: Image.network(
               //从全局的provider中获取用户信息
               serviceUrl +
-                  Provider.of<UserInfoProvider>(context).userInfo["avater"],
+                  Provider.of<UserInfoProvider>(context).userInfo.avater,
               height: 40,
               width: 40,
               fit: BoxFit.cover,

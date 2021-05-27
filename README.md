@@ -19,6 +19,9 @@
 ![app首页](https://github.com/wuyuanwuhui99/flutter-movie-app-ui/raw/main/movie13.png)
 ![app首页](https://github.com/wuyuanwuhui99/flutter-movie-app-ui/raw/main/movie14.png)
 =============================界面预览（如果无法预览，请查看项目根目录png文件）==========================
+
+运行命令：flutter run --enable-software-rendering
+
 ## 使用的插件
 
 轮播：flutter_swiper: ^1.0.6

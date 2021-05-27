@@ -4,7 +4,8 @@ import 'package:provider/provider.dart';
 import '../service/server_method.dart';
 import '../provider/UserInfoProvider.dart';
 import '../component/MovieListComponent.dart';
-
+import '../model/UserInfoModel.dart';
+import '../model/UserMsgModel.dart';
 class MyPage extends StatefulWidget {
   MyPage({Key key}) : super(key: key);
 
@@ -18,7 +19,7 @@ class _MyPageState extends State<MyPage> with AutomaticKeepAliveClientMixin {
 
   @override
   Widget build(BuildContext context) {
-    Map userInfo = Provider.of<UserInfoProvider>(context).userInfo;
+    UserInfoModel userInfo = Provider.of<UserInfoProvider>(context).userInfo;
     return Container(
       decoration: BoxDecoration(
         color: Color.fromRGBO(238, 238, 238, 1),
@@ -34,7 +35,7 @@ class _MyPageState extends State<MyPage> with AutomaticKeepAliveClientMixin {
                     ),
                     child: Column(
                       children: <Widget>[
-                        AvaterComponent(userInfo: userInfo),
+                        AvaterComponent(),
                         SizedBox(height: 20),
                         UserMsgComponent(),
                         SizedBox(height: 20)
@@ -71,12 +72,12 @@ class _MyPageState extends State<MyPage> with AutomaticKeepAliveClientMixin {
 
 /*-------------------用户头像-----------------*/
 class AvaterComponent extends StatelessWidget {
-  final Map userInfo;
 
-  const AvaterComponent({Key key, this.userInfo}) : super(key: key);
+  const AvaterComponent({Key key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    UserInfoModel userInfo = Provider.of<UserInfoProvider>(context).userInfo;
     return Column(
       crossAxisAlignment: CrossAxisAlignment.center, //垂直方向居中对齐
       children: <Widget>[
@@ -91,13 +92,13 @@ class AvaterComponent extends StatelessWidget {
             child: ClipOval(
               child: Image.network(
                 //从全局的provider中获取用户信息
-                serviceUrl + userInfo["avater"],
+                serviceUrl + userInfo.avater,
                 fit: BoxFit.cover,
               ),
             )),
         SizedBox(height: 10),
         Text(
-          userInfo["username"],
+          userInfo.username,
           style: TextStyle(fontSize: 25.0),
         ),
         SizedBox(height: 10),
@@ -117,7 +118,7 @@ class UserMsgComponent extends StatelessWidget {
         if (snapshot.data == null) {
           return Container();
         }else {
-          Map userMsg = snapshot.data["data"];
+          UserMsgModel userMsg = UserMsgModel.fromJson(snapshot.data["data"]);
           return  Container(
             child: Row(
               children: <Widget>[
@@ -135,7 +136,7 @@ class UserMsgComponent extends StatelessWidget {
                         crossAxisAlignment: CrossAxisAlignment.center, //垂直方向居中对齐
                         children: <Widget>[
                           Text(
-                            userMsg["userAge"],
+                            userMsg.userAge,
                             style: TextStyle(fontSize: 25),
                           ),
                           SizedBox(height: 10),
@@ -159,7 +160,7 @@ class UserMsgComponent extends StatelessWidget {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.center, //垂直方向居中对齐
                         children: <Widget>[
-                          Text(userMsg["favoriteCount"],
+                          Text(userMsg.favoriteCount,
                               style: TextStyle(fontSize: 25)),
                           SizedBox(height: 10),
                           Text("收藏",
@@ -182,7 +183,7 @@ class UserMsgComponent extends StatelessWidget {
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.center, //垂直方向居中对齐
                           children: <Widget>[
-                            Text(userMsg["playRecordCount"],
+                            Text(userMsg.playRecordCount,
                                 style: TextStyle(fontSize: 25)),
                             SizedBox(height: 10),
                             Text("观看记录",
@@ -196,7 +197,7 @@ class UserMsgComponent extends StatelessWidget {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.center, //垂直方向居中对齐
                     children: <Widget>[
-                      Text(userMsg["viewRecordCount"], style: TextStyle(fontSize: 25)),
+                      Text(userMsg.viewRecordCount, style: TextStyle(fontSize: 25)),
                       SizedBox(height: 10),
                       Text("浏览记录",
                           style: TextStyle(
@@ -212,126 +213,6 @@ class UserMsgComponent extends StatelessWidget {
         });
   }
 }
-
-//class UserMsgComponent extends StatefulWidget {
-//  final String userId;
-//  UserMsgComponent({Key key, this.userId}) : super(key: key);
-//
-//  @override
-//  _UserMsgComponentState createState() => _UserMsgComponentState();
-//}
-//
-//class _UserMsgComponentState extends State<UserMsgComponent> {
-//  Map userMsg = {
-//    "userAge": "0",
-//    "recordCount": "0",
-//    "playCount": "0",
-//    "favoriteCount": "0"
-//  };
-//
-//  @override
-//  void initState() {
-//    getUserMsg(widget.userId).then((res) {
-//      Map result = json.decode(res.toString());
-//      setState(() {
-//        userMsg = result["data"];
-//      });
-//    });
-//  }
-//
-//  @override
-//  Widget build(BuildContext context) {
-//    return Container(
-//      child: Row(
-//        children: <Widget>[
-//          Expanded(
-//              flex: 1,
-//              child: Container(
-//                decoration: BoxDecoration(
-//                    border: Border(
-//                        right: BorderSide(
-//                            // 设置单侧边框的样式
-//                            color: Color.fromRGBO(221, 221, 221, 1),
-//                            width: 1,
-//                            style: BorderStyle.solid))),
-//                child: Column(
-//                  crossAxisAlignment: CrossAxisAlignment.center, //垂直方向居中对齐
-//                  children: <Widget>[
-//                    Text(
-//                      userMsg["userAge"],
-//                      style: TextStyle(fontSize: 25),
-//                    ),
-//                    SizedBox(height: 10),
-//                    Text("使用天数",
-//                        style: TextStyle(
-//                            color: Color.fromRGBO(221, 221, 221, 1),
-//                            fontSize: 16))
-//                  ],
-//                ),
-//              )),
-//          Expanded(
-//            flex: 1,
-//            child: Container(
-//                decoration: BoxDecoration(
-//                    border: Border(
-//                        right: BorderSide(
-//                            // 设置单侧边框的样式
-//                            color: Color.fromRGBO(221, 221, 221, 1),
-//                            width: 1,
-//                            style: BorderStyle.solid))),
-//                child: Column(
-//                  crossAxisAlignment: CrossAxisAlignment.center, //垂直方向居中对齐
-//                  children: <Widget>[
-//                    Text(userMsg["favoriteCount"],
-//                        style: TextStyle(fontSize: 25)),
-//                    SizedBox(height: 10),
-//                    Text("收藏",
-//                        style: TextStyle(
-//                            color: Color.fromRGBO(221, 221, 221, 1),
-//                            fontSize: 16))
-//                  ],
-//                )),
-//          ),
-//          Expanded(
-//              flex: 1,
-//              child: Container(
-//                  decoration: BoxDecoration(
-//                      border: Border(
-//                          right: BorderSide(
-//                              // 设置单侧边框的样式
-//                              color: Color.fromRGBO(221, 221, 221, 1),
-//                              width: 1,
-//                              style: BorderStyle.solid))),
-//                  child: Column(
-//                    crossAxisAlignment: CrossAxisAlignment.center, //垂直方向居中对齐
-//                    children: <Widget>[
-//                      Text(userMsg["playCount"],
-//                          style: TextStyle(fontSize: 25)),
-//                      SizedBox(height: 10),
-//                      Text("观看记录",
-//                          style: TextStyle(
-//                              color: Color.fromRGBO(221, 221, 221, 1),
-//                              fontSize: 16))
-//                    ],
-//                  ))),
-//          Expanded(
-//            flex: 1,
-//            child: Column(
-//              crossAxisAlignment: CrossAxisAlignment.center, //垂直方向居中对齐
-//              children: <Widget>[
-//                Text(userMsg["recordCount"], style: TextStyle(fontSize: 25)),
-//                SizedBox(height: 10),
-//                Text("浏览记录",
-//                    style: TextStyle(
-//                        color: Color.fromRGBO(221, 221, 221, 1), fontSize: 16))
-//              ],
-//            ),
-//          ),
-//        ],
-//      ),
-//    );
-//  }
-//}
 /*-------------------用户数据，使用天数，观看记录等-----------------*/
 
 /*-------------------历史记录数据-----------------*/

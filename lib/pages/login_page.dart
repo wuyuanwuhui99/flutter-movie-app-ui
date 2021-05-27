@@ -7,6 +7,7 @@ import '../provider/UserInfoProvider.dart';
 import 'package:provider/provider.dart';
 import '../utils/LocalStroageUtils.dart';
 import './register_page.dart';
+import '../model/UserInfoModel.dart';
 
 class LoginPage extends StatelessWidget {
   const LoginPage({Key key}) : super(key: key);
@@ -14,8 +15,8 @@ class LoginPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-    Map userInfo = Provider.of<UserInfoProvider>(context).userInfo;
-    String userId = userInfo["userId"];
+    UserInfoModel userInfo = Provider.of<UserInfoProvider>(context).userInfo;
+    String userId = userInfo.userId;
     String password = "123456";
     return Scaffold(
         body: Container(

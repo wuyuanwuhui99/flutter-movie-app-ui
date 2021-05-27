@@ -11,7 +11,7 @@ import '../component/SearchCommponent.dart';
 import '../component/AvaterComponent.dart';
 import '../component/CategoryComponent.dart';
 import '../component/SwiperComponent.dart';
-
+import '../model/UserInfoModel.dart';
 /*-----------------------分类图标------------------------*/
 class TopNavigators extends StatelessWidget {
   const TopNavigators({Key key}) : super(key: key);
@@ -168,8 +168,8 @@ class _HomePageState extends State<HomePage>
 
   @override
   Widget build(BuildContext context) {
-    Map userInfo = Provider.of<UserInfoProvider>(context).userInfo;
-    if (userInfo["userId"] == null) {
+    UserInfoModel userInfo = Provider.of<UserInfoProvider>(context).userInfo;
+    if (userInfo.userId == null) {
       //如果用户不存在，先去获取用户信息
       return FutureBuilder(
           future: getUserData(),
@@ -183,7 +183,7 @@ class _HomePageState extends State<HomePage>
             var token = snapshot.data["token"];
             Global.token = token;
             LocalStroageUtils.setToken(token);
-            Provider.of<UserInfoProvider>(context).setUserInfo(userInfo);
+            Provider.of<UserInfoProvider>(context).setUserInfo(UserInfoModel.fromJson(userInfo));
             return init(context);
           });
     } else {
