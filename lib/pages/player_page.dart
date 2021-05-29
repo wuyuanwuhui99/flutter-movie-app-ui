@@ -5,9 +5,11 @@ import '../component/ScoreComponent.dart';
 import '../service/server_method.dart';
 import '../component/RecommendComponent.dart';
 import '../component/YouLikesComponent.dart';
+import '../model/MovieDetailModel.dart';
+import '../model/MovieUrlModel.dart';
 
 class PlayerPage extends StatefulWidget {
-  final Map movieItem;
+  final MovieDetailModel movieItem;
   PlayerPage({Key key, this.movieItem}) : super(key: key);
 
   @override
@@ -27,7 +29,7 @@ class _PlayerPageState extends State<PlayerPage> {
   }
 
   void _isFavorite() {
-    isFavorite(widget.movieItem["movieId"]).then((res) {
+    isFavorite(widget.movieItem.movieId).then((res) {
       if (res["data"] > 0) {
         setState(() {
           isFavoriteFlag = true;
@@ -49,11 +51,11 @@ class _PlayerPageState extends State<PlayerPage> {
           padding: EdgeInsets.only(left: 10, right: 10),
           child: Column(
             children: <Widget>[
-              widget.movieItem["label"] != null
-                  ? YouLikesComponent(label: widget.movieItem["label"])
+              widget.movieItem.label != null
+                  ? YouLikesComponent(label: widget.movieItem.label)
                   : SizedBox(),
               RecommendComponent(
-                  classify: widget.movieItem["classify"],
+                  classify: widget.movieItem.classify,
                   direction: "horizontal")
             ],
           ),
@@ -64,23 +66,25 @@ class _PlayerPageState extends State<PlayerPage> {
 
   Widget playUrlWidget() {
     return FutureBuilder(
-        future: getMovieUrl(widget.movieItem["id"].toString()),
+        future: getMovieUrl(widget.movieItem.id.toString()),
         builder: (context, snapshot) {
           if (snapshot.data == null) {
             return Container();
           } else {
-            List<Map> playList = (snapshot.data["data"] as List).cast();
+            List<MovieUrlModel> playList = (snapshot.data["data"] as List).cast().map((item){
+              return MovieUrlModel.fromJson(item);
+            }).toList();
             if (playList.length == 0) {
               return Container();
             }
-            List<List<Map>> playGroupList = [];
+            List<List<MovieUrlModel>> playGroupList = [];
             for (int i = 0; i < playList.length; i++) {
               if (i == 0) {
-                url = playList[0]["url"];
+                url = playList[0].url;
               }
-              var playGroup = playList[i]["playGroup"];
+              int playGroup = playList[i].playGroup;
               if (playGroupList.length < playGroup) {
-                playGroupList.add(<Map>[]);
+                playGroupList.add(<MovieUrlModel>[]);
               }
               playGroupList[playGroup - 1].add(playList[i]);
             }
@@ -220,7 +224,7 @@ class _PlayerPageState extends State<PlayerPage> {
                 onTap: () {
                   if (isFavoriteFlag) {
                     //如果已经收藏过了，点击之后取消收藏
-                    deleteFavorite(widget.movieItem["movieId"]).then((res) {
+                    deleteFavorite(widget.movieItem.movieId).then((res) {
                       if (res["data"] > 0) {
                         setState(() {
                           isFavoriteFlag = false;
@@ -266,17 +270,17 @@ class _PlayerPageState extends State<PlayerPage> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
                   Text(
-                    widget.movieItem["movieName"],
+                    widget.movieItem.movieName,
                     style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
                   ),
                   SizedBox(height: 10),
                   Text(
-                    widget.movieItem['star'],
+                    widget.movieItem.star,
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
                   ),
                   SizedBox(height: 10),
-                  ScoreComponent(score: widget.movieItem["score"]),
+                  ScoreComponent(score: widget.movieItem.score),
                 ])));
   }
 }

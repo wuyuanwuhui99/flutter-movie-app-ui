@@ -4,9 +4,11 @@ import '../service/server_method.dart';
 import '../component/ScoreComponent.dart';
 import '../component/YouLikesComponent.dart';
 import '../component/RecommendComponent.dart';
+import '../model/MovieDetailModel.dart';
+import '../model/MovieStarModel.dart';
 
 class DetailPage extends StatefulWidget {
-  final Map movieItem;
+  final MovieDetailModel movieItem;
   DetailPage({Key key, this.movieItem}) : super(key: key);
 
   @override
@@ -31,17 +33,17 @@ class _DetailPageState extends State<DetailPage> {
                   movieItem: widget.movieItem,
                 ),
                 MovieInfoComponent(movieInfo: widget.movieItem),
-                PlotComponent(plot: widget.movieItem["plot"]),
-                StarComponent(movieId: widget.movieItem["movieId"]),
-                widget.movieItem["label"] != null ? YouLikesComponent(label:widget.movieItem["label"]) : SizedBox(),
-                RecommendComponent(classify: widget.movieItem["classify"],direction: "horizontal")
+                PlotComponent(plot: widget.movieItem.plot),
+                StarComponent(movieId: widget.movieItem.movieId),
+                widget.movieItem.label != null ? YouLikesComponent(label:widget.movieItem.label) : SizedBox(),
+                RecommendComponent(classify: widget.movieItem.classify,direction: "horizontal")
               ],
             )));
   }
 }
 
 class BannerComponent extends StatelessWidget {
-  final Map movieItem;
+  final MovieDetailModel movieItem;
   const BannerComponent({Key key, this.movieItem}) : super(key: key);
 
   @override
@@ -58,7 +60,7 @@ class BannerComponent extends StatelessWidget {
           height: 200,
           decoration: BoxDecoration(
               image: DecorationImage(
-            image: NetworkImage(movieItem["img"]),
+            image: NetworkImage(movieItem.img),
             fit: BoxFit.cover,
           )),
           child: Center(
@@ -69,7 +71,7 @@ class BannerComponent extends StatelessWidget {
 }
 
 class MovieInfoComponent extends StatelessWidget {
-  final Map movieInfo;
+  final MovieDetailModel movieInfo;
   const MovieInfoComponent({Key key, this.movieInfo}) : super(key: key);
 
   @override
@@ -97,7 +99,7 @@ class MovieInfoComponent extends StatelessWidget {
                             color: Color.fromRGBO(238, 238, 238, 1), width: 3),
                         borderRadius: BorderRadius.circular(15),
                         image: DecorationImage(
-                          image: NetworkImage(movieInfo["img"]),
+                          image: NetworkImage(movieInfo.img),
                           fit: BoxFit.cover,
                         ))),
               )
@@ -116,7 +118,7 @@ class MovieInfoComponent extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: <Widget>[
                     Text(
-                      movieInfo["movieName"],
+                      movieInfo.movieName,
                       style: TextStyle(
                           fontSize: 20,
                           color: Colors.black,
@@ -124,7 +126,7 @@ class MovieInfoComponent extends StatelessWidget {
                     ),
                     SizedBox(height: 10),
                     Text(
-                      movieInfo["star"] != null ? movieInfo["star"] : "",
+                      movieInfo.star != null ? movieInfo.star : "",
                       overflow: TextOverflow.ellipsis,
                       style: TextStyle(
                           fontSize: 16,
@@ -133,7 +135,7 @@ class MovieInfoComponent extends StatelessWidget {
                   ],
                 )),
                 SizedBox(height: 10),
-                ScoreComponent(score: movieInfo["score"])
+                ScoreComponent(score: movieInfo.score)
               ],
             ),
           ),
@@ -197,7 +199,9 @@ class StarComponent extends StatelessWidget {
               child: CircularProgressIndicator(),
             );
           } else {
-            List<Map> stars = (snapshot.data["data"] as List).cast();
+            List<MovieStarModel> stars = (snapshot.data["data"] as List).cast().map((item){
+              return MovieStarModel.fromJson(item);
+            }).toList();
             if (stars.length > 0) {
               return Padding(
                 child: Column(
@@ -235,18 +239,18 @@ class StarComponent extends StatelessWidget {
                                                 BorderRadius.circular(15),
                                             image: DecorationImage(
                                               image: NetworkImage(
-                                                  stars[index]["img"]),
+                                                  stars[index].img),
                                               fit: BoxFit.cover,
                                             ))),
                                     SizedBox(height: 5),
                                     Text(
-                                      stars[index]["starName"],
+                                      stars[index].starName,
                                       maxLines: 1,
                                       overflow: TextOverflow.ellipsis,
                                     ),
                                     SizedBox(height: 5),
                                     Text(
-                                      stars[index]["role"],
+                                      stars[index].role,
                                       maxLines: 1,
                                       overflow: TextOverflow.ellipsis,
                                       style: TextStyle(

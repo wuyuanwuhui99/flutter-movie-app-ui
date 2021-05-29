@@ -7,7 +7,7 @@ import '../service/server_method.dart';
 import "./detail_page.dart";
 import '../component/ScoreComponent.dart';
 import '../component/RecommendComponent.dart';
-
+import '../model/MovieDetailModel.dart';
 class SearchPage extends StatefulWidget {
   final String keyword;
   SearchPage({Key key, this.keyword}) : super(key: key);
@@ -19,7 +19,7 @@ class SearchPage extends StatefulWidget {
 class _SearchPageState extends State<SearchPage> {
   bool searching = false;
   bool showClearIcon = false;
-  List<Map> searchResult = [];
+  List<MovieDetailModel> searchResult = [];
   List<Widget> myHistoryLabels = [];
   List<String> myHistoryLabelsName = [];
   TextEditingController keywordController = TextEditingController();
@@ -92,11 +92,9 @@ class _SearchPageState extends State<SearchPage> {
                         borderRadius: BorderRadius.circular(10),
                         child: Image(
                             fit: BoxFit.fill,
-                            image: NetworkImage(searchResult[index]
-                                        ["localImg"] !=
-                                    null
-                                ? serviceUrl + searchResult[index]["localImg"]
-                                : searchResult[index]["img"]))),
+                            image: NetworkImage(searchResult[index].localImg !=null
+                                ? serviceUrl + searchResult[index].localImg
+                                : searchResult[index].img))),
                   ),
                   Expanded(
                       flex: 1,
@@ -109,48 +107,48 @@ class _SearchPageState extends State<SearchPage> {
                               mainAxisAlignment: MainAxisAlignment.start,
                               children: <Widget>[
                                 Text(
-                                  searchResult[index]["movieName"],
+                                  searchResult[index].movieName,
                                   style: TextStyle(fontSize: 20),
                                   maxLines: 1,
                                   overflow: TextOverflow.ellipsis,
                                 ),
                                 SizedBox(height: 10),
                                 Text(
-                                    searchResult[index]["star"] != null
-                                        ? "主演：" + searchResult[index]["star"]
+                                    searchResult[index].star != null
+                                        ? "主演：" + searchResult[index].star
                                         : "",
                                     maxLines: 1,
                                     overflow: TextOverflow.ellipsis,
                                     style: TextStyle(fontSize: 14)),
                                 SizedBox(height: 10),
                                 Text(
-                                    searchResult[index]["director"] != null
+                                    searchResult[index].director != null
                                         ? "导演：" +
-                                            searchResult[index]["director"]
+                                            searchResult[index].director
                                         : "",
                                     maxLines: 1,
                                     overflow: TextOverflow.ellipsis,
                                     style: TextStyle(fontSize: 14)),
                                 SizedBox(height: 10),
                                 Text(
-                                    searchResult[index]["type"] != null
-                                        ? "类型：" + searchResult[index]["type"]
+                                    searchResult[index].type != null
+                                        ? "类型：" + searchResult[index].type
                                         : "",
                                     maxLines: 1,
                                     overflow: TextOverflow.ellipsis,
                                     style: TextStyle(fontSize: 14)),
                                 SizedBox(height: 10),
                                 Text(
-                                    searchResult[index]["releaseTime"] != null
+                                    searchResult[index].releaseTime != null
                                         ? "上映时间：" +
-                                            searchResult[index]["releaseTime"]
+                                            searchResult[index].releaseTime
                                         : "",
                                     maxLines: 1,
                                     overflow: TextOverflow.ellipsis,
                                     style: TextStyle(fontSize: 14)),
                                 SizedBox(height: 10),
                                 ScoreComponent(
-                                    score: searchResult[index]["score"]),
+                                    score: searchResult[index].score),
                                 SizedBox(height: 10),
                               ],
                             ),
@@ -254,7 +252,9 @@ class _SearchPageState extends State<SearchPage> {
         .then((res) {
       setState(() {
         searching = true;
-        searchResult = (res["data"] as List).cast(); // 顶部轮播组件数
+        searchResult = (res["data"] as List).cast().map((item){
+          return MovieDetailModel.fromJson(item);
+        }).toList(); // 顶部轮播组件数
       });
     }).catchError(() {
       setState(() {

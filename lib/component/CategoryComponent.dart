@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:movie/service/server_method.dart';
 import './MovieListComponent.dart';
+import '../model/MovieDetailModel.dart';
 
 /*-----------------------分类电影------------------------*/
 class CategoryComponent extends StatelessWidget {
@@ -17,9 +18,11 @@ class CategoryComponent extends StatelessWidget {
             return Container();
           }
           var result = snapshot.data;
-          List<Map> categoryList = [];
+          List<MovieDetailModel> categoryList = [];
           if (result != null && result['data'] != null) {
-            categoryList = (result['data'] as List).cast();
+            categoryList = (result['data'] as List).cast().map((item){
+              return MovieDetailModel.fromJson(item);
+            }).toList();
           }
           return MovieListComponent(movieList: categoryList,title: category,direction: "horizontal",);
         });

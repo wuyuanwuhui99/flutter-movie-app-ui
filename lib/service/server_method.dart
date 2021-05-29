@@ -3,7 +3,7 @@ import '../config/service_url.dart';
 import '../utils/LocalStroageUtils.dart';
 import 'package:dio/dio.dart';
 import '../config/common.dart';
-
+import '../model/MovieDetailModel.dart';
 BaseOptions options = new BaseOptions(
   connectTimeout: 1000 * 10,
   receiveTimeout: 1000 * 20,
@@ -136,7 +136,7 @@ Future getSearchResult(String keyword,
   }
 }
 
-//按classify大类查询所有catory小类
+//登录
 Future login(String userId, String password) async {
   try {
     Response response;
@@ -195,7 +195,7 @@ Future getMovieUrl(String movieId) async {
  * @description: 保存浏览记录
  * @date: 2021-03-04 23:08
  */
-Future saveViewRecord(Map movieEntity) async {
+Future saveViewRecord(MovieDetailModel movieEntity) async {
   try {
     Response response;
     response = await dio.post(servicePath['saveViewRecord'], data: movieEntity);
@@ -214,7 +214,7 @@ Future saveViewRecord(Map movieEntity) async {
  * @description: 获取浏览记录
  * @date: 2021-03-04 23:08
  */
-Future getViewRecord(Map movieEntity) async {
+Future getViewRecord() async {
   try {
     Response response;
     response = await dio.get(servicePath['getViewRecord']);
@@ -233,7 +233,7 @@ Future getViewRecord(Map movieEntity) async {
  * @description: 播放记录
  *  @date: 2021-03-04 23:08
  */
-Future savePlayRecord(Map movieEntity) async {
+Future savePlayRecord(MovieDetailModel movieEntity) async {
   try {
     Response response;
     response = await dio.post(servicePath['savePlayRecord'], data: movieEntity);
@@ -271,7 +271,7 @@ Future getPlayRecord() async {
  * @description: 添加收藏
  *  @date: 2021-03-04 23:08
  */
-Future saveFavorite(Map movieEntity) async {
+Future saveFavorite(MovieDetailModel movieEntity) async {
   try {
     Response response;
     response = await dio.post(servicePath['saveFavorite'], data: movieEntity);

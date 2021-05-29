@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import '../pages/detail_page.dart';
 import '../config/service_url.dart';
+import '../model/MovieDetailModel.dart';
 
 /*-----------------------获取推荐的影片------------------------*/
 class MovieListComponent extends StatelessWidget {
   final String title;
-  final List movieList;
+  final List<MovieDetailModel> movieList;
   final String direction;
   const MovieListComponent({Key key,this.movieList,this.title="",this.direction}) : super(key: key);
 
@@ -33,7 +34,7 @@ class MovieListComponent extends StatelessWidget {
     return tempList.toList();
   }
 
-  Widget movieItemWidget(Map item,int index){
+  Widget movieItemWidget(MovieDetailModel item,int index){
     return Container(
       width: 150,
       height: 200,
@@ -48,10 +49,10 @@ class MovieListComponent extends StatelessWidget {
                   height: 200,
                   fit: BoxFit.fill,
                   image: NetworkImage(
-                      item["localImg"] !=null ? serviceUrl +item["localImg"]: item["img"]))),
+                      item.localImg !=null ? serviceUrl +item.localImg: item.img))),
           SizedBox(height: 10),
           Text(
-            item["movieName"],
+            item.movieName,
             softWrap: true,
             textAlign: TextAlign.left,
             overflow: TextOverflow.ellipsis,

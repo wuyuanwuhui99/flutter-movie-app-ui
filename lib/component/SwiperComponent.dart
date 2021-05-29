@@ -3,6 +3,7 @@ import 'package:movie/service/server_method.dart';
 import 'package:flutter_swiper/flutter_swiper.dart';
 import '../config/service_url.dart';
 import "../pages/detail_page.dart";
+import '../model/MovieDetailModel.dart';
 
 /*-----------------------轮播组件------------------------*/
 class SwiperComponent extends StatelessWidget {
@@ -17,20 +18,22 @@ class SwiperComponent extends StatelessWidget {
           if (snapshot.data == null) {
             return Container();
           }
-          // var result = json.decode(snapshot.data.toString());
           var result = snapshot.data;
-          List<Map> swiperDataList = [];
+          List<MovieDetailModel> swiperDataList = [];
           if (result != null && result['data'] != null) {
-            swiperDataList = (result['data'] as List).cast(); // 顶部轮播组件数
+            swiperDataList = (result['data'] as List).cast().map((item){
+              return MovieDetailModel.fromJson(item);
+            }).toList(); // 顶部轮播组件数
           }
+          print(swiperDataList);
           return Container(
               height: 200.0,
               child: Swiper(
                 itemBuilder: (BuildContext context, int index) {
                   return Image.network(
-                    swiperDataList[index]['localImg'] != null
-                        ? serviceUrl + swiperDataList[index]['localImg']
-                        : swiperDataList[index]['img'],
+                    swiperDataList[index].localImg != null
+                        ? serviceUrl + swiperDataList[index].localImg
+                        : swiperDataList[index].img,
                     height: 200,
                     fit: BoxFit.fitHeight,
                   );
