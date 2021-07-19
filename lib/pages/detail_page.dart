@@ -25,6 +25,7 @@ class _DetailPageState extends State<DetailPage> {
 
   @override
   Widget build(BuildContext context) {
+    print(widget.movieItem);
     return Scaffold(
         body:  SingleChildScrollView(
             child: Column(

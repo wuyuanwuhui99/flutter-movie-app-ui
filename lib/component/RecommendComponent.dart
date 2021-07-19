@@ -16,7 +16,7 @@ class RecommendComponent extends StatelessWidget {
           if (snapshot.data == null) {
             return Container();
           }else{
-            List<MovieDetailModel> movieList = snapshot.data["data"].map((item){
+            List<MovieDetailModel> movieList = (snapshot.data["data"] as List).cast().map((item){
                 return MovieDetailModel.fromJson(item);
             }).toList();
             return MovieListComponent(movieList: movieList,title: "推荐",direction: direction,);
