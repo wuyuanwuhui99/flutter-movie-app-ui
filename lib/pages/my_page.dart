@@ -113,7 +113,7 @@ class UserMsgComponent extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return FutureBuilder(
-        future: getUserMsg(),
+        future: getUserMsgService(),
         builder: (context, snapshot) {
         if (snapshot.data == null) {
           return Container();
@@ -220,7 +220,7 @@ class HistoryComponent extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return FutureBuilder(
-        future: getPlayRecord(),
+        future: getPlayRecordService(),
         builder: (context, snapshot) {
         if (snapshot.data == null) {
           return Container();

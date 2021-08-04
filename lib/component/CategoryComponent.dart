@@ -12,7 +12,7 @@ class CategoryComponent extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return FutureBuilder(
-        future: getCategoryList(this.category, this.classify),
+        future: getCategoryListService(this.category, this.classify),
         builder: (context, snapshot) {
           if (snapshot.data == null) {
             return Container();

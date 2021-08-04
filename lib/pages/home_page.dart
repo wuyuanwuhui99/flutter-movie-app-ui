@@ -12,20 +12,28 @@ import '../component/AvaterComponent.dart';
 import '../component/CategoryComponent.dart';
 import '../component/SwiperComponent.dart';
 import '../model/UserInfoModel.dart';
+import './new_movie_page.dart';
 /*-----------------------分类图标------------------------*/
 class TopNavigators extends StatelessWidget {
   const TopNavigators({Key key}) : super(key: key);
-  List<Widget> _items() {
+  List<Widget> _items(BuildContext context) {
     List listData = [
       {"image": "lib/assets/images/icon-hot.png", "title": "热门"},
       {"image": "lib/assets/images/icon-play.png", "title": "预告"},
-      {"image": "lib/assets/images/icon-top.png", "title": "榜单"},
+      {"image": "lib/assets/images/icon-top.png", "title": "最新"},
       {"image": "lib/assets/images/icon-classify.png", "title": "分类"}
     ];
     var tempList = listData.map((value) {
       return InkWell(
           onTap: () {
-            print(value);
+            print(value["title"]);
+            if(value["title"] == "最新"){
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) =>
+                          NewMoviePage()));
+            }
           },
           child: Container(
               child: Column(
@@ -54,7 +62,7 @@ class TopNavigators extends StatelessWidget {
             mainAxisSpacing: 10.0, //垂直子 Widget 之间间距
             padding: EdgeInsets.all(20),
             crossAxisCount: 4, //一行的 Widget 数量
-            children: this._items()));
+            children: this._items(context)));
   }
 }
 /*-----------------------分类图标------------------------*/
@@ -93,7 +101,7 @@ class _HomePageState extends State<HomePage>
 
   @override
   void initState() {
-    getAllCategoryListByPageName("首页").then((res) {
+    getAllCategoryListByPageNameService("首页").then((res) {
       allCategoryLists = (res["data"] as List).cast(); // 顶部轮播组件数
       setState(() {
         allCategoryLists.sublist(0, 2).forEach((item) {
@@ -172,7 +180,7 @@ class _HomePageState extends State<HomePage>
     if (userInfo.userId == null) {
       //如果用户不存在，先去获取用户信息
       return FutureBuilder(
-          future: getUserData(),
+          future: getUserDataService(),
           builder: (context, snapshot) {
             if (snapshot.data == null) {
               return Center(

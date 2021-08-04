@@ -20,7 +20,7 @@ class _DetailPageState extends State<DetailPage> {
   @override
   void initState() {
     super.initState();
-    saveViewRecord(widget.movieItem);
+    saveViewRecordService(widget.movieItem);
   }
 
   @override
@@ -37,7 +37,7 @@ class _DetailPageState extends State<DetailPage> {
                 PlotComponent(plot: widget.movieItem.plot),
                 StarComponent(movieId: widget.movieItem.movieId),
                 widget.movieItem.label != null ? YouLikesComponent(label:widget.movieItem.label) : SizedBox(),
-                RecommendComponent(classify: widget.movieItem.classify,direction: "horizontal")
+                RecommendComponent(classify: widget.movieItem.classify,direction: "horizontal",title: "推荐",)
               ],
             )));
   }
@@ -193,7 +193,7 @@ class StarComponent extends StatelessWidget {
   Widget build(BuildContext context) {
     if (this.movieId == null) return Container();
     return FutureBuilder(
-        future: getStar(this.movieId),
+        future: getStarService(this.movieId),
         builder: (context, snapshot) {
           if (snapshot.data == null) {
             return Center(

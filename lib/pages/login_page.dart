@@ -104,7 +104,7 @@ class LoginPage extends StatelessWidget {
                 child: FlatButton(
                   onPressed: () {
                     if (_formKey.currentState.validate()) {
-                      login(userId, generateMd5(password)).then((res) async {
+                      loginService(userId, generateMd5(password)).then((res) async {
                         if (res != null && res["data"] != null) {
                           await LocalStroageUtils.setToken(res["token"]);
                           await Fluttertoast.showToast(

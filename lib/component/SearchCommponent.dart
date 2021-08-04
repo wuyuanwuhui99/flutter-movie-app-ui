@@ -10,7 +10,7 @@ class SearchCommponent extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return FutureBuilder(
-        future: getKeyWord(classify),
+        future: getKeyWordService(classify),
         builder: (context, snapshot) {
           if (snapshot.data == null) {
             return Container();

@@ -6,12 +6,13 @@ import '../model/MovieDetailModel.dart';
 class RecommendComponent extends StatelessWidget {
   final String classify;
   final String direction;
-  const RecommendComponent({Key key,this.classify,this.direction}) : super(key: key);
+  final String title;
+  const RecommendComponent({Key key,this.classify,this.direction,this.title}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return FutureBuilder(
-        future: getRecommend(classify),
+        future: getRecommendSerivce(classify),
         builder: (context, snapshot) {
           if (snapshot.data == null) {
             return Container();
@@ -19,7 +20,7 @@ class RecommendComponent extends StatelessWidget {
             List<MovieDetailModel> movieList = (snapshot.data["data"] as List).cast().map((item){
                 return MovieDetailModel.fromJson(item);
             }).toList();
-            return MovieListComponent(movieList: movieList,title: "推荐",direction: direction,);
+            return MovieListComponent(movieList: movieList,title: title,direction: direction,);
           }
         });
   }

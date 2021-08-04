@@ -27,7 +27,7 @@ class _MoviePageState extends State<MoviePage>
   @override
   void initState() {
     super.initState();
-    getAllCategoryByClassify("电影").then((res) {
+    getAllCategoryByClassifyService("电影").then((res) {
       allCategoryLists = (res["data"] as List).cast(); //
       setState(() {
         allCategoryLists.sublist(0, 2).forEach((item) {

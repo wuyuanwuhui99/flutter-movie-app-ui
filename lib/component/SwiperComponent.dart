@@ -13,7 +13,7 @@ class SwiperComponent extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return FutureBuilder(
-        future: getCategoryList("轮播", classify),
+        future: getCategoryListService("轮播", classify),
         builder: (context, snapshot) {
           if (snapshot.data == null) {
             return Container();

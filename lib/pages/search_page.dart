@@ -62,7 +62,7 @@ class _SearchPageState extends State<SearchPage> {
                     children:<Widget>[
                       HistorySearchComponent(),
                       SizedBox(height: 20),
-                      RecommendComponent(classify: "电影",direction: "vertical",)
+                      RecommendComponent(classify: "电影",direction: "vertical",title:"推荐")
                 ]))
         ),
       ]),
@@ -248,7 +248,7 @@ class _SearchPageState extends State<SearchPage> {
   }
 
   void goSearch() {
-    getSearchResult(keywordController.text, pageSize: 20, pageNum: 1)
+    getSearchResultService(keywordController.text, pageSize: 20, pageNum: 1)
         .then((res) {
       setState(() {
         searching = true;

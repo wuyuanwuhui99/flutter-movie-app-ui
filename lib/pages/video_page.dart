@@ -30,7 +30,7 @@ class _VideoPageState extends State<VideoPage>
   @override
   void initState() {
     super.initState();
-    getAllCategoryByClassify("电视剧").then((res) {
+    getAllCategoryByClassifyService("电视剧").then((res) {
       allCategoryLists = (res["data"] as List).cast(); // 顶部轮播组件数
       setState(() {
         allCategoryLists.sublist(0, 2).forEach((item) {

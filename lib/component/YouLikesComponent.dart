@@ -11,7 +11,7 @@ class YouLikesComponent extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return FutureBuilder(
-        future: getYourLikes(label),
+        future: getYourLikesService(label),
         builder: (context, snapshot) {
           if (snapshot.data == null) {
             return Container();

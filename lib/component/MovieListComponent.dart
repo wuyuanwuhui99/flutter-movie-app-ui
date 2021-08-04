@@ -81,14 +81,14 @@ class MovieListComponent extends StatelessWidget {
                   ),
                   child: Text(title))
               : SizedBox(),
-              SizedBox(height: title != "" ? 15 : 0),
+              SizedBox(height: title != "" ? 10 : 0),
               direction == "vertical" ?
                GridView.count(
-                    crossAxisSpacing: 0, //水平子 Widget 之间间距
-                    crossAxisCount: 2, //一行的 Widget 数量
+                    crossAxisSpacing: 10, //水平子 Widget 之间间距
+                    crossAxisCount: 3, //一行的 Widget 数量
                     physics: NeverScrollableScrollPhysics(),
                     shrinkWrap: true,
-                    childAspectRatio:0.9,
+                    childAspectRatio:0.55,
                     children: this._items(context))
                 :
                   Container(

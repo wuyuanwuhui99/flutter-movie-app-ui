@@ -21,7 +21,7 @@ BaseOptions options = new BaseOptions(
 Dio dio = Dio(options);
 
 //获取用户数据
-Future getUserData() async {
+Future getUserDataService() async {
   try {
     Response response;
     String token = await LocalStroageUtils.getToken(); //从缓存中获取
@@ -39,7 +39,7 @@ Future getUserData() async {
   }
 }
 
-Future getCategoryList(String category, String classify) async {
+Future getCategoryListService(String category, String classify) async {
   try {
     Response response;
     response = await dio.get(servicePath['getCategoryList'],
@@ -54,7 +54,7 @@ Future getCategoryList(String category, String classify) async {
   }
 }
 
-Future getKeyWord(String classify) async {
+Future getKeyWordService(String classify) async {
   try {
     Response response;
     response = await dio.get(servicePath['getKeyWord'],
@@ -70,7 +70,7 @@ Future getKeyWord(String classify) async {
 }
 
 //按classify大类查询所有catory小类
-Future getAllCategoryByClassify(String classify) async {
+Future getAllCategoryByClassifyService(String classify) async {
   try {
     Response response;
     response = await dio.get(servicePath['getAllCategoryByClassify'],
@@ -86,7 +86,7 @@ Future getAllCategoryByClassify(String classify) async {
 }
 
 //按classify大类查询所有catory小类
-Future getAllCategoryListByPageName(String pageName) async {
+Future getAllCategoryListByPageNameService(String pageName) async {
   try {
     Response response;
     response = await dio.get(servicePath['getAllCategoryListByPageName'],
@@ -102,7 +102,7 @@ Future getAllCategoryListByPageName(String pageName) async {
 }
 
 //按classify大类查询所有catory小类
-Future getUserMsg() async {
+Future getUserMsgService() async {
   try {
     Response response;
     response = await dio.get(servicePath['getUserMsg']);
@@ -117,7 +117,7 @@ Future getUserMsg() async {
 }
 
 //按classify大类查询所有catory小类
-Future getSearchResult(String keyword,
+Future getSearchResultService(String keyword,
     {int pageSize = 20, int pageNum = 1}) async {
   try {
     Response response;
@@ -137,7 +137,7 @@ Future getSearchResult(String keyword,
 }
 
 //登录
-Future login(String userId, String password) async {
+Future loginService(String userId, String password) async {
   try {
     Response response;
 
@@ -157,7 +157,7 @@ Future login(String userId, String password) async {
 }
 
 //获取演员列表
-Future getStar(String movieId) async {
+Future getStarService(String movieId) async {
   try {
     Response response;
     response = await dio.get(servicePath['getStar'], queryParameters: {
@@ -174,7 +174,7 @@ Future getStar(String movieId) async {
 }
 
 //按classify大类查询所有catory小类
-Future getMovieUrl(String movieId) async {
+Future getMovieUrlService(String movieId) async {
   try {
     Response response;
     response = await dio.get(servicePath['getMovieUrl'], queryParameters: {
@@ -195,7 +195,7 @@ Future getMovieUrl(String movieId) async {
  * @description: 保存浏览记录
  * @date: 2021-03-04 23:08
  */
-Future saveViewRecord(MovieDetailModel movieEntity) async {
+Future saveViewRecordService(MovieDetailModel movieEntity) async {
   try {
     Response response;
     response = await dio.post(servicePath['saveViewRecord'], data: movieEntity);
@@ -214,7 +214,7 @@ Future saveViewRecord(MovieDetailModel movieEntity) async {
  * @description: 获取浏览记录
  * @date: 2021-03-04 23:08
  */
-Future getViewRecord() async {
+Future getViewRecordService() async {
   try {
     Response response;
     response = await dio.get(servicePath['getViewRecord']);
@@ -233,7 +233,7 @@ Future getViewRecord() async {
  * @description: 播放记录
  *  @date: 2021-03-04 23:08
  */
-Future savePlayRecord(MovieDetailModel movieEntity) async {
+Future savePlayRecordService(MovieDetailModel movieEntity) async {
   try {
     Response response;
     response = await dio.post(servicePath['savePlayRecord'], data: movieEntity);
@@ -252,7 +252,7 @@ Future savePlayRecord(MovieDetailModel movieEntity) async {
  * @description: 获取播放记录
  *  @date: 2021-03-04 23:08
  */
-Future getPlayRecord() async {
+Future getPlayRecordService() async {
   try {
     Response response;
     response = await dio.get(servicePath['getPlayRecord']);
@@ -271,7 +271,7 @@ Future getPlayRecord() async {
  * @description: 添加收藏
  *  @date: 2021-03-04 23:08
  */
-Future saveFavorite(MovieDetailModel movieEntity) async {
+Future saveFavoriteService(MovieDetailModel movieEntity) async {
   try {
     Response response;
     response = await dio.post(servicePath['saveFavorite'], data: movieEntity);
@@ -291,7 +291,7 @@ Future saveFavorite(MovieDetailModel movieEntity) async {
  * @description: 获取收藏
  *  @date: 2021-03-04 23:08
  */
-Future getFavorite() async {
+Future getFavoriteService() async {
   try {
     Response response;
     response = await dio.get(servicePath['getFavorite']);
@@ -310,7 +310,7 @@ Future getFavorite() async {
  * @description: 删除收藏
  *  @date: 2021-03-04 23:08
  */
-Future deleteFavorite(String movieId) async {
+Future deleteFavoriteService(String movieId) async {
   try {
     Response response;
     response = await dio.delete(servicePath['deleteFavorite'],
@@ -330,7 +330,7 @@ Future deleteFavorite(String movieId) async {
  * @description: 获取推荐影片
  *  @date: 2021-03-04 23:08
  */
-Future isFavorite(String movieId) async {
+Future isFavoriteService(String movieId) async {
   try {
     Response response;
     response = await dio.get(servicePath['isFavorite'],
@@ -350,7 +350,7 @@ Future isFavorite(String movieId) async {
  * @description: 获取猜你想看
  *  @date: 2021-03-04 23:08
  */
-Future getYourLikes(String labels) async {
+Future getYourLikesService(String labels) async {
   try {
     Response response;
     response = await dio
@@ -370,7 +370,7 @@ Future getYourLikes(String labels) async {
  * @description: 获取推荐影片
  *  @date: 2021-03-04 23:08
  */
-Future getRecommend(String classify) async {
+Future getRecommendSerivce(String classify) async {
   try {
     Response response;
     response = await dio.get(servicePath['getRecommend'],

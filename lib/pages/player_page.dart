@@ -25,11 +25,11 @@ class _PlayerPageState extends State<PlayerPage> {
   void initState() {
     super.initState();
     _isFavorite(); //查询电影是否已经收藏过
-    savePlayRecord(widget.movieItem);
+    savePlayRecordService(widget.movieItem);
   }
 
   void _isFavorite() {
-    isFavorite(widget.movieItem.movieId).then((res) {
+    isFavoriteService(widget.movieItem.movieId).then((res) {
       if (res["data"] > 0) {
         setState(() {
           isFavoriteFlag = true;
@@ -56,7 +56,9 @@ class _PlayerPageState extends State<PlayerPage> {
                   : SizedBox(),
               RecommendComponent(
                   classify: widget.movieItem.classify,
-                  direction: "horizontal")
+                  direction: "horizontal",
+                  title: "推荐",
+              )
             ],
           ),
         )
@@ -66,7 +68,7 @@ class _PlayerPageState extends State<PlayerPage> {
 
   Widget playUrlWidget() {
     return FutureBuilder(
-        future: getMovieUrl(widget.movieItem.id.toString()),
+        future: getMovieUrlService(widget.movieItem.id.toString()),
         builder: (context, snapshot) {
           if (snapshot.data == null) {
             return Container();
@@ -224,7 +226,7 @@ class _PlayerPageState extends State<PlayerPage> {
                 onTap: () {
                   if (isFavoriteFlag) {
                     //如果已经收藏过了，点击之后取消收藏
-                    deleteFavorite(widget.movieItem.movieId).then((res) {
+                    deleteFavoriteService(widget.movieItem.movieId).then((res) {
                       if (res["data"] > 0) {
                         setState(() {
                           isFavoriteFlag = false;
@@ -233,7 +235,7 @@ class _PlayerPageState extends State<PlayerPage> {
                     });
                   } else {
                     //如果没有收藏过，点击之后添加收藏
-                    saveFavorite(widget.movieItem).then((res) {
+                    saveFavoriteService(widget.movieItem).then((res) {
                       if (res["data"] > 0) {
                         setState(() {
                           isFavoriteFlag = true;
