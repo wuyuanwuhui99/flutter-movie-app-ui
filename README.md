@@ -48,6 +48,8 @@ vue在线音乐项目：https://github.com/wuyuanwuhui99/vue-music-app-ui
 
 在线音乐后端项目：https://github.com/wuyuanwuhui99/koa2-music-app-service
 
+vue3+ts明日头条项目：https://github.com/wuyuanwuhui99/vue3-ts-toutiao-app-ui
+
 nginx配置
 
     server{
