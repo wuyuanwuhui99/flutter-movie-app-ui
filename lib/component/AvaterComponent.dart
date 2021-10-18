@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import '../config/service_url.dart';
+import '../config/serviceUrl.dart';
 import '../provider/UserInfoProvider.dart';
-import '../pages/user_page.dart';
+import '../pages/UserPage.dart';
 import 'package:provider/provider.dart';
 
 /*-----------------------头像组件------------------------*/

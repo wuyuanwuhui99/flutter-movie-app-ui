@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../service/server_method.dart';
+import '../service/serverMethod.dart';
 import 'package:provider/provider.dart';
 import '../provider/UserInfoProvider.dart';
 import 'package:fluttertoast/fluttertoast.dart';

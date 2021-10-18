@@ -2,7 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 import '../component/ScoreComponent.dart';
-import '../service/server_method.dart';
+import '../service/serverMethod.dart';
 import '../component/RecommendComponent.dart';
 import '../component/YouLikesComponent.dart';
 import '../model/MovieDetailModel.dart';

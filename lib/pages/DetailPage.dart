@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import './player_page.dart';
-import '../service/server_method.dart';
+import './PlayerPage.dart';
+import '../service/serverMethod.dart';
 import '../component/ScoreComponent.dart';
 import '../component/YouLikesComponent.dart';
 import '../component/RecommendComponent.dart';
@@ -20,7 +20,6 @@ class _DetailPageState extends State<DetailPage> {
   @override
   void initState() {
     super.initState();
-    saveViewRecordService(widget.movieItem);
   }
 
   @override
@@ -186,7 +185,7 @@ class PlotComponent extends StatelessWidget {
 }
 
 class StarComponent extends StatelessWidget {
-  final String movieId;
+  final int movieId;
   const StarComponent({Key key, this.movieId}) : super(key: key);
 
   @override

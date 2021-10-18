@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import '../config/service_url.dart';
+import '../config/serviceUrl.dart';
 import 'package:provider/provider.dart';
-import '../service/server_method.dart';
+import '../service/serverMethod.dart';
 import '../provider/UserInfoProvider.dart';
 import '../component/MovieListComponent.dart';
 import '../model/UserInfoModel.dart';

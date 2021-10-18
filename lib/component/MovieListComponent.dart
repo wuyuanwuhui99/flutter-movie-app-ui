@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import '../pages/detail_page.dart';
-import '../config/service_url.dart';
+import '../pages/DetailPage.dart';
+import '../config/serviceUrl.dart';
 import '../model/MovieDetailModel.dart';
 
 /*-----------------------获取推荐的影片------------------------*/

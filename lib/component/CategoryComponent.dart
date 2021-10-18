@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:movie/service/server_method.dart';
+import 'package:movie/service/serverMethod.dart';
 import './MovieListComponent.dart';
 import '../model/MovieDetailModel.dart';
 

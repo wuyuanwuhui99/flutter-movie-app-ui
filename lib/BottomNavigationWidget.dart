@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'pages/home_page.dart';
-import 'pages/movie_page.dart';
-import 'pages/video_page.dart';
-import 'pages/my_page.dart';
+import 'pages/HomePage.dart';
+import 'pages/MoviePage.dart';
+import 'pages/VideoPage.dart';
+import 'pages/MyPage.dart';
 
 class BottomNavigationWidget extends StatefulWidget {
   _BottomNavigationWidgetState createState() => _BottomNavigationWidgetState();

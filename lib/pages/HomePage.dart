@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../service/server_method.dart';
+import '../service/serverMethod.dart';
 import 'package:provider/provider.dart';
 import '../provider/UserInfoProvider.dart';
 import 'package:flutter_easyrefresh/easy_refresh.dart';
@@ -12,7 +12,7 @@ import '../component/AvaterComponent.dart';
 import '../component/CategoryComponent.dart';
 import '../component/SwiperComponent.dart';
 import '../model/UserInfoModel.dart';
-import './new_movie_page.dart';
+import './NewMoviePage.dart';
 /*-----------------------分类图标------------------------*/
 class TopNavigators extends StatelessWidget {
   const TopNavigators({Key key}) : super(key: key);

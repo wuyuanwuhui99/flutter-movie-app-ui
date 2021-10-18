@@ -1,5 +1,5 @@
 import 'dart:async';
-import '../config/service_url.dart';
+import '../config/serviceUrl.dart';
 import '../utils/LocalStroageUtils.dart';
 import 'package:dio/dio.dart';
 import '../config/common.dart';
@@ -157,12 +157,10 @@ Future loginService(String userId, String password) async {
 }
 
 //获取演员列表
-Future getStarService(String movieId) async {
+Future getStarService(int movieId) async {
   try {
     Response response;
-    response = await dio.get(servicePath['getStar'], queryParameters: {
-      "movieId": movieId,
-    });
+    response = await dio.get(servicePath['getStar']+movieId.toString());
     if (response.statusCode == 200 && response.data["status"] == SUCCESS) {
       return response.data;
     } else {
@@ -180,44 +178,6 @@ Future getMovieUrlService(String movieId) async {
     response = await dio.get(servicePath['getMovieUrl'], queryParameters: {
       "movieId": "11389" //movieId,
     });
-    if (response.statusCode == 200 && response.data["status"] == SUCCESS) {
-      return response.data;
-    } else {
-      throw Exception('后端接口出现异常，请检测代码和服务器情况.........');
-    }
-  } catch (e) {
-    return print('ERROR:======>${e}');
-  }
-}
-
-/**
- * @author: wuwenqiang
- * @description: 保存浏览记录
- * @date: 2021-03-04 23:08
- */
-Future saveViewRecordService(MovieDetailModel movieEntity) async {
-  try {
-    Response response;
-    response = await dio.post(servicePath['saveViewRecord'], data: movieEntity);
-    if (response.statusCode == 200 && response.data["status"] == SUCCESS) {
-      return response.data;
-    } else {
-      throw Exception('后端接口出现异常，请检测代码和服务器情况.........');
-    }
-  } catch (e) {
-    return print('ERROR:======>${e}');
-  }
-}
-
-/**
- * @author: wuwenqiang
- * @description: 获取浏览记录
- * @date: 2021-03-04 23:08
- */
-Future getViewRecordService() async {
-  try {
-    Response response;
-    response = await dio.get(servicePath['getViewRecord']);
     if (response.statusCode == 200 && response.data["status"] == SUCCESS) {
       return response.data;
     } else {
@@ -310,7 +270,7 @@ Future getFavoriteService() async {
  * @description: 删除收藏
  *  @date: 2021-03-04 23:08
  */
-Future deleteFavoriteService(String movieId) async {
+Future deleteFavoriteService(int movieId) async {
   try {
     Response response;
     response = await dio.delete(servicePath['deleteFavorite'],
@@ -330,7 +290,7 @@ Future deleteFavoriteService(String movieId) async {
  * @description: 获取推荐影片
  *  @date: 2021-03-04 23:08
  */
-Future isFavoriteService(String movieId) async {
+Future isFavoriteService(int movieId) async {
   try {
     Response response;
     response = await dio.get(servicePath['isFavorite'],

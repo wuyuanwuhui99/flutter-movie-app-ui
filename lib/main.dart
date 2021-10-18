@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'bottom_navigation_widget.dart';
+import 'BottomNavigationWidget.dart';
 import 'package:provider/provider.dart';
 import 'provider/UserInfoProvider.dart';
 import 'model/UserInfoModel.dart';

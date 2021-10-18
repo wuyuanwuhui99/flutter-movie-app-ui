@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:movie/service/server_method.dart';
+import 'package:movie/service/serverMethod.dart';
 import 'package:flutter_swiper/flutter_swiper.dart';
-import '../config/service_url.dart';
-import "../pages/detail_page.dart";
+import '../config/serviceUrl.dart';
+import "../pages/DetailPage.dart";
 import '../model/MovieDetailModel.dart';
 
 /*-----------------------轮播组件------------------------*/

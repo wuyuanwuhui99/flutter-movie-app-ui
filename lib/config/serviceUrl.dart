@@ -1,4 +1,4 @@
-const serviceUrl = 'http://192.168.0.102:5001'; //此端口针对于正版用户开放，可自行fiddle获取。
+const serviceUrl = 'http://192.168.0.103:5001'; //此端口针对于正版用户开放，可自行fiddle获取。
 const servicePath = {
   'getUserData': serviceUrl + '/service/movie/getUserData', // 获取用户信息
   "getCategoryList": serviceUrl + "/service/movie/getCategoryList", //获取分类影片
@@ -8,7 +8,7 @@ const servicePath = {
   "getUserMsg": serviceUrl + "/service/movie-getway/getUserMsg", //获取用户四个指标信息，使用天数，关注，观看记录，浏览记录
   "getSearchResult": serviceUrl + "/service/movie/search", //搜索
   "login": serviceUrl + "/service/movie/login", //登录
-  "getStar": serviceUrl + "/service/movie/getStar", //获取演员
+  "getStar": serviceUrl + "/service/movie/getStar/", //获取演员
   "getMovieUrl": serviceUrl + "/service/movie/getMovieUrl", //获取演员
   "getViewRecord": serviceUrl + "/service/movie-getway/getViewRecord", //获取浏览记录
   "saveViewRecord": serviceUrl + "/service/movie-getway/saveViewRecord", //浏览历史

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class ScoreComponent extends StatelessWidget {
-  final String score;
+  final double score;
   const ScoreComponent({Key key, this.score}) : super(key: key);
 
   @override
@@ -10,7 +10,7 @@ class ScoreComponent extends StatelessWidget {
     if (score == null) {
       result.add(Container());
     } else {
-      double count = double.parse(score) / 2;
+      double count = score / 2;
       var integer = count.floor();
       for (var i = 0; i < integer; i++) {
         //实心星星
@@ -36,7 +36,7 @@ class ScoreComponent extends StatelessWidget {
           ..add(SizedBox(width: 5));
       }
       result.add(Text(
-        score,
+        score.toString(),
         style: TextStyle(
             color: Colors.red, fontWeight: FontWeight.bold, fontSize: 15),
       ));

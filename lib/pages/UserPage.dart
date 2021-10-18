@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import '../config/service_url.dart';
+import '../config/serviceUrl.dart';
 import '../provider/UserInfoProvider.dart';
 import 'package:provider/provider.dart';
 import './login_page.dart';
 import 'package:flutter/cupertino.dart';
-import './edit_page.dart';
+import './EditPage.dart';
 import '../model/UserInfoModel.dart';
 
 class UserPage extends StatelessWidget {

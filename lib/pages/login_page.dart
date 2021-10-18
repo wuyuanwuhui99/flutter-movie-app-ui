@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
-import '../service/server_method.dart';
+import '../service/serverMethod.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import '../utils/crypto.dart';
-import '../bottom_navigation_widget.dart';
+import '../BottomNavigationWidget.dart';
 import '../provider/UserInfoProvider.dart';
 import 'package:provider/provider.dart';
 import '../utils/LocalStroageUtils.dart';
-import './register_page.dart';
+import './RegisterPage.dart';
 import '../model/UserInfoModel.dart';
 
 class LoginPage extends StatelessWidget {

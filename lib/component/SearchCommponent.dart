@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import '../pages/search_page.dart';
-import 'package:movie/service/server_method.dart';
+import '../pages/SearchPage.dart';
+import 'package:movie/service/serverMethod.dart';
 
 /*-----------------------搜索------------------------*/
 class SearchCommponent extends StatelessWidget {

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_easyrefresh/easy_refresh.dart';
-import '../service/server_method.dart';
+import '../service/serverMethod.dart';
 import 'package:flutter_easyrefresh/material_footer.dart';
 import '../component/SearchCommponent.dart';
 import '../component/AvaterComponent.dart';
