@@ -172,11 +172,11 @@ Future getStarService(int movieId) async {
 }
 
 //按classify大类查询所有catory小类
-Future getMovieUrlService(String movieId) async {
+Future getMovieUrlService(int movieId) async {
   try {
     Response response;
     response = await dio.get(servicePath['getMovieUrl'], queryParameters: {
-      "movieId": "11389" //movieId,
+      "movieId": movieId.toString(),
     });
     if (response.statusCode == 200 && response.data["status"] == SUCCESS) {
       return response.data;
@@ -196,7 +196,7 @@ Future getMovieUrlService(String movieId) async {
 Future savePlayRecordService(MovieDetailModel movieEntity) async {
   try {
     Response response;
-    response = await dio.post(servicePath['savePlayRecord'], data: movieEntity);
+    response = await dio.post(servicePath['savePlayRecord'], data: movieEntity.toMap());
     if (response.statusCode == 200 && response.data["status"] == SUCCESS) {
       return response.data;
     } else {
@@ -292,8 +292,7 @@ Future deleteFavoriteService(int movieId) async {
  */
 Future isFavoriteService(int movieId) async {
   try {
-    Response response;
-    response = await dio.get(servicePath['isFavorite'],
+    Response response = await dio.get(servicePath['isFavorite'],
         queryParameters: {"movieId": movieId.toString()});
     if (response.statusCode == 200 && response.data["status"] == SUCCESS) {
       return response.data;
@@ -371,10 +370,29 @@ Future updateUserData(Map map) async {
  * @description: 更新密码
  *  @date: 2021-04-20 23:57
  */
-Future updatePassword(Map map) async {
+Future updatePasswordService(Map map) async {
   try {
     Response response;
     response = await dio.put(servicePath['updatePassword'],data: map);
+    if (response.statusCode == 200 && response.data["status"] == SUCCESS) {
+      return response.data;
+    } else {
+      throw Exception('后端接口出现异常，请检测代码和服务器情况.........');
+    }
+  } catch (e) {
+    return print('ERROR:======>${e}');
+  }
+}
+
+/**
+ * @author: wuwenqiang
+ * @description: 获取评论总数
+ *  @date: 2021-10-26 23:05
+ */
+Future getCommentCountService(int movieId) async {
+  try {
+    Response response;
+    response = await dio.get(servicePath['getCommentCount'],queryParameters: {"movieId": movieId.toString()});
     if (response.statusCode == 200 && response.data["status"] == SUCCESS) {
       return response.data;
     } else {

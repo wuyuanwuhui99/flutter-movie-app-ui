@@ -1,7 +1,7 @@
 class MovieUrlModel{
   int id;//主键
   String movieName;//电影名称
-  String movieId;//对应的电影的id
+  int movieId;//对应的电影的id
   String href;//源地址
   String label;//集数
   String createTime;//创建时间
@@ -30,7 +30,7 @@ class MovieUrlModel{
         createTime:json["createTime"].toString(),
         updateTime:json["updateTime"].toString(),
         url:json["url"],
-        playGroup: int.parse(json["playGroup"])
+        playGroup: json["playGroup"]
     );
   }
 }

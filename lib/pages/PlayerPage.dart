@@ -21,11 +21,17 @@ class _PlayerPageState extends State<PlayerPage> {
   int currentIndex = 0;
   List<Widget> playGroupWidget = [];
   bool isFavoriteFlag = false;
+  int commentCount = 0;
   @override
   void initState() {
     super.initState();
     _isFavorite(); //查询电影是否已经收藏过
     savePlayRecordService(widget.movieItem);
+    getCommentCountService(widget.movieItem.movieId).then((res) {
+      setState(() {
+        commentCount = res["data"];
+      });
+    });
   }
 
   void _isFavorite() {
@@ -46,7 +52,7 @@ class _PlayerPageState extends State<PlayerPage> {
         handleWidget(),
         titleWidget(),
         SizedBox(height: 20),
-        playUrlWidget(),
+//        playUrlWidget(),
         Padding(
           padding: EdgeInsets.only(left: 10, right: 10),
           child: Column(
@@ -68,7 +74,7 @@ class _PlayerPageState extends State<PlayerPage> {
 
   Widget playUrlWidget() {
     return FutureBuilder(
-        future: getMovieUrlService(widget.movieItem.id.toString()),
+        future: getMovieUrlService(widget.movieItem.movieId),
         builder: (context, snapshot) {
           if (snapshot.data == null) {
             return Container();
@@ -220,7 +226,7 @@ class _PlayerPageState extends State<PlayerPage> {
                 height: 30,
               ),
               SizedBox(width: 10),
-              // Text("111"),
+              Text(commentCount.toString()),
               Expanded(flex: 1, child: SizedBox()),
               InkWell(
                 onTap: () {

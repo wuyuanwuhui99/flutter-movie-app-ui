@@ -50,10 +50,13 @@ class BannerComponent extends StatelessWidget {
   Widget build(BuildContext context) {
     return InkWell(
         onTap: () {
-          Navigator.push(
-              context,
-              MaterialPageRoute(
-                  builder: (context) => PlayerPage(movieItem: movieItem)));
+          if(movieItem.movieName != null){
+            Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => PlayerPage(movieItem: movieItem)));
+          }
+
         },
         child: Container(
           width: MediaQuery.of(context).size.width,
@@ -111,29 +114,25 @@ class MovieInfoComponent extends StatelessWidget {
           child: Padding(
             padding: EdgeInsets.all(20),
             child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.start,
               children: <Widget>[
-                Container(
-                    child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: <Widget>[
-                    Text(
-                      movieInfo.movieName,
-                      style: TextStyle(
-                          fontSize: 20,
-                          color: Colors.black,
-                          fontWeight: FontWeight.normal),
-                    ),
-                    SizedBox(height: 10),
-                    Text(
-                      movieInfo.star != null ? movieInfo.star : "",
-                      overflow: TextOverflow.ellipsis,
-                      style: TextStyle(
-                          fontSize: 16,
-                          color: Color.fromRGBO(187, 187, 187, 1)),
-                    ),
-                  ],
-                )),
+                Text(
+                  movieInfo.movieName,
+                  style: TextStyle(
+                      fontSize: 20,
+                      color: Colors.black,
+                      fontWeight: FontWeight.normal),
+                ),
+                SizedBox(height: 10),
+                movieInfo.star != null?
+                Text(
+                  movieInfo.star,
+                  overflow: TextOverflow.ellipsis,
+                  style: TextStyle(
+                      fontSize: 16,
+                      color: Color.fromRGBO(187, 187, 187, 1)),
+                ):SizedBox(),
                 SizedBox(height: 10),
                 ScoreComponent(score: movieInfo.score)
               ],
