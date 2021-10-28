@@ -7,6 +7,8 @@ import '../component/RecommendComponent.dart';
 import '../component/YouLikesComponent.dart';
 import '../model/MovieDetailModel.dart';
 import '../model/MovieUrlModel.dart';
+import '../model/CommentModel.dart';
+import '../config/serviceUrl.dart';
 
 class PlayerPage extends StatefulWidget {
   final MovieDetailModel movieItem;
@@ -22,6 +24,11 @@ class _PlayerPageState extends State<PlayerPage> {
   List<Widget> playGroupWidget = [];
   bool isFavoriteFlag = false;
   int commentCount = 0;
+  bool showComment = false;
+  List<CommentModel>commentList=[];
+  int pageNum = 1;
+  int pageSize = 20;
+
   @override
   void initState() {
     super.initState();
@@ -47,29 +54,81 @@ class _PlayerPageState extends State<PlayerPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: ListView(children: <Widget>[
-        webViewWidget(),
-        handleWidget(),
-        titleWidget(),
-        SizedBox(height: 20),
-//        playUrlWidget(),
-        Padding(
-          padding: EdgeInsets.only(left: 10, right: 10),
-          child: Column(
-            children: <Widget>[
-              widget.movieItem.label != null
-                  ? YouLikesComponent(label: widget.movieItem.label)
-                  : SizedBox(),
-              RecommendComponent(
+      body:
+      Stack(children: <Widget>[
+        ListView(children: <Widget>[
+          webViewWidget(),
+          handleWidget(),
+          titleWidget(),
+          SizedBox(height: 20),
+          playUrlWidget(),
+          Padding(
+            padding: EdgeInsets.only(left: 10, right: 10),
+            child: Column(
+              children: <Widget>[
+                widget.movieItem.label != null
+                    ? YouLikesComponent(label: widget.movieItem.label)
+                    : SizedBox(),
+                RecommendComponent(
                   classify: widget.movieItem.classify,
                   direction: "horizontal",
                   title: "推荐",
-              )
-            ],
-          ),
-        )
-      ]),
+                )
+              ],
+            ),
+          )
+        ]),
+        showComment?
+        getTopCommentWidget()
+        :SizedBox()
+      ],),
+
     );
+  }
+
+  Widget getTopCommentWidget(){
+    return Positioned(child: Container(
+    width: double.infinity,
+    height:double.infinity,
+    color: Color.fromRGBO(0, 0, 0, 0.5),
+    child:
+      Column(
+        children: <Widget>[
+          Container(height: 300),
+          Expanded(flex:1,child:
+            Container(color: Colors.white,child:
+              Column(children: <Widget>[
+                SizedBox(height: 10),
+                Row(mainAxisAlignment: MainAxisAlignment.center,children: <Widget>[Text(commentCount.toString()+"条评论",style:TextStyle(color: Color.fromRGBO(136, 136,136, 1)))],),
+                Expanded(flex: 1,child:
+                   Padding(padding: EdgeInsets.only(left: 20,right: 20,top: 0),child:
+                    ListView.builder(
+                        scrollDirection: Axis.vertical,
+                        itemCount: commentList.length,
+                        itemBuilder: (content, index) {
+                          return
+                            Padding(padding: EdgeInsets.only(bottom: 10),child: Row(children: <Widget>[
+                              ClipOval(
+                                  child: Image.network(serviceUrl + commentList[index].avater,
+                                      height: 40, width: 40, fit: BoxFit.cover)
+                              ),
+                              SizedBox(width: 10),
+                              Expanded(flex: 1,child:
+                              Column(crossAxisAlignment: CrossAxisAlignment.start,children: <Widget>[
+                                Text(commentList[index].username,style: TextStyle(color: Color.fromRGBO(136, 136,136, 1))),
+                                Text(commentList[index].content),
+                                Text(commentList[index].createTime + '  回复',style: TextStyle(color: Color.fromRGBO(136, 136,136, 1)),)
+                              ]),
+                              )
+                            ]));
+                        })
+                   )
+                )
+
+              ])
+            ),
+          )
+    ],)));
   }
 
   Widget playUrlWidget() {
@@ -98,7 +157,7 @@ class _PlayerPageState extends State<PlayerPage> {
             }
             Widget tabs = _renderTab(playGroupList.length);
             Widget series = _getPlaySeries(playGroupList);
-            return Column(children: [tabs, SizedBox(height: 10), series]);
+            return Column(children: [tabs, SizedBox(height: 10),series]);
           }
         });
   }
@@ -164,7 +223,7 @@ class _PlayerPageState extends State<PlayerPage> {
             return InkWell(
                 onTap: () {
                   setState(() {
-                    url = playGroupList[currentIndex][index]["url"];
+                    url = playGroupList[currentIndex][index].url;
                   });
                 },
                 child: Container(
@@ -173,15 +232,15 @@ class _PlayerPageState extends State<PlayerPage> {
                   decoration: BoxDecoration(
                       border: Border.all(
                           color:
-                              url == playGroupList[currentIndex][index]["url"]
+                              url == playGroupList[currentIndex][index].url
                                   ? Colors.orange
                                   : Color.fromRGBO(187, 187, 187, 1)),
                       borderRadius: BorderRadius.all(Radius.circular(80))),
                   child: Center(
                       child: Text(
-                    playGroupList[currentIndex][index]["label"],
+                    playGroupList[currentIndex][index].label,
                     style: TextStyle(
-                        color: url == playGroupList[currentIndex][index]["url"]
+                        color: url == playGroupList[currentIndex][index].url
                             ? Colors.orange
                             : Colors.black),
                   )),
@@ -220,13 +279,30 @@ class _PlayerPageState extends State<PlayerPage> {
           padding: EdgeInsets.all(20),
           child: Row(
             children: <Widget>[
-              Image.asset(
-                "lib/assets/images/icon-comment.png",
-                width: 30,
-                height: 30,
+              InkWell(
+                child:
+                  Row(children: <Widget>[
+                    Image.asset(
+                      "lib/assets/images/icon-comment.png",
+                      width: 30,
+                      height: 30,
+                    ),
+                    SizedBox(width: 10),
+                    Text(commentCount.toString()),
+                ],),
+                onTap: () {
+                  setState(() {
+                    showComment = true;
+                    getTopCommentListService(widget.movieItem.movieId,pageSize,pageNum).then((value){
+                      (value["data"] as List).forEach((element) {
+                        setState(() {
+                          commentList.add(CommentModel.fromJson(element));
+                        });
+                      });
+                    });
+                  });
+                }
               ),
-              SizedBox(width: 10),
-              Text(commentCount.toString()),
               Expanded(flex: 1, child: SizedBox()),
               InkWell(
                 onTap: () {

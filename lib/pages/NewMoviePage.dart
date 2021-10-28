@@ -18,7 +18,6 @@ class _NewMoviePageState extends State<NewMoviePage> {
 
   @override
   Widget build(BuildContext context) {
-    print(widget.movieItem);
     return Scaffold(
         body: SingleChildScrollView(child:
             Padding(padding: EdgeInsets.all(10),child:Column(children:[

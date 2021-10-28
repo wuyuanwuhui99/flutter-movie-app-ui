@@ -26,7 +26,6 @@ class TopNavigators extends StatelessWidget {
     var tempList = listData.map((value) {
       return InkWell(
           onTap: () {
-            print(value["title"]);
             if(value["title"] == "最新"){
               Navigator.push(
                   context,

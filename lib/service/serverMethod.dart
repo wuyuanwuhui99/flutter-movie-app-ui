@@ -20,6 +20,14 @@ BaseOptions options = new BaseOptions(
 );
 Dio dio = Dio(options);
 
+dynamic getResponseData(Response response){
+  if (response.statusCode == 200 && response.data["status"] == SUCCESS) {
+    return response.data;
+  } else {
+    throw Exception('后端接口出现异常，请检测代码和服务器情况.........');
+  }
+}
+
 //获取用户数据
 Future getUserDataService() async {
   try {
@@ -41,14 +49,9 @@ Future getUserDataService() async {
 
 Future getCategoryListService(String category, String classify) async {
   try {
-    Response response;
-    response = await dio.get(servicePath['getCategoryList'],
+    Response response = await dio.get(servicePath['getCategoryList'],
         queryParameters: {"category": category, "classify": classify});
-    if (response.statusCode == 200 && response.data["status"] == SUCCESS) {
-      return response.data;
-    } else {
-      throw Exception('后端接口出现异常，请检测代码和服务器情况.........');
-    }
+    return getResponseData(response);
   } catch (e) {
     return print('ERROR:======>${e}');
   }
@@ -56,14 +59,9 @@ Future getCategoryListService(String category, String classify) async {
 
 Future getKeyWordService(String classify) async {
   try {
-    Response response;
-    response = await dio.get(servicePath['getKeyWord'],
+    Response response = await dio.get(servicePath['getKeyWord'],
         queryParameters: {"classify": classify});
-    if (response.statusCode == 200 && response.data["status"] == SUCCESS) {
-      return response.data;
-    } else {
-      throw Exception('后端接口出现异常，请检测代码和服务器情况.........');
-    }
+    return getResponseData(response);
   } catch (e) {
     return print('ERROR:======>${e}');
   }
@@ -72,14 +70,9 @@ Future getKeyWordService(String classify) async {
 //按classify大类查询所有catory小类
 Future getAllCategoryByClassifyService(String classify) async {
   try {
-    Response response;
-    response = await dio.get(servicePath['getAllCategoryByClassify'],
+    Response response = await dio.get(servicePath['getAllCategoryByClassify'],
         queryParameters: {"classify": classify});
-    if (response.statusCode == 200 && response.data["status"] == SUCCESS) {
-      return response.data;
-    } else {
-      throw Exception('后端接口出现异常，请检测代码和服务器情况.........');
-    }
+    return getResponseData(response);
   } catch (e) {
     return print('ERROR:======>${e}');
   }
@@ -88,14 +81,9 @@ Future getAllCategoryByClassifyService(String classify) async {
 //按classify大类查询所有catory小类
 Future getAllCategoryListByPageNameService(String pageName) async {
   try {
-    Response response;
-    response = await dio.get(servicePath['getAllCategoryListByPageName'],
+    Response response = await dio.get(servicePath['getAllCategoryListByPageName'],
         queryParameters: {"pageName": pageName});
-    if (response.statusCode == 200 && response.data["status"] == SUCCESS) {
-      return response.data;
-    } else {
-      throw Exception('后端接口出现异常，请检测代码和服务器情况.........');
-    }
+    return getResponseData(response);
   } catch (e) {
     return print('ERROR:======>${e}');
   }
@@ -104,13 +92,8 @@ Future getAllCategoryListByPageNameService(String pageName) async {
 //按classify大类查询所有catory小类
 Future getUserMsgService() async {
   try {
-    Response response;
-    response = await dio.get(servicePath['getUserMsg']);
-    if (response.statusCode == 200 && response.data["status"] == SUCCESS) {
-      return response.data;
-    } else {
-      throw Exception('后端接口出现异常，请检测代码和服务器情况.........');
-    }
+    Response response = await dio.get(servicePath['getUserMsg']);
+    return getResponseData(response);
   } catch (e) {
     return print('ERROR:======>${e}');
   }
@@ -120,17 +103,12 @@ Future getUserMsgService() async {
 Future getSearchResultService(String keyword,
     {int pageSize = 20, int pageNum = 1}) async {
   try {
-    Response response;
-    response = await dio.get(servicePath['getSearchResult'], queryParameters: {
+    Response response = await dio.get(servicePath['getSearchResult'], queryParameters: {
       "keyword": keyword,
       "pageSize": pageSize,
       "pageNum": pageNum
     });
-    if (response.statusCode == 200 && response.data["status"] == SUCCESS) {
-      return response.data;
-    } else {
-      throw Exception('后端接口出现异常，请检测代码和服务器情况.........');
-    }
+    return getResponseData(response);
   } catch (e) {
     return print('ERROR:======>${e}');
   }
@@ -139,18 +117,11 @@ Future getSearchResultService(String keyword,
 //登录
 Future loginService(String userId, String password) async {
   try {
-    Response response;
-
     var map = {};
     map['userId'] = userId;
     map['password'] = password;
-
-    response = await dio.post(servicePath['login'], data: map);
-    if (response.statusCode == 200 && response.data["status"] == SUCCESS) {
-      return response.data;
-    } else {
-      throw Exception('后端接口出现异常，请检测代码和服务器情况.........');
-    }
+    Response response = await dio.post(servicePath['login'], data: map);
+    return getResponseData(response);
   } catch (e) {
     return print('ERROR:======>${e}');
   }
@@ -159,13 +130,8 @@ Future loginService(String userId, String password) async {
 //获取演员列表
 Future getStarService(int movieId) async {
   try {
-    Response response;
-    response = await dio.get(servicePath['getStar']+movieId.toString());
-    if (response.statusCode == 200 && response.data["status"] == SUCCESS) {
-      return response.data;
-    } else {
-      throw Exception('后端接口出现异常，请检测代码和服务器情况.........');
-    }
+    Response response = await dio.get(servicePath['getStar']+movieId.toString());
+    return getResponseData(response);
   } catch (e) {
     return print('ERROR:======>${e}');
   }
@@ -174,15 +140,10 @@ Future getStarService(int movieId) async {
 //按classify大类查询所有catory小类
 Future getMovieUrlService(int movieId) async {
   try {
-    Response response;
-    response = await dio.get(servicePath['getMovieUrl'], queryParameters: {
+    Response response = await dio.get(servicePath['getMovieUrl'], queryParameters: {
       "movieId": movieId.toString(),
     });
-    if (response.statusCode == 200 && response.data["status"] == SUCCESS) {
-      return response.data;
-    } else {
-      throw Exception('后端接口出现异常，请检测代码和服务器情况.........');
-    }
+    return getResponseData(response);
   } catch (e) {
     return print('ERROR:======>${e}');
   }
@@ -195,13 +156,8 @@ Future getMovieUrlService(int movieId) async {
  */
 Future savePlayRecordService(MovieDetailModel movieEntity) async {
   try {
-    Response response;
-    response = await dio.post(servicePath['savePlayRecord'], data: movieEntity.toMap());
-    if (response.statusCode == 200 && response.data["status"] == SUCCESS) {
-      return response.data;
-    } else {
-      throw Exception('后端接口出现异常，请检测代码和服务器情况.........');
-    }
+    Response response = await dio.post(servicePath['savePlayRecord'], data: movieEntity.toMap());
+    return getResponseData(response);
   } catch (e) {
     return print('ERROR:======>${e}');
   }
@@ -214,13 +170,8 @@ Future savePlayRecordService(MovieDetailModel movieEntity) async {
  */
 Future getPlayRecordService() async {
   try {
-    Response response;
-    response = await dio.get(servicePath['getPlayRecord']);
-    if (response.statusCode == 200 && response.data["status"] == SUCCESS) {
-      return response.data;
-    } else {
-      throw Exception('后端接口出现异常，请检测代码和服务器情况.........');
-    }
+    Response response = await dio.get(servicePath['getPlayRecord']);
+    return getResponseData(response);
   } catch (e) {
     return print('ERROR:======>${e}');
   }
@@ -233,14 +184,8 @@ Future getPlayRecordService() async {
  */
 Future saveFavoriteService(MovieDetailModel movieEntity) async {
   try {
-    Response response;
-    response = await dio.post(servicePath['saveFavorite'], data: movieEntity);
-    print(response);
-    if (response.statusCode == 200 && response.data["status"] == SUCCESS) {
-      return response.data;
-    } else {
-      throw Exception('后端接口出现异常，请检测代码和服务器情况.........');
-    }
+    Response response = await dio.post(servicePath['saveFavorite'], data: movieEntity);
+    return getResponseData(response);
   } catch (e) {
     return print('ERROR:======>${e}');
   }
@@ -253,13 +198,8 @@ Future saveFavoriteService(MovieDetailModel movieEntity) async {
  */
 Future getFavoriteService() async {
   try {
-    Response response;
-    response = await dio.get(servicePath['getFavorite']);
-    if (response.statusCode == 200 && response.data["status"] == SUCCESS) {
-      return response.data;
-    } else {
-      throw Exception('后端接口出现异常，请检测代码和服务器情况.........');
-    }
+    Response response = await dio.get(servicePath['getFavorite']);
+    return getResponseData(response);
   } catch (e) {
     return print('ERROR:======>${e}');
   }
@@ -272,14 +212,9 @@ Future getFavoriteService() async {
  */
 Future deleteFavoriteService(int movieId) async {
   try {
-    Response response;
-    response = await dio.delete(servicePath['deleteFavorite'],
+    Response response = await dio.delete(servicePath['deleteFavorite'],
         queryParameters: {"movieId": movieId});
-    if (response.statusCode == 200 && response.data["status"] == SUCCESS) {
-      return response.data;
-    } else {
-      throw Exception('后端接口出现异常，请检测代码和服务器情况.........');
-    }
+    return getResponseData(response);
   } catch (e) {
     return print('ERROR:======>${e}');
   }
@@ -294,11 +229,7 @@ Future isFavoriteService(int movieId) async {
   try {
     Response response = await dio.get(servicePath['isFavorite'],
         queryParameters: {"movieId": movieId.toString()});
-    if (response.statusCode == 200 && response.data["status"] == SUCCESS) {
-      return response.data;
-    } else {
-      throw Exception('后端接口出现异常，请检测代码和服务器情况.........');
-    }
+    return getResponseData(response);
   } catch (e) {
     return print('ERROR:======>${e}');
   }
@@ -311,14 +242,8 @@ Future isFavoriteService(int movieId) async {
  */
 Future getYourLikesService(String labels) async {
   try {
-    Response response;
-    response = await dio
-        .get(servicePath['getYourLikes'], queryParameters: {"labels": labels});
-    if (response.statusCode == 200 && response.data["status"] == SUCCESS) {
-      return response.data;
-    } else {
-      throw Exception('后端接口出现异常，请检测代码和服务器情况.........');
-    }
+    Response response = await dio.get(servicePath['getYourLikes'], queryParameters: {"labels": labels});
+    return getResponseData(response);
   } catch (e) {
     return print('ERROR:======>${e}');
   }
@@ -331,14 +256,9 @@ Future getYourLikesService(String labels) async {
  */
 Future getRecommendSerivce(String classify) async {
   try {
-    Response response;
-    response = await dio.get(servicePath['getRecommend'],
+    Response response = await dio.get(servicePath['getRecommend'],
         queryParameters: {"classify": classify});
-    if (response.statusCode == 200 && response.data["status"] == SUCCESS) {
-      return response.data;
-    } else {
-      throw Exception('后端接口出现异常，请检测代码和服务器情况.........');
-    }
+    return getResponseData(response);
   } catch (e) {
     return print('ERROR:======>${e}');
   }
@@ -352,13 +272,8 @@ Future getRecommendSerivce(String classify) async {
  */
 Future updateUserData(Map map) async {
   try {
-    Response response;
-    response = await dio.put(servicePath['updateUser'],data: map);
-    if (response.statusCode == 200 && response.data["status"] == SUCCESS) {
-      return response.data;
-    } else {
-      throw Exception('后端接口出现异常，请检测代码和服务器情况.........');
-    }
+    Response response = await dio.put(servicePath['updateUser'],data: map);
+    return getResponseData(response);
   } catch (e) {
     return print('ERROR:======>${e}');
   }
@@ -372,13 +287,8 @@ Future updateUserData(Map map) async {
  */
 Future updatePasswordService(Map map) async {
   try {
-    Response response;
-    response = await dio.put(servicePath['updatePassword'],data: map);
-    if (response.statusCode == 200 && response.data["status"] == SUCCESS) {
-      return response.data;
-    } else {
-      throw Exception('后端接口出现异常，请检测代码和服务器情况.........');
-    }
+    Response response = await dio.put(servicePath['updatePassword'],data: map);
+    return getResponseData(response);
   } catch (e) {
     return print('ERROR:======>${e}');
   }
@@ -391,13 +301,22 @@ Future updatePasswordService(Map map) async {
  */
 Future getCommentCountService(int movieId) async {
   try {
-    Response response;
-    response = await dio.get(servicePath['getCommentCount'],queryParameters: {"movieId": movieId.toString()});
-    if (response.statusCode == 200 && response.data["status"] == SUCCESS) {
-      return response.data;
-    } else {
-      throw Exception('后端接口出现异常，请检测代码和服务器情况.........');
-    }
+    Response response = await dio.get(servicePath['getCommentCount'],queryParameters: {"movieId": movieId.toString()});
+    return getResponseData(response);
+  } catch (e) {
+    return print('ERROR:======>${e}');
+  }
+}
+
+/**
+ * @author: wuwenqiang
+ * @description: 获取一级评论
+ *  @date: 2021-10-28 22:01
+ */
+Future getTopCommentListService(int movieId,int pageSize,int pageNum) async {
+  try {
+    Response response = await dio.get(servicePath['getTopCommentList'],queryParameters: {"movieId": movieId.toString(),"pageSize":pageSize.toString(),"pageNum":pageNum.toString()});
+    return getResponseData(response);
   } catch (e) {
     return print('ERROR:======>${e}');
   }

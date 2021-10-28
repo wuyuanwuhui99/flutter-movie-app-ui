@@ -22,5 +22,6 @@ const servicePath = {
   "isFavorite": serviceUrl + '/service/movie-getway/isFavorite',//查询是否已经收藏
   "updateUser": serviceUrl + '/service/movie-getway/updateUser',//更新用户信息
   "updatePassword": serviceUrl + '/service/movie-getway/updatePassword',//更新密码
-  "getCommentCount":serviceUrl + '/service/movie/getCommentCount'//获取评论总数
+  "getCommentCount":serviceUrl + '/service/movie/getCommentCount',//获取评论总数
+  "getTopCommentList":serviceUrl + '/service/movie/getTopCommentList'//获取一级评论
 };

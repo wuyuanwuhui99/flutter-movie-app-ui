@@ -25,7 +25,6 @@ class SwiperComponent extends StatelessWidget {
               return MovieDetailModel.fromJson(item);
             }).toList(); // 顶部轮播组件数
           }
-          print(swiperDataList);
           return Container(
               height: 200.0,
               child: Swiper(
