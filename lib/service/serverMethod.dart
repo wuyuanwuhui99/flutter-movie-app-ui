@@ -149,11 +149,9 @@ Future getMovieUrlService(int movieId) async {
   }
 }
 
-/**
- * @author: wuwenqiang
- * @description: 播放记录
- *  @date: 2021-03-04 23:08
- */
+///@author: wuwenqiang
+///@description: 播放记录
+/// @date: 2021-03-04 23:08
 Future savePlayRecordService(MovieDetailModel movieEntity) async {
   try {
     Response response = await dio.post(servicePath['savePlayRecord'], data: movieEntity.toMap());
@@ -163,11 +161,9 @@ Future savePlayRecordService(MovieDetailModel movieEntity) async {
   }
 }
 
-/**
- * @author: wuwenqiang
- * @description: 获取播放记录
- *  @date: 2021-03-04 23:08
- */
+///@author: wuwenqiang
+///@description: 获取播放记录
+/// @date: 2021-03-04 23:08
 Future getPlayRecordService() async {
   try {
     Response response = await dio.get(servicePath['getPlayRecord']);
@@ -177,11 +173,9 @@ Future getPlayRecordService() async {
   }
 }
 
-/**
- * @author: wuwenqiang
- * @description: 添加收藏
- *  @date: 2021-03-04 23:08
- */
+///@author: wuwenqiang
+///@description: 添加收藏
+/// @date: 2021-03-04 23:08
 Future saveFavoriteService(MovieDetailModel movieEntity) async {
   try {
     Response response = await dio.post(servicePath['saveFavorite'], data: movieEntity);
@@ -191,11 +185,9 @@ Future saveFavoriteService(MovieDetailModel movieEntity) async {
   }
 }
 
-/**
- * @author: wuwenqiang
- * @description: 获取收藏
- *  @date: 2021-03-04 23:08
- */
+///@author: wuwenqiang
+///@description: 获取收藏
+/// @date: 2021-03-04 23:08
 Future getFavoriteService() async {
   try {
     Response response = await dio.get(servicePath['getFavorite']);
@@ -205,11 +197,9 @@ Future getFavoriteService() async {
   }
 }
 
-/**
- * @author: wuwenqiang
- * @description: 删除收藏
- *  @date: 2021-03-04 23:08
- */
+///@author: wuwenqiang
+///@description: 删除收藏
+/// @date: 2021-03-04 23:08
 Future deleteFavoriteService(int movieId) async {
   try {
     Response response = await dio.delete(servicePath['deleteFavorite'],
@@ -220,11 +210,9 @@ Future deleteFavoriteService(int movieId) async {
   }
 }
 
-/**
- * @author: wuwenqiang
- * @description: 获取推荐影片
- *  @date: 2021-03-04 23:08
- */
+///@author: wuwenqiang
+///@description: 获取推荐影片
+/// @date: 2021-03-04 23:08
 Future isFavoriteService(int movieId) async {
   try {
     Response response = await dio.get(servicePath['isFavorite'],
@@ -235,11 +223,9 @@ Future isFavoriteService(int movieId) async {
   }
 }
 
-/**
- * @author: wuwenqiang
- * @description: 获取猜你想看
- *  @date: 2021-03-04 23:08
- */
+///@author: wuwenqiang
+///@description: 获取猜你想看
+/// @date: 2021-03-04 23:08
 Future getYourLikesService(String labels) async {
   try {
     Response response = await dio.get(servicePath['getYourLikes'], queryParameters: {"labels": labels});
@@ -249,11 +235,9 @@ Future getYourLikesService(String labels) async {
   }
 }
 
-/**
- * @author: wuwenqiang
- * @description: 获取推荐影片
- *  @date: 2021-03-04 23:08
- */
+///@author: wuwenqiang
+///@description: 获取推荐影片
+/// @date: 2021-03-04 23:08
 Future getRecommendSerivce(String classify) async {
   try {
     Response response = await dio.get(servicePath['getRecommend'],
@@ -265,11 +249,9 @@ Future getRecommendSerivce(String classify) async {
 }
 
 
-/**
- * @author: wuwenqiang
- * @description: 更新用户信息
- *  @date: 2021-04-20 23:57
- */
+///@author: wuwenqiang
+///@description: 更新用户信息
+/// @date: 2021-04-20 23:57
 Future updateUserData(Map map) async {
   try {
     Response response = await dio.put(servicePath['updateUser'],data: map);
@@ -280,11 +262,9 @@ Future updateUserData(Map map) async {
 }
 
 
-/**
- * @author: wuwenqiang
- * @description: 更新密码
- *  @date: 2021-04-20 23:57
- */
+///@author: wuwenqiang
+///@description: 更新密码
+/// @date: 2021-04-20 23:57
 Future updatePasswordService(Map map) async {
   try {
     Response response = await dio.put(servicePath['updatePassword'],data: map);
@@ -294,11 +274,9 @@ Future updatePasswordService(Map map) async {
   }
 }
 
-/**
- * @author: wuwenqiang
- * @description: 获取评论总数
- *  @date: 2021-10-26 23:05
- */
+///@author: wuwenqiang
+///@description: 获取评论总数
+/// @date: 2021-10-26 23:05
 Future getCommentCountService(int movieId) async {
   try {
     Response response = await dio.get(servicePath['getCommentCount'],queryParameters: {"movieId": movieId.toString()});
@@ -308,14 +286,25 @@ Future getCommentCountService(int movieId) async {
   }
 }
 
-/**
- * @author: wuwenqiang
- * @description: 获取一级评论
- *  @date: 2021-10-28 22:01
- */
+///@author: wuwenqiang
+///@description: 获取一级评论
+/// @date: 2021-10-28 22:01
 Future getTopCommentListService(int movieId,int pageSize,int pageNum) async {
   try {
-    Response response = await dio.get(servicePath['getTopCommentList'],queryParameters: {"movieId": movieId.toString(),"pageSize":pageSize.toString(),"pageNum":pageNum.toString()});
+    Response response = await dio.get(servicePath['getTopCommentList'],queryParameters: {"movieId": movieId,"pageSize":pageSize,"pageNum":pageNum});
+    return getResponseData(response);
+  } catch (e) {
+    return print('ERROR:======>${e}');
+  }
+}
+
+
+///@author: wuwenqiang
+///@description: 获取回复数量
+/// @date: 2021-10-29 22:54
+Future getReplyCommentListService(int topId,int pageSize,int pageNum) async {
+  try {
+    Response response = await dio.get(servicePath['getReplyCommentList'],queryParameters: {"topId": topId,"pageSize":pageSize,"pageNum":pageNum});
     return getResponseData(response);
   } catch (e) {
     return print('ERROR:======>${e}');

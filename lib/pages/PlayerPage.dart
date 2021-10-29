@@ -32,7 +32,7 @@ class _PlayerPageState extends State<PlayerPage> {
   @override
   void initState() {
     super.initState();
-    _isFavorite(); //查询电影是否已经收藏过
+    isFavorite(); //查询电影是否已经收藏过
     savePlayRecordService(widget.movieItem);
     getCommentCountService(widget.movieItem.movieId).then((res) {
       setState(() {
@@ -41,7 +41,7 @@ class _PlayerPageState extends State<PlayerPage> {
     });
   }
 
-  void _isFavorite() {
+  void isFavorite() {
     isFavoriteService(widget.movieItem.movieId).then((res) {
       if (res["data"] > 0) {
         setState(() {
@@ -86,6 +86,7 @@ class _PlayerPageState extends State<PlayerPage> {
     );
   }
 
+  //获取一级评论
   Widget getTopCommentWidget(){
     return Positioned(child: Container(
     width: double.infinity,
@@ -107,7 +108,7 @@ class _PlayerPageState extends State<PlayerPage> {
                         itemCount: commentList.length,
                         itemBuilder: (content, index) {
                           return
-                            Padding(padding: EdgeInsets.only(bottom: 10),child: Row(children: <Widget>[
+                            Padding(padding: EdgeInsets.only(bottom: 10),child: Row(crossAxisAlignment: CrossAxisAlignment.start,children: <Widget>[
                               ClipOval(
                                   child: Image.network(serviceUrl + commentList[index].avater,
                                       height: 40, width: 40, fit: BoxFit.cover)
@@ -117,8 +118,27 @@ class _PlayerPageState extends State<PlayerPage> {
                               Column(crossAxisAlignment: CrossAxisAlignment.start,children: <Widget>[
                                 Text(commentList[index].username,style: TextStyle(color: Color.fromRGBO(136, 136,136, 1))),
                                 Text(commentList[index].content),
-                                Text(commentList[index].createTime + '  回复',style: TextStyle(color: Color.fromRGBO(136, 136,136, 1)),)
+                                Text(commentList[index].createTime + '  回复',style: TextStyle(color: Color.fromRGBO(136, 136,136, 1)),),
+                                commentList[index].replyList.length > 0 ? getReplyList(commentList[index].replyList)  : SizedBox(),
+                                commentList[index].replyCount > 0 && commentList[index].replyCount - 10*commentList[index].replyPageNum > 0 ?
+                                  InkWell(child:
+                                    Padding(
+                                        padding: EdgeInsets.only(top:5),
+                                        child: Text('--展开${commentList[index].replyCount - 10*commentList[index].replyPageNum }条回复 >',style:  TextStyle(color: Color.fromRGBO(136, 136,136, 1)))),
+                                        onTap: (){
+                                          getReplyCommentListService(commentList[index].id,10,commentList[index].replyPageNum+1).then((value){
+                                            setState(() {
+                                              (value["data"] as List).cast().forEach((element) {
+                                                commentList[index].replyList.add(CommentModel.fromJson(element));
+                                              });
+                                              commentList[index].replyPageNum++;
+                                            });
+                                          });
+                                        }
+                                  ):
+                                  SizedBox()
                               ]),
+
                               )
                             ]));
                         })
@@ -131,6 +151,31 @@ class _PlayerPageState extends State<PlayerPage> {
     ],)));
   }
 
+  //获取回复
+  Widget getReplyList(List<CommentModel>replyList){
+    List<Widget>replyListWidget = [];
+    replyList.forEach((element) {
+      replyListWidget.add(
+          Padding(padding: EdgeInsets.only(top: 10),child: Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              ClipOval(
+                  child: Image.network(serviceUrl + element.avater,
+                      height: 30, width: 30, fit: BoxFit.cover)
+              ),
+              SizedBox(width: 10),
+              Expanded(flex: 1,child: Column(crossAxisAlignment: CrossAxisAlignment.start,children: <Widget>[
+                Text('${element.username}▶${element.replyUserName}',style: TextStyle(color: Color.fromRGBO(136, 136,136, 1))),
+                Text(element.content),
+                Text(element.createTime + '  回复',style: TextStyle(color: Color.fromRGBO(136, 136,136, 1)))
+              ],),)
+            ],
+          )));
+    });
+    return Column(children:replyListWidget);
+  }
+
+  //获取播放地址
   Widget playUrlWidget() {
     return FutureBuilder(
         future: getMovieUrlService(widget.movieItem.movieId),

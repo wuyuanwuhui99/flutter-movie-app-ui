@@ -12,7 +12,9 @@ class CommentModel{
   String avater;//用户头像
   String replyUserId;//被回复者id
   String replyUserName;//被回复者名称
-
+  String showCommentCount;//显示的回复数量
+  int replyPageNum;
+  List<CommentModel>replyList;
   CommentModel({
     this.id,
     this.content,
@@ -26,7 +28,9 @@ class CommentModel{
     this.username,
     this.avater,
     this.replyUserId,
-    this.replyUserName
+    this.replyUserName,
+    this.replyPageNum,
+    this.replyList
   });
   //工厂模式-用这种模式可以省略New关键字
   factory CommentModel.fromJson(dynamic json){
@@ -43,7 +47,9 @@ class CommentModel{
         username:json['username'],
         avater:json['avater'],
         replyUserId:json['replyUserId'],
-        replyUserName:json['replyUserName']
+        replyUserName:json['replyUserName'],
+        replyPageNum:0,
+        replyList:[]
     );
   }
 }
