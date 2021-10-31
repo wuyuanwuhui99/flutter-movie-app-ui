@@ -43,9 +43,7 @@ class _BottomNavigationWidgetState extends State<BottomNavigationWidget> {
           onPageChanged: _pageChanged,
           itemCount: 4,
           itemBuilder: (context, index) {
-            return
-              Padding(padding: EdgeInsets.only(top: MediaQuery.of(context).padding.top),
-              child:_getPage(index));
+            return _getPage(index);
           }),
       bottomNavigationBar: BottomNavigationBar(
         type: BottomNavigationBarType.fixed,

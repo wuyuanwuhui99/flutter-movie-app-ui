@@ -310,3 +310,15 @@ Future getReplyCommentListService(int topId,int pageSize,int pageNum) async {
     return print('ERROR:======>${e}');
   }
 }
+
+///@author: wuwenqiang
+///@description: 新增评论
+/// @date: 2021-10-31 10:31
+Future insertCommentService(Map commentMap) async {
+  try {
+    Response response = await dio.post(servicePath['insertCommentService'],data:commentMap);
+    return getResponseData(response);
+  } catch (e) {
+    return print('ERROR:======>${e}');
+  }
+}

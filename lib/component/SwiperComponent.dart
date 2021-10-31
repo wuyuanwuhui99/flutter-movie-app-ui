@@ -4,7 +4,7 @@ import 'package:flutter_swiper/flutter_swiper.dart';
 import '../config/serviceUrl.dart';
 import "../pages/DetailPage.dart";
 import '../model/MovieDetailModel.dart';
-
+import '../config/Size.dart';
 /*-----------------------轮播组件------------------------*/
 class SwiperComponent extends StatelessWidget {
   final String classify;
@@ -26,7 +26,10 @@ class SwiperComponent extends StatelessWidget {
             }).toList(); // 顶部轮播组件数
           }
           return Container(
-              height: 200.0,
+              height: Size.swiperHeight,
+              decoration: new BoxDecoration(
+                borderRadius: BorderRadius.all(Radius.circular(Size.radius)),
+              ),
               child: Swiper(
                 itemBuilder: (BuildContext context, int index) {
                   return Image.network(
@@ -34,7 +37,7 @@ class SwiperComponent extends StatelessWidget {
                         ? serviceUrl + swiperDataList[index].localImg
                         : swiperDataList[index].img,
                     height: 200,
-                    fit: BoxFit.fitHeight,
+                    fit: BoxFit.cover,
                   );
                 },
                 itemCount: swiperDataList.length,

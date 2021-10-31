@@ -13,6 +13,8 @@ import '../component/CategoryComponent.dart';
 import '../component/SwiperComponent.dart';
 import '../model/UserInfoModel.dart';
 import './NewMoviePage.dart';
+import '../config/ThemeColors.dart';
+import '../config/Size.dart';
 /*-----------------------分类图标------------------------*/
 class TopNavigators extends StatelessWidget {
   const TopNavigators({Key key}) : super(key: key);
@@ -116,61 +118,72 @@ class _HomePageState extends State<HomePage>
 
   Widget init(BuildContext context) {
     return Container(
-        width: MediaQuery.of(context).size.width,
-        child: Column(children: <Widget>[
-          Row(
-            children: <Widget>[
-              Container(
-                width: MediaQuery.of(context).size.width,
-                child: Padding(
-                  padding: EdgeInsets.only(left: 20,right: 20,top: 0,bottom: 20),
-                  child: Row(
-                    children: <Widget>[
-                      AvaterComponent(),
-                      Expanded(
-                          flex: 1,
-                          child: Padding(
-                              padding: EdgeInsets.only(left: 10),
-                              child: SearchCommponent(classify: "电影")))
-                    ],
+        decoration: new BoxDecoration(
+            color: ThemeColors.colorBg
+        ),
+        width: MediaQuery.of(context).size.width - Size.containerPadding*2,
+        child: Padding(padding: EdgeInsets.all(Size.containerPadding),
+          child: Column(children: <Widget>[
+            Row(
+              children: <Widget>[
+                Container(
+                  alignment:Alignment.centerLeft,
+                  width: MediaQuery.of(context).size.width - Size.containerPadding*2,
+                  decoration: new BoxDecoration(
+                    color:  Colors.white,
+                    borderRadius: BorderRadius.all(Radius.circular(Size.radius)),
                   ),
-                ),
-              )
-            ],
-          ),
-          Expanded(
-              flex: 1,
-              child: EasyRefresh(
-                  footer: MaterialFooter(),
-                  onLoad: () async {
-                    pageNum++;
-                    if (pageNum >= allCategoryLists.length) {
-                      Fluttertoast.showToast(
-                          msg: "已经到底了",
-                          toastLength: Toast.LENGTH_SHORT,
-                          gravity: ToastGravity.CENTER,
-                          timeInSecForIos: 1,
-                          backgroundColor: Colors.blue,
-                          textColor: Colors.white,
-                          fontSize: 16.0);
-                    } else {
-                      _getCategoryItem();
-                    }
-                  },
-                  child: ListView(
-                    children: <Widget>[
-                      Column(
-                        children: <Widget>[SwiperComponent(classify: "电影")],
-                      ),
-                      Column(
-                        children: <Widget>[TopNavigators()],
-                      ),
-                      Column(
-                        children: categoryList,
-                      )
-                    ],
-                  )))
-        ]));
+                  child: Padding(
+                    padding: EdgeInsets.all(10),
+                    child: Row(
+                      children: <Widget>[
+                        AvaterComponent(),
+                        Expanded(
+                            flex: 1,
+                            child: Padding(
+                                padding: EdgeInsets.only(left: 10),
+                                child: SearchCommponent(classify: "电影")))
+                      ],
+                    ),
+                  ),
+                )
+              ],
+            ),
+            SizedBox(height: Size.containerPadding),
+            Expanded(
+                flex: 1,
+                child: EasyRefresh(
+                    footer: MaterialFooter(),
+                    onLoad: () async {
+                      pageNum++;
+                      if (pageNum >= allCategoryLists.length) {
+                        Fluttertoast.showToast(
+                            msg: "已经到底了",
+                            toastLength: Toast.LENGTH_SHORT,
+                            gravity: ToastGravity.CENTER,
+                            timeInSecForIos: 1,
+                            backgroundColor: Colors.blue,
+                            textColor: Colors.white,
+                            fontSize: 16.0);
+                      } else {
+                        _getCategoryItem();
+                      }
+                    },
+                    child: ListView(
+                      children: <Widget>[
+                        Column(
+                          children: <Widget>[SwiperComponent(classify: "电影")],
+                        ),
+                        Column(
+                          children: <Widget>[TopNavigators()],
+                        ),
+                        Column(
+                          children: categoryList,
+                        )
+                      ],
+                    )))
+          ]))
+        );
   }
 
   @override
