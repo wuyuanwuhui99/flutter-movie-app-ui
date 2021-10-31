@@ -52,4 +52,22 @@ class CommentModel{
         replyList:[]
     );
   }
+
+  Map<String, dynamic> toMap() {
+    return {
+      'id':id,
+      'content':content,
+      'parentId':parentId,
+      'topId':topId,
+      'movieId':movieId,
+      'createTime':createTime,
+      'updateTime':updateTime,
+      'replyCount':replyCount,
+      'userId':userId,
+      'username':username,
+      'avater':avater,
+      'replyUserId':replyUserId,
+      'replyUserName':replyUserName,
+    };
+  }
 }

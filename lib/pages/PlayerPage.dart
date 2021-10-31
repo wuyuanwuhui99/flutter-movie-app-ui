@@ -28,12 +28,21 @@ class _PlayerPageState extends State<PlayerPage> {
   List<CommentModel>commentList=[];
   int pageNum = 1;
   int pageSize = 20;
-
+  CommentModel replyTopCommentItem;
+  CommentModel replyCommentItem;
+  bool disabledSend = true;
+  TextEditingController keywordController = TextEditingController();
+  String hintText = '';
   @override
   void initState() {
     super.initState();
     isFavorite(); //查询电影是否已经收藏过
     savePlayRecordService(widget.movieItem);
+    keywordController.addListener(() {
+      setState(() {
+        disabledSend = keywordController.text == "";
+      });
+    });
     getCommentCountService(widget.movieItem.movieId).then((res) {
       setState(() {
         commentCount = res["data"];
@@ -97,7 +106,7 @@ class _PlayerPageState extends State<PlayerPage> {
         children: <Widget>[
           Container(height: 300),
           Expanded(flex:1,child:
-            Container(color: Colors.white,child:
+            Container(color: Color.fromRGBO(249, 249, 249, 1),child:
               Column(children: <Widget>[
                 SizedBox(height: 10),
                 Row(mainAxisAlignment: MainAxisAlignment.center,children: <Widget>[Text(commentCount.toString()+"条评论",style:TextStyle(color: Color.fromRGBO(136, 136,136, 1)))],),
@@ -116,10 +125,16 @@ class _PlayerPageState extends State<PlayerPage> {
                               SizedBox(width: 10),
                               Expanded(flex: 1,child:
                               Column(crossAxisAlignment: CrossAxisAlignment.start,children: <Widget>[
-                                Text(commentList[index].username,style: TextStyle(color: Color.fromRGBO(136, 136,136, 1))),
-                                Text(commentList[index].content),
-                                Text(commentList[index].createTime + '  回复',style: TextStyle(color: Color.fromRGBO(136, 136,136, 1)),),
-                                commentList[index].replyList.length > 0 ? getReplyList(commentList[index].replyList)  : SizedBox(),
+                                InkWell(onTap:(){
+                                  setState(() {
+                                    replyCommentItem = replyTopCommentItem = commentList[index];
+                                  });
+                                },child: Column(crossAxisAlignment: CrossAxisAlignment.start,children: <Widget>[
+                                  Text(commentList[index].username,style: TextStyle(color: Color.fromRGBO(136, 136,136, 1))),
+                                  Text(commentList[index].content),
+                                  Text(commentList[index].createTime + '  回复',style: TextStyle(color: Color.fromRGBO(136, 136,136, 1)),),
+                                ])),
+                                commentList[index].replyList.length > 0 ? getReplyList(commentList[index].replyList,commentList[index])  : SizedBox(),
                                 commentList[index].replyCount > 0 && commentList[index].replyCount - 10*commentList[index].replyPageNum > 0 ?
                                   InkWell(child:
                                     Padding(
@@ -143,16 +158,75 @@ class _PlayerPageState extends State<PlayerPage> {
                             ]));
                         })
                    )
+                ),
+                Padding(padding: EdgeInsets.all(20),child:
+                  Row(children: <Widget>[
+                    Expanded(child:
+                      Container(
+                          height: 45,
+                          //修饰黑色背景与圆角
+                          decoration: new BoxDecoration(
+                            border: Border.all(color: Color.fromARGB(255, 241, 242, 246),width: 1.0), //灰色的一层边框
+                            color: Color.fromARGB(255, 230, 230, 230),
+                            borderRadius: new BorderRadius.all(new Radius.circular(30.0)),
+                          ),
+                          alignment: Alignment.center,
+                          padding: EdgeInsets.only(left: 10,top:0),
+                          child: TextField(
+                              controller: keywordController,
+                              cursorColor: Colors.grey, //设置光标
+                              decoration: InputDecoration(
+                                hintText:replyCommentItem != null ? '回复${replyCommentItem.username}' :'有爱评论，说点好听的~',
+                                hintStyle:TextStyle(fontSize: 14, color: Colors.grey),
+                                contentPadding: EdgeInsets.only(left: 10,top: 0),
+                                border: InputBorder.none,
+                              )
+                          )
+                        ),
+                      ),
+                      SizedBox(width: 10),
+                      Container(height: 45,child: RaisedButton(
+                          color: disabledSend?Color.fromARGB(255, 230, 230, 230):Theme.of(context).accentColor,
+                          child: Text("发送",style: TextStyle(color: Colors.white)),
+                          shape: RoundedRectangleBorder(
+                              side: BorderSide.none,
+                              borderRadius: BorderRadius.all(Radius.circular(50))),
+                          onPressed: () async {
+                            onInserComment();
+                          }
+                      ),)
+                  ])
                 )
-
+                
               ])
             ),
           )
     ],)));
   }
 
+  void onInserComment(){
+    Map commentMap = {};
+    commentMap["content"] = keywordController.text;
+    commentMap["parentId"] = replyCommentItem == null ? null : replyCommentItem.id;
+    commentMap["topId"] = replyCommentItem == null ? null: replyTopCommentItem.topId;
+    commentMap["movieId"] = widget.movieItem.movieId;
+    commentMap["replyUserId"] = replyCommentItem == null ? null : replyCommentItem.userId;
+    insertCommentService(commentMap).then((res){
+      setState(() {
+        commentCount++;
+        if(replyTopCommentItem == null){
+          commentList.add(CommentModel.fromJson(res["data"]));
+        }else{
+          replyTopCommentItem.replyList.add(CommentModel.fromJson(res["data"]));
+          replyCommentItem = replyTopCommentItem = null;
+        }
+        keywordController.text = '';
+      });
+    });
+  }
+
   //获取回复
-  Widget getReplyList(List<CommentModel>replyList){
+  Widget getReplyList(List<CommentModel>replyList,topCommentItem){
     List<Widget>replyListWidget = [];
     replyList.forEach((element) {
       replyListWidget.add(
@@ -165,9 +239,16 @@ class _PlayerPageState extends State<PlayerPage> {
               ),
               SizedBox(width: 10),
               Expanded(flex: 1,child: Column(crossAxisAlignment: CrossAxisAlignment.start,children: <Widget>[
-                Text('${element.username}▶${element.replyUserName}',style: TextStyle(color: Color.fromRGBO(136, 136,136, 1))),
-                Text(element.content),
-                Text(element.createTime + '  回复',style: TextStyle(color: Color.fromRGBO(136, 136,136, 1)))
+                InkWell(onTap:(){
+                  setState(() {
+                    replyTopCommentItem = topCommentItem;
+                    replyCommentItem = element;
+                  });
+                },child: Column(crossAxisAlignment: CrossAxisAlignment.start,children: <Widget>[
+                  Text('${element.username}▶${element.replyUserName}',style: TextStyle(color: Color.fromRGBO(136, 136,136, 1))),
+                  Text(element.content),
+                  Text(element.createTime + '  回复',style: TextStyle(color: Color.fromRGBO(136, 136,136, 1)))
+                ]))
               ],),)
             ],
           )));
