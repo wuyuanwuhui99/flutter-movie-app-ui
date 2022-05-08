@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import '../service/serverMethod.dart';
-import 'package:provider/provider.dart';
-import '../provider/UserInfoProvider.dart';
 import 'package:flutter_easyrefresh/easy_refresh.dart';
 import 'package:flutter_easyrefresh/material_footer.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:provider/provider.dart';
+import '../service/serverMethod.dart';
+import '../provider/UserInfoProvider.dart';
 import '../config/global.dart';
 import '../utils/LocalStroageUtils.dart';
 import '../component/SearchCommponent.dart';
@@ -12,62 +12,10 @@ import '../component/AvaterComponent.dart';
 import '../component/CategoryComponent.dart';
 import '../component/SwiperComponent.dart';
 import '../model/UserInfoModel.dart';
-import './NewMoviePage.dart';
-import '../config/ThemeColors.dart';
-import '../config/Size.dart';
-/*-----------------------分类图标------------------------*/
-class TopNavigators extends StatelessWidget {
-  const TopNavigators({Key key}) : super(key: key);
-  List<Widget> _items(BuildContext context) {
-    List listData = [
-      {"image": "lib/assets/images/icon-hot.png", "title": "热门"},
-      {"image": "lib/assets/images/icon-play.png", "title": "预告"},
-      {"image": "lib/assets/images/icon-top.png", "title": "最新"},
-      {"image": "lib/assets/images/icon-classify.png", "title": "分类"}
-    ];
-    var tempList = listData.map((value) {
-      return InkWell(
-          onTap: () {
-            if(value["title"] == "最新"){
-              Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) =>
-                          NewMoviePage()));
-            }
-          },
-          child: Container(
-              child: Column(
-            children: <Widget>[
-              Image.asset(value['image'],
-                  height: 40, width: 40, fit: BoxFit.cover),
-              SizedBox(height: 12),
-              Text(
-                value['title'],
-                textAlign: TextAlign.center,
-                style: TextStyle(fontSize: 14),
-              )
-            ],
-          )));
-    });
-    return tempList.toList();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-        width: MediaQuery.of(context).size.width,
-        height: 100,
-        child: GridView.count(
-            crossAxisSpacing: 10.0, //水平子 Widget 之间间距
-            mainAxisSpacing: 10.0, //垂直子 Widget 之间间距
-            padding: EdgeInsets.all(20),
-            crossAxisCount: 4, //一行的 Widget 数量
-            children: this._items(context)));
-  }
-}
-/*-----------------------分类图标------------------------*/
-
+import '../component/TopNavigators.dart';
+import '../theme/ThemeColors.dart';
+import '../theme/Size.dart';
+import '../theme/ThemeStyle.dart';
 /*-----------------------首页------------------------*/
 class HomePage extends StatefulWidget {
   HomePage({Key key}) : super(key: key);
@@ -129,10 +77,8 @@ class _HomePageState extends State<HomePage>
                 Container(
                   alignment:Alignment.centerLeft,
                   width: MediaQuery.of(context).size.width - Size.containerPadding*2,
-                  decoration: new BoxDecoration(
-                    color:  Colors.white,
-                    borderRadius: BorderRadius.all(Radius.circular(Size.radius)),
-                  ),
+                  margin: ThemeStyle.margin,
+                  decoration: ThemeStyle.boxDecoration,
                   child: Padding(
                     padding: EdgeInsets.all(10),
                     child: Row(
@@ -149,7 +95,6 @@ class _HomePageState extends State<HomePage>
                 )
               ],
             ),
-            SizedBox(height: Size.containerPadding),
             Expanded(
                 flex: 1,
                 child: EasyRefresh(
@@ -172,10 +117,10 @@ class _HomePageState extends State<HomePage>
                     child: ListView(
                       children: <Widget>[
                         Column(
-                          children: <Widget>[SwiperComponent(classify: "电影")],
-                        ),
-                        Column(
-                          children: <Widget>[TopNavigators()],
+                          children: <Widget>[
+                            SwiperComponent(classify: "电影"),
+                            TopNavigators(),
+                          ],
                         ),
                         Column(
                           children: categoryList,

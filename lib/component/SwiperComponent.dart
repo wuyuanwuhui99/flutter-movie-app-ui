@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:movie/service/serverMethod.dart';
 import 'package:flutter_swiper/flutter_swiper.dart';
+import 'package:movie/theme/ThemeStyle.dart';
 import '../config/serviceUrl.dart';
 import "../pages/DetailPage.dart";
 import '../model/MovieDetailModel.dart';
-import '../config/Size.dart';
+import '../theme/Size.dart';
 /*-----------------------轮播组件------------------------*/
 class SwiperComponent extends StatelessWidget {
   final String classify;
@@ -27,18 +28,22 @@ class SwiperComponent extends StatelessWidget {
           }
           return Container(
               height: Size.swiperHeight,
-              decoration: new BoxDecoration(
-                borderRadius: BorderRadius.all(Radius.circular(Size.radius)),
-              ),
-              child: Swiper(
+              margin: ThemeStyle.margin,
+              child:
+              Swiper(
                 itemBuilder: (BuildContext context, int index) {
-                  return Image.network(
-                    swiperDataList[index].localImg != null
-                        ? serviceUrl + swiperDataList[index].localImg
-                        : swiperDataList[index].img,
-                    height: 200,
-                    fit: BoxFit.cover,
-                  );
+                  return
+                    ClipRRect(
+                        child:
+                          Image.network(
+                          swiperDataList[index].localImg != null
+                              ? serviceUrl + swiperDataList[index].localImg
+                              : swiperDataList[index].img,
+                          height: 200,
+                          fit: BoxFit.cover,
+                        ),
+                        borderRadius: BorderRadius.circular(Size.radius)
+                    );
                 },
                 itemCount: swiperDataList.length,
                 // viewportFraction: 0.9,

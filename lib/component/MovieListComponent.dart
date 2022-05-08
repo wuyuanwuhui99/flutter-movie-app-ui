@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:movie/theme/ThemeStyle.dart';
 import '../pages/DetailPage.dart';
 import '../config/serviceUrl.dart';
 import '../model/MovieDetailModel.dart';
-
+import '../theme/Size.dart';
 /*-----------------------获取推荐的影片------------------------*/
 class MovieListComponent extends StatelessWidget {
   final String title;
@@ -36,8 +37,8 @@ class MovieListComponent extends StatelessWidget {
 
   Widget movieItemWidget(MovieDetailModel item,int index){
     return Container(
-      width: 150,
-      height: 200,
+      width: Size.movieWidth,
+      height: Size.movieHeight,
       margin: EdgeInsets.only(left: direction == "horizontal" && index > 0 ? 10 : 0),
       child: Column(
         children: <Widget>[
@@ -65,42 +66,46 @@ class MovieListComponent extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-        return  Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[
-              SizedBox(height: 15),
-              title != "" ? Container(
-                  padding: EdgeInsets.only(left: 5),
-                  decoration: BoxDecoration(
-                    border: Border(
-                      left: BorderSide(
-                        width: 3, //宽度
-                        color: Colors.blue, //边框颜色
+        return
+          Container(
+            decoration: ThemeStyle.boxDecoration,
+            width: MediaQuery.of(context).size.width - Size.containerPadding*2,
+            margin: EdgeInsets.only(top: Size.containerPadding),
+            child:
+            Padding(padding: EdgeInsets.all(Size.containerPadding),child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  title != "" ? Container(
+                      padding: EdgeInsets.only(left: 5),
+                      decoration: BoxDecoration(
+                        border: Border(
+                          left: BorderSide(
+                            width: 3, //宽度
+                            color: Colors.blue, //边框颜色
+                          ),
+                        ),
                       ),
-                    ),
-                  ),
-                  child: Text(title))
-              : SizedBox(),
-              SizedBox(height: title != "" ? 10 : 0),
-              direction == "vertical" ?
-               GridView.count(
-                    crossAxisSpacing: 10, //水平子 Widget 之间间距
-                    crossAxisCount: 3, //一行的 Widget 数量
-                    physics: NeverScrollableScrollPhysics(),
-                    shrinkWrap: true,
-                    childAspectRatio:0.55,
-                    children: this._items(context))
-                :
+                      child: Text(title))
+                      : SizedBox(),
+                  SizedBox(height: title != "" ? Size.containerPadding : 0),
+                  direction == "vertical" ?
+                  GridView.count(
+                      crossAxisSpacing: 10, //水平子 Widget 之间间距
+                      crossAxisCount: 3, //一行的 Widget 数量
+                      physics: NeverScrollableScrollPhysics(),
+                      shrinkWrap: true,
+                      childAspectRatio:0.55,
+                      children: this._items(context))
+                      :
                   Container(
-                      height: 240,
-                      width: MediaQuery.of(context).size.width - 40,
+                      height: 230,
+                      width: MediaQuery.of(context).size.width - Size.containerPadding*2,
                       child: ListView(
-                    scrollDirection: Axis.horizontal,
-                    children: this._items(context),
-                  ))
-
-            ]
-        );
+                        scrollDirection: Axis.horizontal,
+                        children: this._items(context),
+                      ))
+                ]
+            )));
 
   }
 }
