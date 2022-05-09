@@ -19,6 +19,8 @@
 ![app首页](./movie12.png)
 ![app首页](./movie13.png)
 ![app首页](./movie14.png)
+![app首页](./新版1.png)
+![app首页](./新版2.png)
 =============================界面预览（如果无法预览，请查看项目根目录png文件）==========================
 
 运行命令：flutter run --enable-software-rendering
