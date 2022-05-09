@@ -3,7 +3,7 @@ import 'pages/HomePage.dart';
 import 'pages/MoviePage.dart';
 import 'pages/VideoPage.dart';
 import 'pages/MyPage.dart';
-
+import 'theme/ThemeColors.dart';
 class BottomNavigationWidget extends StatefulWidget {
   _BottomNavigationWidgetState createState() => _BottomNavigationWidgetState();
 }
@@ -37,6 +37,7 @@ class _BottomNavigationWidgetState extends State<BottomNavigationWidget> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: ThemeColors.colorBg,
       body: PageView.builder(
           controller: _pageController,
           physics: NeverScrollableScrollPhysics(),

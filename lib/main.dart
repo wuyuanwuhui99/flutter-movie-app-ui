@@ -23,6 +23,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
         title: 'Flutter bottomNavigationBar',
         debugShowCheckedModeBanner:false,
+
         theme: ThemeData.light(),
         home: BottomNavigationWidget());
   }

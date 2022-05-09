@@ -27,8 +27,8 @@ class TopNavigators extends StatelessWidget {
               child: Column(
                 children: <Widget>[
                   Image.asset(value['image'],
-                      height: 40, width: 40, fit: BoxFit.cover),
-                  SizedBox(height: 12),
+                      height: Size.iconSize, width: Size.iconSize, fit: BoxFit.cover),
+                  SizedBox(height: Size.containerPadding),
                   Text(
                     value['title'],
                     textAlign: TextAlign.center,
@@ -45,7 +45,7 @@ class TopNavigators extends StatelessWidget {
     return Container(
         decoration: ThemeStyle.boxDecoration,
         width: MediaQuery.of(context).size.width,
-        height: 100,
+        height: 110,
         child: GridView.count(
             crossAxisSpacing: 10.0, //水平子 Widget 之间间距
             mainAxisSpacing: 10.0, //垂直子 Widget 之间间距

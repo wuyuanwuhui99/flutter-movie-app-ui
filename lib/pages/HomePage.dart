@@ -13,7 +13,6 @@ import '../component/CategoryComponent.dart';
 import '../component/SwiperComponent.dart';
 import '../model/UserInfoModel.dart';
 import '../component/TopNavigators.dart';
-import '../theme/ThemeColors.dart';
 import '../theme/Size.dart';
 import '../theme/ThemeStyle.dart';
 /*-----------------------首页------------------------*/
@@ -66,11 +65,8 @@ class _HomePageState extends State<HomePage>
 
   Widget init(BuildContext context) {
     return Container(
-        decoration: new BoxDecoration(
-            color: ThemeColors.colorBg
-        ),
         width: MediaQuery.of(context).size.width - Size.containerPadding*2,
-        child: Padding(padding: EdgeInsets.all(Size.containerPadding),
+        child: Padding(padding: ThemeStyle.padding,
           child: Column(children: <Widget>[
             Row(
               children: <Widget>[

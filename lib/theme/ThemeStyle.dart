@@ -7,4 +7,5 @@ class ThemeStyle {
     borderRadius: BorderRadius.all(Radius.circular(Size.radius)),
   );
   static EdgeInsets margin = EdgeInsets.only(bottom: Size.containerPadding);
+  static EdgeInsets padding = EdgeInsets.all(Size.containerPadding);
 }
