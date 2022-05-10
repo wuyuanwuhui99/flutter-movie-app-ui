@@ -46,6 +46,7 @@ class TopNavigators extends StatelessWidget {
         decoration: ThemeStyle.boxDecoration,
         width: MediaQuery.of(context).size.width,
         height: 110,
+        margin: ThemeStyle.margin,
         child: GridView.count(
             crossAxisSpacing: 10.0, //水平子 Widget 之间间距
             mainAxisSpacing: 10.0, //垂直子 Widget 之间间距

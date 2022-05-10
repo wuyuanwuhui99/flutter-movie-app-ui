@@ -70,7 +70,7 @@ class MovieListComponent extends StatelessWidget {
           Container(
             decoration: ThemeStyle.boxDecoration,
             width: MediaQuery.of(context).size.width - Size.containerPadding*2,
-            margin: EdgeInsets.only(top: Size.containerPadding),
+            margin: ThemeStyle.margin,
             child:
             Padding(padding: EdgeInsets.all(Size.containerPadding),child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,

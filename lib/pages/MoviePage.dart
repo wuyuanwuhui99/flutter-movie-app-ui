@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_easyrefresh/easy_refresh.dart';
-import '../service/serverMethod.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:flutter_easyrefresh/material_footer.dart';
+import '../service/serverMethod.dart';
 import '../component/SearchCommponent.dart';
 import '../component/AvaterComponent.dart';
 import '../component/CategoryComponent.dart';
 import '../component/SwiperComponent.dart';
-import 'package:fluttertoast/fluttertoast.dart';
+import '../theme/Size.dart';
+import '../theme/ThemeStyle.dart';
 
 class MoviePage extends StatefulWidget {
   MoviePage({Key key}) : super(key: key);
@@ -38,7 +40,6 @@ class _MoviePageState extends State<MoviePage>
         });
       });
     });
-
   }
 
   void _getCategoryItem() {
@@ -56,21 +57,27 @@ class _MoviePageState extends State<MoviePage>
   @override
   Widget build(BuildContext context) {
     return Container(
-        width: MediaQuery.of(context).size.width,
+      width: MediaQuery.of(context).size.width,
+      child: Padding(
+        padding: ThemeStyle.padding,
         child: Column(children: <Widget>[
           Row(
             children: <Widget>[
               Container(
-                width: MediaQuery.of(context).size.width,
+                width: MediaQuery.of(context).size.width -
+                    Size.containerPadding * 2,
+                margin: ThemeStyle.margin,
+                decoration: ThemeStyle.boxDecoration,
                 child: Padding(
-                  padding: EdgeInsets.only(left: 20,right: 20,bottom: 20,top: 0),
+                  padding: ThemeStyle.padding,
                   child: Row(
                     children: <Widget>[
                       AvaterComponent(),
                       Expanded(
                           flex: 1,
                           child: Padding(
-                              padding: EdgeInsets.only(left: 10),
+                              padding:
+                                  EdgeInsets.only(left: Size.smallMargin),
                               child: SearchCommponent(classify: "电影")))
                     ],
                   ),
@@ -100,13 +107,14 @@ class _MoviePageState extends State<MoviePage>
                 child: ListView(
                   children: <Widget>[
                     Column(children: <Widget>[SwiperComponent(classify: "电影")]),
-                    SizedBox(height: 10),
                     Column(
                       children: categoryList,
                     )
                   ],
                 )),
           )
-        ]));
+        ]),
+      ),
+    );
   }
 }

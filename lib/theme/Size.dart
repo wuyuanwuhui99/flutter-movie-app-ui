@@ -8,4 +8,5 @@ class Size {
   static double movieHeight = 200;// 电影图片高度
   static double modualHeight = 250;// 模块的高度
   static double iconSize = 40;// 图标大小
+  static double smallMargin = 10;//小边距
 }
