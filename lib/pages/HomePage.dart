@@ -67,7 +67,7 @@ class _HomePageState extends State<HomePage>
   Widget init(BuildContext context) {
     return Container(
         width: MediaQuery.of(context).size.width - Size.containerPadding * 2,
-        padding: EdgeInsets.all(Size.containerPadding),
+        padding: ThemeStyle.paddingBox,
         child: Column(children: <Widget>[
           Row(
             children: <Widget>[

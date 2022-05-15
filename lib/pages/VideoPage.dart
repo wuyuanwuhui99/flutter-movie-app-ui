@@ -60,7 +60,7 @@ class _VideoPageState extends State<VideoPage>
   Widget build(BuildContext context) {
     return Container(
       width: MediaQuery.of(context).size.width,
-      padding: ThemeStyle.padding,
+      padding: ThemeStyle.paddingBox,
       child: Column(children: <Widget>[
         Row(
           children: <Widget>[

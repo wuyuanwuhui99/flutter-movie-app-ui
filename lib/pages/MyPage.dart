@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import '../config/serviceUrl.dart';
 import '../service/serverMethod.dart';
 import '../provider/UserInfoProvider.dart';
 import '../component/MovieListComponent.dart';
@@ -10,6 +9,7 @@ import '../model/UserMsgModel.dart';
 import '../theme/ThemeStyle.dart';
 import '../theme/Size.dart';
 import '../theme/ThemeColors.dart';
+import '../model/MovieDetailModel.dart';
 
 class MyPage extends StatefulWidget {
   MyPage({Key key}) : super(key: key);
@@ -27,7 +27,7 @@ class _MyPageState extends State<MyPage> with AutomaticKeepAliveClientMixin {
     UserInfoModel userInfoModel =
         Provider.of<UserInfoProvider>(context).userInfo;
     return Container(
-      padding: ThemeStyle.padding,
+      padding: ThemeStyle.paddingBox,
       child: ListView(
         children: <Widget>[
           Container(
@@ -62,8 +62,8 @@ class _MyPageState extends State<MyPage> with AutomaticKeepAliveClientMixin {
           UserMsgComponent(),
           Container(
             decoration: ThemeStyle.boxDecoration,
-            padding: ThemeStyle.padding,
             margin: ThemeStyle.margin,
+            padding: ThemeStyle.padding,
             child: Column(
               children: <Widget>[
                 Row(children: <Widget>[
@@ -72,7 +72,7 @@ class _MyPageState extends State<MyPage> with AutomaticKeepAliveClientMixin {
                   SizedBox(width: Size.smallMargin),
                   Text("观看记录", style: TextStyle(fontSize: Size.middleFontSize)),
                 ]),
-                SizedBox(height: Size.smallMargin),
+                SizedBox(height: Size.smallMargin,),
                 HistoryComponent(),
               ],
             ),
@@ -119,13 +119,13 @@ class UserMsgComponent extends StatelessWidget {
                     Expanded(
                         flex: 1,
                         child: Column(children: <Widget>[
-                          Text("61", style: ThemeStyle.mainTitleStyle),
+                          Text(userMsg.playRecordCount.toString(), style: ThemeStyle.mainTitleStyle),
                           Text("观看记录", style: ThemeStyle.subTitleStyle)
                         ])),
                     Expanded(
                         flex: 1,
                         child: Column(children: <Widget>[
-                          Text("61", style: ThemeStyle.mainTitleStyle),
+                          Text(userMsg.viewRecordCount.toString(), style: ThemeStyle.mainTitleStyle),
                           Text("浏览记录", style: ThemeStyle.subTitleStyle)
                         ])),
                   ],
@@ -146,17 +146,16 @@ class HistoryComponent extends StatelessWidget {
           if (snapshot.data == null) {
             return Container();
           } else {
-            List movieList = snapshot.data["data"];
+            List<MovieDetailModel> movieList = (snapshot.data["data"] as List).cast().map((item){
+              return MovieDetailModel.fromJson(item);
+            }).toList();
             if (movieList.length == 0) {
               return Container(
                   alignment: Alignment.center,
-                  height: 240,
+                  height: Size.movieHeight,
                   child: Text("暂无观看记录"));
             } else {
-              return
-                Container(
-                    child: MovieListComponent(
-                    movieList: movieList, direction: "horizontal"));
+              return MovieListComponent(movieList: movieList, direction: "horizontal");
             }
           }
         });

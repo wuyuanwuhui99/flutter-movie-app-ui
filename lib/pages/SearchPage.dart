@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:movie/component/TitleComponent.dart';
 import 'dart:ui';
 import "package:shared_preferences/shared_preferences.dart";
 import 'dart:convert';
@@ -8,8 +9,13 @@ import "./DetailPage.dart";
 import '../component/ScoreComponent.dart';
 import '../component/RecommendComponent.dart';
 import '../model/MovieDetailModel.dart';
+import '../theme/ThemeStyle.dart';
+import '../theme/ThemeColors.dart';
+import '../theme/Size.dart';
+
 class SearchPage extends StatefulWidget {
   final String keyword;
+
   SearchPage({Key key, this.keyword}) : super(key: key);
 
   @override
@@ -23,6 +29,7 @@ class _SearchPageState extends State<SearchPage> {
   List<Widget> myHistoryLabels = [];
   List<String> myHistoryLabelsName = [];
   TextEditingController keywordController = TextEditingController();
+
   @override
   void initState() {
     keywordController.addListener(() {
@@ -36,37 +43,34 @@ class _SearchPageState extends State<SearchPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Padding(
-        padding: EdgeInsets.only(
-            left: 20,
-//            top: MediaQuery.of(context).padding.top,
-            top: 40,
-            bottom: 20,
-            right: 20),
-        child: Column(
-          children: <Widget>[
+        backgroundColor: ThemeColors.colorBg,
+        body: Container(
+          padding: ThemeStyle.padding,
+          child: Column(children: <Widget>[
             SearchInputComponent(),
             searching
                 ? Expanded(
                     flex: 1,
                     child: searchResult.length == 0
-                        ? Center(
-                            child: Text(
-                            "没有查询到影片",
-                            style: TextStyle(fontSize: 20),
-                          ))
+                        ? Container(
+                            decoration: ThemeStyle.boxDecoration,
+                            padding: ThemeStyle.padding,
+                            child: Center(
+                                child: Text(
+                              "没有查询到影片",
+                              style: TextStyle(fontSize: 20),
+                            )))
                         : SearchResult())
-                : Expanded(flex: 1,
-                child: SingleChildScrollView(
-                  child: Column(
-                    children:<Widget>[
+                : Expanded(
+                    flex: 1,
+                    child: SingleChildScrollView(
+                        child: Column(children: <Widget>[
                       HistorySearchComponent(),
-                      SizedBox(height: 20),
-                      RecommendComponent(classify: "电影",direction: "vertical",title:"推荐")
-                ]))
-        ),
-      ]),
-    ));
+                      RecommendComponent(
+                          classify: "电影", direction: "vertical", title: "推荐")
+                    ]))),
+          ]),
+        ));
   }
 
   Widget SearchResult() {
@@ -92,9 +96,10 @@ class _SearchPageState extends State<SearchPage> {
                         borderRadius: BorderRadius.circular(10),
                         child: Image(
                             fit: BoxFit.fill,
-                            image: NetworkImage(searchResult[index].localImg !=null
-                                ? serviceUrl + searchResult[index].localImg
-                                : searchResult[index].img))),
+                            image: NetworkImage(
+                                searchResult[index].localImg != null
+                                    ? serviceUrl + searchResult[index].localImg
+                                    : searchResult[index].img))),
                   ),
                   Expanded(
                       flex: 1,
@@ -123,8 +128,7 @@ class _SearchPageState extends State<SearchPage> {
                                 SizedBox(height: 10),
                                 Text(
                                     searchResult[index].director != null
-                                        ? "导演：" +
-                                            searchResult[index].director
+                                        ? "导演：" + searchResult[index].director
                                         : "",
                                     maxLines: 1,
                                     overflow: TextOverflow.ellipsis,
@@ -161,89 +165,98 @@ class _SearchPageState extends State<SearchPage> {
   }
 
   Widget SearchInputComponent() {
-    return Row(
-      children: <Widget>[
-        Expanded(
-            child: Container(
-                height: 50,
-                //修饰黑色背景与圆角
-                decoration: new BoxDecoration(
-                  border: Border.all(
-                      color: Color.fromARGB(255, 241, 242, 246),
-                      width: 1.0), //灰色的一层边框
-                  color: Color.fromARGB(255, 230, 230, 230),
-                  borderRadius: new BorderRadius.all(new Radius.circular(30.0)),
-                ),
-                alignment: Alignment.center,
-                padding: EdgeInsets.only(left: 10,top:0),
-                                child: Row(
-                            children: <Widget>[
-                            Expanded(
-                                flex: 1,
-                                child: TextField(
-                                    controller: keywordController,
-                                    cursorColor: Colors.grey, //设置光标
-                                    decoration: InputDecoration(
-                                      hintText: widget.keyword,
-                                      hintStyle:
-                                      TextStyle(fontSize: 14, color: Colors.grey),
-                                      contentPadding: EdgeInsets.only(left: 10,top: 0),
-                                      border: InputBorder.none,
-                                    ))),
+    return Container(
+      decoration: ThemeStyle.boxDecoration,
+      padding: ThemeStyle.padding,
+      margin: ThemeStyle.margin,
+      child: Row(
+        children: <Widget>[
+          Expanded(
+              child: Container(
+                  height: 50,
+                  //修饰黑色背景与圆角
+                  decoration: new BoxDecoration(
+                    border: Border.all(
+                        color: Color.fromARGB(255, 241, 242, 246),
+                        width: 1.0), //灰色的一层边框
+                    color: Color.fromARGB(255, 230, 230, 230),
+                    borderRadius:
+                        new BorderRadius.all(new Radius.circular(30.0)),
+                  ),
+                  alignment: Alignment.center,
+                  padding: EdgeInsets.only(left: 10, top: 0),
+                  child: Row(
+                    children: <Widget>[
+                      Expanded(
+                          flex: 1,
+                          child: TextField(
+                              controller: keywordController,
+                              cursorColor: Colors.grey, //设置光标
+                              decoration: InputDecoration(
+                                hintText: widget.keyword,
+                                hintStyle:
+                                    TextStyle(fontSize: 14, color: Colors.grey),
+                                contentPadding:
+                                    EdgeInsets.only(left: 10, top: 0),
+                                border: InputBorder.none,
+                              ))),
                       showClearIcon
                           ? InkWell(
-                          onTap: () {
-                            setState(() {
-                              keywordController.text = ""; //清除输入框的值
-                              searching = false;
-                              showClearIcon = false;
-                            });
-                          },
-                          child: Image.asset(
-                            "lib/assets/images/icon-clear.png",
-                              height: 20,
-                              width: 20,
-                            ))
-                        : SizedBox(),
-                    SizedBox(width: 10)
-                  ],
-                )),
-            flex: 1),
-        SizedBox(width: 10),
-        Container(
-          height: 50,
-          child: RaisedButton(
-            color: Theme.of(context).accentColor,
-            onPressed: () async {
-              if (keywordController.text == "")
-                keywordController.text = widget.keyword;
-              SharedPreferences prefs = await SharedPreferences.getInstance();
-              int index = myHistoryLabelsName.indexOf(keywordController.text);
-              if (index != -1) {
-                myHistoryLabelsName.removeAt(index);
-                myHistoryLabelsName.insert(0, keywordController.text);
-              } else {
-                myHistoryLabelsName.add(keywordController.text);
-              }
-              prefs.setString("historyLabel", json.encode(myHistoryLabelsName));
-              setState(() {
-                showClearIcon = true;
-                myHistoryLabels.insert(0, Label(keywordController.text));
-              });
-              goSearch();
-            },
-            child: Text(
-              '搜索',
-              style: TextStyle(fontSize: 16.0, color: Colors.white),
-            ),
+                              onTap: () {
+                                setState(() {
+                                  keywordController.text = ""; //清除输入框的值
+                                  searching = false;
+                                  showClearIcon = false;
+                                });
+                              },
+                              child: Image.asset(
+                                "lib/assets/images/icon-clear.png",
+                                height: Size.smallIcon,
+                                width: Size.smallIcon,
+                              ))
+                          : SizedBox(),
+                      SizedBox(width: Size.smallMargin)
+                    ],
+                  )),
+              flex: 1),
+          SizedBox(width: 10),
+          Container(
+              height: 50,
+              child: RaisedButton(
+                color: Theme.of(context).accentColor,
+                onPressed: () async {
+                  if (keywordController.text == "")
+                    keywordController.text = widget.keyword;
+                  SharedPreferences prefs =
+                      await SharedPreferences.getInstance();
+                  int index =
+                      myHistoryLabelsName.indexOf(keywordController.text);
+                  if (index != -1) {
+                    myHistoryLabelsName.removeAt(index);
+                    myHistoryLabelsName.insert(0, keywordController.text);
+                  } else {
+                    myHistoryLabelsName.add(keywordController.text);
+                  }
+                  prefs.setString(
+                      "historyLabel", json.encode(myHistoryLabelsName));
+                  setState(() {
+                    showClearIcon = true;
+                    myHistoryLabels.insert(0, Label(keywordController.text));
+                  });
+                  goSearch();
+                },
+                child: Text(
+                  '搜索',
+                  style: TextStyle(fontSize: Size.middleFontSize, color: Colors.white),
+                ),
 
-            ///圆角
-            shape: RoundedRectangleBorder(
-                side: BorderSide.none,
-                borderRadius: BorderRadius.all(Radius.circular(50))),
-          ))
-
-      ],
+                ///圆角
+                shape: RoundedRectangleBorder(
+                    side: BorderSide.none,
+                    borderRadius: BorderRadius.all(Radius.circular(50))),
+              ))
+        ],
+      ),
     );
   }
 
@@ -252,7 +265,7 @@ class _SearchPageState extends State<SearchPage> {
         .then((res) {
       setState(() {
         searching = true;
-        searchResult = (res["data"] as List).cast().map((item){
+        searchResult = (res["data"] as List).cast().map((item) {
           return MovieDetailModel.fromJson(item);
         }).toList(); // 顶部轮播组件数
       });
@@ -304,34 +317,26 @@ class _SearchPageState extends State<SearchPage> {
   }
 
   Widget HistorySearchComponent() {
-    return Column(
+    return Container(
+      decoration: ThemeStyle.boxDecoration,
+      padding: ThemeStyle.padding,
+      margin: ThemeStyle.margin,
+      child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
-          SizedBox(height: 20),
-          Row(children: <Widget>[
-            Container(
-                padding: EdgeInsets.only(left: 5),
-                decoration: BoxDecoration(
-                  border: Border(
-                    left: BorderSide(
-                      width: 3, //宽度
-                      color: Colors.blue, //边框颜色
-                    ),
-                  ),
-                ),
-                child: Text("历史搜索"))
-          ]),
-          SizedBox(height: 15),
-          myHistoryLabels.length > 0 ?
-          Wrap(
-            spacing: 10,
+          TitleComponent(title:"历史搜索"),
+          SizedBox(height: Size.containerPadding),
+          myHistoryLabels.length > 0
+              ? Wrap(
+            spacing: Size.smallMargin,
             children: myHistoryLabels,
-          ):
-              Container(
-                  height: 80,
-                  child: Text("暂时搜索记录"),
-                  alignment: Alignment.center,
-              )
-        ]);
+          )
+              : Container(
+            height: 80,
+            child: Text("暂无搜索记录"),
+            alignment: Alignment.center,
+          )
+        ]),)
+     ;
   }
 }

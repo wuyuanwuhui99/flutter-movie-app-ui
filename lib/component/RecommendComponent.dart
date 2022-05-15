@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:movie/service/serverMethod.dart';
 import './MovieListComponent.dart';
+import './TitleComponent.dart';
 import '../model/MovieDetailModel.dart';
+import '../theme/ThemeStyle.dart';
 /*-----------------------获取推荐的影片------------------------*/
 class RecommendComponent extends StatelessWidget {
   final String classify;
@@ -20,7 +22,18 @@ class RecommendComponent extends StatelessWidget {
             List<MovieDetailModel> movieList = (snapshot.data["data"] as List).cast().map((item){
                 return MovieDetailModel.fromJson(item);
             }).toList();
-            return MovieListComponent(movieList: movieList,title: title,direction: direction,);
+            return Container(
+              decoration: ThemeStyle.boxDecoration,
+              padding: ThemeStyle.padding,
+              margin: ThemeStyle.margin,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                TitleComponent(title:title),
+                MovieListComponent(movieList: movieList,direction: direction)
+              ],),
+            );
+
           }
         });
   }

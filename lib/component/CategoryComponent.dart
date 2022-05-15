@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:movie/service/serverMethod.dart';
 import './MovieListComponent.dart';
 import '../model/MovieDetailModel.dart';
-
+import '../theme/ThemeStyle.dart';
+import './TitleComponent.dart';
 /*-----------------------分类电影------------------------*/
 class CategoryComponent extends StatelessWidget {
   final String category, classify;
@@ -24,7 +25,18 @@ class CategoryComponent extends StatelessWidget {
               return MovieDetailModel.fromJson(item);
             }).toList();
           }
-          return MovieListComponent(movieList: categoryList,title: category,direction: "horizontal",);
+          return Container(decoration: ThemeStyle.boxDecoration,
+            margin: ThemeStyle.margin,
+            padding: ThemeStyle.padding,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                TitleComponent(title: category),
+                MovieListComponent(movieList: categoryList,direction: "horizontal",)
+              ],
+            ),
+          );
+//          return MovieListComponent(movieList: categoryList,title: category,direction: "horizontal",);
         });
   }
 }

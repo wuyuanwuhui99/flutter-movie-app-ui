@@ -12,6 +12,8 @@ class ThemeStyle {
 
   static EdgeInsets padding = EdgeInsets.all(Size.containerPadding);
 
+  static EdgeInsets paddingBox = EdgeInsets.only(left: Size.containerPadding,right: Size.containerPadding,top: Size.containerPadding);
+
   static TextStyle mainTitleStyle = TextStyle(
       color: ThemeColors.mainTitle,
       fontSize: Size.bigFontSize,
