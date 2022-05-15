@@ -107,6 +107,7 @@ class UserMsgComponent extends StatelessWidget {
                         child: Column(children: <Widget>[
                           Text(userMsg.userAge.toString(),
                               style: ThemeStyle.mainTitleStyle),
+                          SizedBox(height: Size.smallMargin),
                           Text("使用天数", style: ThemeStyle.subTitleStyle)
                         ])),
                     Expanded(
@@ -114,18 +115,21 @@ class UserMsgComponent extends StatelessWidget {
                         child: Column(children: <Widget>[
                           Text(userMsg.favoriteCount.toString(),
                               style: ThemeStyle.mainTitleStyle),
+                          SizedBox(height: Size.smallMargin),
                           Text("收藏", style: ThemeStyle.subTitleStyle)
                         ])),
                     Expanded(
                         flex: 1,
                         child: Column(children: <Widget>[
                           Text(userMsg.playRecordCount.toString(), style: ThemeStyle.mainTitleStyle),
+                          SizedBox(height: Size.smallMargin),
                           Text("观看记录", style: ThemeStyle.subTitleStyle)
                         ])),
                     Expanded(
                         flex: 1,
                         child: Column(children: <Widget>[
                           Text(userMsg.viewRecordCount.toString(), style: ThemeStyle.mainTitleStyle),
+                          SizedBox(height: Size.smallMargin),
                           Text("浏览记录", style: ThemeStyle.subTitleStyle)
                         ])),
                   ],
