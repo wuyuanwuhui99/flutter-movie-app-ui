@@ -6,7 +6,8 @@ import 'package:provider/provider.dart';
 
 /*-----------------------头像组件------------------------*/
 class AvaterComponent extends StatelessWidget {
-  const AvaterComponent({Key key}) : super(key: key);
+  final double size;
+  const AvaterComponent({Key key,this.size}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -16,15 +17,15 @@ class AvaterComponent extends StatelessWidget {
             context, MaterialPageRoute(builder: (context) => UserPage()));
       },
       child: Container(
-          width: 40,
-          height: 40,
+          width: size,
+          height: size,
           child: ClipOval(
             child: Image.network(
               //从全局的provider中获取用户信息
               serviceUrl +
                   Provider.of<UserInfoProvider>(context).userInfo.avater,
-              height: 40,
-              width: 40,
+              height: size,
+              width: size,
               fit: BoxFit.cover,
             ),
           )),

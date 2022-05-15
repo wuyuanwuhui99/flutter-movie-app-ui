@@ -27,7 +27,7 @@ class TopNavigators extends StatelessWidget {
               child: Column(
                 children: <Widget>[
                   Image.asset(value['image'],
-                      height: Size.iconSize, width: Size.iconSize, fit: BoxFit.cover),
+                      height: Size.bigIcon, width: Size.bigIcon, fit: BoxFit.cover),
                   SizedBox(height: Size.containerPadding),
                   Text(
                     value['title'],

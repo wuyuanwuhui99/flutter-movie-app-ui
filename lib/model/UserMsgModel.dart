@@ -14,7 +14,7 @@ class UserMsgModel{
   factory UserMsgModel.fromJson(dynamic json){
     return UserMsgModel(
       userAge: json["userAge"],
-      favoriteCount: json["birthday"],
+      favoriteCount: json["favoriteCount"],
       playRecordCount: json["playRecordCount"],
       viewRecordCount: json["viewRecordCount"]
     );

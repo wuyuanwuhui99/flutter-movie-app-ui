@@ -67,66 +67,65 @@ class _HomePageState extends State<HomePage>
   Widget init(BuildContext context) {
     return Container(
         width: MediaQuery.of(context).size.width - Size.containerPadding * 2,
-        child: Padding(
-            padding: ThemeStyle.padding,
-            child: Column(children: <Widget>[
-              Row(
-                children: <Widget>[
-                  Container(
-                    alignment: Alignment.centerLeft,
-                    width: MediaQuery.of(context).size.width -
-                        Size.containerPadding * 2,
-                    margin: ThemeStyle.margin,
-                    decoration: ThemeStyle.boxDecoration,
-                    child: Padding(
-                      padding: ThemeStyle.padding,
-                      child: Row(
+        padding: EdgeInsets.all(Size.containerPadding),
+        child: Column(children: <Widget>[
+          Row(
+            children: <Widget>[
+              Container(
+                alignment: Alignment.centerLeft,
+                width: MediaQuery.of(context).size.width -
+                    Size.containerPadding * 2,
+                margin: ThemeStyle.margin,
+                decoration: ThemeStyle.boxDecoration,
+                child: Padding(
+                  padding: ThemeStyle.padding,
+                  child: Row(
+                    children: <Widget>[
+                      AvaterComponent(size: Size.middleAvater),
+                      Expanded(
+                          flex: 1,
+                          child: Padding(
+                              padding: EdgeInsets.only(left: Size.smallMargin),
+                              child: SearchCommponent(classify: "电影")))
+                    ],
+                  ),
+                ),
+              )
+            ],
+          ),
+          Expanded(
+              flex: 1,
+              child: EasyRefresh(
+                  footer: MaterialFooter(),
+                  onLoad: () async {
+                    pageNum++;
+                    if (pageNum >= allCategoryLists.length) {
+                      Fluttertoast.showToast(
+                          msg: "已经到底了",
+                          toastLength: Toast.LENGTH_SHORT,
+                          gravity: ToastGravity.CENTER,
+                          timeInSecForIos: 1,
+                          backgroundColor: Colors.blue,
+                          textColor: Colors.white,
+                          fontSize: Size.middleFontSize);
+                    } else {
+                      _getCategoryItem();
+                    }
+                  },
+                  child: ListView(
+                    children: <Widget>[
+                      Column(
                         children: <Widget>[
-                          AvaterComponent(),
-                          Expanded(
-                              flex: 1,
-                              child: Padding(
-                                  padding: EdgeInsets.only(left: Size.smallMargin),
-                                  child: SearchCommponent(classify: "电影")))
+                          SwiperComponent(classify: "电影"),
+                          TopNavigators(),
                         ],
                       ),
-                    ),
-                  )
-                ],
-              ),
-              Expanded(
-                  flex: 1,
-                  child: EasyRefresh(
-                      footer: MaterialFooter(),
-                      onLoad: () async {
-                        pageNum++;
-                        if (pageNum >= allCategoryLists.length) {
-                          Fluttertoast.showToast(
-                              msg: "已经到底了",
-                              toastLength: Toast.LENGTH_SHORT,
-                              gravity: ToastGravity.CENTER,
-                              timeInSecForIos: 1,
-                              backgroundColor: Colors.blue,
-                              textColor: Colors.white,
-                              fontSize: 16.0);
-                        } else {
-                          _getCategoryItem();
-                        }
-                      },
-                      child: ListView(
-                        children: <Widget>[
-                          Column(
-                            children: <Widget>[
-                              SwiperComponent(classify: "电影"),
-                              TopNavigators(),
-                            ],
-                          ),
-                          Column(
-                            children: categoryList,
-                          )
-                        ],
-                      )))
-            ])));
+                      Column(
+                        children: categoryList,
+                      )
+                    ],
+                  )))
+        ]));
   }
 
   @override

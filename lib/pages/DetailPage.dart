@@ -78,8 +78,8 @@ class BannerComponent extends StatelessWidget {
           )),
           child: Center(
               child: Image.asset("lib/assets/images/icon-detail-play.png",
-                  height: Size.iconSize,
-                  width: Size.iconSize,
+                  height: Size.bigIcon,
+                  width: Size.bigIcon,
                   fit: BoxFit.cover)),
         ));
   }
@@ -117,8 +117,8 @@ class MovieInfoComponent extends StatelessWidget {
                     child: Center(
                         child: Image.asset(
                             "lib/assets/images/icon-detail-play.png",
-                            height: Size.iconSize,
-                            width: Size.iconSize,
+                            height: Size.bigIcon,
+                            width: Size.bigIcon,
                             fit: BoxFit.cover)),
                     decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(Size.radius),

@@ -61,7 +61,6 @@ flutter:
    - lib/assets/images/icon-arrow.png
    - lib/assets/images/icon-collection.png
    - lib/assets/images/icon-collection-active.png
-   - lib/assets/images/icon-history.png
    - lib/assets/images/icon-music.png
    - lib/assets/images/icon-record.png
    - lib/assets/images/icon-talk.png
@@ -75,6 +74,8 @@ flutter:
    - lib/assets/images/icon-user.png
    - lib/assets/images/icon-clear.png
    - lib/assets/images/icon-back.png
+   - lib/assets/images/icon_edit.png
+   - lib/assets/images/icon_play_record.png
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.
 

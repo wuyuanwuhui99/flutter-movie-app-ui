@@ -1,9 +1,10 @@
 import 'dart:async';
+import 'package:dio/dio.dart';
 import '../config/serviceUrl.dart';
 import '../utils/LocalStroageUtils.dart';
-import 'package:dio/dio.dart';
 import '../config/common.dart';
 import '../model/MovieDetailModel.dart';
+
 BaseOptions options = new BaseOptions(
   connectTimeout: 1000 * 10,
   receiveTimeout: 1000 * 20,
