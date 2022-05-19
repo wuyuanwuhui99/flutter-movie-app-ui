@@ -12,7 +12,6 @@ import '../model/CommentModel.dart';
 import '../config/serviceUrl.dart';
 import '../theme/ThemeColors.dart';
 import '../theme/Size.dart';
-import '../theme/ThemeColors.dart';
 
 class PlayerPage extends StatefulWidget {
   final MovieDetailModel movieItem;
@@ -137,7 +136,7 @@ class _PlayerPageState extends State<PlayerPage> {
                                           padding: EdgeInsets.only(bottom: 10),
                                           child: Row(
                                               crossAxisAlignment:
-                                              CrossAxisAlignment.start,
+                                                  CrossAxisAlignment.start,
                                               children: <Widget>[
                                                 ClipOval(
                                                     child: Image.network(
@@ -152,46 +151,43 @@ class _PlayerPageState extends State<PlayerPage> {
                                                   flex: 1,
                                                   child: Column(
                                                       crossAxisAlignment:
-                                                      CrossAxisAlignment
-                                                          .start,
+                                                          CrossAxisAlignment
+                                                              .start,
                                                       children: <Widget>[
                                                         InkWell(
                                                             onTap: () {
                                                               setState(() {
                                                                 replyCommentItem =
                                                                     replyTopCommentItem =
-                                                                commentList[
-                                                                index];
+                                                                        commentList[
+                                                                            index];
                                                               });
                                                             },
                                                             child: Column(
                                                                 crossAxisAlignment:
-                                                                CrossAxisAlignment
-                                                                    .start,
+                                                                    CrossAxisAlignment
+                                                                        .start,
                                                                 children: <
                                                                     Widget>[
                                                                   Text(
                                                                       commentList[
-                                                                      index]
+                                                                              index]
                                                                           .username,
                                                                       style: TextStyle(
-                                                                          color: Color
-                                                                              .fromRGBO(
+                                                                          color: Color.fromRGBO(
                                                                               136,
                                                                               136,
                                                                               136,
                                                                               1))),
-                                                                  Text(
-                                                                      commentList[
-                                                                      index]
-                                                                          .content),
+                                                                  Text(commentList[
+                                                                          index]
+                                                                      .content),
                                                                   Text(
                                                                     commentList[index]
-                                                                        .createTime +
+                                                                            .createTime +
                                                                         '  回复',
                                                                     style: TextStyle(
-                                                                        color: Color
-                                                                            .fromRGBO(
+                                                                        color: Color.fromRGBO(
                                                                             136,
                                                                             136,
                                                                             136,
@@ -199,75 +195,65 @@ class _PlayerPageState extends State<PlayerPage> {
                                                                   ),
                                                                 ])),
                                                         commentList[index]
-                                                            .replyList
-                                                            .length >
-                                                            0
+                                                                    .replyList
+                                                                    .length >
+                                                                0
                                                             ? getReplyList(
-                                                            commentList[
-                                                            index]
-                                                                .replyList,
-                                                            commentList[
-                                                            index])
+                                                                commentList[
+                                                                        index]
+                                                                    .replyList,
+                                                                commentList[
+                                                                    index])
                                                             : SizedBox(),
                                                         commentList[index]
-                                                            .replyCount >
-                                                            0 &&
-                                                            commentList[index]
-                                                                .replyCount -
-                                                                10 *
-                                                                    commentList[index]
-                                                                        .replyPageNum >
-                                                                0
-                                                            ? InkWell(
-                                                            child: Padding(
-                                                                padding:
-                                                                EdgeInsets.only(
-                                                                    top:
-                                                                    5),
-                                                                child: Text(
-                                                                    '--展开${commentList[index]
-                                                                        .replyCount -
+                                                                        .replyCount >
+                                                                    0 &&
+                                                                commentList[index]
+                                                                            .replyCount -
                                                                         10 *
                                                                             commentList[index]
-                                                                                .replyPageNum}条回复 >',
-                                                                    style: TextStyle(
-                                                                        color: Color
-                                                                            .fromRGBO(
-                                                                            136,
-                                                                            136,
-                                                                            136,
-                                                                            1)))),
-                                                            onTap: () {
-                                                              getReplyCommentListService(
-                                                                  commentList[index]
-                                                                      .id,
-                                                                  10,
-                                                                  commentList[index]
-                                                                      .replyPageNum +
-                                                                      1)
-                                                                  .then(
-                                                                      (value) {
+                                                                                .replyPageNum >
+                                                                    0
+                                                            ? InkWell(
+                                                                child: Padding(
+                                                                    padding:
+                                                                        EdgeInsets.only(
+                                                                            top:
+                                                                                5),
+                                                                    child: Text(
+                                                                        '--展开${commentList[index].replyCount - 10 * commentList[index].replyPageNum}条回复 >',
+                                                                        style: TextStyle(
+                                                                            color: Color.fromRGBO(
+                                                                                136,
+                                                                                136,
+                                                                                136,
+                                                                                1)))),
+                                                                onTap: () {
+                                                                  getReplyCommentListService(
+                                                                          commentList[index]
+                                                                              .id,
+                                                                          10,
+                                                                          commentList[index].replyPageNum +
+                                                                              1)
+                                                                      .then(
+                                                                          (value) {
                                                                     setState(
-                                                                            () {
-                                                                          (value["data"]
-                                                                          as List)
-                                                                              .cast()
-                                                                              .forEach(
-                                                                                  (
-                                                                                  element) {
-                                                                                commentList[index]
-                                                                                    .replyList
-                                                                                    .add(
-                                                                                    CommentModel
-                                                                                        .fromJson(
-                                                                                        element));
-                                                                              });
-                                                                          commentList[
-                                                                          index]
-                                                                              .replyPageNum++;
-                                                                        });
+                                                                        () {
+                                                                      (value["data"]
+                                                                              as List)
+                                                                          .cast()
+                                                                          .forEach(
+                                                                              (element) {
+                                                                        commentList[index]
+                                                                            .replyList
+                                                                            .add(CommentModel.fromJson(element));
+                                                                      });
+                                                                      commentList[
+                                                                              index]
+                                                                          .replyPageNum++;
+                                                                    });
                                                                   });
-                                                            })
+                                                                })
                                                             : SizedBox()
                                                       ]),
                                                 )
@@ -301,7 +287,7 @@ class _PlayerPageState extends State<PlayerPage> {
                                           hintStyle: TextStyle(
                                               fontSize: 14, color: Colors.grey),
                                           contentPadding:
-                                          EdgeInsets.only(left: 10, top: 0),
+                                              EdgeInsets.only(left: 10, top: 0),
                                           border: InputBorder.none,
                                         ))),
                               ),
@@ -311,9 +297,7 @@ class _PlayerPageState extends State<PlayerPage> {
                                 child: RaisedButton(
                                     color: disabledSend
                                         ? Color.fromARGB(255, 230, 230, 230)
-                                        : Theme
-                                        .of(context)
-                                        .accentColor,
+                                        : Theme.of(context).accentColor,
                                     child: Text("发送",
                                         style: TextStyle(color: Colors.white)),
                                     shape: RoundedRectangleBorder(
@@ -335,12 +319,12 @@ class _PlayerPageState extends State<PlayerPage> {
     Map commentMap = {};
     commentMap["content"] = keywordController.text;
     commentMap["parentId"] =
-    replyCommentItem == null ? null : replyCommentItem.id;
+        replyCommentItem == null ? null : replyCommentItem.id;
     commentMap["topId"] =
-    replyCommentItem == null ? null : replyTopCommentItem.topId;
+        replyCommentItem == null ? null : replyTopCommentItem.topId;
     commentMap["movieId"] = widget.movieItem.movieId;
     commentMap["replyUserId"] =
-    replyCommentItem == null ? null : replyCommentItem.userId;
+        replyCommentItem == null ? null : replyCommentItem.userId;
     insertCommentService(commentMap).then((res) {
       setState(() {
         commentCount++;
@@ -384,8 +368,7 @@ class _PlayerPageState extends State<PlayerPage> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: <Widget>[
                               Text(
-                                  '${element.username}▶${element
-                                      .replyUserName}',
+                                  '${element.username}▶${element.replyUserName}',
                                   style: TextStyle(
                                       color: Color.fromRGBO(136, 136, 136, 1))),
                               Text(element.content),
@@ -411,7 +394,7 @@ class _PlayerPageState extends State<PlayerPage> {
             return Container();
           } else {
             List<MovieUrlModel> playList =
-            (snapshot.data["data"] as List).cast().map((item) {
+                (snapshot.data["data"] as List).cast().map((item) {
               return MovieUrlModel.fromJson(item);
             }).toList();
             if (playList.length == 0) {
@@ -428,23 +411,21 @@ class _PlayerPageState extends State<PlayerPage> {
               }
               playGroupList[playGroup - 1].add(playList[i]);
             }
-            Widget tabs = _renderTab();
+            Widget tabs = _renderTab(playGroupList.length);
             Widget series = _getPlaySeries(playGroupList);
             return Container(
                 decoration: ThemeStyle.boxDecoration,
                 padding: ThemeStyle.padding,
                 margin: ThemeStyle.margin,
-                child: Column(children: [tabs, SizedBox(height: 10), series]));
+                child: Column(children: [tabs, SizedBox(height: Size.containerPadding), series]));
           }
         });
   }
 
-  Widget _renderTab() {
-    int length = 4;
+  Widget _renderTab(int length) {
     List<Widget> tabs = <Widget>[];
     if (length > 1) {
       for (int i = 0; i < length; i++) {
-        if(i !=0)tabs.add(Container(width: 1,decoration: BoxDecoration(color: Colors.red,)));
         tabs.add(InkWell(
             onTap: () {
               setState(() {
@@ -455,93 +436,89 @@ class _PlayerPageState extends State<PlayerPage> {
                 decoration: BoxDecoration(
                     borderRadius: BorderRadius.only(
                         topLeft: Radius.circular(i == 0 ? Size.bigRadius : 0),
-                        bottomLeft: Radius.circular(
-                            i == 0 ? Size.bigRadius : 0),
+                        bottomLeft:
+                            Radius.circular(i == 0 ? Size.bigRadius : 0),
                         topRight: Radius.circular(
                             i == length - 1 ? Size.bigRadius : 0),
                         bottomRight: Radius.circular(
-                            i == length - 1 ? Size.bigRadius : 0)
-                    ),
+                            i == length - 1 ? Size.bigRadius : 0)),
                     color: currentIndex == i
                         ? ThemeColors.activeColor
-                        : ThemeColors.colorBg,
-            ),
-                    height: Size.buttomHeight,
-                    padding: EdgeInsets.only(
-                        left: Size.smallMargin, right: Size.smallMargin),
-                    child: Center(child: Text("播放地址${(i + 1).toString()}",
-                        style: TextStyle(
-                            color: currentIndex == i
-                                ? ThemeColors.colorWhite
-                                : Colors.black))))));
-        }
-        }
-          return Row(
-          children: tabs,
-          mainAxisAlignment: MainAxisAlignment.center,
-        );
+                        : ThemeColors.colorWhite,
+                    border: Border(
+                        left: BorderSide(
+                            width: Size.borderWidth,
+                            color: ThemeColors.borderColor),
+                        right: BorderSide(
+                            width: Size.borderWidth,
+                            color: ThemeColors.borderColor),
+                        top: BorderSide(
+                            width: Size.borderWidth,
+                            color: ThemeColors.borderColor),
+                        bottom: BorderSide(
+                            width: Size.borderWidth,
+                            color: ThemeColors.borderColor))),
+                height: Size.buttomHeight,
+                padding: EdgeInsets.only(
+                    left: Size.smallMargin, right: Size.smallMargin),
+                child: Center(
+                    child:
+                        Text("播放地址${(i + 1).toString()}", style: TextStyle(color: currentIndex == i ? ThemeColors.colorWhite : Colors.black))))));
       }
+    }
+    return Row(
+      children: tabs,
+      mainAxisAlignment: MainAxisAlignment.center,
+    );
+  }
 
   Widget _getPlaySeries(List playGroupList) {
-    return Container(
-      height: 80,
-      width: MediaQuery
-          .of(context)
-          .size
-          .width - 40,
-      child: ListView.builder(
-          scrollDirection: Axis.horizontal,
-          itemCount: playGroupList[currentIndex].length,
-          itemBuilder: (content, index) {
-            return InkWell(
-                onTap: () {
-                  setState(() {
-                    url = playGroupList[currentIndex][index].url;
-                  });
-                },
-                child: Container(
-                  width: 80,
-                  height: 80,
-                  decoration: BoxDecoration(
-                      border: Border.all(
-                          color: url == playGroupList[currentIndex][index].url
-                              ? Colors.orange
-                              : Color.fromRGBO(187, 187, 187, 1)),
-                      borderRadius: BorderRadius.all(Radius.circular(80))),
-                  child: Center(
-                      child: Text(
-                        playGroupList[currentIndex][index].label,
-                        style: TextStyle(
-                            color: url == playGroupList[currentIndex][index].url
-                                ? Colors.orange
-                                : Colors.black),
-                      )),
-                ));
-          }),
-    );
+    List<Widget> playSeries = [];
+    for(int i= 0; i < playGroupList[currentIndex].length; i++){
+      playSeries.add(Container(
+        padding: ThemeStyle.padding,
+        decoration: BoxDecoration(
+            border: Border.all(
+                color: url == playGroupList[currentIndex][i].url
+                    ? Colors.orange
+                    : ThemeColors.borderColor),
+            borderRadius: BorderRadius.all(Radius.circular(Size.middleRadius))),
+        child: Center(child: Text(
+          playGroupList[0][i].label,
+          style: TextStyle(
+              color: url == playGroupList[currentIndex][i].url
+                  ? Colors.orange
+                  : Colors.black)),
+        ),
+      ));
+    }
+    return GridView.count(
+        crossAxisSpacing: Size.smallMargin,
+        mainAxisSpacing: Size.smallMargin,
+        //水平子 Widget 之间间距
+        crossAxisCount: 5,
+        //一行的 Widget 数量
+        physics: NeverScrollableScrollPhysics(),
+        shrinkWrap: true,
+        childAspectRatio: 1.6,
+        children: playSeries);
   }
 
   Widget webViewWidget() {
     return Container(
-        width: MediaQuery
-            .of(context)
-            .size
-            .width,
-        height: MediaQuery
-            .of(context)
-            .size
-            .width / 16 * 9,
+        width: MediaQuery.of(context).size.width,
+        height: MediaQuery.of(context).size.width / 16 * 9,
         decoration: BoxDecoration(
           color: Colors.black,
         ),
         child:
-        /*url != ""
+            /*url != ""
           ? WebView(
               initialUrl: url,
               javascriptMode: JavascriptMode.unrestricted,
             )
           : SizedBox(),*/
-        SizedBox());
+            SizedBox());
   }
 
   Widget handleWidget() {
@@ -567,7 +544,7 @@ class _PlayerPageState extends State<PlayerPage> {
                 setState(() {
                   showComment = true;
                   getTopCommentListService(
-                      widget.movieItem.movieId, pageSize, pageNum)
+                          widget.movieItem.movieId, pageSize, pageNum)
                       .then((value) {
                     (value["data"] as List).forEach((element) {
                       setState(() {
