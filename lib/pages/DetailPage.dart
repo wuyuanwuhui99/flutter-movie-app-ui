@@ -121,7 +121,7 @@ class MovieInfoComponent extends StatelessWidget {
                             width: Size.bigIcon,
                             fit: BoxFit.cover)),
                     decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(Size.radius),
+                        borderRadius: BorderRadius.circular(Size.middleRadius),
                         image: DecorationImage(
                           image: NetworkImage(movieInfo.img),
                           fit: BoxFit.cover,

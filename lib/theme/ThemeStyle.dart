@@ -5,7 +5,7 @@ import './ThemeColors.dart';
 class ThemeStyle {
   static BoxDecoration boxDecoration = BoxDecoration(
     color: Colors.white,
-    borderRadius: BorderRadius.all(Radius.circular(Size.radius)),
+    borderRadius: BorderRadius.all(Radius.circular(Size.middleRadius)),
   );
 
   static EdgeInsets margin = EdgeInsets.only(bottom: Size.containerPadding);
@@ -26,7 +26,7 @@ class ThemeStyle {
       border: Border(
           bottom: BorderSide(
             // 设置单侧边框的样式
-              color: ThemeColors.border,
+              color: ThemeColors.borderColor,
               width: 1,
               style: BorderStyle.solid)));
 }

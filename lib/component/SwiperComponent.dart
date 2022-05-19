@@ -42,7 +42,7 @@ class SwiperComponent extends StatelessWidget {
                           height: 200,
                           fit: BoxFit.cover,
                         ),
-                        borderRadius: BorderRadius.circular(Size.radius)
+                        borderRadius: BorderRadius.circular(Size.middleRadius)
                     );
                 },
                 itemCount: swiperDataList.length,

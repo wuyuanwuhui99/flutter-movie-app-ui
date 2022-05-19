@@ -1,6 +1,7 @@
 class Size {
   static double containerPadding = 15;// 每个模块之间的内边距和外边距
-  static double radius = 10;// 圆角大小
+  static double middleRadius = 10;// 圆角大小
+  static double bigRadius = 20;// 圆角大小
   static double swiperHeight = 200; // 轮播高度
   static double movieWidth = 150; // 电影图片宽度
   static double movieHeight = 200;// 电影图片高度
@@ -14,5 +15,7 @@ class Size {
   static double bigFontSize = 20;// 大标题字体
   static double middleAvater = 40;// 中等头像
   static double bigAvater = 60;// 大头像
+  static double borderWidth = 1;// 边框大小
+  static double buttomHeight = 40;//按钮大小
 
 }
