@@ -417,7 +417,7 @@ class _PlayerPageState extends State<PlayerPage> {
                 decoration: ThemeStyle.boxDecoration,
                 padding: ThemeStyle.padding,
                 margin: ThemeStyle.margin,
-                child: Column(children: [tabs, SizedBox(height: Size.containerPadding), series]));
+                child: Column(children: [tabs, SizedBox(height: playGroupList.length > 1 ? Size.containerPadding : 0), series]));
           }
         });
   }
