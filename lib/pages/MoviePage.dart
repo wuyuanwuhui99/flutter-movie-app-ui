@@ -7,7 +7,7 @@ import '../component/SearchCommponent.dart';
 import '../component/AvaterComponent.dart';
 import '../component/CategoryComponent.dart';
 import '../component/SwiperComponent.dart';
-import '../theme/Size.dart';
+import '../theme/ThemeSize.dart';
 import '../theme/ThemeStyle.dart';
 
 class MoviePage extends StatefulWidget {
@@ -64,18 +64,18 @@ class _MoviePageState extends State<MoviePage>
           children: <Widget>[
             Container(
                 width: MediaQuery.of(context).size.width -
-                    Size.containerPadding * 2,
+                    ThemeSize.containerPadding * 2,
                 margin: ThemeStyle.margin,
                 decoration: ThemeStyle.boxDecoration,
                 padding: ThemeStyle.padding,
                 child:Row(
                   children: <Widget>[
-                    AvaterComponent(size: Size.middleAvater,),
+                    AvaterComponent(size: ThemeSize.middleAvater,),
                     Expanded(
                         flex: 1,
                         child: Padding(
                             padding:
-                            EdgeInsets.only(left: Size.smallMargin),
+                            EdgeInsets.only(left: ThemeSize.smallMargin),
                             child: SearchCommponent(classify: "电影")))
                   ],
                 )
@@ -96,7 +96,7 @@ class _MoviePageState extends State<MoviePage>
                       timeInSecForIos: 1,
                       backgroundColor: Colors.blue,
                       textColor: Colors.white,
-                      fontSize: Size.middleFontSize);
+                      fontSize: ThemeSize.middleFontSize);
                 } else {
                   _getCategoryItem();
                 }

@@ -5,7 +5,7 @@ import 'package:movie/theme/ThemeStyle.dart';
 import '../config/serviceUrl.dart';
 import "../pages/DetailPage.dart";
 import '../model/MovieDetailModel.dart';
-import '../theme/Size.dart';
+import '../theme/ThemeSize.dart';
 /*-----------------------轮播组件------------------------*/
 class SwiperComponent extends StatelessWidget {
   final String classify;
@@ -27,7 +27,7 @@ class SwiperComponent extends StatelessWidget {
             }).toList(); // 顶部轮播组件数
           }
           return Container(
-              height: Size.swiperHeight,
+              height: ThemeSize.swiperHeight,
               margin: ThemeStyle.margin,
               child:
               Swiper(
@@ -42,7 +42,7 @@ class SwiperComponent extends StatelessWidget {
                           height: 200,
                           fit: BoxFit.cover,
                         ),
-                        borderRadius: BorderRadius.circular(Size.middleRadius)
+                        borderRadius: BorderRadius.circular(ThemeSize.middleRadius)
                     );
                 },
                 itemCount: swiperDataList.length,

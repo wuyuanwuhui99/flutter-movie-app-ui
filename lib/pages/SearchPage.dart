@@ -11,7 +11,7 @@ import '../component/RecommendComponent.dart';
 import '../model/MovieDetailModel.dart';
 import '../theme/ThemeStyle.dart';
 import '../theme/ThemeColors.dart';
-import '../theme/Size.dart';
+import '../theme/ThemeSize.dart';
 
 class SearchPage extends StatefulWidget {
   final String keyword;
@@ -211,11 +211,11 @@ class _SearchPageState extends State<SearchPage> {
                               },
                               child: Image.asset(
                                 "lib/assets/images/icon-clear.png",
-                                height: Size.smallIcon,
-                                width: Size.smallIcon,
+                                height: ThemeSize.smallIcon,
+                                width: ThemeSize.smallIcon,
                               ))
                           : SizedBox(),
-                      SizedBox(width: Size.smallMargin)
+                      SizedBox(width: ThemeSize.smallMargin)
                     ],
                   )),
               flex: 1),
@@ -247,7 +247,7 @@ class _SearchPageState extends State<SearchPage> {
                 },
                 child: Text(
                   '搜索',
-                  style: TextStyle(fontSize: Size.middleFontSize, color: Colors.white),
+                  style: TextStyle(fontSize: ThemeSize.middleFontSize, color: Colors.white),
                 ),
 
                 ///圆角
@@ -325,10 +325,10 @@ class _SearchPageState extends State<SearchPage> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
           TitleComponent(title:"历史搜索"),
-          SizedBox(height: Size.containerPadding),
+          SizedBox(height: ThemeSize.containerPadding),
           myHistoryLabels.length > 0
               ? Wrap(
-            spacing: Size.smallMargin,
+            spacing: ThemeSize.smallMargin,
             children: myHistoryLabels,
           )
               : Container(

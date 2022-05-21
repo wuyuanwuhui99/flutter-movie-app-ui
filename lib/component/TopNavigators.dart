@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import '../pages/NewMoviePage.dart';
-import '../theme/Size.dart';
+import '../theme/ThemeSize.dart';
 import '../theme/ThemeStyle.dart';
 /*-----------------------分类图标------------------------*/
 class TopNavigators extends StatelessWidget {
@@ -27,8 +27,8 @@ class TopNavigators extends StatelessWidget {
               child: Column(
                 children: <Widget>[
                   Image.asset(value['image'],
-                      height: Size.bigIcon, width: Size.bigIcon, fit: BoxFit.cover),
-                  SizedBox(height: Size.containerPadding),
+                      height: ThemeSize.bigIcon, width: ThemeSize.bigIcon, fit: BoxFit.cover),
+                  SizedBox(height: ThemeSize.containerPadding),
                   Text(
                     value['title'],
                     textAlign: TextAlign.center,

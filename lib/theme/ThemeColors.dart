@@ -6,4 +6,5 @@ class ThemeColors {
   static Color subTitle = Color.fromRGBO(153, 153, 153, 1);
   static Color borderColor = Color.fromRGBO(221, 221, 221, 1);
   static Color activeColor = Color.fromRGBO(24, 144, 255, 1);
+  static Color disableColor = Color.fromRGBO(221, 221, 221, 1);
 }

@@ -1,26 +1,26 @@
 import 'package:flutter/material.dart';
-import './Size.dart';
+import './ThemeSize.dart';
 import './ThemeColors.dart';
 
 class ThemeStyle {
   static BoxDecoration boxDecoration = BoxDecoration(
     color: Colors.white,
-    borderRadius: BorderRadius.all(Radius.circular(Size.middleRadius)),
+    borderRadius: BorderRadius.all(Radius.circular(ThemeSize.middleRadius)),
   );
 
-  static EdgeInsets margin = EdgeInsets.only(bottom: Size.containerPadding);
+  static EdgeInsets margin = EdgeInsets.only(bottom: ThemeSize.containerPadding);
 
-  static EdgeInsets padding = EdgeInsets.all(Size.containerPadding);
+  static EdgeInsets padding = EdgeInsets.all(ThemeSize.containerPadding);
 
-  static EdgeInsets paddingBox = EdgeInsets.only(left: Size.containerPadding,right: Size.containerPadding,top: Size.containerPadding);
+  static EdgeInsets paddingBox = EdgeInsets.only(left: ThemeSize.containerPadding,right: ThemeSize.containerPadding,top: ThemeSize.containerPadding);
 
   static TextStyle mainTitleStyle = TextStyle(
       color: ThemeColors.mainTitle,
-      fontSize: Size.bigFontSize,
+      fontSize: ThemeSize.bigFontSize,
       fontWeight: FontWeight.bold);
 
   static TextStyle subTitleStyle =
-      TextStyle(color: ThemeColors.subTitle, fontSize: Size.smallFontSize);
+      TextStyle(color: ThemeColors.subTitle, fontSize: ThemeSize.smallFontSize);
 
   static BoxDecoration bottomDecoration = BoxDecoration(
       border: Border(

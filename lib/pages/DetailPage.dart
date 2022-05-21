@@ -8,7 +8,7 @@ import '../component/RecommendComponent.dart';
 import '../model/MovieDetailModel.dart';
 import '../model/MovieStarModel.dart';
 import '../theme/ThemeStyle.dart';
-import '../theme/Size.dart';
+import '../theme/ThemeSize.dart';
 
 class DetailPage extends StatefulWidget {
   final MovieDetailModel movieItem;
@@ -32,7 +32,7 @@ class _DetailPageState extends State<DetailPage> {
     return Scaffold(
         backgroundColor: ThemeColors.colorBg,
         body: Padding(
-            padding: EdgeInsets.all(Size.containerPadding),
+            padding: EdgeInsets.all(ThemeSize.containerPadding),
             child: SingleChildScrollView(
                 child: Column(
               children: <Widget>[
@@ -70,7 +70,7 @@ class BannerComponent extends StatelessWidget {
         },
         child: Container(
           width: MediaQuery.of(context).size.width,
-          height: Size.movieHeight,
+          height: ThemeSize.movieHeight,
           decoration: BoxDecoration(
               image: DecorationImage(
             image: NetworkImage(movieItem.img),
@@ -78,8 +78,8 @@ class BannerComponent extends StatelessWidget {
           )),
           child: Center(
               child: Image.asset("lib/assets/images/icon-detail-play.png",
-                  height: Size.bigIcon,
-                  width: Size.bigIcon,
+                  height: ThemeSize.bigIcon,
+                  width: ThemeSize.bigIcon,
                   fit: BoxFit.cover)),
         ));
   }
@@ -96,7 +96,7 @@ class MovieInfoComponent extends StatelessWidget {
       decoration: ThemeStyle.boxDecoration,
       margin: ThemeStyle.margin,
       child: Padding(
-        padding: EdgeInsets.all(Size.containerPadding),
+        padding: EdgeInsets.all(ThemeSize.containerPadding),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -112,16 +112,16 @@ class MovieInfoComponent extends StatelessWidget {
                   }
                 },
                 child: Container(
-                    width: Size.movieWidth,
-                    height: Size.movieHeight,
+                    width: ThemeSize.movieWidth,
+                    height: ThemeSize.movieHeight,
                     child: Center(
                         child: Image.asset(
                             "lib/assets/images/icon-detail-play.png",
-                            height: Size.bigIcon,
-                            width: Size.bigIcon,
+                            height: ThemeSize.bigIcon,
+                            width: ThemeSize.bigIcon,
                             fit: BoxFit.cover)),
                     decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(Size.middleRadius),
+                        borderRadius: BorderRadius.circular(ThemeSize.middleRadius),
                         image: DecorationImage(
                           image: NetworkImage(movieInfo.img),
                           fit: BoxFit.cover,
@@ -258,8 +258,8 @@ class StarComponent extends StatelessWidget {
                           SizedBox(height: 15),
                           Container(
                               width: MediaQuery.of(context).size.width -
-                                  Size.containerPadding * 2,
-                              height: Size.modualHeight,
+                                  ThemeSize.containerPadding * 2,
+                              height: ThemeSize.modualHeight,
                               child: ListView.builder(
                                   scrollDirection: Axis.horizontal,
                                   itemCount: stars.length,

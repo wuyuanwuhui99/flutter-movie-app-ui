@@ -13,7 +13,7 @@ import '../component/CategoryComponent.dart';
 import '../component/SwiperComponent.dart';
 import '../model/UserInfoModel.dart';
 import '../component/TopNavigators.dart';
-import '../theme/Size.dart';
+import '../theme/ThemeSize.dart';
 import '../theme/ThemeStyle.dart';
 
 /*-----------------------首页------------------------*/
@@ -66,7 +66,7 @@ class _HomePageState extends State<HomePage>
 
   Widget init(BuildContext context) {
     return Container(
-        width: MediaQuery.of(context).size.width - Size.containerPadding * 2,
+        width: MediaQuery.of(context).size.width - ThemeSize.containerPadding * 2,
         padding: ThemeStyle.paddingBox,
         child: Column(children: <Widget>[
           Row(
@@ -74,18 +74,18 @@ class _HomePageState extends State<HomePage>
               Container(
                 alignment: Alignment.centerLeft,
                 width: MediaQuery.of(context).size.width -
-                    Size.containerPadding * 2,
+                    ThemeSize.containerPadding * 2,
                 margin: ThemeStyle.margin,
                 decoration: ThemeStyle.boxDecoration,
                 child: Padding(
                   padding: ThemeStyle.padding,
                   child: Row(
                     children: <Widget>[
-                      AvaterComponent(size: Size.middleAvater),
+                      AvaterComponent(size: ThemeSize.middleAvater),
                       Expanded(
                           flex: 1,
                           child: Padding(
-                              padding: EdgeInsets.only(left: Size.smallMargin),
+                              padding: EdgeInsets.only(left: ThemeSize.smallMargin),
                               child: SearchCommponent(classify: "电影")))
                     ],
                   ),
@@ -107,7 +107,7 @@ class _HomePageState extends State<HomePage>
                           timeInSecForIos: 1,
                           backgroundColor: Colors.blue,
                           textColor: Colors.white,
-                          fontSize: Size.middleFontSize);
+                          fontSize: ThemeSize.middleFontSize);
                     } else {
                       _getCategoryItem();
                     }

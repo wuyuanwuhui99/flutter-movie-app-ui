@@ -3,7 +3,7 @@ import 'package:movie/theme/ThemeStyle.dart';
 import '../pages/DetailPage.dart';
 import '../config/serviceUrl.dart';
 import '../model/MovieDetailModel.dart';
-import '../theme/Size.dart';
+import '../theme/ThemeSize.dart';
 
 /*-----------------------获取推荐的影片------------------------*/
 class MovieListComponent extends StatelessWidget {
@@ -36,8 +36,8 @@ class MovieListComponent extends StatelessWidget {
 
   Widget movieItemWidget(MovieDetailModel item, int index) {
     return Container(
-      width: Size.movieWidth,
-      height: Size.movieHeight,
+      width: ThemeSize.movieWidth,
+      height: ThemeSize.movieHeight,
       margin: EdgeInsets.only(
           left: direction == "horizontal" && index > 0 ? 10 : 0),
       child: Column(
@@ -82,7 +82,7 @@ class MovieListComponent extends StatelessWidget {
               : Container(
                   height: 230,
                   width: MediaQuery.of(context).size.width -
-                      Size.containerPadding * 2,
+                      ThemeSize.containerPadding * 2,
                   child: ListView(
                     scrollDirection: Axis.horizontal,
                     children: this._items(context),

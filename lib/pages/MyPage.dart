@@ -7,7 +7,7 @@ import '../component/AvaterComponent.dart';
 import '../model/UserInfoModel.dart';
 import '../model/UserMsgModel.dart';
 import '../theme/ThemeStyle.dart';
-import '../theme/Size.dart';
+import '../theme/ThemeSize.dart';
 import '../theme/ThemeColors.dart';
 import '../model/MovieDetailModel.dart';
 
@@ -37,8 +37,8 @@ class _MyPageState extends State<MyPage> with AutomaticKeepAliveClientMixin {
             child: Row(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: <Widget>[
-                AvaterComponent(size: Size.bigAvater),
-                SizedBox(width: Size.containerPadding),
+                AvaterComponent(size: ThemeSize.bigAvater),
+                SizedBox(width: ThemeSize.containerPadding),
                 Expanded(
                     flex: 1,
                     child: Column(
@@ -47,7 +47,7 @@ class _MyPageState extends State<MyPage> with AutomaticKeepAliveClientMixin {
                           Text(userInfoModel.username,
                               style: TextStyle(
                                   color: ThemeColors.mainTitle,
-                                  fontSize: Size.bigFontSize,
+                                  fontSize: ThemeSize.bigFontSize,
                                   fontWeight: FontWeight.bold)),
                           Text(
                             userInfoModel.sign,
@@ -55,7 +55,7 @@ class _MyPageState extends State<MyPage> with AutomaticKeepAliveClientMixin {
                           )
                         ])),
                 Image.asset("lib/assets/images/icon_edit.png",
-                    width: Size.middleIcon, height: Size.middleIcon)
+                    width: ThemeSize.middleIcon, height: ThemeSize.middleIcon)
               ],
             ),
           ),
@@ -68,11 +68,11 @@ class _MyPageState extends State<MyPage> with AutomaticKeepAliveClientMixin {
               children: <Widget>[
                 Row(children: <Widget>[
                   Image.asset("lib/assets/images/icon_play_record.png",
-                      height: Size.middleIcon, width: Size.middleIcon, fit: BoxFit.cover),
-                  SizedBox(width: Size.smallMargin),
-                  Text("观看记录", style: TextStyle(fontSize: Size.middleFontSize)),
+                      height: ThemeSize.middleIcon, width: ThemeSize.middleIcon, fit: BoxFit.cover),
+                  SizedBox(width: ThemeSize.smallMargin),
+                  Text("观看记录", style: TextStyle(fontSize: ThemeSize.middleFontSize)),
                 ]),
-                SizedBox(height: Size.smallMargin,),
+                SizedBox(height: ThemeSize.smallMargin,),
                 HistoryComponent(),
               ],
             ),
@@ -107,7 +107,7 @@ class UserMsgComponent extends StatelessWidget {
                         child: Column(children: <Widget>[
                           Text(userMsg.userAge.toString(),
                               style: ThemeStyle.mainTitleStyle),
-                          SizedBox(height: Size.smallMargin),
+                          SizedBox(height: ThemeSize.smallMargin),
                           Text("使用天数", style: ThemeStyle.subTitleStyle)
                         ])),
                     Expanded(
@@ -115,21 +115,21 @@ class UserMsgComponent extends StatelessWidget {
                         child: Column(children: <Widget>[
                           Text(userMsg.favoriteCount.toString(),
                               style: ThemeStyle.mainTitleStyle),
-                          SizedBox(height: Size.smallMargin),
+                          SizedBox(height: ThemeSize.smallMargin),
                           Text("收藏", style: ThemeStyle.subTitleStyle)
                         ])),
                     Expanded(
                         flex: 1,
                         child: Column(children: <Widget>[
                           Text(userMsg.playRecordCount.toString(), style: ThemeStyle.mainTitleStyle),
-                          SizedBox(height: Size.smallMargin),
+                          SizedBox(height: ThemeSize.smallMargin),
                           Text("观看记录", style: ThemeStyle.subTitleStyle)
                         ])),
                     Expanded(
                         flex: 1,
                         child: Column(children: <Widget>[
                           Text(userMsg.viewRecordCount.toString(), style: ThemeStyle.mainTitleStyle),
-                          SizedBox(height: Size.smallMargin),
+                          SizedBox(height: ThemeSize.smallMargin),
                           Text("浏览记录", style: ThemeStyle.subTitleStyle)
                         ])),
                   ],
@@ -156,7 +156,7 @@ class HistoryComponent extends StatelessWidget {
             if (movieList.length == 0) {
               return Container(
                   alignment: Alignment.center,
-                  height: Size.movieHeight,
+                  height: ThemeSize.movieHeight,
                   child: Text("暂无观看记录"));
             } else {
               return MovieListComponent(movieList: movieList, direction: "horizontal");
@@ -180,55 +180,55 @@ class PannelComponent extends StatelessWidget {
           child: Column(children: <Widget>[
             Container(
                 decoration: ThemeStyle.bottomDecoration,
-                padding: EdgeInsets.only(bottom:Size.containerPadding),
+                padding: EdgeInsets.only(bottom:ThemeSize.containerPadding),
                 child:  Row(
                   children: <Widget>[
                     Image.asset("lib/assets/images/icon-collection.png",
-                        height: Size.middleIcon, width: Size.middleIcon, fit: BoxFit.cover),
-                    SizedBox(width: Size.smallMargin),
-                    Text("我的收藏", style: TextStyle(fontSize: Size.middleFontSize)),
+                        height: ThemeSize.middleIcon, width: ThemeSize.middleIcon, fit: BoxFit.cover),
+                    SizedBox(width: ThemeSize.smallMargin),
+                    Text("我的收藏", style: TextStyle(fontSize: ThemeSize.middleFontSize)),
                     Expanded(
                       flex: 1,
                       child: SizedBox(),
                     ),
                     Image.asset("lib/assets/images/icon-arrow.png",
-                        height: Size.smallIcon, width: Size.smallIcon, fit: BoxFit.cover),
+                        height: ThemeSize.smallIcon, width: ThemeSize.smallIcon, fit: BoxFit.cover),
                   ],
                 )),
             Container(
                 decoration: ThemeStyle.bottomDecoration,
-                padding: EdgeInsets.only(top: Size.containerPadding,bottom: Size.containerPadding),
+                padding: EdgeInsets.only(top: ThemeSize.containerPadding,bottom: ThemeSize.containerPadding),
                 child: Row(
                   children: <Widget>[
                     Image.asset("lib/assets/images/icon-record.png",
-                        height: Size.middleIcon, width: Size.middleIcon, fit: BoxFit.cover),
+                        height: ThemeSize.middleIcon, width: ThemeSize.middleIcon, fit: BoxFit.cover),
                     SizedBox(width: 10),
-                    Text("我浏览过的电影", style: TextStyle(fontSize: Size.middleFontSize)),
+                    Text("我浏览过的电影", style: TextStyle(fontSize: ThemeSize.middleFontSize)),
                     Expanded(
                       flex: 1,
                       child: SizedBox(),
                     ),
                     Image.asset("lib/assets/images/icon-arrow.png",
-                        height: Size.smallIcon, width: Size.smallIcon, fit: BoxFit.cover),
+                        height: ThemeSize.smallIcon, width: ThemeSize.smallIcon, fit: BoxFit.cover),
                   ],
                 )),
             Container(
-                padding: EdgeInsets.only(top: Size.containerPadding),
+                padding: EdgeInsets.only(top: ThemeSize.containerPadding),
                 child: Row(
                   children: <Widget>[
                     Image.asset("lib/assets/images/icon-talk.png",
-                        height: Size.middleIcon, width: Size.middleIcon, fit: BoxFit.cover),
-                    SizedBox(width: Size.smallMargin),
+                        height: ThemeSize.middleIcon, width: ThemeSize.middleIcon, fit: BoxFit.cover),
+                    SizedBox(width: ThemeSize.smallMargin),
                     Text(
                       "电影圈",
-                      style: TextStyle(fontSize: Size.middleFontSize),
+                      style: TextStyle(fontSize: ThemeSize.middleFontSize),
                     ),
                     Expanded(
                       flex: 1,
                       child: SizedBox(),
                     ),
                     Image.asset("lib/assets/images/icon-arrow.png",
-                        height: Size.smallIcon, width: Size.smallIcon, fit: BoxFit.cover),
+                        height: ThemeSize.smallIcon, width: ThemeSize.smallIcon, fit: BoxFit.cover),
                   ],
                 ))
           ])),
@@ -241,35 +241,35 @@ class PannelComponent extends StatelessWidget {
           child: Column(children: <Widget>[
             Container(
                 decoration: ThemeStyle.bottomDecoration,
-                padding: EdgeInsets.only(bottom: Size.containerPadding),
+                padding: EdgeInsets.only(bottom: ThemeSize.containerPadding),
                 child: Row(
                   children: <Widget>[
                     Image.asset("lib/assets/images/icon-music.png",
-                        height: Size.middleIcon, width: Size.middleIcon, fit: BoxFit.cover),
+                        height: ThemeSize.middleIcon, width: ThemeSize.middleIcon, fit: BoxFit.cover),
                     SizedBox(width: 10),
-                    Text("音乐", style: TextStyle(fontSize: Size.middleFontSize)),
+                    Text("音乐", style: TextStyle(fontSize: ThemeSize.middleFontSize)),
                     Expanded(
                       flex: 1,
                       child: SizedBox(),
                     ),
                     Image.asset("lib/assets/images/icon-arrow.png",
-                        height: Size.smallIcon, width: Size.smallIcon, fit: BoxFit.cover),
+                        height: ThemeSize.smallIcon, width: ThemeSize.smallIcon, fit: BoxFit.cover),
                   ],
                 )),
             Container(
-              margin: EdgeInsets.only(top: Size.containerPadding),
+              margin: EdgeInsets.only(top: ThemeSize.containerPadding),
                 child: Row(
                   children: <Widget>[
                     Image.asset("lib/assets/images/icon-app.png",
-                        height: Size.middleIcon, width: Size.middleIcon, fit: BoxFit.cover),
+                        height: ThemeSize.middleIcon, width: ThemeSize.middleIcon, fit: BoxFit.cover),
                     SizedBox(width: 10),
-                    Text("小程序", style: TextStyle(fontSize: Size.middleFontSize)),
+                    Text("小程序", style: TextStyle(fontSize: ThemeSize.middleFontSize)),
                     Expanded(
                       flex: 1,
                       child: SizedBox(),
                     ),
                     Image.asset("lib/assets/images/icon-arrow.png",
-                        height: Size.smallIcon, width: Size.smallIcon, fit: BoxFit.cover),
+                        height: ThemeSize.smallIcon, width: ThemeSize.smallIcon, fit: BoxFit.cover),
                   ],
                 )),
           ]))

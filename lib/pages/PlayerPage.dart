@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:movie/theme/ThemeStyle.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 import '../component/ScoreComponent.dart';
 import '../service/serverMethod.dart';
@@ -11,8 +12,8 @@ import '../model/MovieUrlModel.dart';
 import '../model/CommentModel.dart';
 import '../config/serviceUrl.dart';
 import '../theme/ThemeColors.dart';
-import '../theme/Size.dart';
-
+import '../theme/ThemeSize.dart';
+import '../utils/comment.dart';
 class PlayerPage extends StatefulWidget {
   final MovieDetailModel movieItem;
 
@@ -31,7 +32,6 @@ class _PlayerPageState extends State<PlayerPage> {
   bool showComment = false;
   List<CommentModel> commentList = [];
   int pageNum = 1;
-  int pageSize = 20;
   CommentModel replyTopCommentItem;
   CommentModel replyCommentItem;
   bool disabledSend = true;
@@ -103,37 +103,40 @@ class _PlayerPageState extends State<PlayerPage> {
   Widget getTopCommentWidget() {
     return Positioned(
         child: Container(
-            width: double.infinity,
-            height: double.infinity,
+            width: MediaQuery.of(context).size.width,
+            height: MediaQuery.of(context).size.height,
             color: Color.fromRGBO(0, 0, 0, 0.5),
             child: Column(
               children: <Widget>[
-                Container(height: 300),
+                SizedBox(
+                  height: MediaQuery.of(context).size.width / 16 * 9,
+                ),
                 Expanded(
                   flex: 1,
                   child: Container(
-                      color: Color.fromRGBO(249, 249, 249, 1),
+                      color: ThemeColors.colorBg,
                       child: Column(children: <Widget>[
-                        SizedBox(height: 10),
+                        SizedBox(height: ThemeSize.smallMargin),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: <Widget>[
-                            Text(commentCount.toString() + "条评论",
-                                style: TextStyle(
-                                    color: Color.fromRGBO(136, 136, 136, 1)))
+                            Text(commentCount.toString() + "条评论")
                           ],
                         ),
                         Expanded(
                             flex: 1,
                             child: Padding(
                                 padding: EdgeInsets.only(
-                                    left: 20, right: 20, top: 0),
+                                    left: ThemeSize.containerPadding,
+                                    right: ThemeSize.containerPadding,
+                                    top: 0),
                                 child: ListView.builder(
                                     scrollDirection: Axis.vertical,
                                     itemCount: commentList.length,
                                     itemBuilder: (content, index) {
                                       return Padding(
-                                          padding: EdgeInsets.only(bottom: 10),
+                                          padding: EdgeInsets.only(
+                                              bottom: ThemeSize.smallMargin),
                                           child: Row(
                                               crossAxisAlignment:
                                                   CrossAxisAlignment.start,
@@ -143,10 +146,14 @@ class _PlayerPageState extends State<PlayerPage> {
                                                         serviceUrl +
                                                             commentList[index]
                                                                 .avater,
-                                                        height: 40,
-                                                        width: 40,
+                                                        height:
+                                                            ThemeSize.bigIcon,
+                                                        width:
+                                                            ThemeSize.bigIcon,
                                                         fit: BoxFit.cover)),
-                                                SizedBox(width: 10),
+                                                SizedBox(
+                                                    width:
+                                                        ThemeSize.smallMargin),
                                                 Expanded(
                                                   flex: 1,
                                                   child: Column(
@@ -174,24 +181,20 @@ class _PlayerPageState extends State<PlayerPage> {
                                                                               index]
                                                                           .username,
                                                                       style: TextStyle(
-                                                                          color: Color.fromRGBO(
-                                                                              136,
-                                                                              136,
-                                                                              136,
-                                                                              1))),
+                                                                          color:
+                                                                              ThemeColors.subTitle)),
+                                                                  SizedBox(height: ThemeSize.superSmllMargin),
                                                                   Text(commentList[
                                                                           index]
                                                                       .content),
+                                                                  SizedBox(height: ThemeSize.superSmllMargin),
                                                                   Text(
-                                                                    commentList[index]
-                                                                            .createTime +
+                                                                    formatTime(commentList[index]
+                                                                            .createTime) +
                                                                         '  回复',
                                                                     style: TextStyle(
-                                                                        color: Color.fromRGBO(
-                                                                            136,
-                                                                            136,
-                                                                            136,
-                                                                            1)),
+                                                                        color: ThemeColors
+                                                                            .subTitle),
                                                                   ),
                                                                 ])),
                                                         commentList[index]
@@ -223,11 +226,7 @@ class _PlayerPageState extends State<PlayerPage> {
                                                                     child: Text(
                                                                         '--展开${commentList[index].replyCount - 10 * commentList[index].replyPageNum}条回复 >',
                                                                         style: TextStyle(
-                                                                            color: Color.fromRGBO(
-                                                                                136,
-                                                                                136,
-                                                                                136,
-                                                                                1)))),
+                                                                            color: ThemeColors.subTitle))),
                                                                 onTap: () {
                                                                   getReplyCommentListService(
                                                                           commentList[index]
@@ -260,23 +259,20 @@ class _PlayerPageState extends State<PlayerPage> {
                                               ]));
                                     }))),
                         Padding(
-                            padding: EdgeInsets.all(20),
+                            padding: ThemeStyle.padding,
                             child: Row(children: <Widget>[
                               Expanded(
                                 child: Container(
                                     height: 45,
                                     //修饰黑色背景与圆角
-                                    decoration: new BoxDecoration(
-                                      border: Border.all(
-                                          color: Color.fromARGB(
-                                              255, 241, 242, 246),
-                                          width: 1.0), //灰色的一层边框
-                                      color: Color.fromARGB(255, 230, 230, 230),
+                                    decoration: new BoxDecoration(//灰色的一层边框
+                                      color: ThemeColors.borderColor,
                                       borderRadius: new BorderRadius.all(
-                                          new Radius.circular(30.0)),
+                                          new Radius.circular(ThemeSize.bigRadius)),
                                     ),
                                     alignment: Alignment.center,
-                                    padding: EdgeInsets.only(left: 10, top: 0),
+                                    padding: EdgeInsets.only(
+                                        left: ThemeSize.smallMargin, top: 0),
                                     child: TextField(
                                         controller: keywordController,
                                         cursorColor: Colors.grey, //设置光标
@@ -285,27 +281,47 @@ class _PlayerPageState extends State<PlayerPage> {
                                               ? '回复${replyCommentItem.username}'
                                               : '有爱评论，说点好听的~',
                                           hintStyle: TextStyle(
-                                              fontSize: 14, color: Colors.grey),
-                                          contentPadding:
-                                              EdgeInsets.only(left: 10, top: 0),
+                                              fontSize: ThemeSize.smallFontSize,
+                                              color: Colors.grey),
+                                          contentPadding: EdgeInsets.only(
+                                              left: ThemeSize.smallMargin,
+                                              top: 0),
                                           border: InputBorder.none,
                                         ))),
                               ),
-                              SizedBox(width: 10),
+                              SizedBox(width: ThemeSize.smallMargin),
                               Container(
                                 height: 45,
                                 child: RaisedButton(
+                                    highlightColor:Colors.transparent,
+                                    splashColor:Colors.transparent,
                                     color: disabledSend
-                                        ? Color.fromARGB(255, 230, 230, 230)
+                                        ? ThemeColors.disableColor
                                         : Theme.of(context).accentColor,
                                     child: Text("发送",
-                                        style: TextStyle(color: Colors.white)),
+                                        style: TextStyle(
+                                            color: disabledSend
+                                                ? ThemeColors.subTitle
+                                                : Colors.white)),
                                     shape: RoundedRectangleBorder(
                                         side: BorderSide.none,
                                         borderRadius: BorderRadius.all(
-                                            Radius.circular(50))),
+                                            Radius.circular(
+                                                ThemeSize.plusRadius))),
                                     onPressed: () async {
-                                      onInserComment();
+                                      if (disabledSend) {
+                                        Fluttertoast.showToast(
+                                            msg: "已经到底了",
+                                            toastLength: Toast.LENGTH_SHORT,
+                                            gravity: ToastGravity.CENTER,
+                                            timeInSecForIos: 1,
+                                            backgroundColor:
+                                                ThemeColors.disableColor,
+                                            textColor: Colors.white,
+                                            fontSize: ThemeSize.middleFontSize);
+                                      } else {
+                                        onInserComment();
+                                      }
                                     }),
                               )
                             ]))
@@ -344,13 +360,15 @@ class _PlayerPageState extends State<PlayerPage> {
     List<Widget> replyListWidget = [];
     replyList.forEach((element) {
       replyListWidget.add(Padding(
-          padding: EdgeInsets.only(top: 10),
+          padding: EdgeInsets.only(top: ThemeSize.smallMargin),
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
               ClipOval(
                   child: Image.network(serviceUrl + element.avater,
-                      height: 30, width: 30, fit: BoxFit.cover)),
+                      height: ThemeSize.middleIcon,
+                      width: ThemeSize.middleIcon,
+                      fit: BoxFit.cover)),
               SizedBox(width: 10),
               Expanded(
                 flex: 1,
@@ -369,12 +387,11 @@ class _PlayerPageState extends State<PlayerPage> {
                             children: <Widget>[
                               Text(
                                   '${element.username}▶${element.replyUserName}',
-                                  style: TextStyle(
-                                      color: Color.fromRGBO(136, 136, 136, 1))),
+                                  style:
+                                      TextStyle(color: ThemeColors.subTitle)),
                               Text(element.content),
                               Text(element.createTime + '  回复',
-                                  style: TextStyle(
-                                      color: Color.fromRGBO(136, 136, 136, 1)))
+                                  style: TextStyle(color: ThemeColors.subTitle))
                             ]))
                   ],
                 ),
@@ -417,7 +434,14 @@ class _PlayerPageState extends State<PlayerPage> {
                 decoration: ThemeStyle.boxDecoration,
                 padding: ThemeStyle.padding,
                 margin: ThemeStyle.margin,
-                child: Column(children: [tabs, SizedBox(height: playGroupList.length > 1 ? Size.containerPadding : 0), series]));
+                child: Column(children: [
+                  tabs,
+                  SizedBox(
+                      height: playGroupList.length > 1
+                          ? ThemeSize.containerPadding
+                          : 0),
+                  series
+                ]));
           }
         });
   }
@@ -435,35 +459,35 @@ class _PlayerPageState extends State<PlayerPage> {
             child: Container(
                 decoration: BoxDecoration(
                     borderRadius: BorderRadius.only(
-                        topLeft: Radius.circular(i == 0 ? Size.bigRadius : 0),
+                        topLeft:
+                            Radius.circular(i == 0 ? ThemeSize.bigRadius : 0),
                         bottomLeft:
-                            Radius.circular(i == 0 ? Size.bigRadius : 0),
+                            Radius.circular(i == 0 ? ThemeSize.bigRadius : 0),
                         topRight: Radius.circular(
-                            i == length - 1 ? Size.bigRadius : 0),
+                            i == length - 1 ? ThemeSize.bigRadius : 0),
                         bottomRight: Radius.circular(
-                            i == length - 1 ? Size.bigRadius : 0)),
+                            i == length - 1 ? ThemeSize.bigRadius : 0)),
                     color: currentIndex == i
                         ? ThemeColors.activeColor
                         : ThemeColors.colorWhite,
                     border: Border(
                         left: BorderSide(
-                            width: Size.borderWidth,
+                            width: ThemeSize.borderWidth,
                             color: ThemeColors.borderColor),
                         right: BorderSide(
-                            width: Size.borderWidth,
+                            width: ThemeSize.borderWidth,
                             color: ThemeColors.borderColor),
                         top: BorderSide(
-                            width: Size.borderWidth,
+                            width: ThemeSize.borderWidth,
                             color: ThemeColors.borderColor),
                         bottom: BorderSide(
-                            width: Size.borderWidth,
+                            width: ThemeSize.borderWidth,
                             color: ThemeColors.borderColor))),
-                height: Size.buttomHeight,
+                height: ThemeSize.buttomHeight,
                 padding: EdgeInsets.only(
-                    left: Size.smallMargin, right: Size.smallMargin),
+                    left: ThemeSize.smallMargin, right: ThemeSize.smallMargin),
                 child: Center(
-                    child:
-                        Text("播放地址${(i + 1).toString()}", style: TextStyle(color: currentIndex == i ? ThemeColors.colorWhite : Colors.black))))));
+                    child: Text("播放地址${(i + 1).toString()}", style: TextStyle(color: currentIndex == i ? ThemeColors.colorWhite : Colors.black))))));
       }
     }
     return Row(
@@ -474,7 +498,7 @@ class _PlayerPageState extends State<PlayerPage> {
 
   Widget _getPlaySeries(List playGroupList) {
     List<Widget> playSeries = [];
-    for(int i= 0; i < playGroupList[currentIndex].length; i++){
+    for (int i = 0; i < playGroupList[currentIndex].length; i++) {
       playSeries.add(Container(
         padding: ThemeStyle.padding,
         decoration: BoxDecoration(
@@ -482,25 +506,26 @@ class _PlayerPageState extends State<PlayerPage> {
                 color: url == playGroupList[currentIndex][i].url
                     ? Colors.orange
                     : ThemeColors.borderColor),
-            borderRadius: BorderRadius.all(Radius.circular(Size.middleRadius))),
-        child: Center(child: Text(
-          playGroupList[0][i].label,
-          style: TextStyle(
-              color: url == playGroupList[currentIndex][i].url
-                  ? Colors.orange
-                  : Colors.black)),
+            borderRadius:
+                BorderRadius.all(Radius.circular(ThemeSize.middleRadius))),
+        child: Center(
+          child: Text(playGroupList[0][i].label,
+              style: TextStyle(
+                  color: url == playGroupList[currentIndex][i].url
+                      ? Colors.orange
+                      : Colors.black)),
         ),
       ));
     }
     return GridView.count(
-        crossAxisSpacing: Size.smallMargin,
-        mainAxisSpacing: Size.smallMargin,
+        crossAxisSpacing: ThemeSize.smallMargin,
+        mainAxisSpacing: ThemeSize.smallMargin,
         //水平子 Widget 之间间距
-        crossAxisCount: 5,
+        crossAxisCount: ThemeSize.crossAxisCount,
         //一行的 Widget 数量
         physics: NeverScrollableScrollPhysics(),
         shrinkWrap: true,
-        childAspectRatio: 1.6,
+        childAspectRatio: ThemeSize.childAspectRatio,
         children: playSeries);
   }
 
@@ -533,10 +558,10 @@ class _PlayerPageState extends State<PlayerPage> {
                 children: <Widget>[
                   Image.asset(
                     "lib/assets/images/icon-comment.png",
-                    width: 30,
-                    height: 30,
+                    width: ThemeSize.middleIcon,
+                    height: ThemeSize.middleIcon,
                   ),
-                  SizedBox(width: 10),
+                  SizedBox(width: ThemeSize.smallMargin),
                   Text(commentCount.toString()),
                 ],
               ),
@@ -544,7 +569,7 @@ class _PlayerPageState extends State<PlayerPage> {
                 setState(() {
                   showComment = true;
                   getTopCommentListService(
-                          widget.movieItem.movieId, pageSize, pageNum)
+                          widget.movieItem.movieId, ThemeSize.pageSize, pageNum)
                       .then((value) {
                     (value["data"] as List).forEach((element) {
                       setState(() {
@@ -581,11 +606,12 @@ class _PlayerPageState extends State<PlayerPage> {
                 isFavoriteFlag
                     ? "lib/assets/images/icon-collection-active.png"
                     : "lib/assets/images/icon-collection.png",
-                width: 30,
-                height: 30),
+                width: ThemeSize.middleIcon,
+                height: ThemeSize.middleIcon),
           ),
-          SizedBox(width: 10),
-          Image.asset("lib/assets/images/icon-share.png", width: 30, height: 30)
+          SizedBox(width: ThemeSize.smallMargin),
+          Image.asset("lib/assets/images/icon-share.png",
+              width: ThemeSize.middleIcon, height: ThemeSize.middleIcon)
         ],
       ),
     );
@@ -603,13 +629,13 @@ class _PlayerPageState extends State<PlayerPage> {
                 widget.movieItem.movieName,
                 style: ThemeStyle.mainTitleStyle,
               ),
-              SizedBox(height: Size.smallMargin),
+              SizedBox(height: ThemeSize.smallMargin),
               Text(
                 widget.movieItem.star,
                 maxLines: 1,
                 overflow: TextOverflow.ellipsis,
               ),
-              SizedBox(height: Size.smallMargin),
+              SizedBox(height: ThemeSize.smallMargin),
               ScoreComponent(score: widget.movieItem.score),
             ]));
   }

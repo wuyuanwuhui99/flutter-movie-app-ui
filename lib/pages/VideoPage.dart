@@ -8,7 +8,7 @@ import '../component/AvaterComponent.dart';
 import '../component/CategoryComponent.dart';
 import '../component/SwiperComponent.dart';
 import '../theme/ThemeStyle.dart';
-import '../theme/Size.dart';
+import '../theme/ThemeSize.dart';
 
 class VideoPage extends StatefulWidget {
   VideoPage({Key key}) : super(key: key);
@@ -66,18 +66,18 @@ class _VideoPageState extends State<VideoPage>
           children: <Widget>[
             Container(
               width: MediaQuery.of(context).size.width -
-                  Size.containerPadding * 2,
+                  ThemeSize.containerPadding * 2,
               decoration: ThemeStyle.boxDecoration,
               margin: ThemeStyle.margin,
               padding: ThemeStyle.padding,
               child:  Row(
                 children: <Widget>[
-                  AvaterComponent(size: Size.middleAvater),
+                  AvaterComponent(size: ThemeSize.middleAvater),
                   Expanded(
                       flex: 1,
                       child: Padding(
                           padding: EdgeInsets.only(
-                              left: Size.smallMargin),
+                              left: ThemeSize.smallMargin),
                           child: SearchCommponent(classify: "电视剧")))
                 ],
               ),
@@ -98,7 +98,7 @@ class _VideoPageState extends State<VideoPage>
                       timeInSecForIos: 1,
                       backgroundColor: Colors.blue,
                       textColor: Colors.white,
-                      fontSize: Size.middleFontSize);
+                      fontSize: ThemeSize.middleFontSize);
                 } else {
                   _getCategoryItem();
                 }
