@@ -12,9 +12,9 @@ String formatTime(String data) {
   }else if(minutes >= 60 && minutes < 60*24){
     return (minutes/60).truncate().toString() + '小时前';
   }else if(minutes > 60 * 24 && minutes <  60 * 24 *30){
-    return (minutes/60 * 24).truncate().toString() + '天前';
+    return (minutes/60/24).truncate().toString() + '天前';
   }else if(minutes > 60 * 24 * 30 && minutes <  60 * 24 *30 *12){
-    return (minutes/60 * 24 * 30).truncate().toString() + '个月前';
+    return (minutes/60 / 24 / 30).truncate().toString() + '个月前';
   }else{
     return data;
   }

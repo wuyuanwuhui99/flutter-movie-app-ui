@@ -29,4 +29,7 @@ class ThemeStyle {
               color: ThemeColors.borderColor,
               width: 1,
               style: BorderStyle.solid)));
+
+  //列边距
+  static EdgeInsets columnPadding = EdgeInsets.only(top: ThemeSize.columnPadding,bottom: ThemeSize.columnPadding);
 }

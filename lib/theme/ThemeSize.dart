@@ -1,8 +1,9 @@
 class ThemeSize {
   static double containerPadding = 15;// 每个模块之间的内边距和外边距
+  static double columnPadding = 20;// 上下边距
   static double middleRadius = 10;// 圆角大小
   static double bigRadius = 20;// 圆角大小
-  static double plusRadius = 30;// 加大版圆角
+  static double btnRadius = 30;// 加大版圆角
   static double swiperHeight = 200; // 轮播高度
   static double movieWidth = 150; // 电影图片宽度
   static double movieHeight = 200;// 电影图片高度
@@ -10,8 +11,9 @@ class ThemeSize {
   static double bigIcon = 40;// 大图标
   static double middleIcon = 30;// 中等图标
   static double smallIcon = 20;// 中等图标
+  static double miniIcon = 15;// 超小图片
   static double smallMargin = 10;//小边距
-  static double superSmllMargin = 5;// 超小边距
+  static double miniMargin = 5;// 超小边距
   static double smallFontSize = 14;//常规字体
   static double middleFontSize = 16;//常规字体
   static double bigFontSize = 20;// 大标题字体

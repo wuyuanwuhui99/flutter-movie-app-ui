@@ -13,7 +13,7 @@ import '../model/CommentModel.dart';
 import '../config/serviceUrl.dart';
 import '../theme/ThemeColors.dart';
 import '../theme/ThemeSize.dart';
-import '../utils/comment.dart';
+import '../utils/common.dart';
 class PlayerPage extends StatefulWidget {
   final MovieDetailModel movieItem;
 
@@ -183,11 +183,11 @@ class _PlayerPageState extends State<PlayerPage> {
                                                                       style: TextStyle(
                                                                           color:
                                                                               ThemeColors.subTitle)),
-                                                                  SizedBox(height: ThemeSize.superSmllMargin),
+                                                                  SizedBox(height: ThemeSize.miniMargin),
                                                                   Text(commentList[
                                                                           index]
                                                                       .content),
-                                                                  SizedBox(height: ThemeSize.superSmllMargin),
+                                                                  SizedBox(height: ThemeSize.miniMargin),
                                                                   Text(
                                                                     formatTime(commentList[index]
                                                                             .createTime) +
@@ -307,7 +307,7 @@ class _PlayerPageState extends State<PlayerPage> {
                                         side: BorderSide.none,
                                         borderRadius: BorderRadius.all(
                                             Radius.circular(
-                                                ThemeSize.plusRadius))),
+                                                ThemeSize.btnRadius))),
                                     onPressed: () async {
                                       if (disabledSend) {
                                         Fluttertoast.showToast(
@@ -389,8 +389,9 @@ class _PlayerPageState extends State<PlayerPage> {
                                   '${element.username}▶${element.replyUserName}',
                                   style:
                                       TextStyle(color: ThemeColors.subTitle)),
+                              SizedBox(height: ThemeSize.miniMargin),
                               Text(element.content),
-                              Text(element.createTime + '  回复',
+                              Text(formatTime(element.createTime) + '  回复',
                                   style: TextStyle(color: ThemeColors.subTitle))
                             ]))
                   ],
