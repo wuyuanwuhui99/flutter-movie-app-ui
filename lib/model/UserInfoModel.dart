@@ -42,4 +42,29 @@ class UserInfoModel{
       region: json["region"],
     );
   }
+
+  Map<String, dynamic> toMap() {
+    return {
+      "avater": avater,
+      "birthday": birthday,
+      "createDate": createDate,
+      "email": email,
+      "role": role,
+      "sex": sex,
+      "telephone": telephone,
+      "updateDate": updateDate,
+      "userId": userId,
+      "username": username,
+      "sign": sign,
+      "region": region
+    };
+  }
+
+  dynamic get(String propertyName) {
+    var _mapRep = toMap();
+    if (_mapRep.containsKey(propertyName)) {
+      return _mapRep[propertyName];
+    }
+    throw ArgumentError('propery not found');
+  }
 }

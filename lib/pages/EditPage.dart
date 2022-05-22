@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
-import '../service/serverMethod.dart';
-import 'package:provider/provider.dart';
-import '../provider/UserInfoProvider.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
+import 'package:provider/provider.dart';
+import '../service/serverMethod.dart';
+import '../provider/UserInfoProvider.dart';
 import '../model/UserInfoModel.dart';
+import '../theme/ThemeStyle.dart';
+import '../theme/ThemeSize.dart';
+
 class EditPage extends StatefulWidget {
   final String title;//编辑的标题
   final String type;//编辑框的类型
@@ -37,7 +40,8 @@ class _EditPageState extends State<EditPage> {
 
   @override
   Widget build(BuildContext context) {
-    Map userInfo = Provider.of<UserInfoProvider>(context).userInfo;
+    UserInfoModel userInfoModel =
+        Provider.of<UserInfoProvider>(context).userInfo;
     return
       FlutterEasyLoading(
         child: Scaffold(
@@ -74,7 +78,7 @@ class _EditPageState extends State<EditPage> {
                                   return;
                                 }
                                 await EasyLoading.show();
-                                Map myUserInfo = Map.from(userInfo);
+                                Map myUserInfo = userInfoModel.toMap();
                                 myUserInfo[widget.field] = checkValue;
                                 updateUserData(myUserInfo).then((value)async{
                                   setState(() {
