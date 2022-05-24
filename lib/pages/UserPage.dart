@@ -19,8 +19,8 @@ class UserPage extends StatelessWidget {
     UserInfoModel userInfo = Provider.of<UserInfoProvider>(context).userInfo;
     return Scaffold(
         backgroundColor: ThemeColors.colorBg,
-        body: Container(
-            padding: ThemeStyle.padding,
+        body: SafeArea(top: true,child:  Container(
+            padding: ThemeStyle.paddingBox,
             child: Column(
               children: <Widget>[
                 Container(
@@ -31,7 +31,7 @@ class UserPage extends StatelessWidget {
                       Container(
                         decoration: ThemeStyle.bottomDecoration,
                         padding:
-                            EdgeInsets.only(bottom: ThemeSize.containerPadding),
+                        EdgeInsets.only(bottom: ThemeSize.containerPadding),
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: <Widget>[
@@ -65,12 +65,12 @@ class UserPage extends StatelessWidget {
                                 context,
                                 MaterialPageRoute(
                                     builder: (context) => EditPage(
-                                          title: "昵称",
-                                          value: userInfo.username,
-                                          type: "input",
-                                          isAllowEmpty: false,
-                                          field: "username",
-                                        )));
+                                      title: "昵称",
+                                      value: userInfo.username,
+                                      type: "input",
+                                      isAllowEmpty: false,
+                                      field: "username",
+                                    )));
                           },
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.center,
@@ -98,12 +98,12 @@ class UserPage extends StatelessWidget {
                                     context,
                                     MaterialPageRoute(
                                         builder: (context) => EditPage(
-                                              title: "电话",
-                                              value: userInfo.telephone,
-                                              type: "input",
-                                              isAllowEmpty: false,
-                                              field: "telphone",
-                                            )));
+                                          title: "电话",
+                                          value: userInfo.telephone,
+                                          type: "input",
+                                          isAllowEmpty: false,
+                                          field: "telphone",
+                                        )));
                               },
                               child: Row(
                                 mainAxisAlignment: MainAxisAlignment.center,
@@ -130,12 +130,12 @@ class UserPage extends StatelessWidget {
                                 context,
                                 MaterialPageRoute(
                                     builder: (context) => EditPage(
-                                          title: "邮箱",
-                                          value: userInfo.email,
-                                          type: "input",
-                                          isAllowEmpty: false,
-                                          field: "email",
-                                        )));
+                                      title: "邮箱",
+                                      value: userInfo.email,
+                                      type: "input",
+                                      isAllowEmpty: false,
+                                      field: "email",
+                                    )));
                           },
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.center,
@@ -163,12 +163,12 @@ class UserPage extends StatelessWidget {
                                   context,
                                   MaterialPageRoute(
                                       builder: (context) => EditPage(
-                                            title: "出生年月日",
-                                            value: userInfo.birthday,
-                                            type: "date",
-                                            isAllowEmpty: true,
-                                            field: "birthday",
-                                          )));
+                                        title: "出生年月日",
+                                        value: userInfo.birthday,
+                                        type: "date",
+                                        isAllowEmpty: true,
+                                        field: "birthday",
+                                      )));
                             },
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.center,
@@ -195,12 +195,12 @@ class UserPage extends StatelessWidget {
                                   context,
                                   MaterialPageRoute(
                                       builder: (context) => EditPage(
-                                            title: "性别",
-                                            value: userInfo.sex,
-                                            type: "radio",
-                                            isAllowEmpty: false,
-                                            field: "sex",
-                                          )));
+                                        title: "性别",
+                                        value: userInfo.sex,
+                                        type: "radio",
+                                        isAllowEmpty: false,
+                                        field: "sex",
+                                      )));
                             },
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.center,
@@ -227,12 +227,12 @@ class UserPage extends StatelessWidget {
                                   context,
                                   MaterialPageRoute(
                                       builder: (context) => EditPage(
-                                            title: "个性签名",
-                                            value: userInfo.sign,
-                                            type: "input",
-                                            isAllowEmpty: false,
-                                            field: "sign",
-                                          )));
+                                        title: "个性签名",
+                                        value: userInfo.sign,
+                                        type: "input",
+                                        isAllowEmpty: false,
+                                        field: "sign",
+                                      )));
                             },
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.center,
@@ -262,12 +262,12 @@ class UserPage extends StatelessWidget {
                                   context,
                                   MaterialPageRoute(
                                       builder: (context) => EditPage(
-                                            title: "地区",
-                                            value: userInfo.region,
-                                            type: "input",
-                                            isAllowEmpty: false,
-                                            field: "region",
-                                          )));
+                                        title: "地区",
+                                        value: userInfo.region,
+                                        type: "input",
+                                        isAllowEmpty: false,
+                                        field: "region",
+                                      )));
                             },
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.center,
@@ -303,17 +303,18 @@ class UserPage extends StatelessWidget {
                     shape: RoundedRectangleBorder(
                         side: BorderSide.none,
                         borderRadius: BorderRadius.all(
-                            Radius.circular(ThemeSize.btnRadius))),
+                            Radius.circular(ThemeSize.superRadius))),
                     onPressed: () {
                       _showDialog(context);
                     },
                     child: Text("退出登录",
                         style:
-                            TextStyle(color: Colors.white)),
+                        TextStyle(color: Colors.white)),
                   ),
                 )
               ],
-            )));
+            )))
+       );
   }
 }
 

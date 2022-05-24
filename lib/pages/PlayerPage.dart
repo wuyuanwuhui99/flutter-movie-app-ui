@@ -14,6 +14,7 @@ import '../config/serviceUrl.dart';
 import '../theme/ThemeColors.dart';
 import '../theme/ThemeSize.dart';
 import '../utils/common.dart';
+
 class PlayerPage extends StatefulWidget {
   final MovieDetailModel movieItem;
 
@@ -69,33 +70,35 @@ class _PlayerPageState extends State<PlayerPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: ThemeColors.colorBg,
-      body: Stack(
-        children: <Widget>[
-          ListView(children: <Widget>[
-            webViewWidget(),
-            Container(
-                padding: ThemeStyle.padding,
-                child: Column(children: <Widget>[
-                  handleWidget(),
-                  titleWidget(),
-                  playUrlWidget(),
-                  Column(
-                    children: <Widget>[
-                      widget.movieItem.label != null
-                          ? YouLikesComponent(label: widget.movieItem.label)
-                          : SizedBox(),
-                      RecommendComponent(
-                        classify: widget.movieItem.classify,
-                        direction: "horizontal",
-                        title: "推荐",
+      body: SafeArea(
+          top: true,
+          child: Stack(
+            children: <Widget>[
+              ListView(children: <Widget>[
+                webViewWidget(),
+                Container(
+                    padding: ThemeStyle.padding,
+                    child: Column(children: <Widget>[
+                      handleWidget(),
+                      titleWidget(),
+                      playUrlWidget(),
+                      Column(
+                        children: <Widget>[
+                          widget.movieItem.label != null
+                              ? YouLikesComponent(label: widget.movieItem.label)
+                              : SizedBox(),
+                          RecommendComponent(
+                            classify: widget.movieItem.classify,
+                            direction: "horizontal",
+                            title: "推荐",
+                          )
+                        ],
                       )
-                    ],
-                  )
-                ])),
-          ]),
-          showComment ? getTopCommentWidget() : SizedBox()
-        ],
-      ),
+                    ])),
+              ]),
+              showComment ? getTopCommentWidget() : SizedBox()
+            ],
+          )),
     );
   }
 
@@ -183,11 +186,15 @@ class _PlayerPageState extends State<PlayerPage> {
                                                                       style: TextStyle(
                                                                           color:
                                                                               ThemeColors.subTitle)),
-                                                                  SizedBox(height: ThemeSize.miniMargin),
+                                                                  SizedBox(
+                                                                      height: ThemeSize
+                                                                          .miniMargin),
                                                                   Text(commentList[
                                                                           index]
                                                                       .content),
-                                                                  SizedBox(height: ThemeSize.miniMargin),
+                                                                  SizedBox(
+                                                                      height: ThemeSize
+                                                                          .miniMargin),
                                                                   Text(
                                                                     formatTime(commentList[index]
                                                                             .createTime) +
@@ -219,14 +226,15 @@ class _PlayerPageState extends State<PlayerPage> {
                                                                     0
                                                             ? InkWell(
                                                                 child: Padding(
-                                                                    padding:
-                                                                        EdgeInsets.only(
+                                                                    padding: EdgeInsets
+                                                                        .only(
                                                                             top:
                                                                                 5),
                                                                     child: Text(
                                                                         '--展开${commentList[index].replyCount - 10 * commentList[index].replyPageNum}条回复 >',
                                                                         style: TextStyle(
-                                                                            color: ThemeColors.subTitle))),
+                                                                            color:
+                                                                                ThemeColors.subTitle))),
                                                                 onTap: () {
                                                                   getReplyCommentListService(
                                                                           commentList[index]
@@ -265,10 +273,12 @@ class _PlayerPageState extends State<PlayerPage> {
                                 child: Container(
                                     height: 45,
                                     //修饰黑色背景与圆角
-                                    decoration: new BoxDecoration(//灰色的一层边框
+                                    decoration: new BoxDecoration(
+                                      //灰色的一层边框
                                       color: ThemeColors.borderColor,
                                       borderRadius: new BorderRadius.all(
-                                          new Radius.circular(ThemeSize.bigRadius)),
+                                          new Radius.circular(
+                                              ThemeSize.bigRadius)),
                                     ),
                                     alignment: Alignment.center,
                                     padding: EdgeInsets.only(
@@ -293,8 +303,8 @@ class _PlayerPageState extends State<PlayerPage> {
                               Container(
                                 height: 45,
                                 child: RaisedButton(
-                                    highlightColor:Colors.transparent,
-                                    splashColor:Colors.transparent,
+                                    highlightColor: Colors.transparent,
+                                    splashColor: Colors.transparent,
                                     color: disabledSend
                                         ? ThemeColors.disableColor
                                         : Theme.of(context).accentColor,
@@ -307,7 +317,7 @@ class _PlayerPageState extends State<PlayerPage> {
                                         side: BorderSide.none,
                                         borderRadius: BorderRadius.all(
                                             Radius.circular(
-                                                ThemeSize.btnRadius))),
+                                                ThemeSize.superRadius))),
                                     onPressed: () async {
                                       if (disabledSend) {
                                         Fluttertoast.showToast(

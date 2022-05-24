@@ -44,32 +44,35 @@ class _SearchPageState extends State<SearchPage> {
   Widget build(BuildContext context) {
     return Scaffold(
         backgroundColor: ThemeColors.colorBg,
-        body: Container(
-          padding: ThemeStyle.padding,
-          child: Column(children: <Widget>[
-            SearchInputComponent(),
-            searching
-                ? Expanded(
-                    flex: 1,
-                    child: searchResult.length == 0
-                        ? Container(
-                            decoration: ThemeStyle.boxDecoration,
-                            padding: ThemeStyle.padding,
-                            child: Center(
-                                child: Text(
-                              "没有查询到影片",
-                              style: TextStyle(fontSize: 20),
-                            )))
-                        : SearchResult())
-                : Expanded(
-                    flex: 1,
-                    child: SingleChildScrollView(
-                        child: Column(children: <Widget>[
-                      HistorySearchComponent(),
-                      RecommendComponent(
-                          classify: "电影", direction: "vertical", title: "推荐")
-                    ]))),
-          ]),
+        body: SafeArea(
+          top: true,
+          child: Container(
+            padding: ThemeStyle.padding,
+            child: Column(children: <Widget>[
+              SearchInputComponent(),
+              searching
+                  ? Expanded(
+                      flex: 1,
+                      child: searchResult.length == 0
+                          ? Container(
+                              decoration: ThemeStyle.boxDecoration,
+                              padding: ThemeStyle.padding,
+                              child: Center(
+                                  child: Text(
+                                "没有查询到影片",
+                                style: TextStyle(fontSize: 20),
+                              )))
+                          : SearchResult())
+                  : Expanded(
+                      flex: 1,
+                      child: SingleChildScrollView(
+                          child: Column(children: <Widget>[
+                        HistorySearchComponent(),
+                        RecommendComponent(
+                            classify: "电影", direction: "vertical", title: "推荐")
+                      ]))),
+            ]),
+          ),
         ));
   }
 
@@ -247,7 +250,8 @@ class _SearchPageState extends State<SearchPage> {
                 },
                 child: Text(
                   '搜索',
-                  style: TextStyle(fontSize: ThemeSize.middleFontSize, color: Colors.white),
+                  style: TextStyle(
+                      fontSize: ThemeSize.middleFontSize, color: Colors.white),
                 ),
 
                 ///圆角
@@ -322,21 +326,21 @@ class _SearchPageState extends State<SearchPage> {
       padding: ThemeStyle.padding,
       margin: ThemeStyle.margin,
       child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: <Widget>[
-          TitleComponent(title:"历史搜索"),
-          SizedBox(height: ThemeSize.containerPadding),
-          myHistoryLabels.length > 0
-              ? Wrap(
-            spacing: ThemeSize.smallMargin,
-            children: myHistoryLabels,
-          )
-              : Container(
-            height: 80,
-            child: Text("暂无搜索记录"),
-            alignment: Alignment.center,
-          )
-        ]),)
-     ;
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            TitleComponent(title: "历史搜索"),
+            SizedBox(height: ThemeSize.containerPadding),
+            myHistoryLabels.length > 0
+                ? Wrap(
+                    spacing: ThemeSize.smallMargin,
+                    children: myHistoryLabels,
+                  )
+                : Container(
+                    height: 80,
+                    child: Text("暂无搜索记录"),
+                    alignment: Alignment.center,
+                  )
+          ]),
+    );
   }
 }

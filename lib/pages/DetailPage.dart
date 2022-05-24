@@ -31,24 +31,26 @@ class _DetailPageState extends State<DetailPage> {
   Widget build(BuildContext context) {
     return Scaffold(
         backgroundColor: ThemeColors.colorBg,
-        body: Padding(
-            padding: EdgeInsets.all(ThemeSize.containerPadding),
-            child: SingleChildScrollView(
-                child: Column(
-              children: <Widget>[
-                MovieInfoComponent(movieInfo: widget.movieItem),
-                PlotComponent(plot: widget.movieItem.plot),
-                StarComponent(movieId: widget.movieItem.movieId),
-                widget.movieItem.label != null
-                    ? YouLikesComponent(label: widget.movieItem.label)
-                    : SizedBox(),
-                RecommendComponent(
-                  classify: widget.movieItem.classify,
-                  direction: "horizontal",
-                  title: "推荐",
-                )
-              ],
-            ))));
+        body: SafeArea(
+            top: true,
+            child: Padding(
+                padding: EdgeInsets.all(ThemeSize.containerPadding),
+                child: SingleChildScrollView(
+                    child: Column(
+                  children: <Widget>[
+                    MovieInfoComponent(movieInfo: widget.movieItem),
+                    PlotComponent(plot: widget.movieItem.plot),
+                    StarComponent(movieId: widget.movieItem.movieId),
+                    widget.movieItem.label != null
+                        ? YouLikesComponent(label: widget.movieItem.label)
+                        : SizedBox(),
+                    RecommendComponent(
+                      classify: widget.movieItem.classify,
+                      direction: "horizontal",
+                      title: "推荐",
+                    )
+                  ],
+                )))));
   }
 }
 
@@ -121,7 +123,8 @@ class MovieInfoComponent extends StatelessWidget {
                             width: ThemeSize.bigIcon,
                             fit: BoxFit.cover)),
                     decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(ThemeSize.middleRadius),
+                        borderRadius:
+                            BorderRadius.circular(ThemeSize.middleRadius),
                         image: DecorationImage(
                           image: NetworkImage(movieInfo.img),
                           fit: BoxFit.cover,

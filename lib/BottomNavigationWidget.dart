@@ -38,14 +38,14 @@ class _BottomNavigationWidgetState extends State<BottomNavigationWidget> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: ThemeColors.colorBg,
-      body: PageView.builder(
+      body: SafeArea(top: true,child: PageView.builder(
           controller: _pageController,
           physics: NeverScrollableScrollPhysics(),
           onPageChanged: _pageChanged,
           itemCount: 4,
           itemBuilder: (context, index) {
             return _getPage(index);
-          }),
+          })),
       bottomNavigationBar: BottomNavigationBar(
         type: BottomNavigationBarType.fixed,
         currentIndex: _currentIndex,
