@@ -494,7 +494,7 @@ class _PlayerPageState extends State<PlayerPage> {
                         bottom: BorderSide(
                             width: ThemeSize.borderWidth,
                             color: ThemeColors.borderColor))),
-                height: ThemeSize.buttomHeight,
+                height: ThemeSize.buttonHeight,
                 padding: EdgeInsets.only(
                     left: ThemeSize.smallMargin, right: ThemeSize.smallMargin),
                 child: Center(

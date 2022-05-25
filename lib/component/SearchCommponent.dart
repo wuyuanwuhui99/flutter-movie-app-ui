@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import '../pages/SearchPage.dart';
 import 'package:movie/service/serverMethod.dart';
+import '../theme/ThemeColors.dart';
+import '../theme/ThemeSize.dart';
+import '../theme/ThemeStyle.dart';
 
 /*-----------------------搜索------------------------*/
 class SearchCommponent extends StatelessWidget {
@@ -29,18 +32,15 @@ class SearchCommponent extends StatelessWidget {
                         builder: (context) => SearchPage(keyword: keyword)));
               },
               child: Container(
-                  height: 40,
+                  height: ThemeSize.buttonHeight,
                   //修饰黑色背景与圆角
                   decoration: new BoxDecoration(
-                    border: Border.all(
-                        color: Color.fromARGB(255, 241, 242, 246),
-                        width: 1.0), //灰色的一层边框
-                    color: Color.fromARGB(255, 230, 230, 230),
+                    color: ThemeColors.colorBg,
                     borderRadius:
-                    new BorderRadius.all(new Radius.circular(20.0)),
+                    new BorderRadius.all(new Radius.circular(ThemeSize.bigRadius)),
                   ),
                   alignment: Alignment.centerLeft,
-                  padding: EdgeInsets.fromLTRB(15.0, 0.0, 0.0, 0.0),
+                  padding: EdgeInsets.only(left: ThemeSize.containerPadding),
                   child: Text(
                     keyword,
                     style: TextStyle(color: Colors.grey),

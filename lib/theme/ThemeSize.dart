@@ -23,7 +23,7 @@ class ThemeSize {
   static double middleAvater = 40;// 中等头像
   static double bigAvater = 60;// 大头像
   static double borderWidth = 1;// 边框大小
-  static double buttomHeight = 40;//按钮大小
+  static double buttonHeight = 40;//按钮大小
   static int crossAxisCount = 5;// 网格布局每行元素个数
   static double childAspectRatio = 1.6;// 网格布局宽高比例
   static int pageSize = 20;// 每页显示大小

@@ -47,7 +47,7 @@ class _SearchPageState extends State<SearchPage> {
         body: SafeArea(
           top: true,
           child: Container(
-            padding: ThemeStyle.padding,
+            padding: ThemeStyle.paddingBox,
             child: Column(children: <Widget>[
               SearchInputComponent(),
               searching
@@ -60,7 +60,7 @@ class _SearchPageState extends State<SearchPage> {
                               child: Center(
                                   child: Text(
                                 "没有查询到影片",
-                                style: TextStyle(fontSize: 20),
+                                style: TextStyle(fontSize: ThemeSize.bigFontSize),
                               )))
                           : SearchResult())
                   : Expanded(
@@ -88,15 +88,17 @@ class _SearchPageState extends State<SearchPage> {
                       builder: (context) =>
                           DetailPage(movieItem: searchResult[index])));
             },
-            child: Padding(
-              padding: EdgeInsets.only(bottom: 20),
+            child: Container(
+              padding: ThemeStyle.padding,
+              margin: ThemeStyle.margin,
+              decoration: ThemeStyle.boxDecoration,
               child: Row(
                 children: <Widget>[
                   Container(
-                    width: 150,
-                    height: 200,
+                    width: ThemeSize.movieWidth,
+                    height: ThemeSize.movieHeight,
                     child: ClipRRect(
-                        borderRadius: BorderRadius.circular(10),
+                        borderRadius: BorderRadius.circular(ThemeSize.middleRadius),
                         child: Image(
                             fit: BoxFit.fill,
                             image: NetworkImage(
@@ -106,60 +108,59 @@ class _SearchPageState extends State<SearchPage> {
                   ),
                   Expanded(
                       flex: 1,
-                      child: Padding(
-                          padding: EdgeInsets.only(left: 10),
-                          child: Container(
-                            height: 200,
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              children: <Widget>[
-                                Text(
-                                  searchResult[index].movieName,
-                                  style: TextStyle(fontSize: 20),
-                                  maxLines: 1,
-                                  overflow: TextOverflow.ellipsis,
-                                ),
-                                SizedBox(height: 10),
-                                Text(
-                                    searchResult[index].star != null
-                                        ? "主演：" + searchResult[index].star
-                                        : "",
-                                    maxLines: 1,
-                                    overflow: TextOverflow.ellipsis,
-                                    style: TextStyle(fontSize: 14)),
-                                SizedBox(height: 10),
-                                Text(
-                                    searchResult[index].director != null
-                                        ? "导演：" + searchResult[index].director
-                                        : "",
-                                    maxLines: 1,
-                                    overflow: TextOverflow.ellipsis,
-                                    style: TextStyle(fontSize: 14)),
-                                SizedBox(height: 10),
-                                Text(
-                                    searchResult[index].type != null
-                                        ? "类型：" + searchResult[index].type
-                                        : "",
-                                    maxLines: 1,
-                                    overflow: TextOverflow.ellipsis,
-                                    style: TextStyle(fontSize: 14)),
-                                SizedBox(height: 10),
-                                Text(
-                                    searchResult[index].releaseTime != null
-                                        ? "上映时间：" +
-                                            searchResult[index].releaseTime
-                                        : "",
-                                    maxLines: 1,
-                                    overflow: TextOverflow.ellipsis,
-                                    style: TextStyle(fontSize: 14)),
-                                SizedBox(height: 10),
-                                ScoreComponent(
-                                    score: searchResult[index].score),
-                                SizedBox(height: 10),
-                              ],
+                      child: Container(
+                        padding: EdgeInsets.only(left: ThemeSize.smallMargin),
+                        height: ThemeSize.movieHeight,
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: <Widget>[
+                            Text(
+                              searchResult[index].movieName,
+                              style: TextStyle(fontSize: ThemeSize.bigFontSize),
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
                             ),
-                          )))
+                            SizedBox(height: ThemeSize.smallMargin),
+                            Text(
+                                searchResult[index].star != null
+                                    ? "主演：" + searchResult[index].star
+                                    : "",
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
+                                style: TextStyle(fontSize: ThemeSize.smallFontSize)),
+                            SizedBox(height: ThemeSize.smallMargin),
+                            Text(
+                                searchResult[index].director != null
+                                    ? "导演：" + searchResult[index].director
+                                    : "",
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
+                                style: TextStyle(fontSize: ThemeSize.smallFontSize)),
+                            SizedBox(height: ThemeSize.smallMargin),
+                            Text(
+                                searchResult[index].type != null
+                                    ? "类型：" + searchResult[index].type
+                                    : "",
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
+                                style: TextStyle(fontSize: ThemeSize.smallFontSize)),
+                            SizedBox(height: ThemeSize.smallMargin),
+                            Text(
+                                searchResult[index].releaseTime != null
+                                    ? "上映时间：" +
+                                    searchResult[index].releaseTime
+                                    : "",
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
+                                style: TextStyle(fontSize: ThemeSize.smallFontSize)),
+                            SizedBox(height: ThemeSize.smallMargin),
+                            ScoreComponent(
+                                score: searchResult[index].score),
+                            SizedBox(height: ThemeSize.smallMargin),
+                          ],
+                        ),
+                      ))
                 ],
               ),
             ));
@@ -176,32 +177,30 @@ class _SearchPageState extends State<SearchPage> {
         children: <Widget>[
           Expanded(
               child: Container(
-                  height: 50,
+                  height: ThemeSize.buttonHeight,
                   //修饰黑色背景与圆角
                   decoration: new BoxDecoration(
-                    border: Border.all(
-                        color: Color.fromARGB(255, 241, 242, 246),
-                        width: 1.0), //灰色的一层边框
-                    color: Color.fromARGB(255, 230, 230, 230),
+                    color: ThemeColors.colorBg,
                     borderRadius:
-                        new BorderRadius.all(new Radius.circular(30.0)),
+                        new BorderRadius.all(new Radius.circular(ThemeSize.superRadius)),
                   ),
                   alignment: Alignment.center,
-                  padding: EdgeInsets.only(left: 10, top: 0),
+                  padding: EdgeInsets.only(left: ThemeSize.smallMargin*2),
                   child: Row(
                     children: <Widget>[
                       Expanded(
                           flex: 1,
-                          child: TextField(
+                          child:
+                          TextField(
                               controller: keywordController,
                               cursorColor: Colors.grey, //设置光标
                               decoration: InputDecoration(
                                 hintText: widget.keyword,
                                 hintStyle:
-                                    TextStyle(fontSize: 14, color: Colors.grey),
-                                contentPadding:
-                                    EdgeInsets.only(left: 10, top: 0),
+                                    TextStyle(fontSize: ThemeSize.smallFontSize, color: Colors.grey),
                                 border: InputBorder.none,
+                                contentPadding:
+                                EdgeInsets.only(bottom: ThemeSize.smallMargin),
                               ))),
                       showClearIcon
                           ? InkWell(
@@ -222,9 +221,9 @@ class _SearchPageState extends State<SearchPage> {
                     ],
                   )),
               flex: 1),
-          SizedBox(width: 10),
+          SizedBox(width: ThemeSize.smallMargin),
           Container(
-              height: 50,
+              height: ThemeSize.buttonHeight,
               child: RaisedButton(
                 color: Theme.of(context).accentColor,
                 onPressed: () async {
@@ -240,8 +239,7 @@ class _SearchPageState extends State<SearchPage> {
                   } else {
                     myHistoryLabelsName.add(keywordController.text);
                   }
-                  prefs.setString(
-                      "historyLabel", json.encode(myHistoryLabelsName));
+                  prefs.setString("historyLabels", myHistoryLabelsName.join(","));
                   setState(() {
                     showClearIcon = true;
                     myHistoryLabels.insert(0, Label(keywordController.text));
@@ -257,7 +255,7 @@ class _SearchPageState extends State<SearchPage> {
                 ///圆角
                 shape: RoundedRectangleBorder(
                     side: BorderSide.none,
-                    borderRadius: BorderRadius.all(Radius.circular(50))),
+                    borderRadius: BorderRadius.all(Radius.circular(ThemeSize.bigRadius))),
               ))
         ],
       ),
@@ -265,7 +263,7 @@ class _SearchPageState extends State<SearchPage> {
   }
 
   void goSearch() {
-    getSearchResultService(keywordController.text, pageSize: 20, pageNum: 1)
+    getSearchResultService(keywordController.text, pageSize: ThemeSize.pageSize, pageNum: 1)
         .then((res) {
       setState(() {
         searching = true;
@@ -308,9 +306,9 @@ class _SearchPageState extends State<SearchPage> {
   _getHistory() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String historyLabels = prefs.getString('historyLabels');
-    if (historyLabels != null) {
+    if (historyLabels != null && historyLabels != '') {
       setState(() {
-        myHistoryLabelsName = json.decode(historyLabels);
+        myHistoryLabelsName = historyLabels.split(",");
         int length =
             myHistoryLabelsName.length <= 20 ? myHistoryLabelsName.length : 20;
         for (int i = 0; i < length; i++) {
@@ -325,6 +323,7 @@ class _SearchPageState extends State<SearchPage> {
       decoration: ThemeStyle.boxDecoration,
       padding: ThemeStyle.padding,
       margin: ThemeStyle.margin,
+      alignment: Alignment.centerLeft,
       child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
