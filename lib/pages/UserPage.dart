@@ -291,19 +291,13 @@ class UserPage extends StatelessWidget {
                   ),
                 ),
                 Container(
-                  padding: EdgeInsets.only(
-                      left: ThemeSize.containerPadding,
-                      right: ThemeSize.containerPadding,
-                      top: ThemeSize.columnPadding,
-                      bottom: ThemeSize.columnPadding),
-                  width: MediaQuery.of(context).size.width -
-                      ThemeSize.containerPadding * 2,
-                  child: FlatButton(
+                  margin: EdgeInsets.only(top: ThemeSize.containerPadding),
+                  decoration: BoxDecoration(
                     color: Colors.red,
-                    shape: RoundedRectangleBorder(
-                        side: BorderSide.none,
-                        borderRadius: BorderRadius.all(
-                            Radius.circular(ThemeSize.superRadius))),
+                    borderRadius: BorderRadius.all(Radius.circular(ThemeSize.superRadius)),
+                  ),
+                  width: double.infinity,
+                  child: FlatButton(
                     onPressed: () {
                       _showDialog(context);
                     },

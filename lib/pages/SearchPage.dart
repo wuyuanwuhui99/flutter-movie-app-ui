@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:movie/component/TitleComponent.dart';
 import 'dart:ui';
 import "package:shared_preferences/shared_preferences.dart";
-import 'dart:convert';
 import '../config/serviceUrl.dart';
 import '../service/serverMethod.dart';
 import "./DetailPage.dart";

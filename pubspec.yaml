@@ -76,6 +76,7 @@ flutter:
    - lib/assets/images/icon-back.png
    - lib/assets/images/icon_edit.png
    - lib/assets/images/icon_play_record.png
+   - lib/assets/images/icon-logo.png
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.
 

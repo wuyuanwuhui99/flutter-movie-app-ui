@@ -34,7 +34,7 @@ class _DetailPageState extends State<DetailPage> {
         body: SafeArea(
             top: true,
             child: Padding(
-                padding: EdgeInsets.all(ThemeSize.containerPadding),
+                padding: ThemeStyle.paddingBox,
                 child: SingleChildScrollView(
                     child: Column(
                   children: <Widget>[
