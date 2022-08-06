@@ -27,6 +27,8 @@ class LoginPage extends StatelessWidget {
         backgroundColor: ThemeColors.colorBg,
         body: SafeArea(child: Container(
           padding: ThemeStyle.padding,
+          margin: ThemeStyle.padding,
+          decoration: ThemeStyle.boxDecoration,
           child: Column(
             children: <Widget>[
               Form(

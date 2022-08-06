@@ -1,4 +1,4 @@
-const serviceUrl = 'http://192.168.0.105:5001'; //此端口针对于正版用户开放，可自行fiddle获取。
+const serviceUrl = 'http://192.168.0.103:5001'; //此端口针对于正版用户开放，可自行fiddle获取。
 const servicePath = {
   'getUserData': serviceUrl + '/service/movie/getUserData', // 获取用户信息
   'getCategoryList': serviceUrl + '/service/movie/getCategoryList', //获取分类影片

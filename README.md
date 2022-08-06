@@ -62,6 +62,8 @@ webview：webview_flutter: ^0.3.10+4
 
 react native版本参见: https://github.com/wuyuanwuhui99/react-native-app-ui
 
+harmony鸿蒙版本参见: https://github.com/wuyuanwuhui99/Harmony_movie_app_ui
+
 vue在线音乐项目：https://github.com/wuyuanwuhui99/vue-music-app-ui
 
 在线音乐后端项目：https://github.com/wuyuanwuhui99/koa2-music-app-service
