@@ -4,7 +4,7 @@ import 'package:provider/provider.dart';
 
 import '../config/serviceUrl.dart';
 import '../provider/UserInfoProvider.dart';
-import './login_page.dart';
+import './LoginPage.dart';
 import './EditPage.dart';
 import '../model/UserInfoModel.dart';
 import '../theme/ThemeColors.dart';
@@ -341,8 +341,8 @@ Future _showDialog(context) async {
 
   switch (action) {
     case Action.Ok:
-      Navigator.push(
-          context, MaterialPageRoute(builder: (context) => LoginPage()));
+      Navigator.pushAndRemoveUntil(
+          context, MaterialPageRoute(builder: (context) => LoginPage()), (route) => route == null);
       break;
     case Action.Cancel:
       break;
