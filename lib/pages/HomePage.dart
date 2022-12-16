@@ -5,6 +5,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:provider/provider.dart';
 import '../service/serverMethod.dart';
 import '../provider/UserInfoProvider.dart';
+import '../provider/TokenProvider.dart';
 import '../config/global.dart';
 import '../utils/LocalStroageUtils.dart';
 import '../component/SearchCommponent.dart';
@@ -147,6 +148,8 @@ class _HomePageState extends State<HomePage>
             LocalStroageUtils.setToken(token);
             Provider.of<UserInfoProvider>(context)
                 .setUserInfo(UserInfoModel.fromJson(userInfo));
+            Provider.of<TokenProvider>(context)
+                .setToken(token);
             return init(context);
           });
     } else {
