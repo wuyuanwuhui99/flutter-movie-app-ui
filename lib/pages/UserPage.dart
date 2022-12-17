@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'dart:io';
+import 'dart:convert';
 import 'package:flutter/cupertino.dart';
 import 'package:provider/provider.dart';
-
+import 'package:image_picker/image_picker.dart';
 import '../config/serviceUrl.dart';
 import '../provider/UserInfoProvider.dart';
 import './LoginPage.dart';
@@ -10,13 +12,18 @@ import '../model/UserInfoModel.dart';
 import '../theme/ThemeColors.dart';
 import '../theme/ThemeSize.dart';
 import '../theme/ThemeStyle.dart';
+import '../service/serverMethod.dart';
 
-class UserPage extends StatelessWidget {
-  const UserPage({Key key}) : super(key: key);
+class UserPage extends StatefulWidget {
+  @override
+  _UserPageState createState() => _UserPageState();
+}
 
+class _UserPageState extends State<UserPage> {
+  UserInfoModel userInfo;
   @override
   Widget build(BuildContext context) {
-    UserInfoModel userInfo = Provider.of<UserInfoProvider>(context).userInfo;
+    userInfo = Provider.of<UserInfoProvider>(context).userInfo;
     return Scaffold(
         backgroundColor: ThemeColors.colorBg,
         body: SafeArea(top: true,child:  Container(
@@ -32,7 +39,12 @@ class UserPage extends StatelessWidget {
                         decoration: ThemeStyle.bottomDecoration,
                         padding:
                         EdgeInsets.only(bottom: ThemeSize.containerPadding),
-                        child: Row(
+                        child:
+                        InkWell(
+                            onTap: (){
+                              _showSelectionDialog(context,0);
+                            },
+                            child: Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: <Widget>[
                             Expanded(
@@ -54,7 +66,8 @@ class UserPage extends StatelessWidget {
                                 width: ThemeSize.miniIcon,
                                 fit: BoxFit.cover),
                           ],
-                        ),
+                        ))
+
                       ),
                       Container(
                         decoration: ThemeStyle.bottomDecoration,
@@ -309,6 +322,74 @@ class UserPage extends StatelessWidget {
               ],
             )))
        );
+  }
+
+  Future getImage(ImageSource source, int type) async {
+    File image = await ImagePicker.pickImage(source: source);
+    List<int> imageBytes = await image.readAsBytes();
+    String base64Str = "data:image/png;base64," + base64Encode(imageBytes);
+    Map avaterMap = {"img":base64Str};
+    updateAvaterService(avaterMap).then((res) {
+      userInfo.avater = res["data"];
+      Provider.of<UserInfoProvider>(context).setUserInfo(userInfo);
+    });
+  }
+
+  void _showSelectionDialog(BuildContext context,int type) {
+    showModalBottomSheet(
+      context: context,
+      isScrollControlled: false,
+      builder: (ctx) {
+        return Container(
+          color: Colors.grey,
+          height: 130,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            // mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: <Widget>[
+              GestureDetector(
+                child: _itemCreat(context, '相机'),
+                onTap: (){
+                  Navigator.pop(context);
+                  getImage(ImageSource.camera,type);
+                },
+              ),
+              GestureDetector(
+                child: _itemCreat(context, '相册'),
+                onTap: (){
+                  Navigator.pop(context);
+                  getImage(ImageSource.gallery,type);
+                },
+              ),
+              GestureDetector(
+                child: Padding(
+                  padding: EdgeInsets.only(top: 10),
+                  child: _itemCreat(context, '取消'),
+                ),
+                onTap: (){
+                  Navigator.pop(context);
+                },
+              )
+            ],
+          ),
+        );
+      },
+    );
+  }
+
+  Widget _itemCreat(BuildContext context, String title) {
+    return Container(
+      color: Colors.white,
+      height: 40,
+      width: MediaQuery.of(context).size.width,
+      child: Center(
+        child: Text(
+          title,
+          style: TextStyle(fontSize: 16, color: Colors.black),
+          textAlign: TextAlign.center,
+        ),
+      ),
+    );
   }
 }
 

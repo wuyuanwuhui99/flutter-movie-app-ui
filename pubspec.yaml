@@ -27,13 +27,14 @@ dependencies:
   carousel_slider: ^0.0.7
   dio: ^3.0.10
   flutter_screenutil: ^0.5.1
-  provider: ^3.1.0+1	
+  provider: ^5.0.0
   flutter_easyrefresh: ^2.1.5
   fluttertoast: ^3.0.3
   shared_preferences: ^0.4.1
   webview_flutter: ^0.3.10+4
   crypto: ^2.1.1+1
   flutter_easyloading: ^2.2.2
+  image_picker: ^0.6.1+4
 
 dev_dependencies:
   flutter_test:

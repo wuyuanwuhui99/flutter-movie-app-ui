@@ -323,3 +323,17 @@ Future insertCommentService(Map commentMap) async {
     return print('ERROR:======>${e}');
   }
 }
+
+///@author: wuwenqiang
+///@description: 头像上传
+/// @date: 2022-12-17 22:44
+Future updateAvaterService(Map avaterMap) async {
+  try {
+    print(servicePath['updateAvaterService']);
+    print(avaterMap);
+    Response response = await dio.put(servicePath['updateAvaterService'],data:avaterMap);
+    return getResponseData(response);
+  } catch (e) {
+    return print('ERROR:======>${e}');
+  }
+}
