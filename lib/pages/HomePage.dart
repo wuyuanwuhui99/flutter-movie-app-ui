@@ -146,7 +146,7 @@ class _HomePageState extends State<HomePage>
             var token = snapshot.data["token"];
             Global.token = token;
             LocalStroageUtils.setToken(token);
-            Provider.of<UserInfoProvider>(context)
+            Provider.of<UserInfoProvider>(context,listen: false)
                 .setUserInfo(UserInfoModel.fromJson(userInfo));
             Provider.of<TokenProvider>(context)
                 .setToken(token);

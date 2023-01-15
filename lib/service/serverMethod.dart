@@ -330,8 +330,8 @@ Future insertCommentService(Map commentMap) async {
 Future updateAvaterService(Map avaterMap) async {
   try {
     print(servicePath['updateAvaterService']);
-    print(avaterMap);
     Response response = await dio.put(servicePath['updateAvaterService'],data:avaterMap);
+    print(response);
     return getResponseData(response);
   } catch (e) {
     return print('ERROR:======>${e}');

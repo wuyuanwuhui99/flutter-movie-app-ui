@@ -338,7 +338,8 @@ class _UserPageState extends State<UserPage> {
     Map avaterMap = {"img": base64Str};
     updateAvaterService(avaterMap).then((res) {
       userInfo.avater = res["data"];
-      Provider.of<UserInfoProvider>(context).setUserInfo(userInfo);
+      Provider.of<UserInfoProvider>(context, listen: false)
+          .setUserInfo(userInfo);
     });
   }
 
@@ -354,7 +355,9 @@ class _UserPageState extends State<UserPage> {
             crossAxisAlignment: CrossAxisAlignment.center,
             children: <Widget>[
               Container(
-                  margin: EdgeInsets.only(left:ThemeSize.containerPadding,right: ThemeSize.containerPadding),
+                  margin: EdgeInsets.only(
+                      left: ThemeSize.containerPadding,
+                      right: ThemeSize.containerPadding),
                   decoration: BoxDecoration(
                     color: ThemeColors.colorWhite,
                     borderRadius: BorderRadius.all(
@@ -381,7 +384,7 @@ class _UserPageState extends State<UserPage> {
                           child: _itemCreat(context, '相册'),
                           onTap: () {
                             Navigator.pop(context);
-                            getImage(ImageSource.camera, type);
+                            getImage(ImageSource.gallery, type);
                           },
                         ))
                   ])),

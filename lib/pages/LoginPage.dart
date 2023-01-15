@@ -129,7 +129,7 @@ class LoginPage extends StatelessWidget {
                                     backgroundColor: Colors.green,
                                     textColor: Colors.white,
                                     fontSize: ThemeSize.middleFontSize);
-                                Provider.of<UserInfoProvider>(context)
+                                Provider.of<UserInfoProvider>(context,listen: false)
                                     .setUserInfo(UserInfoModel.fromJson(res["data"]));
                                 Navigator.push(
                                     context,
