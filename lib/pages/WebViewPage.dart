@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 import '../provider/UserInfoProvider.dart';
+import '../provider/TokenProvider.dart';
 import 'package:provider/provider.dart';
 import 'dart:convert' as convert;
 class WebViewPage extends StatefulWidget {
@@ -34,16 +35,25 @@ class _WebViewPageState extends State<WebViewPage> {
               javascriptMode: JavascriptMode.unrestricted,
               initialUrl: _url,
               javascriptChannels: <JavascriptChannel>[
-                _jsCallNativeJavascriptChannel(context),
+                _jsCallNativeGetUserData(context),
+                _jsCallNativeGetToken(context)
               ].toSet()
             )));
   }
 
-  _jsCallNativeJavascriptChannel(BuildContext context) {
+  _jsCallNativeGetUserData(BuildContext context) {
     return JavascriptChannel(
-        name: "getUserData",
+        name: "plus.getUserData",
         onMessageReceived: (JavascriptMessage message) {
           return convert.jsonEncode(Provider.of<UserInfoProvider>(context).userInfo.toMap());
+        });
+  }
+
+  _jsCallNativeGetToken(BuildContext context) {
+    return JavascriptChannel(
+        name: "plus.getToken",
+        onMessageReceived: (JavascriptMessage message) {
+          return convert.jsonEncode(Provider.of<TokenProvider>(context).token);
         });
   }
 }

@@ -244,8 +244,7 @@ class PannelComponent extends StatelessWidget {
                           context,
                           MaterialPageRoute(
                               builder: (context) => WebViewPage(
-                                  url: "http://192.168.0.103:3003/#/?token=" +
-                                      token,
+                                  url: "http://192.168.0.103:3003/#/?_t=" + DateTime.now().microsecondsSinceEpoch.toString(),
                                   title: "电影圈")));
                     },
                     child: Row(
