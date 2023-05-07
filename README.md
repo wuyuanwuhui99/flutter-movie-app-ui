@@ -3,24 +3,6 @@
 开发者：吴怨吴悔
 
 =============================界面预览（如果无法预览，请查看项目根目录png文件）==========================
-![app首页](./%E7%94%B5%E5%BD%B1app%E6%95%B4%E4%BD%93%E9%A2%84%E8%A7%88.jpg)
-![app首页](./%E7%94%B5%E5%BD%B1app%E6%95%B4%E4%BD%93%E9%A2%84%E8%A7%882.jpg)
-![app首页](./movie1.png)
-![app首页](./movie2.png)
-![app首页](./movie3.png)
-![app首页](./movie4.png)
-![app首页](./movie5.png)
-![app首页](./movie6.png)
-![app首页](./movie7.png)
-![app首页](./movie8.png)
-![app首页](./movie9.png)
-![app首页](./movie10.png)
-![app首页](./movie11.png)
-![app首页](./movie12.png)
-![app首页](./movie13.png)
-![app首页](./movie14.png)
-
-=============================新版==========================
 
 ![app首页](./新版电影APP整体预览图.jpg)
 ![app首页](./新版预览1.png)
