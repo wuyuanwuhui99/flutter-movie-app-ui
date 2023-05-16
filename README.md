@@ -5,23 +5,28 @@
 =============================界面预览（如果无法预览，请查看项目根目录png文件）==========================
 
 ![app首页](./新版电影APP整体预览图.jpg)
-![app首页](./新版预览1.png)
-![app首页](./新版预览2.png)
-![app首页](./新版预览3.png)
-![app首页](./新版预览4.png)
-![app首页](./新版预览5.png)
-![app首页](./新版预览6.png)
-![app首页](./新版预览7.png)
-![app首页](./新版预览8.png)
-![app首页](./新版预览9.png)
-![app首页](./新版预览10.png)
-![app首页](./新版预览11.png)
-![app首页](./新版预览12.png)
-![app首页](./新版预览13.jpg)
-![app首页](./新版预览14.jpg)
-![app首页](./新版预览15.png)
-![app首页](./新版预览16.png)
-
+![app首页](电影预览1.png)
+![app首页](电影预览2.png)
+![app首页](电影预览3.png)
+![app首页](电影预览4.png)
+![app首页](电影预览5.png)
+![app首页](电影预览6.png)
+![app首页](电影预览7.png)
+![app首页](电影预览8.png)
+![app首页](电影预览9.png)
+![app首页](电影预览10.png)
+![app首页](电影预览11.png)
+![app首页](电影预览12.png)
+![app首页](电影预览13.jpg)
+![app首页](电影预览14.jpg)
+![app首页](电影预览15.png)
+![app首页](电影预览16.png)
+![app首页](音乐首页.jpg)
+![app首页](音乐推荐.jpg)
+![app首页](音乐朋友圈.jpg)
+![app首页](音乐我的.jpg)
+![app首页](音乐播放页.jpg)
+![app首页](音乐歌手页.jpg)
 =============================界面预览（如果无法预览，请查看项目根目录png文件）==========================
 
 
@@ -32,6 +37,8 @@ dart版本：2.12.1
 项目系2020年开始搭建，所以使用的版本较老，更新版本会出现问题
 
 运行命令：flutter run --enable-software-rendering
+
+后端接口使用springboot开发，所有电影数据来自于python爬虫程序，爬取第三方电影网站数据
 
 ## 使用的插件
 
@@ -63,14 +70,4 @@ vue在线音乐项目：https://github.com/wuyuanwuhui99/vue-music-app-ui
 
 vue3+ts明日头条项目：https://github.com/wuyuanwuhui99/vue3-ts-toutiao-app-ui
 
-nginx配置
-
-    server{
-        listen       5001;
-        location /service/ {
-            proxy_pass http://127.0.0.1:5000;
-        }
-        location /static/ {
-            alias E:/static/;
-        }
-    }
+音乐播放器正在开发中，音乐数据来自于python爬虫程序，爬取酷狗音乐数据，敬请关注
