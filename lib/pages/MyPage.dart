@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../service/serverMethod.dart';
 import '../provider/UserInfoProvider.dart';
-import '../provider/TokenProvider.dart';
 import '../component/MovieListComponent.dart';
 import '../component/AvaterComponent.dart';
 import '../model/UserInfoModel.dart';
@@ -12,6 +11,7 @@ import '../theme/ThemeSize.dart';
 import '../theme/ThemeColors.dart';
 import '../model/MovieDetailModel.dart';
 import '../pages/WebViewPage.dart';
+import '../pages/MusicPage.dart';
 
 class MyPage extends StatefulWidget {
   MyPage({Key key}) : super(key: key);
@@ -239,7 +239,6 @@ class PannelComponent extends StatelessWidget {
                 padding: EdgeInsets.only(top: ThemeSize.containerPadding),
                 child: InkWell(
                     onTap: () {
-                      String token = Provider.of<TokenProvider>(context).token;
                       Navigator.push(
                           context,
                           MaterialPageRoute(
@@ -277,7 +276,14 @@ class PannelComponent extends StatelessWidget {
             Container(
                 decoration: ThemeStyle.bottomDecoration,
                 padding: EdgeInsets.only(bottom: ThemeSize.containerPadding),
-                child: Row(
+                child: InkWell(
+                  onTap: (){
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => MusicPage()));
+                  },
+                    child: Row(
                   children: <Widget>[
                     Image.asset("lib/assets/images/icon-music.png",
                         height: ThemeSize.middleIcon,
@@ -295,7 +301,7 @@ class PannelComponent extends StatelessWidget {
                         width: ThemeSize.smallIcon,
                         fit: BoxFit.cover),
                   ],
-                )),
+                ))),
             Container(
                 margin: EdgeInsets.only(top: ThemeSize.containerPadding),
                 child: Row(
