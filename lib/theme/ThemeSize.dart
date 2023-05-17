@@ -13,6 +13,7 @@ class ThemeSize {
   static double modualHeight = 250;// 模块的高度
   static double bigIcon = 40;// 大图标
   static double middleIcon = 30;// 中等图标
+  static double navigationIcon = 30;// 导航图标
   static double smallIcon = 20;// 中等图标
   static double miniIcon = 15;// 超小图片
   static double smallMargin = 10;//小边距
@@ -27,4 +28,5 @@ class ThemeSize {
   static int crossAxisCount = 5;// 网格布局每行元素个数
   static double childAspectRatio = 1.6;// 网格布局宽高比例
   static int pageSize = 20;// 每页显示大小
+  static double minPlayIcon = 80;// 音乐播放器圈圈大小
 }

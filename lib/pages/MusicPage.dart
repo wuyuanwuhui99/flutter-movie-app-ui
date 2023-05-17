@@ -26,6 +26,19 @@ class _MusicPageState extends State<MusicPage>
 
   int _currentIndex = 0;
   List<Widget> pages = [null, null, null, null];
+  List<String> normalImgUrls = [
+    "lib/assets/images/icon-home.png",
+    "lib/assets/images/icon-recomment.png",
+    "lib/assets/images/icon-music-circle.png",
+    "lib/assets/images/icon-user.png"
+  ];
+  List<String> selectedImgUrls = [
+    "lib/assets/images/icon-home-active.png",
+    "lib/assets/images/icon-recomment-active.png",
+    "lib/assets/images/icon-music-circle-active.png",
+    "lib/assets/images/icon-user-active.png"
+  ];
+  List<String> titles = ["首页", "推荐", "音乐圈", "我的"];
 
   @override
   void dispose() {
@@ -35,19 +48,58 @@ class _MusicPageState extends State<MusicPage>
 
   var _pageController = PageController();
 
-  Widget _getPage(int currentIndex) {
-    if (pages[currentIndex] == null) {
-      if (currentIndex == 0) {
-        pages[currentIndex] = MusicHomePage();
-      } else if (currentIndex == 1) {
-        pages[currentIndex] = MusicRecommentPage();
-      } else if (currentIndex == 2) {
-        pages[currentIndex] = MusicCirclePage();
-      } else if (currentIndex == 3) {
-        pages[currentIndex] = MusicUserPage();
+  Widget _getPage() {
+    if (pages[_currentIndex] == null) {
+      if (_currentIndex == 0) {
+        pages[_currentIndex] = MusicHomePage();
+      } else if (_currentIndex == 1) {
+        pages[_currentIndex] = MusicRecommentPage();
+      } else if (_currentIndex == 2) {
+        pages[_currentIndex] = MusicCirclePage();
+      } else if (_currentIndex == 3) {
+        pages[_currentIndex] = MusicUserPage();
       }
     }
-    return pages[currentIndex];
+    return pages[_currentIndex];
+  }
+
+  Widget bottomAppBarItem(int index) {
+    //设置默认未选中的状态
+    TextStyle style = TextStyle(color:Colors.grey);
+    String imgUrl = normalImgUrls[index];
+    if (_currentIndex == index) {
+      //选中的话
+      style = TextStyle(color: Colors.orange);
+      imgUrl = selectedImgUrls[index];
+    }
+    //构造返回的Widget
+    Widget item = Container(
+      padding: EdgeInsets.only(top:ThemeSize.smallMargin,bottom:ThemeSize.smallMargin),
+      child: GestureDetector(
+        behavior: HitTestBehavior.opaque,
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: <Widget>[
+            Image.asset(imgUrl,
+                width: ThemeSize.navigationIcon, height: ThemeSize.navigationIcon),
+            SizedBox(height: ThemeSize.smallMargin),
+            Text(
+              titles[index],
+              style: style,
+            )
+          ],
+        ),
+        onTap: () {
+          print("======="+index.toString());
+          if (_currentIndex != index) {
+            setState(() {
+              _currentIndex = index;
+            });
+          }
+        },
+      ),
+    );
+    return item;
   }
 
   @override
@@ -60,304 +112,32 @@ class _MusicPageState extends State<MusicPage>
             onPageChanged: _pageChanged,
             itemCount: 4,
             itemBuilder: (context, index) {
-              return _getPage(index);
+              return _getPage();
             }),
         floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
         //悬浮按钮
-        floatingActionButton: FloatingActionButton(
-          child: const Icon(Icons.add),
-          onPressed: () {
-            print('点击');
-          },
-        ),
+        floatingActionButton: SizedBox(
+            height: ThemeSize.minPlayIcon,
+            width: ThemeSize.minPlayIcon,
+            child: FloatingActionButton(
+              child: const Icon(Icons.add),
+              onPressed: () {
+                print('点击');
+              },
+            )),
         bottomNavigationBar: BottomAppBar(
-          shape: CircularNotchedRectangle(),
-          child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: <Widget>[
-              InkWell(
-                  onTap: (){},
-                  child:  Column(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    Image.asset(
-                        _currentIndex == 0
-                            ? "lib/assets/images/icon-home-active.png"
-                            : "lib/assets/images/icon-home.png",
-                        width: ThemeSize.smallIcon,
-                        height: ThemeSize.smallIcon),
-                    SizedBox(height: ThemeSize.miniMargin),
-                    Text(
-                      "首页",
-                      style: TextStyle(
-                          color: _currentIndex == 0
-                              ? Colors.orange
-                              : Colors.grey),
-                    ),
-                  ])),
-                InkWell(
-                    onTap: (){},
-                    child:  Column(
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          Image.asset(
-                              _currentIndex == 0
-                                  ? "lib/assets/images/icon-home-active.png"
-                                  : "lib/assets/images/icon-home.png",
-                              width: ThemeSize.smallIcon,
-                              height: ThemeSize.smallIcon),
-                          SizedBox(height: ThemeSize.miniMargin),
-                          Text(
-                            "首页",
-                            style: TextStyle(
-                                color: _currentIndex == 0
-                                    ? Colors.orange
-                                    : Colors.grey),
-                          ),
-                        ])),InkWell(
-                    onTap: (){},
-                    child:  Column(
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          Image.asset(
-                              _currentIndex == 0
-                                  ? "lib/assets/images/icon-home-active.png"
-                                  : "lib/assets/images/icon-home.png",
-                              width: ThemeSize.smallIcon,
-                              height: ThemeSize.smallIcon),
-                          SizedBox(height: ThemeSize.miniMargin),
-                          Text(
-                            "首页",
-                            style: TextStyle(
-                                color: _currentIndex == 0
-                                    ? Colors.orange
-                                    : Colors.grey),
-                          ),
-                        ])),InkWell(
-                    onTap: (){},
-                    child:  Column(
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          Image.asset(
-                              _currentIndex == 0
-                                  ? "lib/assets/images/icon-home-active.png"
-                                  : "lib/assets/images/icon-home.png",
-                              width: ThemeSize.smallIcon,
-                              height: ThemeSize.smallIcon),
-                          SizedBox(height: ThemeSize.miniMargin),
-                          Text(
-                            "首页",
-                            style: TextStyle(
-                                color: _currentIndex == 0
-                                    ? Colors.orange
-                                    : Colors.grey),
-                          ),
-                        ]))
-
-
-//                Column(
-//                    crossAxisAlignment: CrossAxisAlignment.center,
-//                    children: [
-//                      Image.asset(
-//                          _currentIndex == 0
-//                              ? "lib/assets/images/icon-home-active.png"
-//                              : "lib/assets/images/icon-home.png",
-//                          width: ThemeSize.smallIcon,
-//                          height: ThemeSize.smallIcon),
-//                      SizedBox(height: ThemeSize.miniMargin),
-//                      Text(
-//                        "首页",
-//                        style: TextStyle(
-//                            color: _currentIndex == 0
-//                                ? Colors.orange
-//                                : Colors.grey),
-//                      ),
-//                    ]),
-//                Column(
-//                    crossAxisAlignment: CrossAxisAlignment.center,
-//                    children: [
-//                      Image.asset(
-//                          _currentIndex == 1
-//                              ? "lib/assets/images/icon-recomment-active.png"
-//                              : "lib/assets/images/icon-recomment.png",
-//                          width: ThemeSize.smallIcon,
-//                          height: ThemeSize.smallIcon),
-//                      SizedBox(height: ThemeSize.miniMargin),
-//                      Text(
-//                        "推荐",
-//                        style: TextStyle(
-//                            color: _currentIndex == 1
-//                                ? Colors.orange
-//                                : Colors.grey),
-//                      ),
-//                    ]),
-//                SizedBox(width: 50),
-//                Column(
-//                    crossAxisAlignment: CrossAxisAlignment.center,
-//                    children: [
-//                      Image.asset(
-//                          _currentIndex == 2
-//                              ? "lib/assets/images/icon-music-cicle-active.png"
-//                              : "lib/assets/images/icon-music-cicle.png",
-//                          width: ThemeSize.smallIcon,
-//                          height: ThemeSize.smallIcon),
-//                      SizedBox(height: ThemeSize.miniMargin),
-//                      Text(
-//                        "音乐圈",
-//                        style: TextStyle(
-//                            color: _currentIndex == 2
-//                                ? Colors.orange
-//                                : Colors.grey),
-//                      ),
-//                    ]),
-//                Column(
-//                    crossAxisAlignment: CrossAxisAlignment.center,
-//                    children: [
-//                      Image.asset(
-//                          _currentIndex == 3
-//                              ? "lib/assets/images/icon-user-active.png"
-//                              : "lib/assets/images/icon-user.png",
-//                          width: ThemeSize.smallIcon,
-//                          height: ThemeSize.smallIcon),
-//                      SizedBox(height: ThemeSize.miniMargin),
-//                      Text(
-//                        "我的",
-//                        style: TextStyle(
-//                            color: _currentIndex == 3
-//                                ? Colors.orange
-//                                : Colors.grey),
-//                      ),
-//                    ]),
-              ]),
-        )
-//        bottomNavigationBar: BottomAppBar(
-//            shape: CircularNotchedRectangle(),
-//            child: Row(
-//                mainAxisAlignment: MainAxisAlignment.spaceAround,
-//                children: <Widget>[
-//                  Expanded(child: Column(
-//                    children: <Widget>[
-//                      Image.asset(_currentIndex == 0
-//                          ? "lib/assets/images/icon-home-active.png"
-//                          : "lib/assets/images/icon-home.png",
-//                          width: ThemeSize.smallIcon,
-//                          height: ThemeSize.smallIcon
-//                      ),
-//                      SizedBox(height: ThemeSize.miniMargin),
-//                      Text(
-//                        "首页",
-//                        style: TextStyle(
-//                            color: _currentIndex == 0 ? Colors.orange : Colors
-//                                .grey),
-//                      )
-//                    ],
-//                  ), flex: 1),
-//                  Expanded(child: Column(
-//                    children: <Widget>[
-//                      Image.asset(_currentIndex == 1
-//                          ? "lib/assets/images/icon-recomment-active.png"
-//                          : "lib/assets/images/icon-recomment.png",
-//                          width: ThemeSize.smallIcon,
-//                          height: ThemeSize.smallIcon
-//                      ),
-//                      SizedBox(height: ThemeSize.miniMargin),
-//                      Text(
-//                        "推荐",
-//                        style: TextStyle(
-//                            color: _currentIndex == 1 ? Colors.orange : Colors
-//                                .grey),
-//                      )
-//                    ],
-//                  ), flex: 1),
-//                  SizedBox(width: 100),
-//                  Expanded(child: Column(
-//                    children: <Widget>[
-//                      Image.asset(_currentIndex == 2
-//                          ? "lib/assets/images/icon-music-circle-active.png"
-//                          : "lib/assets/images/icon-music-circle.png",
-//                          width: ThemeSize.smallIcon,
-//                          height: ThemeSize.smallIcon
-//                      ),
-//                      SizedBox(height: ThemeSize.miniMargin),
-//                      Text(
-//                        "音乐圈",
-//                        style: TextStyle(
-//                            color: _currentIndex == 2 ? Colors.orange : Colors
-//                                .grey),
-//                      )
-//                    ],
-//                  ), flex: 1),
-//                  Expanded(child: Column(
-//                    children: <Widget>[
-//                      Image.asset(_currentIndex == 3
-//                          ? "lib/assets/images/icon-user-active.png"
-//                          : "lib/assets/images/icon-user.png",
-//                          width: ThemeSize.smallIcon,
-//                          height: ThemeSize.smallIcon
-//                      ),
-//                      SizedBox(height: ThemeSize.miniMargin),
-//                      Text(
-//                        "我的",
-//                        style: TextStyle(
-//                            color: _currentIndex == 3 ? Colors.orange : Colors
-//                                .grey),
-//                      )
-//                    ],
-//                  ), flex: 1)
-//                ]))
-
-//      bottomNavigationBar: BottomNavigationBar(
-//        type: BottomNavigationBarType.fixed,
-//        currentIndex: _currentIndex,
-//        onTap: onTabTapped,
-//        items: [
-//          BottomNavigationBarItem(
-//              icon: Icon(
-//                Icons.home,
-//                color: _currentIndex == 0 ? Colors.orange : Colors.grey,
-//              ),
-//              title: Text(
-//                "首页",
-//                style: TextStyle(
-//                    color: _currentIndex == 0 ? Colors.orange : Colors.grey),
-//              )),
-//          BottomNavigationBarItem(
-//              icon: Image(image: AssetImage("lib/assets/images/icon-recomment.png"),
-//                  width: ThemeSize.smallIcon,
-//                  height: ThemeSize.smallIcon),
-//              activeIcon:Image(image: AssetImage("lib/assets/images/icon-recomment-active.png"),
-//                  width: ThemeSize.smallIcon,
-//                  height: ThemeSize.smallIcon),
-//              title: Text(
-//                "推荐",
-//                style: TextStyle(
-//                    color: _currentIndex == 1 ? Colors.orange : Colors.grey),
-//              )),
-//          BottomNavigationBarItem(
-//              icon: Image(image: AssetImage("lib/assets/images/icon-music-circle.png"),
-//                  width: ThemeSize.smallIcon,
-//                  height: ThemeSize.smallIcon),
-//              activeIcon:Image(image: AssetImage("lib/assets/images/icon-music-circle-active.png"),
-//                  width: ThemeSize.smallIcon,
-//                  height: ThemeSize.smallIcon),
-//              title: Text(
-//                "音乐圈",
-//                style: TextStyle(
-//                    color: _currentIndex == 2 ? Colors.orange : Colors.grey),
-//              )),
-//          BottomNavigationBarItem(
-//              icon: Icon(
-//                Icons.person,
-//                color: _currentIndex == 3 ? Colors.orange : Colors.grey,
-//              ),
-//              title: Text(
-//                "我的",
-//                style: TextStyle(
-//                    color: _currentIndex == 3 ? Colors.orange : Colors.grey),
-//              )),
-//        ],
-//      ),
-        );
+            shape: CircularNotchedRectangle(),
+            child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: <Widget>[
+                  bottomAppBarItem(0),
+                  bottomAppBarItem(1),
+                  SizedBox(width: 50),
+                  bottomAppBarItem(2),
+                  bottomAppBarItem(3)
+                ])
+            ));
   }
 
   void _pageChanged(int index) {
