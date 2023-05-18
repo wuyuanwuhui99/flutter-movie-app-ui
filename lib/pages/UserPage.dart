@@ -56,7 +56,7 @@ class _UserPageState extends State<UserPage> {
                                       ClipOval(
                                         child: Image.network(
                                           //从全局的provider中获取用户信息
-                                          serviceUrl + userInfo.avater,
+                                          movieServiceUrl + userInfo.avater,
                                           height: ThemeSize.bigAvater,
                                           width: ThemeSize.bigAvater,
                                           fit: BoxFit.cover,

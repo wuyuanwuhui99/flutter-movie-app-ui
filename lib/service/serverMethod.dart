@@ -331,7 +331,18 @@ Future updateAvaterService(Map avaterMap) async {
   try {
     print(servicePath['updateAvaterService']);
     Response response = await dio.put(servicePath['updateAvaterService'],data:avaterMap);
-    print(response);
+    return getResponseData(response);
+  } catch (e) {
+    return print('ERROR:======>${e}');
+  }
+}
+
+///@author: wuwenqiang
+///@description: 获取音乐搜索框关键词
+/// @date: 2023-05-18 23:32
+Future getKeyWordMusicService() async {
+  try {
+    Response response = await dio.get(servicePath['keywordMusic']);
     return getResponseData(response);
   } catch (e) {
     return print('ERROR:======>${e}');

@@ -3,7 +3,6 @@ import '../pages/SearchPage.dart';
 import 'package:movie/service/serverMethod.dart';
 import '../theme/ThemeColors.dart';
 import '../theme/ThemeSize.dart';
-import '../theme/ThemeStyle.dart';
 
 /*-----------------------搜索------------------------*/
 class SearchCommponent extends StatelessWidget {

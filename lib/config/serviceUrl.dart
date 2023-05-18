@@ -1,30 +1,33 @@
-const serviceUrl = 'http://192.168.0.103:5001'; //此端口针对于正版用户开放，可自行fiddle获取。
+const host = 'http://192.168.0.103:';
+const movieServiceUrl = '${host}5001'; //电影接口
+const musicServiceUrl = '${host}4000'; //音乐端口
 const servicePath = {
-  'getUserData': serviceUrl + '/service/movie/getUserData', // 获取用户信息
-  'getCategoryList': serviceUrl + '/service/movie/getCategoryList', //获取分类影片
-  'getKeyWord': serviceUrl + '/service/movie/getKeyWord', //按照classify查询搜索栏的关键词
-  'getAllCategoryByClassify': serviceUrl + '/service/movie/getAllCategoryByClassify', //按classify大类查询所有catory小类
-  'getAllCategoryListByPageName': serviceUrl + '/service/movie/getAllCategoryListByPageName', //按页面获取要展示的category小类
-  'getUserMsg': serviceUrl + '/service/movie-getway/getUserMsg', //获取用户四个指标信息，使用天数，关注，观看记录，浏览记录
-  'getSearchResult': serviceUrl + '/service/movie/search', //搜索
-  'login': serviceUrl + '/service/movie/login', //登录
-  'getStar': serviceUrl + '/service/movie/getStar/', //获取演员
-  'getMovieUrl': serviceUrl + '/service/movie/getMovieUrl', //获取演员
-  'getViewRecord': serviceUrl + '/service/movie-getway/getViewRecord', //获取浏览记录
-  'saveViewRecord': serviceUrl + '/service/movie-getway/saveViewRecord', //浏览历史
-  'getPlayRecord': serviceUrl + '/service/movie-getway/getPlayRecord', //获取观看记录
-  'savePlayRecord': serviceUrl + '/service/movie-getway/savePlayRecord', //播放记录
-  'getFavorite': serviceUrl + '/service/movie-getway/getFavorite', //获取收藏电影
-  'saveFavorite': serviceUrl + '/service/movie-getway/saveFavorite', //添加收藏
-  'deleteFavorite': serviceUrl + '/service/movie-getway/deleteFavorite', //删除收藏
-  'getYourLikes': serviceUrl + '/service/movie/getYourLikes',//猜你想看
-  'getRecommend': serviceUrl + '/service/movie/getRecommend',//获取推荐
-  'isFavorite': serviceUrl + '/service/movie-getway/isFavorite',//查询是否已经收藏
-  'updateUser': serviceUrl + '/service/movie-getway/updateUser',//更新用户信息
-  'updatePassword': serviceUrl + '/service/movie-getway/updatePassword',//更新密码wq
-  'getCommentCount':serviceUrl + '/service/movie/getCommentCount',//获取评论总数
-  'getTopCommentList':serviceUrl + '/service/movie/getTopCommentList',//获取一级评论
-  'getReplyCommentList':serviceUrl + '/service/movie/getReplyCommentList',//获取一级评论
-  'insertCommentService':serviceUrl + '/service/movie-getway/insertComment',//新增评论
-  'updateAvaterService':serviceUrl + '/service/movie-getway/updateAvater',//新增评论
+  'getUserData': movieServiceUrl + '/service/movie/getUserData', // 获取用户信息
+  'getCategoryList': movieServiceUrl + '/service/movie/getCategoryList', //获取分类影片
+  'getKeyWord': movieServiceUrl + '/service/movie/getKeyWord', //按照classify查询搜索栏的关键词
+  'getAllCategoryByClassify': movieServiceUrl + '/service/movie/getAllCategoryByClassify', //按classify大类查询所有catory小类
+  'getAllCategoryListByPageName': movieServiceUrl + '/service/movie/getAllCategoryListByPageName', //按页面获取要展示的category小类
+  'getUserMsg': movieServiceUrl + '/service/movie-getway/getUserMsg', //获取用户四个指标信息，使用天数，关注，观看记录，浏览记录
+  'getSearchResult': movieServiceUrl + '/service/movie/search', //搜索
+  'login': movieServiceUrl + '/service/movie/login', //登录
+  'getStar': movieServiceUrl + '/service/movie/getStar/', //获取演员
+  'getMovieUrl': movieServiceUrl + '/service/movie/getMovieUrl', //获取演员
+  'getViewRecord': movieServiceUrl + '/service/movie-getway/getViewRecord', //获取浏览记录
+  'saveViewRecord': movieServiceUrl + '/service/movie-getway/saveViewRecord', //浏览历史
+  'getPlayRecord': movieServiceUrl + '/service/movie-getway/getPlayRecord', //获取观看记录
+  'savePlayRecord': movieServiceUrl + '/service/movie-getway/savePlayRecord', //播放记录
+  'getFavorite': movieServiceUrl + '/service/movie-getway/getFavorite', //获取收藏电影
+  'saveFavorite': movieServiceUrl + '/service/movie-getway/saveFavorite', //添加收藏
+  'deleteFavorite': movieServiceUrl + '/service/movie-getway/deleteFavorite', //删除收藏
+  'getYourLikes': movieServiceUrl + '/service/movie/getYourLikes',//猜你想看
+  'getRecommend': movieServiceUrl + '/service/movie/getRecommend',//获取推荐
+  'isFavorite': movieServiceUrl + '/service/movie-getway/isFavorite',//查询是否已经收藏
+  'updateUser': movieServiceUrl + '/service/movie-getway/updateUser',//更新用户信息
+  'updatePassword': movieServiceUrl + '/service/movie-getway/updatePassword',//更新密码wq
+  'getCommentCount':movieServiceUrl + '/service/movie/getCommentCount',//获取评论总数
+  'getTopCommentList':movieServiceUrl + '/service/movie/getTopCommentList',//获取一级评论
+  'getReplyCommentList':movieServiceUrl + '/service/movie/getReplyCommentList',//获取一级评论
+  'insertCommentService':movieServiceUrl + '/service/movie-getway/insertComment',//新增评论
+  'updateAvaterService':movieServiceUrl + '/service/movie-getway/updateAvater',//新增评论
+  'keywordMusic': musicServiceUrl + '/service/myMusic/getKeywordMusic',//获取搜索关键词
 };

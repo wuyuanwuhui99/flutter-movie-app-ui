@@ -1,10 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-import '../service/serverMethod.dart';
-import '../provider/UserInfoProvider.dart';
-import '../model/UserInfoModel.dart';
-import '../model/UserMsgModel.dart';
-import '../theme/ThemeStyle.dart';
 import '../theme/ThemeSize.dart';
 import '../theme/ThemeColors.dart';
 import '../pages/MusicHomePage.dart';
@@ -65,7 +59,7 @@ class _MusicPageState extends State<MusicPage>
 
   Widget bottomAppBarItem(int index) {
     //设置默认未选中的状态
-    TextStyle style = TextStyle(color:Colors.grey);
+    TextStyle style = TextStyle(color: Colors.grey);
     String imgUrl = normalImgUrls[index];
     if (_currentIndex == index) {
       //选中的话
@@ -74,14 +68,16 @@ class _MusicPageState extends State<MusicPage>
     }
     //构造返回的Widget
     Widget item = Container(
-      padding: EdgeInsets.only(top:ThemeSize.smallMargin,bottom:ThemeSize.smallMargin),
+      padding: EdgeInsets.only(
+          top: ThemeSize.smallMargin, bottom: ThemeSize.smallMargin),
       child: GestureDetector(
         behavior: HitTestBehavior.opaque,
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: <Widget>[
             Image.asset(imgUrl,
-                width: ThemeSize.navigationIcon, height: ThemeSize.navigationIcon),
+                width: ThemeSize.navigationIcon,
+                height: ThemeSize.navigationIcon),
             SizedBox(height: ThemeSize.smallMargin),
             Text(
               titles[index],
@@ -90,7 +86,7 @@ class _MusicPageState extends State<MusicPage>
           ],
         ),
         onTap: () {
-          print("======="+index.toString());
+          print("=======" + index.toString());
           if (_currentIndex != index) {
             setState(() {
               _currentIndex = index;
@@ -106,14 +102,16 @@ class _MusicPageState extends State<MusicPage>
   Widget build(BuildContext context) {
     return Scaffold(
         backgroundColor: ThemeColors.colorBg,
-        body: PageView.builder(
-            controller: _pageController,
-            physics: NeverScrollableScrollPhysics(),
-            onPageChanged: _pageChanged,
-            itemCount: 4,
-            itemBuilder: (context, index) {
-              return _getPage();
-            }),
+        body: SafeArea(
+            top: true,
+            child: PageView.builder(
+                controller: _pageController,
+                physics: NeverScrollableScrollPhysics(),
+                onPageChanged: _pageChanged,
+                itemCount: 4,
+                itemBuilder: (context, index) {
+                  return _getPage();
+                })),
         floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
         //悬浮按钮
         floatingActionButton: SizedBox(
@@ -136,8 +134,7 @@ class _MusicPageState extends State<MusicPage>
                   SizedBox(width: 50),
                   bottomAppBarItem(2),
                   bottomAppBarItem(3)
-                ])
-            ));
+                ])));
   }
 
   void _pageChanged(int index) {

@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:movie/theme/ThemeStyle.dart';
 import '../pages/DetailPage.dart';
 import '../config/serviceUrl.dart';
 import '../model/MovieDetailModel.dart';
@@ -49,7 +48,7 @@ class MovieListComponent extends StatelessWidget {
                   height: 200,
                   fit: BoxFit.fill,
                   image: NetworkImage(item.localImg != null
-                      ? serviceUrl + item.localImg
+                      ? movieServiceUrl + item.localImg
                       : item.img))),
           SizedBox(height: 10),
           Text(
