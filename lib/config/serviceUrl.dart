@@ -30,4 +30,5 @@ const servicePath = {
   'insertCommentService':movieServiceUrl + '/service/movie-getway/insertComment',//新增评论
   'updateAvaterService':movieServiceUrl + '/service/movie-getway/updateAvater',//新增评论
   'keywordMusic': musicServiceUrl + '/service/myMusic/getKeywordMusic',//获取搜索关键词
+  'getRecommendMusic': musicServiceUrl + '/service/myMusic/getRecommendMusic',//获取推荐音乐列表
 };

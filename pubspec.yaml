@@ -90,6 +90,11 @@ flutter:
    - lib/assets/images/icon-movie-active.png
    - lib/assets/images/icon-tv.png
    - lib/assets/images/icon-tv-active.png
+   - lib/assets/images/icon-down.png
+   - lib/assets/images/icon-music-singer.png
+   - lib/assets/images/icon-music-classify.png
+   - lib/assets/images/icon-music-classics.png
+   - lib/assets/images/icon-music-rank.png
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.
 

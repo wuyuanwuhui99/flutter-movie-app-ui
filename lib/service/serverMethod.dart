@@ -348,3 +348,15 @@ Future getKeyWordMusicService() async {
     return print('ERROR:======>${e}');
   }
 }
+
+///@author: wuwenqiang
+///@description: 获取推荐音乐列表
+/// @date: 2023-05-25 22:45
+Future getRecommendMusicService(int pageNum,int pageSize) async {
+  try {
+    Response response = await dio.get("${servicePath['getRecommendMusic']}?pageNum=${pageNum}&pageSize=${pageSize}");
+    return getResponseData(response);
+  } catch (e) {
+    return print('ERROR:======>${e}');
+  }
+}
