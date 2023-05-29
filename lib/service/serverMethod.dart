@@ -342,7 +342,7 @@ Future updateAvaterService(Map avaterMap) async {
 /// @date: 2023-05-18 23:32
 Future getKeyWordMusicService() async {
   try {
-    Response response = await dio.get(servicePath['keywordMusic']);
+    Response response = await dio.get(servicePath['getKeywordMusic']);
     return getResponseData(response);
   } catch (e) {
     return print('ERROR:======>${e}');
@@ -350,11 +350,24 @@ Future getKeyWordMusicService() async {
 }
 
 ///@author: wuwenqiang
-///@description: 获取推荐音乐列表
+///@description: 获取分类音乐列表
 /// @date: 2023-05-25 22:45
-Future getRecommendMusicService(int pageNum,int pageSize) async {
+Future getMusicByClassifyNameService(String classifyName,int pageNum,int pageSize) async {
   try {
-    Response response = await dio.get("${servicePath['getRecommendMusic']}?pageNum=${pageNum}&pageSize=${pageSize}");
+
+    Response response = await dio.get("${servicePath['getMusicByClassifyName']}?classifyName=${classifyName}&pageNum=${pageNum}&pageSize=${pageSize}");
+    return getResponseData(response);
+  } catch (e) {
+    return print('ERROR:======>${e}');
+  }
+}
+
+///@author: wuwenqiang
+///@description: 获取音乐分类
+/// @date: 2023-05-29 22:57
+Future getMusicClassifyService() async {
+  try {
+    Response response = await dio.get(servicePath['getMusicClassify']);
     return getResponseData(response);
   } catch (e) {
     return print('ERROR:======>${e}');

@@ -29,6 +29,7 @@ const servicePath = {
   'getReplyCommentList':movieServiceUrl + '/service/movie/getReplyCommentList',//获取一级评论
   'insertCommentService':movieServiceUrl + '/service/movie-getway/insertComment',//新增评论
   'updateAvaterService':movieServiceUrl + '/service/movie-getway/updateAvater',//新增评论
-  'keywordMusic': musicServiceUrl + '/service/myMusic/getKeywordMusic',//获取搜索关键词
-  'getRecommendMusic': musicServiceUrl + '/service/myMusic/getRecommendMusic',//获取推荐音乐列表
+  'getKeywordMusic': musicServiceUrl + '/service/myMusic/getKeywordMusic',//获取搜索关键词
+  'getMusicClassify': musicServiceUrl + '/service/myMusic/getMusicClassify',//获取分类歌曲
+  'getMusicByClassifyName': musicServiceUrl + '/service/myMusic/getMusicByClassifyName',//获取推荐音乐列表
 };

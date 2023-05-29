@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:movie/model/MusicModel.dart';
+import 'package:movie/model/MusicClassifyModel.dart';
 import 'package:provider/provider.dart';
 import '../service/serverMethod.dart';
 import '../provider/UserInfoProvider.dart';
@@ -27,7 +28,7 @@ class _MusicHomePageState extends State<MusicHomePage>
       children: <Widget>[
         buildSearchWidget(),
         buildClassifyWidget(),
-        buildRecommendWidget()
+        buildMuiscByClassifyNameWidget()
       ],
     );
   }
@@ -155,57 +156,123 @@ class _MusicHomePageState extends State<MusicHomePage>
         ]));
   }
 
-  Widget buildRecommendWidget() {
-    return Container(
-        decoration: ThemeStyle.boxDecoration,
-        margin: ThemeStyle.margin,
-        width:
-            MediaQuery.of(context).size.width - ThemeSize.containerPadding * 2,
-        padding: ThemeStyle.padding,
-        child: Column(
-          children: [
-            Row(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                Image.asset("lib/assets/images/icon-down.png",
-                    width: ThemeSize.smallIcon, height: ThemeSize.smallIcon),
-                SizedBox(width: ThemeSize.smallMargin),
-                Text("推荐歌曲"),
-                Expanded(child: SizedBox(), flex: 1),
-                Text("更多")
-              ],
-            ),
-            FutureBuilder(
-                future: getRecommendMusicService(1, 5),
-                builder: (context, snapshot) {
-                  if (snapshot.data == null) {
-                    return Container();
-                  } else {
-                    List<MusicModel> musicList =
-                        (snapshot.data["data"] as List).cast().map((item) {
-                      return MusicModel.fromJson(item);
-                    }).toList();
-//                    print("==========================" + musicList.length.toString());
-                    return ListView.builder(
-                        itemCount: musicList.length,
-                        itemBuilder: (BuildContext context, int index) {
-                          return Row(children: [
-                            ClipOval(child: Image.network(
-                              //从全局的provider中获取用户信息
-                              movieServiceUrl + musicList[index].cover,
-                              height: ThemeSize.bigAvater,
-                              width: ThemeSize.bigAvater,
-                              fit: BoxFit.cover,
-                            ),),
-                            Column(children: [
-                              Text(musicList[index].songName),
-                              Text(musicList[index].authorName)
-                            ],)
-                          ],);
-                        });
-                  }
-                })
-          ],
-        ));
+  // 获取分类音乐
+  Widget buildMuiscByClassifyNameWidget() {
+    return FutureBuilder(
+        future: getMusicClassifyService(),
+        builder: (context, snapshot) {
+          if (snapshot.data == null) {
+          return Container();
+          } else {
+            return Column(children: (snapshot.data["data"] as List).cast().map((item) {
+              MusicClassifyModel classifyItem = MusicClassifyModel.fromJson(item);
+              return Container(
+                  decoration: ThemeStyle.boxDecoration,
+                  margin: ThemeStyle.margin,
+                  width:
+                  MediaQuery.of(context).size.width - ThemeSize.containerPadding * 2,
+                  padding: ThemeStyle.padding,
+                  child: Column(
+                    children: [
+                      Row(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          Image.asset("lib/assets/images/icon-down.png",
+                              width: ThemeSize.smallIcon, height: ThemeSize.smallIcon),
+                          SizedBox(width: ThemeSize.smallMargin),
+                          Text(classifyItem.classifyName),
+                          Expanded(child: SizedBox(), flex: 1),
+                          Text("更多")
+                        ],
+                      ),
+                      FutureBuilder(
+                          future: getMusicByClassifyNameService(classifyItem.classifyName,1, 3),
+                          builder: (context, snapshot) {
+                            if (snapshot.data == null) {
+                              return Container();
+                            } else {
+                              return Column(
+                                  children:
+                                  (snapshot.data["data"] as List).cast().map((item) {
+                                    MusicModel musicItem = MusicModel.fromJson(item);
+                                    return Padding(
+                                        padding: EdgeInsets.only(
+                                          top: ThemeSize.containerPadding,
+                                        ),
+                                        child: Row(
+                                          children: [
+                                            ClipOval(
+                                              child: Image.network(
+                                                //从全局的provider中获取用户信息
+                                                movieServiceUrl + musicItem.cover,
+                                                height: ThemeSize.bigAvater,
+                                                width: ThemeSize.bigAvater,
+                                                fit: BoxFit.cover,
+                                              ),
+                                            ),
+                                            SizedBox(width: ThemeSize.containerPadding),
+                                            Column(
+                                              crossAxisAlignment: CrossAxisAlignment.start,
+                                              children: [
+                                                Text(musicItem.songName,
+                                                    style: TextStyle(
+                                                        fontSize: ThemeSize.bigFontSize)),
+                                                SizedBox(height: ThemeSize.smallMargin),
+                                                Row(
+                                                  children: [
+                                                    Container(
+                                                      padding: EdgeInsets.only(
+                                                          left: ThemeSize.miniMargin,
+                                                          right: ThemeSize.miniMargin),
+                                                      decoration: BoxDecoration(
+                                                          borderRadius: BorderRadius.all(
+                                                              Radius.circular(
+                                                                  ThemeSize.minBtnRadius)),
+                                                          border: Border.all(
+                                                              width: 1,
+                                                              color:
+                                                              ThemeColors.activeColor)),
+                                                      child: Text("Hi-Res",
+                                                          style: TextStyle(
+                                                              color:
+                                                              ThemeColors.activeColor)),
+                                                    ),
+                                                    SizedBox(width: ThemeSize.smallMargin),
+                                                    Text("${musicItem.authorName} - ${musicItem.albumName}",style: TextStyle(color: ThemeColors.disableColor),)
+                                                  ],
+                                                )
+                                              ],
+                                            ),
+                                            Expanded(child: SizedBox(), flex: 1),
+                                            Image.asset(
+                                              "lib/assets/images/icon-music-play.png",
+                                              width: ThemeSize.smallIcon,
+                                              height: ThemeSize.smallIcon,
+                                            ),
+                                            SizedBox(width: ThemeSize.containerPadding),
+                                            Image.asset(
+                                              "lib/assets/images/icon-music-add.png",
+                                              width: ThemeSize.smallIcon,
+                                              height: ThemeSize.smallIcon,
+                                            ),
+                                            SizedBox(width: ThemeSize.containerPadding),
+                                            Image.asset(
+                                              "lib/assets/images/icon-music-menu.png",
+                                              width: ThemeSize.smallIcon,
+                                              height: ThemeSize.smallIcon,
+                                            )
+                                          ],
+                                        ));
+                                  }).toList());
+                            }
+                          })
+                    ],
+                  ));
+            }).toList()) ;
+          }
+        }
+    );
+
+
   }
 }
