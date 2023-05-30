@@ -11,6 +11,8 @@ class UserInfoModel{
   String username;
   String sign;
   String region;
+  int disabled;
+  int permission;
   UserInfoModel({
     this.avater,
     this.birthday,
@@ -23,7 +25,9 @@ class UserInfoModel{
     this.userId,
     this.username,
     this.sign,
-    this.region
+    this.region,
+    this.disabled,
+    this.permission
   });
   //工厂模式-用这种模式可以省略New关键字
   factory UserInfoModel.fromJson(dynamic json){
@@ -40,6 +44,8 @@ class UserInfoModel{
       username: json["username"],
       sign: json["sign"],
       region: json["region"],
+      disabled:json["disabled"],
+      permission:json["permission"]
     );
   }
 

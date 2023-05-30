@@ -350,12 +350,11 @@ Future getKeyWordMusicService() async {
 }
 
 ///@author: wuwenqiang
-///@description: 获取分类音乐列表
-/// @date: 2023-05-25 22:45
-Future getMusicByClassifyNameService(String classifyName,int pageNum,int pageSize) async {
+///@description: 获取音乐分类
+/// @date: 2023-05-29 22:57
+Future getMusicClassifyService() async {
   try {
-
-    Response response = await dio.get("${servicePath['getMusicByClassifyName']}?classifyName=${classifyName}&pageNum=${pageNum}&pageSize=${pageSize}");
+    Response response = await dio.get(servicePath['getMusicClassify']);
     return getResponseData(response);
   } catch (e) {
     return print('ERROR:======>${e}');
@@ -363,11 +362,12 @@ Future getMusicByClassifyNameService(String classifyName,int pageNum,int pageSiz
 }
 
 ///@author: wuwenqiang
-///@description: 获取音乐分类
-/// @date: 2023-05-29 22:57
-Future getMusicClassifyService() async {
+///@description: 获取分类音乐列表
+/// @date: 2023-05-25 22:45
+Future getMusicListByClassifyIdService(int classifyId,int pageNum,int pageSize) async {
   try {
-    Response response = await dio.get(servicePath['getMusicClassify']);
+
+    Response response = await dio.get("${servicePath['getMusicByClassifyId']}?classifyId=${classifyId}&pageNum=${pageNum}&pageSize=${pageSize}");
     return getResponseData(response);
   } catch (e) {
     return print('ERROR:======>${e}');

@@ -31,5 +31,5 @@ const servicePath = {
   'updateAvaterService':movieServiceUrl + '/service/movie-getway/updateAvater',//新增评论
   'getKeywordMusic': musicServiceUrl + '/service/myMusic/getKeywordMusic',//获取搜索关键词
   'getMusicClassify': musicServiceUrl + '/service/myMusic/getMusicClassify',//获取分类歌曲
-  'getMusicByClassifyName': musicServiceUrl + '/service/myMusic/getMusicByClassifyName',//获取推荐音乐列表
+  'getMusicListByClassifyId': musicServiceUrl + '/service/myMusic/getMusicListByClassifyId',//获取推荐音乐列表
 };
