@@ -48,7 +48,7 @@ class MovieListComponent extends StatelessWidget {
                   height: 200,
                   fit: BoxFit.fill,
                   image: NetworkImage(item.localImg != null
-                      ? movieServiceUrl + item.localImg
+                      ? host + item.localImg
                       : item.img))),
           SizedBox(height: 10),
           Text(

@@ -46,7 +46,7 @@ class _MusicHomePageState extends State<MusicHomePage>
             ClipOval(
               child: Image.network(
                 //从全局的provider中获取用户信息
-                movieServiceUrl +
+                host +
                     Provider.of<UserInfoProvider>(context).userInfo.avater,
                 height: ThemeSize.middleAvater,
                 width: ThemeSize.middleAvater,
@@ -196,6 +196,7 @@ class _MusicHomePageState extends State<MusicHomePage>
         });
   }
 
+  // 获取音乐列表
   Widget buildMusicListByClassifyId(int classifyId) {
     return FutureBuilder(
         future: getMusicListByClassifyIdService(classifyId, 1, 3),
@@ -215,7 +216,7 @@ class _MusicHomePageState extends State<MusicHomePage>
                       ClipOval(
                         child: Image.network(
                           //从全局的provider中获取用户信息
-                          movieServiceUrl + musicItem.cover,
+                          host + musicItem.cover,
                           height: ThemeSize.bigAvater,
                           width: ThemeSize.bigAvater,
                           fit: BoxFit.cover,
@@ -281,9 +282,10 @@ class _MusicHomePageState extends State<MusicHomePage>
         });
   }
 
+  // 获取歌手列表
   Widget buildSingerListWidget() {
     return FutureBuilder(
-        future: getMusicClassifyService(),
+        future: getSingerListService(1,5),
         builder: (context, snapshot) {
           if (snapshot.data == null) {
             return Container();

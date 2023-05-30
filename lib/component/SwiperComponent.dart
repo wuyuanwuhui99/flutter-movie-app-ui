@@ -37,7 +37,7 @@ class SwiperComponent extends StatelessWidget {
                         child:
                           Image.network(
                           swiperDataList[index].localImg != null
-                              ? movieServiceUrl + swiperDataList[index].localImg
+                              ? host + swiperDataList[index].localImg
                               : swiperDataList[index].img,
                           height: 200,
                           fit: BoxFit.cover,

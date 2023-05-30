@@ -366,8 +366,19 @@ Future getMusicClassifyService() async {
 /// @date: 2023-05-25 22:45
 Future getMusicListByClassifyIdService(int classifyId,int pageNum,int pageSize) async {
   try {
+    Response response = await dio.get("${servicePath['getMusicListByClassifyId']}?classifyId=${classifyId}&pageNum=${pageNum}&pageSize=${pageSize}");
+    return getResponseData(response);
+  } catch (e) {
+    return print('ERROR:======>${e}');
+  }
+}
 
-    Response response = await dio.get("${servicePath['getMusicByClassifyId']}?classifyId=${classifyId}&pageNum=${pageNum}&pageSize=${pageSize}");
+///@author: wuwenqiang
+///@description: 获取分类音乐列表
+/// @date: 2023-05-25 22:45
+Future getSingerListService(int pageNum,int pageSize) async {
+  try {
+    Response response = await dio.get("${servicePath['getSingerList']}?pageNum=${pageNum}&pageSize=${pageSize}");
     return getResponseData(response);
   } catch (e) {
     return print('ERROR:======>${e}');

@@ -146,7 +146,7 @@ class _PlayerPageState extends State<PlayerPage> {
                                               children: <Widget>[
                                                 ClipOval(
                                                     child: Image.network(
-                                                        movieServiceUrl +
+                                                        host +
                                                             commentList[index]
                                                                 .avater,
                                                         height:
@@ -375,7 +375,7 @@ class _PlayerPageState extends State<PlayerPage> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
               ClipOval(
-                  child: Image.network(movieServiceUrl + element.avater,
+                  child: Image.network(host + element.avater,
                       height: ThemeSize.middleIcon,
                       width: ThemeSize.middleIcon,
                       fit: BoxFit.cover)),

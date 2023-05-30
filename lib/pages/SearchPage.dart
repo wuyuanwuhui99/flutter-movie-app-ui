@@ -102,7 +102,7 @@ class _SearchPageState extends State<SearchPage> {
                             fit: BoxFit.fill,
                             image: NetworkImage(
                                 searchResult[index].localImg != null
-                                    ? movieServiceUrl + searchResult[index].localImg
+                                    ? host + searchResult[index].localImg
                                     : searchResult[index].img))),
                   ),
                   Expanded(
