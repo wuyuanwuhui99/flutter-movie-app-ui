@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:movie/model/MusicModel.dart';
-import 'package:movie/model/MusicClassifyModel.dart';
+import '../model/MusicModel.dart';
+import '../model/MusicClassifyModel.dart';
+import '../model/MusicAuthorModel.dart';
 import 'package:provider/provider.dart';
 import '../service/serverMethod.dart';
 import '../provider/UserInfoProvider.dart';
@@ -27,8 +28,13 @@ class _MusicHomePageState extends State<MusicHomePage>
     return Column(
       children: <Widget>[
         buildSearchWidget(),
-        buildClassifyWidget(),
-        buildMuiscModuleByClassifyIdWidget()
+        Expanded(
+            child: SingleChildScrollView(
+                child: Column(children: [
+              buildClassifyWidget(),
+              buildMuiscModuleByClassifyIdWidget()
+            ])),
+            flex: 1)
       ],
     );
   }
@@ -46,8 +52,7 @@ class _MusicHomePageState extends State<MusicHomePage>
             ClipOval(
               child: Image.network(
                 //从全局的provider中获取用户信息
-                host +
-                    Provider.of<UserInfoProvider>(context).userInfo.avater,
+                host + Provider.of<UserInfoProvider>(context).userInfo.avater,
                 height: ThemeSize.middleAvater,
                 width: ThemeSize.middleAvater,
                 fit: BoxFit.cover,
@@ -188,7 +193,9 @@ class _MusicHomePageState extends State<MusicHomePage>
                           Text("更多")
                         ],
                       ),
-                      classifyItem.classifyName == "推荐歌手" ? buildSingerListWidget() : buildMusicListByClassifyId(classifyItem.id)
+                      classifyItem.classifyName == "推荐歌手"
+                          ? buildSingerListWidget()
+                          : buildMusicListByClassifyId(classifyItem.id)
                     ],
                   ));
             }).toList());
@@ -285,12 +292,34 @@ class _MusicHomePageState extends State<MusicHomePage>
   // 获取歌手列表
   Widget buildSingerListWidget() {
     return FutureBuilder(
-        future: getSingerListService(1,5),
+        future: getSingerListService(1, 5),
         builder: (context, snapshot) {
           if (snapshot.data == null) {
             return Container();
           } else {
-            return Text("推荐歌手");
+            List authorsList = snapshot.data["data"] as List;
+            // 动态计算歌手头像大小
+            double size = (MediaQuery.of(context).size.width - (authorsList.length + 3) * ThemeSize.containerPadding) / authorsList.length;
+            return Column(children: [
+              SizedBox(height: ThemeSize.containerPadding),
+              Row(children: authorsList.cast().map((item) {
+              MusicAuthorModel authorModel = MusicAuthorModel.fromJson(item);
+              return Expanded(flex: 1,child:Column(children: [
+                ClipOval(
+                  child: Image.network(
+                    //从全局的provider中获取用户信息
+                    authorModel.avatar.indexOf("http") != -1
+                        ? authorModel.avatar.replaceAll("{size}", "480")
+                        : host + authorModel.avatar,
+                    height: size,
+                    width: size,
+                    fit: BoxFit.cover,
+                  ),
+                ),
+                SizedBox(height: ThemeSize.containerPadding),
+                Text(authorModel.authorName)
+              ],));
+            }).toList())],);
           }
         });
   }
