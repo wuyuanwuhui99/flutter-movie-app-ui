@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_easyrefresh/easy_refresh.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:flutter_easyrefresh/material_footer.dart';
 import '../model/MusicModel.dart';
 import '../model/MusicClassifyModel.dart';
 import '../model/MusicAuthorModel.dart';
@@ -22,21 +25,66 @@ class _MusicHomePageState extends State<MusicHomePage>
     with AutomaticKeepAliveClientMixin {
   @override
   bool get wantKeepAlive => true;
+  int pageNum = 1;
+  List<Widget> currentClassifiesWidget = [];
+  List<MusicClassifyModel> allClassifies = [];
+
+  @override
+  void initState() {
+    super.initState();
+    getMusicClassifyService().then((res) {
+      currentClassifiesWidget.add(buildClassifyWidget());
+      allClassifies = (res["data"] as List).cast().map((item) {
+        return MusicClassifyModel.fromJson(item);
+      }).toList();
+      setState(() {
+        allClassifies.sublist(0, 4).forEach((item) {
+          currentClassifiesWidget.add(buildMuiscModuleByClassifyIdWidget(item));
+        });
+      });
+    });
+  }
+
+  void _getCategoryItem() {
+    if (pageNum < allClassifies.length) {
+      setState(() {
+        currentClassifiesWidget
+            .add(buildMuiscModuleByClassifyIdWidget(allClassifies[pageNum]));
+      });
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: <Widget>[
-        buildSearchWidget(),
-        Expanded(
-            child: SingleChildScrollView(
-                child: Column(children: [
-              buildClassifyWidget(),
-              buildMuiscModuleByClassifyIdWidget()
-            ])),
-            flex: 1)
-      ],
-    );
+    return Container(
+        width: MediaQuery.of(context).size.width,
+        padding: ThemeStyle.paddingBox,
+        child: Column(children: <Widget>[
+          buildSearchWidget(),
+          Expanded(
+              flex: 1,
+              child: EasyRefresh(
+                footer: MaterialFooter(),
+                onLoad: () async {
+                  pageNum++;
+                  if (pageNum >= allClassifies.length) {
+                    Fluttertoast.showToast(
+                        msg: "已经到底了",
+                        toastLength: Toast.LENGTH_SHORT,
+                        gravity: ToastGravity.CENTER,
+                        timeInSecForIos: 1,
+                        backgroundColor: Colors.blue,
+                        textColor: Colors.white,
+                        fontSize: ThemeSize.middleFontSize);
+                  } else {
+                    _getCategoryItem();
+                  }
+                },
+                child: Column(
+                  children: currentClassifiesWidget,
+                ),
+              ))
+        ]));
   }
 
   Widget buildSearchWidget() {
@@ -162,45 +210,32 @@ class _MusicHomePageState extends State<MusicHomePage>
   }
 
   // 获取分类音乐
-  Widget buildMuiscModuleByClassifyIdWidget() {
-    return FutureBuilder(
-        future: getMusicClassifyService(),
-        builder: (context, snapshot) {
-          if (snapshot.data == null) {
-            return Container();
-          } else {
-            return Column(
-                children: (snapshot.data["data"] as List).cast().map((item) {
-              MusicClassifyModel classifyItem =
-                  MusicClassifyModel.fromJson(item);
-              return Container(
-                  decoration: ThemeStyle.boxDecoration,
-                  margin: ThemeStyle.margin,
-                  width: MediaQuery.of(context).size.width -
-                      ThemeSize.containerPadding * 2,
-                  padding: ThemeStyle.padding,
-                  child: Column(
-                    children: [
-                      Row(
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          Image.asset("lib/assets/images/icon-down.png",
-                              width: ThemeSize.smallIcon,
-                              height: ThemeSize.smallIcon),
-                          SizedBox(width: ThemeSize.smallMargin),
-                          Text(classifyItem.classifyName),
-                          Expanded(child: SizedBox(), flex: 1),
-                          Text("更多")
-                        ],
-                      ),
-                      classifyItem.classifyName == "推荐歌手"
-                          ? buildSingerListWidget()
-                          : buildMusicListByClassifyId(classifyItem.id)
-                    ],
-                  ));
-            }).toList());
-          }
-        });
+  Widget buildMuiscModuleByClassifyIdWidget(
+      MusicClassifyModel musicClassifyModel) {
+    return Container(
+        decoration: ThemeStyle.boxDecoration,
+        margin: ThemeStyle.margin,
+        width:
+            MediaQuery.of(context).size.width - ThemeSize.containerPadding * 2,
+        padding: ThemeStyle.padding,
+        child: Column(
+          children: [
+            Row(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Image.asset("lib/assets/images/icon-down.png",
+                    width: ThemeSize.smallIcon, height: ThemeSize.smallIcon),
+                SizedBox(width: ThemeSize.smallMargin),
+                Text(musicClassifyModel.classifyName),
+                Expanded(child: SizedBox(), flex: 1),
+                Text("更多")
+              ],
+            ),
+            musicClassifyModel.classifyName == "推荐歌手"
+                ? buildSingerListWidget()
+                : buildMusicListByClassifyId(musicClassifyModel.id)
+          ],
+        ));
   }
 
   // 获取音乐列表
@@ -230,41 +265,49 @@ class _MusicHomePageState extends State<MusicHomePage>
                         ),
                       ),
                       SizedBox(width: ThemeSize.containerPadding),
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(musicItem.songName,
-                              style:
-                                  TextStyle(fontSize: ThemeSize.bigFontSize)),
-                          SizedBox(height: ThemeSize.smallMargin),
-                          Row(
-                            children: [
-                              Container(
-                                padding: EdgeInsets.only(
-                                    left: ThemeSize.miniMargin,
-                                    right: ThemeSize.miniMargin),
-                                decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.all(
-                                        Radius.circular(
-                                            ThemeSize.minBtnRadius)),
-                                    border: Border.all(
-                                        width: 1,
-                                        color: ThemeColors.activeColor)),
-                                child: Text("Hi-Res",
-                                    style: TextStyle(
-                                        color: ThemeColors.activeColor)),
-                              ),
-                              SizedBox(width: ThemeSize.smallMargin),
-                              Text(
-                                "${musicItem.authorName} - ${musicItem.albumName}",
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(musicItem.songName,
                                 style:
-                                    TextStyle(color: ThemeColors.disableColor),
-                              )
-                            ],
-                          )
-                        ],
+                                    TextStyle(fontSize: ThemeSize.bigFontSize)),
+                            SizedBox(height: ThemeSize.smallMargin),
+                            Row(
+                              children: [
+                                Container(
+                                  padding: EdgeInsets.only(
+                                      left: ThemeSize.miniMargin,
+                                      right: ThemeSize.miniMargin),
+                                  decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.all(
+                                          Radius.circular(
+                                              ThemeSize.minBtnRadius)),
+                                      border: Border.all(
+                                          width: 1,
+                                          color: ThemeColors.activeColor)),
+                                  child: Text("Hi-Res",
+                                      style: TextStyle(
+                                          color: ThemeColors.activeColor)),
+                                ),
+                                SizedBox(width: ThemeSize.smallMargin),
+                                Expanded(
+                                  child: Text(
+                                    "${musicItem.authorName} - ${musicItem.albumName}",
+                                    softWrap: false,
+                                    maxLines: 1,
+                                    overflow: TextOverflow.ellipsis,
+                                    style: TextStyle(
+                                        color: ThemeColors.disableColor),
+                                  ),
+                                  flex: 1,
+                                )
+                              ],
+                            )
+                          ],
+                        ),
+                        flex: 1,
                       ),
-                      Expanded(child: SizedBox(), flex: 1),
                       Image.asset(
                         "lib/assets/images/icon-music-play.png",
                         width: ThemeSize.smallIcon,
@@ -299,27 +342,39 @@ class _MusicHomePageState extends State<MusicHomePage>
           } else {
             List authorsList = snapshot.data["data"] as List;
             // 动态计算歌手头像大小
-            double size = (MediaQuery.of(context).size.width - (authorsList.length + 3) * ThemeSize.containerPadding) / authorsList.length;
-            return Column(children: [
-              SizedBox(height: ThemeSize.containerPadding),
-              Row(children: authorsList.cast().map((item) {
-              MusicAuthorModel authorModel = MusicAuthorModel.fromJson(item);
-              return Expanded(flex: 1,child:Column(children: [
-                ClipOval(
-                  child: Image.network(
-                    //从全局的provider中获取用户信息
-                    authorModel.avatar.indexOf("http") != -1
-                        ? authorModel.avatar.replaceAll("{size}", "480")
-                        : host + authorModel.avatar,
-                    height: size,
-                    width: size,
-                    fit: BoxFit.cover,
-                  ),
-                ),
+            double size = (MediaQuery.of(context).size.width -
+                    (authorsList.length + 3) * ThemeSize.containerPadding) /
+                authorsList.length;
+            return Column(
+              children: [
                 SizedBox(height: ThemeSize.containerPadding),
-                Text(authorModel.authorName)
-              ],));
-            }).toList())],);
+                Row(
+                    children: authorsList.cast().map((item) {
+                  MusicAuthorModel authorModel =
+                      MusicAuthorModel.fromJson(item);
+                  return Expanded(
+                      flex: 1,
+                      child: Column(
+                        children: [
+                          ClipOval(
+                            child: Image.network(
+                              //从全局的provider中获取用户信息
+                              authorModel.avatar.indexOf("http") != -1
+                                  ? authorModel.avatar
+                                      .replaceAll("{size}", "480")
+                                  : host + authorModel.avatar,
+                              height: size,
+                              width: size,
+                              fit: BoxFit.cover,
+                            ),
+                          ),
+                          SizedBox(height: ThemeSize.containerPadding),
+                          Text(authorModel.authorName)
+                        ],
+                      ));
+                }).toList())
+              ],
+            );
           }
         });
   }
