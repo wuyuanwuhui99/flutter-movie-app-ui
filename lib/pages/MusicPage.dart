@@ -91,7 +91,6 @@ class _MusicPageState extends State<MusicPage>
           ],
         ),
         onTap: () {
-          print("=======" + index.toString());
           if (_currentIndex != index) {
             setState(() {
               _currentIndex = index;
@@ -105,78 +104,59 @@ class _MusicPageState extends State<MusicPage>
 
   @override
   Widget build(BuildContext context) {
-    MusicModel musicModel = Provider.of<PlayerMusicProvider>(context).musicModel;
-    return Scaffold(
-        backgroundColor: ThemeColors.colorBg,
-        body: SafeArea(
-            top: true,
-            child: PageView.builder(
-                controller: _pageController,
-                physics: NeverScrollableScrollPhysics(),
-                onPageChanged: _pageChanged,
-                itemCount: 4,
-                itemBuilder: (context, index) {
-                  return _getPage();
-                })),
-        floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-        //悬浮按钮
-        floatingActionButton: SizedBox(
-            height: ThemeSize.minPlayIcon,
-            width: ThemeSize.minPlayIcon,
-            child: FloatingActionButton(
-              child: musicModel != null ? ClipOval(child: Image.network(host + musicModel.cover,width: ThemeSize.minPlayIcon,height: ThemeSize.minPlayIcon,)) : SizedBox(),
-              onPressed: () {
-              },
-            )),
-        bottomNavigationBar: BottomAppBar(
-            shape: CircularNotchedRectangle(),
-            child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: <Widget>[
-                  bottomAppBarItem(0),
-                  bottomAppBarItem(1),
-                  SizedBox(width: 50),
-                  bottomAppBarItem(2),
-                  bottomAppBarItem(3)
-                ])));
-
-    return Scaffold(
-        backgroundColor: ThemeColors.colorBg,
-        body: SafeArea(
-            top: true,
-            child: PageView.builder(
-                controller: _pageController,
-                physics: NeverScrollableScrollPhysics(),
-                onPageChanged: _pageChanged,
-                itemCount: 4,
-                itemBuilder: (context, index) {
-                  return _getPage();
-                })),
-        floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-        //悬浮按钮
-        floatingActionButton: SizedBox(
-            height: ThemeSize.minPlayIcon,
-            width: ThemeSize.minPlayIcon,
-            child: FloatingActionButton(
-              child: musicModel != null ? ClipOval(child: Image.network(host + musicModel.cover)) : SizedBox(),
-              onPressed: () {
-                print('点击');
-              },
-            )),
-        bottomNavigationBar: BottomAppBar(
-            shape: CircularNotchedRectangle(),
-            child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: <Widget>[
-                  bottomAppBarItem(0),
-                  bottomAppBarItem(1),
-                  SizedBox(width: 50),
-                  bottomAppBarItem(2),
-                  bottomAppBarItem(3)
-                ])));
-
+    return FutureBuilder(
+        future: LocalStroageUtils.getPlayMusic(),
+        builder: (context, snapshot) {
+          MusicModel musicModel;
+          print(snapshot.data);
+          if (snapshot.data != null) {
+            musicModel = MusicModel.fromJson(snapshot.data);
+            Provider.of<PlayerMusicProvider>(context).setPlayMusic(musicModel);
+          } else {
+            musicModel = Provider.of<PlayerMusicProvider>(context).musicModel;
+          }
+          return Scaffold(
+              backgroundColor: ThemeColors.colorBg,
+              body: SafeArea(
+                  top: true,
+                  child: PageView.builder(
+                      controller: _pageController,
+                      physics: NeverScrollableScrollPhysics(),
+                      onPageChanged: _pageChanged,
+                      itemCount: 4,
+                      itemBuilder: (context, index) {
+                        return _getPage();
+                      })),
+              floatingActionButtonLocation:
+                  FloatingActionButtonLocation.centerDocked,
+              //悬浮按钮
+              floatingActionButton: SizedBox(
+                  height: ThemeSize.minPlayIcon,
+                  width: ThemeSize.minPlayIcon,
+                  child: FloatingActionButton(
+                    child: musicModel != null
+                        ? ClipOval(
+                            child: Image.network(
+                            host + musicModel.cover,
+                            width: ThemeSize.minPlayIcon,
+                            height: ThemeSize.minPlayIcon,
+                          ))
+                        : SizedBox(),
+                    onPressed: () {},
+                  )),
+              bottomNavigationBar: BottomAppBar(
+                  shape: CircularNotchedRectangle(),
+                  child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: <Widget>[
+                        bottomAppBarItem(0),
+                        bottomAppBarItem(1),
+                        SizedBox(width: 50),
+                        bottomAppBarItem(2),
+                        bottomAppBarItem(3)
+                      ])));
+        });
   }
 
   void _pageChanged(int index) {

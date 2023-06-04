@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 class MusicModel {
   int id;//主键
   int albumId;// 专辑id
@@ -90,7 +92,36 @@ class MusicModel {
     );
   }
 
-  static String toJson(MusicModel musicModel){
-    return musicModel.toString();
+  static String stringigy(MusicModel musicModel){
+    Map musicMap = {
+      "id":musicModel.id,
+      "albumId":musicModel.albumId,
+      "songName":musicModel.songName,
+      "authorName":musicModel.authorName,
+      "authorId":musicModel.authorId,
+      "albumName":musicModel.albumName,
+      "version":musicModel.version,
+      "language":musicModel.language,
+      "publishDate":musicModel.publishDate,
+      "wideAudioId":musicModel.wideAudioId,
+      "isPublish":musicModel.isPublish,
+      "bigPackId":musicModel.isPublish,
+      "finalId":musicModel.finalId,
+      "audioId":musicModel.audioId,
+      "similarAudioId":musicModel.similarAudioId,
+      "isHot":musicModel.isHot,
+      "albumAudioId":musicModel.albumAudioId,
+      "audioGroupId":musicModel.audioGroupId,
+      "cover":musicModel.cover,
+      "playUrl":musicModel.playUrl,
+      "localPlayUrl":musicModel.localPlayUrl,
+      "sourceName":musicModel.sourceName,
+      "sourceUrl":musicModel.sourceUrl,
+      "createTime":musicModel.createTime,
+      "updateTim":musicModel.updateTime,
+      "label":musicModel.label,
+      "lyrics":musicModel.lyrics,
+    };
+    return json.encode(musicMap);
   }
 }

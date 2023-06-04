@@ -20,7 +20,7 @@ class LocalStroageUtils {
 
   static Future setPlayMusic(MusicModel musicModel) async {
     final SharedPreferences prefs = await _prefs;
-    prefs.setString("playMusic", MusicModel.toJson(musicModel));
+    prefs.setString("playMusic", MusicModel.stringigy(musicModel));
   }
 
   static Future getPlayMusic() async {

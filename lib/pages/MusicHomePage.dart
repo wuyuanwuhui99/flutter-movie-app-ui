@@ -14,6 +14,7 @@ import '../theme/ThemeSize.dart';
 import '../theme/ThemeColors.dart';
 import '../config/serviceUrl.dart';
 import './SearchMusicPage.dart';
+import '../utils/LocalStroageUtils.dart';
 
 class MusicHomePage extends StatefulWidget {
   MusicHomePage({Key key}) : super(key: key);
@@ -117,17 +118,15 @@ class _MusicHomePageState extends State<MusicHomePage>
                           if (snapshot.data == null) {
                             return Container();
                           }
-                          // var result = json.decode(snapshot.data.toString());
                           var result = snapshot.data;
                           String keyword = "";
                           if (result != null && result['data'] != null) {
                             MusicModel musicModel = MusicModel.fromJson(result["data"]);
                             PlayerMusicProvider musicProvider = Provider.of<PlayerMusicProvider>(context);
+                            print(musicProvider.musicModel);
                             if(musicProvider.musicModel == null){// 如果缓存中没有正在播放的歌曲，用推荐的歌曲作为正在播放的歌曲
-                              print(111);
-                              print(musicModel);
                               musicProvider.setPlayMusic(musicModel);
-
+                              LocalStroageUtils.setPlayMusic(musicModel);
                             }
                             keyword = '${musicModel.authorName} - ${musicModel.songName}';
                           }
