@@ -5,6 +5,7 @@ import 'package:flutter_easyrefresh/material_footer.dart';
 import '../model/MusicModel.dart';
 import '../model/MusicClassifyModel.dart';
 import '../model/MusicAuthorModel.dart';
+import '../provider/PlayerMusicProvider.dart';
 import 'package:provider/provider.dart';
 import '../service/serverMethod.dart';
 import '../provider/UserInfoProvider.dart';
@@ -120,8 +121,15 @@ class _MusicHomePageState extends State<MusicHomePage>
                           var result = snapshot.data;
                           String keyword = "";
                           if (result != null && result['data'] != null) {
-                            keyword =
-                                '${result["data"]["authorName"]} - ${result["data"]["songName"]}';
+                            MusicModel musicModel = MusicModel.fromJson(result["data"]);
+                            PlayerMusicProvider musicProvider = Provider.of<PlayerMusicProvider>(context);
+                            if(musicProvider.musicModel == null){// 如果缓存中没有正在播放的歌曲，用推荐的歌曲作为正在播放的歌曲
+                              print(111);
+                              print(musicModel);
+                              musicProvider.setPlayMusic(musicModel);
+
+                            }
+                            keyword = '${musicModel.authorName} - ${musicModel.songName}';
                           }
                           return InkWell(
                               onTap: () {

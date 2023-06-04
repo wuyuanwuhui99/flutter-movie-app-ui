@@ -89,4 +89,8 @@ class MusicModel {
       lyrics:json["lyrics"],// 歌词
     );
   }
+
+  static String toJson(MusicModel musicModel){
+    return musicModel.toString();
+  }
 }

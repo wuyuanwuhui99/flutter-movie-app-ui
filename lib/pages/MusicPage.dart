@@ -5,6 +5,11 @@ import '../pages/MusicHomePage.dart';
 import '../pages/MusicRecommentPage.dart';
 import '../pages/MusicCirclePage.dart';
 import '../pages/MusicUserPage.dart';
+import 'package:provider/provider.dart';
+import '../provider/PlayerMusicProvider.dart';
+import '../model/MusicModel.dart';
+import '../utils/LocalStroageUtils.dart';
+import '../config/serviceUrl.dart';
 
 class MusicPage extends StatefulWidget {
   MusicPage({Key key}) : super(key: key);
@@ -100,6 +105,7 @@ class _MusicPageState extends State<MusicPage>
 
   @override
   Widget build(BuildContext context) {
+    MusicModel musicModel = Provider.of<PlayerMusicProvider>(context).musicModel;
     return Scaffold(
         backgroundColor: ThemeColors.colorBg,
         body: SafeArea(
@@ -118,7 +124,42 @@ class _MusicPageState extends State<MusicPage>
             height: ThemeSize.minPlayIcon,
             width: ThemeSize.minPlayIcon,
             child: FloatingActionButton(
-              child: const Icon(Icons.add),
+              child: musicModel != null ? ClipOval(child: Image.network(host + musicModel.cover,width: ThemeSize.minPlayIcon,height: ThemeSize.minPlayIcon,)) : SizedBox(),
+              onPressed: () {
+              },
+            )),
+        bottomNavigationBar: BottomAppBar(
+            shape: CircularNotchedRectangle(),
+            child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: <Widget>[
+                  bottomAppBarItem(0),
+                  bottomAppBarItem(1),
+                  SizedBox(width: 50),
+                  bottomAppBarItem(2),
+                  bottomAppBarItem(3)
+                ])));
+
+    return Scaffold(
+        backgroundColor: ThemeColors.colorBg,
+        body: SafeArea(
+            top: true,
+            child: PageView.builder(
+                controller: _pageController,
+                physics: NeverScrollableScrollPhysics(),
+                onPageChanged: _pageChanged,
+                itemCount: 4,
+                itemBuilder: (context, index) {
+                  return _getPage();
+                })),
+        floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+        //悬浮按钮
+        floatingActionButton: SizedBox(
+            height: ThemeSize.minPlayIcon,
+            width: ThemeSize.minPlayIcon,
+            child: FloatingActionButton(
+              child: musicModel != null ? ClipOval(child: Image.network(host + musicModel.cover)) : SizedBox(),
               onPressed: () {
                 print('点击');
               },
@@ -135,6 +176,7 @@ class _MusicPageState extends State<MusicPage>
                   bottomAppBarItem(2),
                   bottomAppBarItem(3)
                 ])));
+
   }
 
   void _pageChanged(int index) {
