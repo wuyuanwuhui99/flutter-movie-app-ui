@@ -329,7 +329,6 @@ Future insertCommentService(Map commentMap) async {
 /// @date: 2022-12-17 22:44
 Future updateAvaterService(Map avaterMap) async {
   try {
-    print(servicePath['updateAvaterService']);
     Response response = await dio.put(servicePath['updateAvaterService'],data:avaterMap);
     return getResponseData(response);
   } catch (e) {

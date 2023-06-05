@@ -123,7 +123,6 @@ class _MusicHomePageState extends State<MusicHomePage>
                           if (result != null && result['data'] != null) {
                             MusicModel musicModel = MusicModel.fromJson(result["data"]);
                             PlayerMusicProvider musicProvider = Provider.of<PlayerMusicProvider>(context);
-                            print(musicProvider.musicModel);
                             if(musicProvider.musicModel == null){// 如果缓存中没有正在播放的歌曲，用推荐的歌曲作为正在播放的歌曲
                               musicProvider.setPlayMusic(musicModel);
                               LocalStroageUtils.setPlayMusic(musicModel);

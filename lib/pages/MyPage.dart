@@ -102,7 +102,6 @@ class UserMsgComponent extends StatelessWidget {
             return Container();
           } else {
             UserMsgModel userMsg = UserMsgModel.fromJson(snapshot.data["data"]);
-            print(userMsg);
             return Container(
                 decoration: ThemeStyle.boxDecoration,
                 padding: ThemeStyle.padding,

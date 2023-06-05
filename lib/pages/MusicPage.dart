@@ -108,7 +108,6 @@ class _MusicPageState extends State<MusicPage>
         future: LocalStroageUtils.getPlayMusic(),
         builder: (context, snapshot) {
           MusicModel musicModel;
-          print(snapshot.data);
           if (snapshot.data != null) {
             musicModel = MusicModel.fromJson(snapshot.data);
             Provider.of<PlayerMusicProvider>(context).setPlayMusic(musicModel);
