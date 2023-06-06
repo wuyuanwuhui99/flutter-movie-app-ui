@@ -22,11 +22,11 @@ const servicePath = {
   'isFavorite': host + '/service/movie-getway/isFavorite',//查询是否已经收藏
   'updateUser': host + '/service/movie-getway/updateUser',//更新用户信息
   'updatePassword': host + '/service/movie-getway/updatePassword',//更新密码wq
-  'getCommentCount':host + '/service/movie/getCommentCount',//获取评论总数
-  'getTopCommentList':host + '/service/movie/getTopCommentList',//获取一级评论
-  'getReplyCommentList':host + '/service/movie/getReplyCommentList',//获取一级评论
-  'insertCommentService':host + '/service/movie-getway/insertComment',//新增评论
-  'updateAvaterService':host + '/service/movie-getway/updateAvater',//新增评论
+  'getCommentCount':host + '/service/social/getCommentCount',//获取评论总数
+  'getTopCommentList':host + '/service/social/getTopCommentList',//获取一级评论
+  'getReplyCommentList':host + '/service/social/getReplyCommentList',//获取一级评论
+  'insertCommentService':host + '/service/social-getway/insertComment',//新增评论
+  'updateAvaterService':host + '/service/movie-getway/updateAvater',//更新头像
   'getKeywordMusic': host + '/service/myMusic/getKeywordMusic',//获取搜索关键词
   'getMusicClassify': host + '/service/myMusic/getMusicClassify',//获取分类歌曲
   'getMusicListByClassifyId': host + '/service/myMusic/getMusicListByClassifyId',//获取推荐音乐列表

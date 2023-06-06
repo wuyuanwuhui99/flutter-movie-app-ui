@@ -49,7 +49,7 @@ class _PlayerPageState extends State<PlayerPage> {
         disabledSend = keywordController.text == "";
       });
     });
-    getCommentCountService(widget.movieItem.movieId).then((res) {
+    getCommentCountService(widget.movieItem.movieId,"电影").then((res) {
       setState(() {
         commentCount = res["data"];
       });
@@ -580,7 +580,7 @@ class _PlayerPageState extends State<PlayerPage> {
                 setState(() {
                   showComment = true;
                   getTopCommentListService(
-                          widget.movieItem.movieId, ThemeSize.pageSize, pageNum)
+                          widget.movieItem.movieId,"movie", ThemeSize.pageSize, pageNum)
                       .then((value) {
                     (value["data"] as List).forEach((element) {
                       setState(() {

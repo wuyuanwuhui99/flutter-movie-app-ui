@@ -247,7 +247,7 @@ class _MusicHomePageState extends State<MusicHomePage>
   // 获取音乐列表
   Widget buildMusicListByClassifyId(int classifyId) {
     return FutureBuilder(
-        future: getMusicListByClassifyIdService(classifyId, 1, 3),
+        future: getMusicListByClassifyIdService(classifyId, 1, 3,1),
         builder: (context, snapshot) {
           if (snapshot.data == null) {
             return Container();

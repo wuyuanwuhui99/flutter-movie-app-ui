@@ -278,9 +278,9 @@ Future updatePasswordService(Map map) async {
 ///@author: wuwenqiang
 ///@description: 获取评论总数
 /// @date: 2021-10-26 23:05
-Future getCommentCountService(int movieId) async {
+Future getCommentCountService(int relationId,String type) async {
   try {
-    Response response = await dio.get(servicePath['getCommentCount'],queryParameters: {"movieId": movieId.toString()});
+    Response response = await dio.get(servicePath['getCommentCount'],queryParameters: {"relationId": relationId,"type":type});
     return getResponseData(response);
   } catch (e) {
     return print('ERROR:======>${e}');
@@ -290,9 +290,9 @@ Future getCommentCountService(int movieId) async {
 ///@author: wuwenqiang
 ///@description: 获取一级评论
 /// @date: 2021-10-28 22:01
-Future getTopCommentListService(int movieId,int pageSize,int pageNum) async {
+Future getTopCommentListService(int relationId,String type,int pageSize,int pageNum) async {
   try {
-    Response response = await dio.get(servicePath['getTopCommentList'],queryParameters: {"movieId": movieId,"pageSize":pageSize,"pageNum":pageNum});
+    Response response = await dio.get(servicePath['getTopCommentList'],queryParameters: {"relationId": relationId,"type":type,"pageSize":pageSize,"pageNum":pageNum});
     return getResponseData(response);
   } catch (e) {
     return print('ERROR:======>${e}');
@@ -363,9 +363,10 @@ Future getMusicClassifyService() async {
 ///@author: wuwenqiang
 ///@description: 获取分类音乐列表
 /// @date: 2023-05-25 22:45
-Future getMusicListByClassifyIdService(int classifyId,int pageNum,int pageSize) async {
+/// @params isRedis是否从缓存中获取，首页数据没有是否喜欢字段，不用从缓存中获取，只有推荐页面才有
+Future getMusicListByClassifyIdService(int classifyId,int pageNum,int pageSize,int isRedis) async {
   try {
-    Response response = await dio.get("${servicePath['getMusicListByClassifyId']}?classifyId=${classifyId}&pageNum=${pageNum}&pageSize=${pageSize}");
+    Response response = await dio.get("${servicePath['getMusicListByClassifyId']}?classifyId=${classifyId}&pageNum=${pageNum}&pageSize=${pageSize}&isRedis=${isRedis}");
     return getResponseData(response);
   } catch (e) {
     return print('ERROR:======>${e}');
