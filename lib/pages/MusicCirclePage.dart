@@ -9,6 +9,7 @@ import 'package:flutter_easyrefresh/easy_refresh.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import '../config/serviceUrl.dart';
 import '../utils/common.dart';
+import '../model/CircleLikeModel.dart';
 
 class MusicCirclePage extends StatefulWidget {
   MusicCirclePage({Key key}) : super(key: key);
@@ -46,6 +47,11 @@ class _MusicCirclePageState extends State<MusicCirclePage>
     });
   }
 
+  String getLikeUserName(List<CircleLikeModel> circleLikeModelList){
+    return circleLikeModelList.map((item) => item.username).toList().join(",");
+  }
+
+  // 音乐圈列表项渲染
   Widget buildCircleItem(CircleModel circleModel, int index) {
     return Container(
       decoration: ThemeStyle.boxDecoration,
@@ -71,7 +77,7 @@ class _MusicCirclePageState extends State<MusicCirclePage>
                 children: [
                   Text(circleModel.username,
                       style: TextStyle(
-                          color: ThemeColors.activeColor,
+                          color: ThemeColors.blueColor,
                           fontWeight: FontWeight.bold)),
                   SizedBox(height: ThemeSize.smallMargin),
                   Text(circleModel.content,
@@ -82,40 +88,81 @@ class _MusicCirclePageState extends State<MusicCirclePage>
                   Container(
                     decoration: BoxDecoration(
                       color: ThemeColors.colorBg,
-                      borderRadius: BorderRadius.all(Radius.circular(ThemeSize.minPlayIcon)),
+                      borderRadius: BorderRadius.all(
+                          Radius.circular(ThemeSize.minPlayIcon)),
                     ),
-                    child: Row(children: [
-                      ClipOval(
-                          child: Image.network(
-                            //从全局的provider中获取用户信息
-                            host + circleModel.musicCover,
-                            height: ThemeSize.minPlayIcon,
-                            width: ThemeSize.minPlayIcon,
-                            fit: BoxFit.cover,
-                          )),
-                      SizedBox(width: ThemeSize.containerPadding),
-                      Column(children: [
-                        Text(circleModel.musicSongName),
-                        SizedBox(height: ThemeSize.smallMargin),
-                        Text(circleModel.musicAuthorName,style: TextStyle(color: ThemeColors.disableColor))
-                      ]),
-                      Expanded(flex: 1,child: SizedBox()),
-                      Image.asset("lib/assets/images/icon-music-play.png",width: ThemeSize.smallIcon,height: ThemeSize.smallIcon),
-                      SizedBox(width: ThemeSize.minPlayIcon/3)
-                    ],),
+                    child: Row(
+                      children: [
+                        ClipOval(
+                            child: Image.network(
+                          //从全局的provider中获取用户信息
+                          host + circleModel.musicCover,
+                          height: ThemeSize.minPlayIcon,
+                          width: ThemeSize.minPlayIcon,
+                          fit: BoxFit.cover,
+                        )),
+                        SizedBox(width: ThemeSize.containerPadding),
+                        Column(children: [
+                          Text(circleModel.musicSongName),
+                          SizedBox(height: ThemeSize.smallMargin),
+                          Text(circleModel.musicAuthorName,
+                              style: TextStyle(color: ThemeColors.disableColor))
+                        ]),
+                        Expanded(flex: 1, child: SizedBox()),
+                        Image.asset("lib/assets/images/icon-music-play.png",
+                            width: ThemeSize.smallIcon,
+                            height: ThemeSize.smallIcon),
+                        SizedBox(width: ThemeSize.minPlayIcon / 3)
+                      ],
+                    ),
                   ),
                   SizedBox(height: ThemeSize.containerPadding),
                   Row(children: [
-                    Text(formatTime(circleModel.createTime),style: TextStyle(color: ThemeColors.disableColor)),
-                    Expanded(child: SizedBox(),flex: 1),
-                    Image.asset("lib/assets/images/icon-music-menu.png",width: ThemeSize.smallIcon,
-                        height: ThemeSize.smallIcon)
-                  ])
+                    Text(formatTime(circleModel.createTime),
+                        style: TextStyle(color: ThemeColors.disableColor)),
+                    Expanded(child: SizedBox(), flex: 1),
+                    Image.asset("lib/assets/images/icon-music-menu.png",
+                        width: ThemeSize.smallIcon, height: ThemeSize.smallIcon)
+                  ]),
+                  SizedBox(height: circleModel.circleLikes.length > 0 ? ThemeSize.containerPadding: 0),
+                  buildCircleLikeList(circleModel.circleLikes)
                 ],
               )),
         ],
       ),
     );
+  }
+
+  // 获取每条音乐圈点赞人员
+  Widget buildCircleLikeList(List<CircleLikeModel> circleLikes){
+    if(circleLikes.length > 0){
+      return Container(
+        padding: ThemeStyle.padding,
+        decoration: BoxDecoration(
+            color: ThemeColors.colorBg,
+            borderRadius: BorderRadius.all(
+                Radius.circular(ThemeSize.middleRadius))),
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Image.asset("lib/assets/images/icon-music-like.png",width: ThemeSize.smallIcon,height: ThemeSize.smallIcon),
+            SizedBox(width: ThemeSize.smallMargin),
+            Expanded(
+                flex: 1,
+                child: Text(
+                  circleLikes.map((item) => item.username).toList().join("、"),
+                  style: TextStyle(color: ThemeColors.blueColor),
+                    softWrap: false,
+                    maxLines: 5,
+                    overflow: TextOverflow.ellipsis
+                )
+            )
+          ],
+        ),
+      );
+    }else{
+      return SizedBox();
+    }
   }
 
   @override

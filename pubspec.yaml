@@ -103,6 +103,7 @@ flutter:
    - lib/assets/images/icon-no3.png
    - lib/assets/images/icon-like.png
    - lib/assets/images/icon-like-active.png
+   - lib/assets/images/icon-music-like.png
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.
 
