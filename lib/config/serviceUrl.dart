@@ -1,4 +1,4 @@
-const host = 'http://192.168.0.103:5001';
+const host = 'http://192.168.137.1:5001';
 const servicePath = {
   'getUserData': host + '/service/movie/getUserData', // 获取用户信息
   'getCategoryList': host + '/service/movie/getCategoryList', //获取分类影片
@@ -31,4 +31,5 @@ const servicePath = {
   'getMusicClassify': host + '/service/myMusic/getMusicClassify',//获取分类歌曲
   'getMusicListByClassifyId': host + '/service/myMusic/getMusicListByClassifyId',//获取推荐音乐列表
   'getSingerList': host + '/service/myMusic/getSingerList',// 获取歌手列表
+  'getCircleListByType': host + '/service/circle/getCircleListByType',// 获取歌手列表
 };

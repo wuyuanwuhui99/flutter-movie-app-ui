@@ -384,3 +384,15 @@ Future getSingerListService(int pageNum,int pageSize) async {
     return print('ERROR:======>${e}');
   }
 }
+
+///@author: wuwenqiang
+///@description: 获取分类音乐列表
+/// @date: 2023-05-25 22:45
+Future getCircleListByType(String type,int pageNum,int pageSize) async {
+  try {
+    Response response = await dio.get("${servicePath['getCircleListByType']}?type=${type}&pageNum=${pageNum}&pageSize=${pageSize}");
+    return getResponseData(response);
+  } catch (e) {
+    return print('ERROR:======>${e}');
+  }
+}
