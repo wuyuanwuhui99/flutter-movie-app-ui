@@ -182,9 +182,6 @@ class _MusicCirclePageState extends State<MusicCirclePage>
 
   List<CommentModel> findSubCommentsByTopId(
       List<CommentModel> circleComments, id) {
-    print(circleComments);
-    print(id);
-    print(circleComments.where((element) => element.parentId == id).toList());
     return circleComments.where((element) => element.parentId == id).toList();
   }
 

@@ -396,3 +396,15 @@ Future getCircleListByType(String type,int pageNum,int pageSize) async {
     return print('ERROR:======>${e}');
   }
 }
+
+///@author: wuwenqiang
+///@description: 获取用户歌单
+/// @date: 2023-07-08 18:45
+Future getMusicPlayMenu() async {
+  try {
+    Response response = await dio.get(servicePath['getMusicPlayMenu']);
+    return getResponseData(response);
+  } catch (e) {
+    return print('ERROR:======>${e}');
+  }
+}
