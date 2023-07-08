@@ -10,6 +10,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import '../config/serviceUrl.dart';
 import '../utils/common.dart';
 import '../model/CircleLikeModel.dart';
+import '../model/CommentModel.dart';
 
 class MusicCirclePage extends StatefulWidget {
   MusicCirclePage({Key key}) : super(key: key);
@@ -47,7 +48,7 @@ class _MusicCirclePageState extends State<MusicCirclePage>
     });
   }
 
-  String getLikeUserName(List<CircleLikeModel> circleLikeModelList){
+  String getLikeUserName(List<CircleLikeModel> circleLikeModelList) {
     return circleLikeModelList.map((item) => item.username).toList().join(",");
   }
 
@@ -97,8 +98,8 @@ class _MusicCirclePageState extends State<MusicCirclePage>
                             child: Image.network(
                           //从全局的provider中获取用户信息
                           host + circleModel.musicCover,
-                          height: ThemeSize.minPlayIcon,
-                          width: ThemeSize.minPlayIcon,
+                          height: ThemeSize.bigAvater,
+                          width: ThemeSize.bigAvater,
                           fit: BoxFit.cover,
                         )),
                         SizedBox(width: ThemeSize.containerPadding),
@@ -124,8 +125,11 @@ class _MusicCirclePageState extends State<MusicCirclePage>
                     Image.asset("lib/assets/images/icon-music-menu.png",
                         width: ThemeSize.smallIcon, height: ThemeSize.smallIcon)
                   ]),
-                  SizedBox(height: circleModel.circleLikes.length > 0 ? ThemeSize.containerPadding: 0),
-                  buildCircleLikeList(circleModel.circleLikes)
+                  SizedBox(
+                      height: circleModel.circleLikes.length > 0
+                          ? ThemeSize.containerPadding
+                          : 0),
+                  buildCircleLikeAndCommentList(circleModel)
                 ],
               )),
         ],
@@ -134,35 +138,105 @@ class _MusicCirclePageState extends State<MusicCirclePage>
   }
 
   // 获取每条音乐圈点赞人员
-  Widget buildCircleLikeList(List<CircleLikeModel> circleLikes){
-    if(circleLikes.length > 0){
+  Widget buildCircleLikeAndCommentList(CircleModel circleModel) {
+    List<CircleLikeModel> circleLikes = circleModel.circleLikes;
+    List<CommentModel> circleComments = circleModel.circleComments;
+    if (circleLikes.length > 0 || circleComments.length > 0) {
       return Container(
-        padding: ThemeStyle.padding,
-        decoration: BoxDecoration(
-            color: ThemeColors.colorBg,
-            borderRadius: BorderRadius.all(
-                Radius.circular(ThemeSize.middleRadius))),
-        child: Row(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Image.asset("lib/assets/images/icon-music-like.png",width: ThemeSize.smallIcon,height: ThemeSize.smallIcon),
-            SizedBox(width: ThemeSize.smallMargin),
-            Expanded(
-                flex: 1,
-                child: Text(
-                  circleLikes.map((item) => item.username).toList().join("、"),
-                  style: TextStyle(color: ThemeColors.blueColor),
-                    softWrap: false,
-                    maxLines: 5,
-                    overflow: TextOverflow.ellipsis
-                )
-            )
-          ],
-        ),
-      );
-    }else{
+          padding: ThemeStyle.padding,
+          decoration: BoxDecoration(
+              color: ThemeColors.colorBg,
+              borderRadius:
+                  BorderRadius.all(Radius.circular(ThemeSize.middleRadius))),
+          child: Column(children: [
+            buildCircleLikeList(circleLikes),
+            buildCircleCommentList(circleComments, circleLikes)
+          ]));
+    } else {
       return SizedBox();
     }
+  }
+
+  Widget buildCircleLikeList(List<CircleLikeModel> circleLikes) {
+    return Row(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      mainAxisAlignment: MainAxisAlignment.start,
+      children: [
+        Image.asset("lib/assets/images/icon-music-like.png",
+            width: ThemeSize.smallIcon, height: ThemeSize.smallIcon),
+        SizedBox(width: ThemeSize.smallMargin),
+        Expanded(
+            flex: 1,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [SizedBox(height: ThemeSize.miniMargin),Text(
+                circleLikes.map((item) => item.username).toList().join("、"),
+                style: TextStyle(color: ThemeColors.blueColor),
+                softWrap: false,
+                maxLines: 5,
+                overflow: TextOverflow.ellipsis)],)
+    )
+      ],
+    );
+  }
+
+  List<CommentModel> findSubCommentsByTopId(
+      List<CommentModel> circleComments, id) {
+    print(circleComments);
+    print(id);
+    print(circleComments.where((element) => element.parentId == id).toList());
+    return circleComments.where((element) => element.parentId == id).toList();
+  }
+
+  // 评论
+  Widget buildCircleCommentList(
+      List<CommentModel> circleComments, List<CircleLikeModel> circleLikes) {
+    if (circleComments.length > 0) {
+      List<CommentModel> topComments =
+          circleComments.where((element) => element.topId == null).toList();
+      return Column(
+          children: buildCircleCommentItems(topComments,circleComments, circleLikes,true));
+    } else {
+      return SizedBox();
+    }
+  }
+
+  List<Widget> buildCircleCommentItems(
+      List<CommentModel> circleComments,
+      List<CommentModel> allCircleComments,
+      List<CircleLikeModel> circleLikes,bool isTopComment) {
+    if(circleComments.length == 0)return [];
+    List<Widget> circleCommentWidget = [
+      SizedBox(height: (circleLikes.length > 0 || !isTopComment) ? ThemeSize.containerPadding : 0)
+    ];
+    circleComments.forEach((circleComment) => {
+          circleCommentWidget.add(Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+            ClipOval(
+                child: Image.network(
+              //从全局的provider中获取用户信息
+              host + circleComment.avater,
+              height: isTopComment ? ThemeSize.middleAvater : ThemeSize.middleAvater/2,
+              width: isTopComment ? ThemeSize.middleAvater : ThemeSize.middleAvater/2,
+              fit: BoxFit.cover,
+            )),
+            SizedBox(width: ThemeSize.smallMargin),
+            Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  Text(circleComment.replyUserName != null ? '${circleComment.username}▶${circleComment.replyUserName}' : circleComment.username,
+                      style: TextStyle(color: ThemeColors.subTitle)),
+                  SizedBox(height: ThemeSize.smallMargin),
+                  Text(circleComment.content),
+                  SizedBox(height: ThemeSize.smallMargin),
+                  Text(formatTime(circleComment.createTime),style: TextStyle(color: ThemeColors.subTitle)),
+                  ... buildCircleCommentItems(findSubCommentsByTopId(allCircleComments, circleComment.id),[],[],false)
+                ])
+          ]))
+        });
+    return circleCommentWidget;
   }
 
   @override

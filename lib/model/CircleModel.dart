@@ -1,5 +1,5 @@
 import './CircleLikeModel.dart';
-
+import './CommentModel.dart';
 class CircleModel{
   int id;
   int relationId;// 关联音乐audio_id或者电影movie_id
@@ -32,6 +32,7 @@ class CircleModel{
   String movieLocalImg;// 电影本地图片
   String movieScore;// 电影得分
   List<CircleLikeModel> circleLikes;
+  List<CommentModel> circleComments;
 
   CircleModel({
     this.id,
@@ -64,7 +65,8 @@ class CircleModel{
     this.movieClassify,
     this.movieLocalImg,
     this.movieScore,
-    this.circleLikes
+    this.circleLikes,
+    this.circleComments
   });
   //工厂模式-用这种模式可以省略New关键字
   factory CircleModel.fromJson(dynamic json){
@@ -101,7 +103,10 @@ class CircleModel{
         movieScore: json["movieScore"],
         circleLikes: (json["circleLikes"] as List).cast().map((item) {
           return CircleLikeModel.fromJson(item);
-        }).toList()
+        }).toList(),
+        circleComments:(json["circleComments"] as List).cast().map((item) {
+        return CommentModel.fromJson(item);
+      }).toList(),
     );
   }
 }
