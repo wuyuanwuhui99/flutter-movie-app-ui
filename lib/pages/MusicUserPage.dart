@@ -8,6 +8,7 @@ import '../theme/ThemeSize.dart';
 import '../theme/ThemeColors.dart';
 import '../config/serviceUrl.dart';
 import '../model/MuiscPlayMenuModel.dart';
+import '../model/MuiscMySingerModel.dart';
 
 class MusicUserPage extends StatefulWidget {
   MusicUserPage({Key key}) : super(key: key);
@@ -23,7 +24,13 @@ class _MusicUserPageState extends State<MusicUserPage>
 
   @override
   Widget build(BuildContext context) {
-    return Column(children: [buildUserInfoWidget(), buildMenuWidget(),buildMyPlaylMenuWidget()]);
+    return SingleChildScrollView(
+        child: Column(children: [
+      buildUserInfoWidget(),
+      buildMenuWidget(),
+      buildMyPlaylMenuWidget(),
+      buildMySingerList()
+    ]));
   }
 
   // 用户模块
@@ -126,82 +133,214 @@ class _MusicUserPageState extends State<MusicUserPage>
         decoration: ThemeStyle.boxDecoration,
         margin: ThemeStyle.margin,
         width:
-        MediaQuery.of(context).size.width - ThemeSize.containerPadding * 2,
-    padding: ThemeStyle.padding,
-    child:Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Row(
-          crossAxisAlignment: CrossAxisAlignment.center,
+            MediaQuery.of(context).size.width - ThemeSize.containerPadding * 2,
+        padding: ThemeStyle.padding,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Image.asset("lib/assets/images/icon-down.png",
-                width: ThemeSize.smallIcon, height: ThemeSize.smallIcon),
-            SizedBox(width: ThemeSize.smallMargin),
-            Text("我的歌单"),
-            Expanded(child: SizedBox(), flex: 1),
-            Image.asset("lib/assets/images/icon-menu-add.png",
-                width: ThemeSize.smallIcon, height: ThemeSize.smallIcon),
+            Row(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Image.asset("lib/assets/images/icon-down.png",
+                    width: ThemeSize.smallIcon, height: ThemeSize.smallIcon),
+                SizedBox(width: ThemeSize.smallMargin),
+                Text("我的歌单"),
+                Expanded(child: SizedBox(), flex: 1),
+                Image.asset("lib/assets/images/icon-menu-add.png",
+                    width: ThemeSize.smallIcon, height: ThemeSize.smallIcon),
+              ],
+            ),
+            FutureBuilder(
+                future: getMusicPlayMenuService(),
+                builder: (context, snapshot) {
+                  if (snapshot.data == null) {
+                    return Container();
+                  } else {
+                    List<Widget> playMenuList = [];
+                    (snapshot.data["data"] as List).cast().forEach((item) {
+                      MuiscPlayMenuModel muiscPlayMenuModel =
+                          MuiscPlayMenuModel.fromJson(item);
+                      playMenuList.add(buildPlayMenuItem(muiscPlayMenuModel));
+                    });
+                    if (playMenuList.length == 0) {
+                      return Container();
+                    } else {
+                      return Column(children: playMenuList);
+                    }
+                  }
+                })
           ],
-        ),
-        FutureBuilder(
-            future: getMusicPlayMenu(),
-            builder: (context, snapshot) {
-              if (snapshot.data == null) {
-                return Container();
-              } else {
-                List<Widget> playMenuList = [];
-                (snapshot.data["data"] as List).cast().forEach((item) {
-                  MuiscPlayMenuModel muiscPlayMenuModel = MuiscPlayMenuModel.fromJson(item);
-                  playMenuList.add(buildPlayMenuItem(muiscPlayMenuModel));
-                });
-                if (playMenuList.length == 0) {
-                  return Container();
-                }else{
-                  return Column(children: playMenuList);
-                }
-              }
-            })
-      ],
-    ));
+        ));
   }
 
   // 创建我的歌单item
-  Widget buildPlayMenuItem(MuiscPlayMenuModel muiscPlayMenuModel){
-    return Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
+  Widget buildPlayMenuItem(MuiscPlayMenuModel muiscPlayMenuModel) {
+    return Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+      SizedBox(height: ThemeSize.containerPadding),
+      Row(
         children: [
-        SizedBox(height: ThemeSize.containerPadding),
-        Row(children: [
-          ClipOval(child: Image.network(host+muiscPlayMenuModel.cover,
-            width: ThemeSize.bigAvater,
-            height: ThemeSize.bigAvater,
-            )),
+          muiscPlayMenuModel.cover != null
+              ? ClipOval(
+                  child: Image.network(
+                  host + muiscPlayMenuModel.cover,
+                  width: ThemeSize.bigAvater,
+                  height: ThemeSize.bigAvater,
+                ))
+              : Container(
+                  width: ThemeSize.bigAvater,
+                  height: ThemeSize.bigAvater,
+                  //超出部分，可裁剪
+                  clipBehavior: Clip.hardEdge,
+                  decoration: BoxDecoration(
+                    color: ThemeColors.colorBg,
+                    borderRadius: BorderRadius.circular(ThemeSize.bigAvater),
+                  ),
+                  child: Center(
+                      child: Text(
+                    muiscPlayMenuModel.name.substring(0, 1),
+                    style: TextStyle(fontSize: ThemeSize.bigFontSize),
+                  ))),
           SizedBox(width: ThemeSize.containerPadding),
-          Expanded(child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(muiscPlayMenuModel.name),
-              SizedBox(height: ThemeSize.smallMargin),
-              Text(muiscPlayMenuModel.total.toString()+"首",style: TextStyle(color: ThemeColors.subTitle))
-            ],),flex: 1,),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(muiscPlayMenuModel.name),
+                SizedBox(height: ThemeSize.smallMargin),
+                Text(muiscPlayMenuModel.total.toString() + "首",
+                    style: TextStyle(color: ThemeColors.subTitle))
+              ],
+            ),
+            flex: 1,
+          ),
           Image.asset(
             "lib/assets/images/icon-music-play.png",
             width: ThemeSize.smallIcon,
             height: ThemeSize.smallIcon,
           ),
-          SizedBox(width: ThemeSize.containerPadding*2),
+          SizedBox(width: ThemeSize.containerPadding * 2),
           Image.asset(
             "lib/assets/images/icon-delete.png",
             width: ThemeSize.smallIcon,
             height: ThemeSize.smallIcon,
           ),
-          SizedBox(width: ThemeSize.containerPadding*2),
+          SizedBox(width: ThemeSize.containerPadding * 2),
           Image.asset(
             "lib/assets/images/icon-music-menu.png",
             width: ThemeSize.smallIcon,
             height: ThemeSize.smallIcon,
           )
-        ],)
+        ],
+      )
+    ]);
+  }
+
+  // 我关注的歌手
+  Widget buildMySingerList() {
+    return Container(
+        decoration: ThemeStyle.boxDecoration,
+        margin: ThemeStyle.margin,
+        width:
+            MediaQuery.of(context).size.width - ThemeSize.containerPadding * 2,
+        padding: ThemeStyle.padding,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Image.asset("lib/assets/images/icon-down.png",
+                    width: ThemeSize.smallIcon, height: ThemeSize.smallIcon),
+                SizedBox(width: ThemeSize.smallMargin),
+                Text("我的关注的歌手"),
+                Expanded(child: SizedBox(), flex: 1),
+                Image.asset("lib/assets/images/icon-menu-add.png",
+                    width: ThemeSize.smallIcon, height: ThemeSize.smallIcon),
+              ],
+            ),
+            FutureBuilder(
+                future: getMySingerService(1,3),
+                builder: (context, snapshot) {
+                  if (snapshot.data == null) {
+                    return Container();
+                  } else {
+                    List<Widget> playMenuList = [];
+                    (snapshot.data["data"] as List).cast().forEach((item) {
+                      MuiscMySingerModel mySingerModel =
+                          MuiscMySingerModel.fromJson(item);
+                      playMenuList.add(buildMySingerItem(mySingerModel));
+                    });
+                    if (playMenuList.length == 0) {
+                      return Container();
+                    } else {
+                      return Column(children: playMenuList);
+                    }
+                  }
+                })
+          ],
+        ));
+  }
+
+  Widget buildMySingerItem(MuiscMySingerModel mySingerModel) {
+    return Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+      SizedBox(height: ThemeSize.containerPadding),
+      Row(
+        children: [
+          mySingerModel.avatar != null
+              ? ClipOval(
+                  child: Image.network(
+                  mySingerModel.avatar.indexOf("http") != -1
+                      ? mySingerModel.avatar.replaceAll("{size}", "240")
+                      : host + mySingerModel.avatar,
+                  width: ThemeSize.bigAvater,
+                  height: ThemeSize.bigAvater,
+                ))
+              : Container(
+                  width: ThemeSize.bigAvater,
+                  height: ThemeSize.bigAvater,
+                  //超出部分，可裁剪
+                  clipBehavior: Clip.hardEdge,
+                  decoration: BoxDecoration(
+                    color: ThemeColors.colorBg,
+                    borderRadius: BorderRadius.circular(ThemeSize.bigAvater),
+                  ),
+                  child: Center(
+                      child: Text(
+                    mySingerModel.authorName.substring(0, 1),
+                    style: TextStyle(fontSize: ThemeSize.bigFontSize),
+                  ))),
+          SizedBox(width: ThemeSize.containerPadding),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(mySingerModel.authorName),
+                SizedBox(height: ThemeSize.smallMargin),
+                Text(mySingerModel.total.toString() + "首",
+                    style: TextStyle(color: ThemeColors.subTitle))
+              ],
+            ),
+            flex: 1,
+          ),
+          Image.asset(
+            "lib/assets/images/icon-music-play.png",
+            width: ThemeSize.smallIcon,
+            height: ThemeSize.smallIcon,
+          ),
+          SizedBox(width: ThemeSize.containerPadding * 2),
+          Image.asset(
+            "lib/assets/images/icon-delete.png",
+            width: ThemeSize.smallIcon,
+            height: ThemeSize.smallIcon,
+          ),
+          SizedBox(width: ThemeSize.containerPadding * 2),
+          Image.asset(
+            "lib/assets/images/icon-music-menu.png",
+            width: ThemeSize.smallIcon,
+            height: ThemeSize.smallIcon,
+          )
+        ],
+      )
     ]);
   }
 }

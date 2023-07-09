@@ -32,11 +32,11 @@ class _MusicCirclePageState extends State<MusicCirclePage>
   @override
   void initState() {
     super.initState();
-    getCircleListByTypeService();
+    getCircleWidgetListByType();
   }
 
-  void getCircleListByTypeService() {
-    getCircleListByType('music', pageNum, pageSize).then((res) {
+  void getCircleWidgetListByType() {
+    getCircleListByTypeService('music', pageNum, pageSize).then((res) {
       setState(() {
         total = res["total"];
         (res["data"] as List).cast().forEach((item) {
@@ -254,7 +254,7 @@ class _MusicCirclePageState extends State<MusicCirclePage>
                 textColor: Colors.white,
                 fontSize: ThemeSize.middleFontSize);
           } else {
-            getCircleListByTypeService();
+            getCircleWidgetListByType();
           }
         },
         child: Column(

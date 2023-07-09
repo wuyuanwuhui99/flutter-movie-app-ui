@@ -388,7 +388,7 @@ Future getSingerListService(int pageNum,int pageSize) async {
 ///@author: wuwenqiang
 ///@description: 获取分类音乐列表
 /// @date: 2023-05-25 22:45
-Future getCircleListByType(String type,int pageNum,int pageSize) async {
+Future getCircleListByTypeService(String type,int pageNum,int pageSize) async {
   try {
     Response response = await dio.get("${servicePath['getCircleListByType']}?type=${type}&pageNum=${pageNum}&pageSize=${pageSize}");
     return getResponseData(response);
@@ -400,9 +400,21 @@ Future getCircleListByType(String type,int pageNum,int pageSize) async {
 ///@author: wuwenqiang
 ///@description: 获取用户歌单
 /// @date: 2023-07-08 18:45
-Future getMusicPlayMenu() async {
+Future getMusicPlayMenuService() async {
   try {
     Response response = await dio.get(servicePath['getMusicPlayMenu']);
+    return getResponseData(response);
+  } catch (e) {
+    return print('ERROR:======>${e}');
+  }
+}
+
+///@author: wuwenqiang
+///@description: 获取我关注的歌手
+/// @date: 2023-07-09 11:29
+Future getMySingerService(int pageNum,int pageSize) async {
+  try {
+    Response response = await dio.get("${servicePath['getMySinger']}?pageNum=${pageNum}&pageSize=${pageSize}");
     return getResponseData(response);
   } catch (e) {
     return print('ERROR:======>${e}');
