@@ -4,7 +4,7 @@ import 'dart:ui';
 import "package:shared_preferences/shared_preferences.dart";
 import '../config/serviceUrl.dart';
 import '../service/serverMethod.dart';
-import "./DetailPage.dart";
+import "./MovieDetailPage.dart";
 import '../component/ScoreComponent.dart';
 import '../component/RecommendComponent.dart';
 import '../model/MovieDetailModel.dart';
@@ -12,16 +12,16 @@ import '../theme/ThemeStyle.dart';
 import '../theme/ThemeColors.dart';
 import '../theme/ThemeSize.dart';
 
-class SearchPage extends StatefulWidget {
+class MovieSearchPage extends StatefulWidget {
   final String keyword;
 
-  SearchPage({Key key, this.keyword}) : super(key: key);
+  MovieSearchPage({Key key, this.keyword}) : super(key: key);
 
   @override
-  _SearchPageState createState() => _SearchPageState();
+  _MovieSearchPageState createState() => _MovieSearchPageState();
 }
 
-class _SearchPageState extends State<SearchPage> {
+class _MovieSearchPageState extends State<MovieSearchPage> {
   bool searching = false;
   bool showClearIcon = false;
   List<MovieDetailModel> searchResult = [];
@@ -85,7 +85,7 @@ class _SearchPageState extends State<SearchPage> {
                   context,
                   MaterialPageRoute(
                       builder: (context) =>
-                          DetailPage(movieItem: searchResult[index])));
+                          MovieDetailPage(movieItem: searchResult[index])));
             },
             child: Container(
               padding: ThemeStyle.padding,

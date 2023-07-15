@@ -13,14 +13,14 @@ import '../model/MovieDetailModel.dart';
 import '../pages/WebViewPage.dart';
 import '../pages/MusicPage.dart';
 
-class MyPage extends StatefulWidget {
-  MyPage({Key key}) : super(key: key);
+class MovieMyPage extends StatefulWidget {
+  MovieMyPage({Key key}) : super(key: key);
 
   @override
-  _MyPageState createState() => _MyPageState();
+  _MovieMyPageState createState() => _MovieMyPageState();
 }
 
-class _MyPageState extends State<MyPage> with AutomaticKeepAliveClientMixin {
+class _MovieMyPageState extends State<MovieMyPage> with AutomaticKeepAliveClientMixin {
   @override
   bool get wantKeepAlive => true;
 

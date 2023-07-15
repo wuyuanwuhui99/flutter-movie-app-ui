@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:movie/theme/ThemeColors.dart';
-import './PlayerPage.dart';
+import './MoviePlayerPage.dart';
 import '../service/serverMethod.dart';
 import '../component/ScoreComponent.dart';
 import '../component/YouLikesComponent.dart';
@@ -10,16 +10,16 @@ import '../model/MovieStarModel.dart';
 import '../theme/ThemeStyle.dart';
 import '../theme/ThemeSize.dart';
 
-class DetailPage extends StatefulWidget {
+class MovieDetailPage extends StatefulWidget {
   final MovieDetailModel movieItem;
 
-  DetailPage({Key key, this.movieItem}) : super(key: key);
+  MovieDetailPage({Key key, this.movieItem}) : super(key: key);
 
   @override
-  _DetailPageState createState() => _DetailPageState();
+  _MovieDetailPageState createState() => _MovieDetailPageState();
 }
 
-class _DetailPageState extends State<DetailPage> {
+class _MovieDetailPageState extends State<MovieDetailPage> {
   bool isFavoriteFlag = false;
 
   @override
@@ -38,9 +38,9 @@ class _DetailPageState extends State<DetailPage> {
                 child: SingleChildScrollView(
                     child: Column(
                   children: <Widget>[
-                    MovieInfoComponent(movieInfo: widget.movieItem),
-                    PlotComponent(plot: widget.movieItem.plot),
-                    StarComponent(movieId: widget.movieItem.movieId),
+                    buildMovieInfoComponent(widget.movieItem,context),
+                    buildPlotComponent(widget.movieItem.plot),
+                    buildStarComponent(widget.movieItem.movieId),
                     widget.movieItem.label != null
                         ? YouLikesComponent(label: widget.movieItem.label)
                         : SizedBox(),
@@ -52,48 +52,8 @@ class _DetailPageState extends State<DetailPage> {
                   ],
                 )))));
   }
-}
 
-class BannerComponent extends StatelessWidget {
-  final MovieDetailModel movieItem;
-
-  const BannerComponent({Key key, this.movieItem}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return InkWell(
-        onTap: () {
-          if (movieItem.movieName != null) {
-            Navigator.push(
-                context,
-                MaterialPageRoute(
-                    builder: (context) => PlayerPage(movieItem: movieItem)));
-          }
-        },
-        child: Container(
-          width: MediaQuery.of(context).size.width,
-          height: ThemeSize.movieHeight,
-          decoration: BoxDecoration(
-              image: DecorationImage(
-            image: NetworkImage(movieItem.img),
-            fit: BoxFit.cover,
-          )),
-          child: Center(
-              child: Image.asset("lib/assets/images/icon-detail-play.png",
-                  height: ThemeSize.bigIcon,
-                  width: ThemeSize.bigIcon,
-                  fit: BoxFit.cover)),
-        ));
-  }
-}
-
-class MovieInfoComponent extends StatelessWidget {
-  final MovieDetailModel movieInfo;
-
-  const MovieInfoComponent({Key key, this.movieInfo}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
+  Widget buildMovieInfoComponent(MovieDetailModel movieInfo,BuildContext context){
     return Container(
       decoration: ThemeStyle.boxDecoration,
       margin: ThemeStyle.margin,
@@ -110,7 +70,7 @@ class MovieInfoComponent extends StatelessWidget {
                         context,
                         MaterialPageRoute(
                             builder: (context) =>
-                                PlayerPage(movieItem: movieInfo)));
+                                MoviePlayerPage(movieItem: movieInfo)));
                   }
                 },
                 child: Container(
@@ -124,7 +84,7 @@ class MovieInfoComponent extends StatelessWidget {
                             fit: BoxFit.cover)),
                     decoration: BoxDecoration(
                         borderRadius:
-                            BorderRadius.circular(ThemeSize.middleRadius),
+                        BorderRadius.circular(ThemeSize.middleRadius),
                         image: DecorationImage(
                           image: NetworkImage(movieInfo.img),
                           fit: BoxFit.cover,
@@ -147,19 +107,19 @@ class MovieInfoComponent extends StatelessWidget {
                     SizedBox(height: 10),
                     movieInfo.description != null
                         ? Text(
-                            movieInfo.description,
-                            style: TextStyle(
-                                fontSize: 16,
-                                color: Color.fromRGBO(187, 187, 187, 1)),
-                          )
+                      movieInfo.description,
+                      style: TextStyle(
+                          fontSize: 16,
+                          color: Color.fromRGBO(187, 187, 187, 1)),
+                    )
                         : SizedBox(),
                     movieInfo.star != null
                         ? Text(
-                            movieInfo.star,
-                            style: TextStyle(
-                                fontSize: 16,
-                                color: Color.fromRGBO(187, 187, 187, 1)),
-                          )
+                      movieInfo.star,
+                      style: TextStyle(
+                          fontSize: 16,
+                          color: Color.fromRGBO(187, 187, 187, 1)),
+                    )
                         : SizedBox(),
                     SizedBox(height: 10),
                     ScoreComponent(score: movieInfo.score)
@@ -172,15 +132,8 @@ class MovieInfoComponent extends StatelessWidget {
       ),
     );
   }
-}
 
-class PlotComponent extends StatelessWidget {
-  final String plot;
-
-  const PlotComponent({Key key, this.plot}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
+  Widget buildPlotComponent(String plot){
     if (plot != null) {
       return Container(
           decoration: ThemeStyle.boxDecoration,
@@ -215,18 +168,11 @@ class PlotComponent extends StatelessWidget {
       return Container();
     }
   }
-}
 
-class StarComponent extends StatelessWidget {
-  final int movieId;
-
-  const StarComponent({Key key, this.movieId}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    if (this.movieId == null) return Container();
+  Widget buildStarComponent(int movieId){
+    if (movieId == null) return Container();
     return FutureBuilder(
-        future: getStarService(this.movieId),
+        future: getStarService(movieId),
         builder: (context, snapshot) {
           if (snapshot.data == null) {
             return Center(
@@ -234,7 +180,7 @@ class StarComponent extends StatelessWidget {
             );
           } else {
             List<MovieStarModel> stars =
-                (snapshot.data["data"] as List).cast().map((item) {
+            (snapshot.data["data"] as List).cast().map((item) {
               return MovieStarModel.fromJson(item);
             }).toList();
             if (stars.length > 0) {
@@ -275,7 +221,7 @@ class StarComponent extends StatelessWidget {
                                             height: 200,
                                             decoration: BoxDecoration(
                                                 borderRadius:
-                                                    BorderRadius.circular(15),
+                                                BorderRadius.circular(15),
                                                 image: DecorationImage(
                                                   image: NetworkImage(
                                                       stars[index].img),

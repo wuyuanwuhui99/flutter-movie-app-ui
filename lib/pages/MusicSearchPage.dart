@@ -2,16 +2,16 @@ import 'package:flutter/material.dart';
 import '../theme/ThemeColors.dart';
 
 
-class SearchMusicPage extends StatefulWidget {
+class MusicSearchPage extends StatefulWidget {
   final String keyword;
 
-  SearchMusicPage({Key key, this.keyword}) : super(key: key);
+  MusicSearchPage({Key key, this.keyword}) : super(key: key);
 
   @override
   _SearchMusicPageState createState() => _SearchMusicPageState();
 }
 
-class _SearchMusicPageState extends State<SearchMusicPage> {
+class _SearchMusicPageState extends State<MusicSearchPage> {
 
   @override
   Widget build(BuildContext context) {

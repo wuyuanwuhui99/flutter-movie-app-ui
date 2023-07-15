@@ -13,7 +13,7 @@ import '../theme/ThemeStyle.dart';
 import '../theme/ThemeSize.dart';
 import '../theme/ThemeColors.dart';
 import '../config/serviceUrl.dart';
-import './SearchMusicPage.dart';
+import './MusicSearchPage.dart';
 import '../utils/LocalStroageUtils.dart';
 
 class MusicHomePage extends StatefulWidget {
@@ -135,7 +135,7 @@ class _MusicHomePageState extends State<MusicHomePage>
                                     context,
                                     MaterialPageRoute(
                                         builder: (context) =>
-                                            SearchMusicPage(keyword: keyword)));
+                                            MusicSearchPage(keyword: keyword)));
                               },
                               child: Container(
                                   height: ThemeSize.buttonHeight,

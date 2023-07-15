@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import '../config/serviceUrl.dart';
 import '../provider/UserInfoProvider.dart';
-import '../pages/UserPage.dart';
+import '../pages/MovieUserPage.dart';
 import 'package:provider/provider.dart';
 
 /*-----------------------头像组件------------------------*/
@@ -14,7 +14,7 @@ class AvaterComponent extends StatelessWidget {
     return InkWell(
       onTap: () {
         Navigator.push(
-            context, MaterialPageRoute(builder: (context) => UserPage()));
+            context, MaterialPageRoute(builder: (context) => MovieUserPage()));
       },
       child: Container(
           width: size,

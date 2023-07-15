@@ -15,16 +15,16 @@ import '../theme/ThemeColors.dart';
 import '../theme/ThemeSize.dart';
 import '../utils/common.dart';
 
-class PlayerPage extends StatefulWidget {
+class MoviePlayerPage extends StatefulWidget {
   final MovieDetailModel movieItem;
 
-  PlayerPage({Key key, this.movieItem}) : super(key: key);
+  MoviePlayerPage({Key key, this.movieItem}) : super(key: key);
 
   @override
-  _PlayerPageState createState() => _PlayerPageState();
+  _MoviePlayerPageState createState() => _MoviePlayerPageState();
 }
 
-class _PlayerPageState extends State<PlayerPage> {
+class _MoviePlayerPageState extends State<MoviePlayerPage> {
   String url = "";
   int currentIndex = 0;
   List<Widget> playGroupWidget = [];

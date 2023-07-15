@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../pages/SearchPage.dart';
+import '../pages/MovieSearchPage.dart';
 import 'package:movie/service/serverMethod.dart';
 import '../theme/ThemeColors.dart';
 import '../theme/ThemeSize.dart';
@@ -28,7 +28,7 @@ class SearchCommponent extends StatelessWidget {
                 Navigator.push(
                     context,
                     MaterialPageRoute(
-                        builder: (context) => SearchPage(keyword: keyword)));
+                        builder: (context) => MovieSearchPage(keyword: keyword)));
               },
               child: Container(
                   height: ThemeSize.buttonHeight,

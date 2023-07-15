@@ -3,7 +3,7 @@ import 'package:movie/service/serverMethod.dart';
 import 'package:flutter_swiper/flutter_swiper.dart';
 import 'package:movie/theme/ThemeStyle.dart';
 import '../config/serviceUrl.dart';
-import "../pages/DetailPage.dart";
+import "../pages/MovieDetailPage.dart";
 import '../model/MovieDetailModel.dart';
 import '../theme/ThemeSize.dart';
 /*-----------------------轮播组件------------------------*/
@@ -64,7 +64,7 @@ class SwiperComponent extends StatelessWidget {
                       context,
                       MaterialPageRoute(
                           builder: (context) =>
-                              DetailPage(movieItem: swiperDataList[index])));
+                              MovieDetailPage(movieItem: swiperDataList[index])));
                 },
               ));
         });

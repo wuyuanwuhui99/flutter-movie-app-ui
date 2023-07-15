@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../pages/DetailPage.dart';
+import '../pages/MovieDetailPage.dart';
 import '../config/serviceUrl.dart';
 import '../model/MovieDetailModel.dart';
 import '../theme/ThemeSize.dart';
@@ -22,7 +22,7 @@ class MovieListComponent extends StatelessWidget {
             Navigator.push(
                 context,
                 MaterialPageRoute(
-                    builder: (context) => DetailPage(movieItem: item)));
+                    builder: (context) => MovieDetailPage(movieItem: item)));
           },
           child: direction == "verital"
               ? Container(

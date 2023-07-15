@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'pages/HomePage.dart';
+import 'pages/MovieHomePage.dart';
 import 'pages/MoviePage.dart';
 import 'pages/VideoPage.dart';
-import 'pages/MyPage.dart';
+import 'pages/MovieMyPage.dart';
 import 'theme/ThemeColors.dart';
 import './theme/ThemeSize.dart';
 import './theme/ThemeColors.dart';
@@ -80,13 +80,13 @@ class _BottomNavigationWidgetState extends State<BottomNavigationWidget> {
   Widget _getPage() {
     if (pages[_currentIndex] == null) {
       if (_currentIndex == 0) {
-        pages[_currentIndex] = HomePage();
+        pages[_currentIndex] = MovieHomePage();
       } else if (_currentIndex == 1) {
         pages[_currentIndex] = MoviePage();
       } else if (_currentIndex == 2) {
         pages[_currentIndex] = VideoPage();
       } else if (_currentIndex == 3) {
-        pages[_currentIndex] = MyPage();
+        pages[_currentIndex] = MovieMyPage();
       }
     }
     return pages[_currentIndex];

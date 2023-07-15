@@ -14,12 +14,12 @@ import '../theme/ThemeSize.dart';
 import '../theme/ThemeStyle.dart';
 import '../service/serverMethod.dart';
 
-class UserPage extends StatefulWidget {
+class MovieUserPage extends StatefulWidget {
   @override
-  _UserPageState createState() => _UserPageState();
+  _MovieUserPageState createState() => _MovieUserPageState();
 }
 
-class _UserPageState extends State<UserPage> {
+class _MovieUserPageState extends State<MovieUserPage> {
   UserInfoModel userInfo;
 
   @override

@@ -18,14 +18,14 @@ import '../theme/ThemeSize.dart';
 import '../theme/ThemeStyle.dart';
 
 /*-----------------------首页------------------------*/
-class HomePage extends StatefulWidget {
-  HomePage({Key key}) : super(key: key);
+class MovieHomePage extends StatefulWidget {
+  MovieHomePage({Key key}) : super(key: key);
 
   @override
-  _HomePageState createState() => _HomePageState();
+  _MovieHomePageState createState() => _MovieHomePageState();
 }
 
-class _HomePageState extends State<HomePage>
+class _MovieHomePageState extends State<MovieHomePage>
     with AutomaticKeepAliveClientMixin {
   @override
   bool get wantKeepAlive => true;
