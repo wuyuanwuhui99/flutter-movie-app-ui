@@ -29,6 +29,7 @@ class MusicModel {
   String label; // 标签
   String lyrics; // 歌词
   int isLike; // 是否喜欢
+  int times; //  听过的次数，在获取播放记录的时候才有
   MusicModel(
       {this.id, //主键
       this.albumId, // 专辑id
@@ -57,41 +58,42 @@ class MusicModel {
       this.updateTime, // 更新时间
       this.label, // 标签
       this.lyrics, // 歌词
-      this.isLike // 是否喜欢
+      this.isLike, // 是否喜欢
+      this.times // 听过的次数，在获取播放记录的时候才有
       });
 
   //工厂模式-用这种模式可以省略New关键字
   factory MusicModel.fromJson(dynamic json) {
     return MusicModel(
-      id: json["id"],
-      albumId: json["albumId"],
-      songName: json["songName"],
-      authorName: json["authorName"],
-      authorId: json["authorId"],
-      albumName: json["albumName"],
-      version: json["version"],
-      language: json["language"],
-      publishDate: json["publishDate"],
-      wideAudioId: json["wideAudioId"],
-      isPublish: json["isPublish"],
-      bigPackId: json["isPublish"],
-      finalId: json["finalId"],
-      audioId: json["audioId"],
-      similarAudioId: json["similarAudioId"],
-      isHot: json["isHot"],
-      albumAudioId: json["albumAudioId"],
-      audioGroupId: json["audioGroupId"],
-      cover: json["cover"],
-      playUrl: json["playUrl"],
-      localPlayUrl: json["localPlayUrl"],
-      sourceName: json["sourceName"],
-      sourceUrl: json["sourceUrl"],
-      createTime: json["createTime"],
-      updateTime: json["updateTime"],
-      label: json["label"],
-      lyrics: json["lyrics"],
-      isLike: json["isLike"]
-    );
+        id: json["id"],
+        albumId: json["albumId"],
+        songName: json["songName"],
+        authorName: json["authorName"],
+        authorId: json["authorId"],
+        albumName: json["albumName"],
+        version: json["version"],
+        language: json["language"],
+        publishDate: json["publishDate"],
+        wideAudioId: json["wideAudioId"],
+        isPublish: json["isPublish"],
+        bigPackId: json["isPublish"],
+        finalId: json["finalId"],
+        audioId: json["audioId"],
+        similarAudioId: json["similarAudioId"],
+        isHot: json["isHot"],
+        albumAudioId: json["albumAudioId"],
+        audioGroupId: json["audioGroupId"],
+        cover: json["cover"],
+        playUrl: json["playUrl"],
+        localPlayUrl: json["localPlayUrl"],
+        sourceName: json["sourceName"],
+        sourceUrl: json["sourceUrl"],
+        createTime: json["createTime"],
+        updateTime: json["updateTime"],
+        label: json["label"],
+        lyrics: json["lyrics"],
+        isLike: json["isLike"],
+        times: json["times"]);
   }
 
   static String stringigy(MusicModel musicModel) {
@@ -123,7 +125,8 @@ class MusicModel {
       "updateTim": musicModel.updateTime,
       "label": musicModel.label,
       "lyrics": musicModel.lyrics,
-      "isLike": musicModel.isLike
+      "isLike": musicModel.isLike,
+      "times": musicModel.times
     };
     return json.encode(musicMap);
   }

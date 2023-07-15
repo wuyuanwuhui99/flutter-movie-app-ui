@@ -420,3 +420,15 @@ Future getMySingerService(int pageNum,int pageSize) async {
     return print('ERROR:======>${e}');
   }
 }
+
+///@author: wuwenqiang
+///@description: 获取我关注的歌手
+/// @date: 2023-07-09 11:29
+Future getMusicRecordService(int pageNum,int pageSize) async {
+  try {
+    Response response = await dio.get("${servicePath['getMusicRecord']}?pageNum=${pageNum}&pageSize=${pageSize}");
+    return getResponseData(response);
+  } catch (e) {
+    return print('ERROR:======>${e}');
+  }
+}

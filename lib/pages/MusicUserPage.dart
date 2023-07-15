@@ -9,6 +9,7 @@ import '../theme/ThemeColors.dart';
 import '../config/serviceUrl.dart';
 import '../model/MuiscPlayMenuModel.dart';
 import '../model/MuiscMySingerModel.dart';
+import '../model/MusicModel.dart';
 
 class MusicUserPage extends StatefulWidget {
   MusicUserPage({Key key}) : super(key: key);
@@ -29,7 +30,8 @@ class _MusicUserPageState extends State<MusicUserPage>
       buildUserInfoWidget(),
       buildMenuWidget(),
       buildMyPlaylMenuWidget(),
-      buildMySingerList()
+      buildMySingerList(),
+          buildRecordList()
     ]));
   }
 
@@ -317,6 +319,95 @@ class _MusicUserPageState extends State<MusicUserPage>
                 Text(mySingerModel.authorName),
                 SizedBox(height: ThemeSize.smallMargin),
                 Text(mySingerModel.total.toString() + "首",
+                    style: TextStyle(color: ThemeColors.subTitle))
+              ],
+            ),
+            flex: 1,
+          ),
+          Image.asset(
+            "lib/assets/images/icon-music-play.png",
+            width: ThemeSize.smallIcon,
+            height: ThemeSize.smallIcon,
+          ),
+          SizedBox(width: ThemeSize.containerPadding * 2),
+          Image.asset(
+            "lib/assets/images/icon-delete.png",
+            width: ThemeSize.smallIcon,
+            height: ThemeSize.smallIcon,
+          ),
+          SizedBox(width: ThemeSize.containerPadding * 2),
+          Image.asset(
+            "lib/assets/images/icon-music-menu.png",
+            width: ThemeSize.smallIcon,
+            height: ThemeSize.smallIcon,
+          )
+        ],
+      )
+    ]);
+  }
+
+  // 我关注的歌手
+  Widget buildRecordList() {
+    return Container(
+        decoration: ThemeStyle.boxDecoration,
+        margin: ThemeStyle.margin,
+        width:
+        MediaQuery.of(context).size.width - ThemeSize.containerPadding * 2,
+        padding: ThemeStyle.padding,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Image.asset("lib/assets/images/icon-down.png",
+                    width: ThemeSize.smallIcon, height: ThemeSize.smallIcon),
+                SizedBox(width: ThemeSize.smallMargin),
+                Text("最近播放的歌曲")
+              ],
+            ),
+            FutureBuilder(
+                future: getMusicRecordService(1,3),
+                builder: (context, snapshot) {
+                  if (snapshot.data == null) {
+                    return Container();
+                  } else {
+                    List<Widget> playMenuList = [];
+                    (snapshot.data["data"] as List).cast().forEach((item) {
+                      MusicModel musicModel =
+                      MusicModel.fromJson(item);
+                      playMenuList.add(buildRecordItem(musicModel));
+                    });
+                    if (playMenuList.length == 0) {
+                      return Container();
+                    } else {
+                      return Column(children: playMenuList);
+                    }
+                  }
+                })
+          ],
+        ));
+  }
+
+  Widget buildRecordItem(MusicModel musicModel){
+    return Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+      SizedBox(height: ThemeSize.containerPadding),
+      Row(
+        children: [
+          ClipOval(
+              child: Image.network(
+                host + musicModel.cover,
+                width: ThemeSize.bigAvater,
+                height: ThemeSize.bigAvater,
+              )),
+          SizedBox(width: ThemeSize.containerPadding),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(musicModel.songName),
+                SizedBox(height: ThemeSize.smallMargin),
+                Text("听过" + musicModel.times.toString() + "次",
                     style: TextStyle(color: ThemeColors.subTitle))
               ],
             ),

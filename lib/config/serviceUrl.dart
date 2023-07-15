@@ -34,4 +34,5 @@ const servicePath = {
   'getCircleListByType': host + '/service/circle/getCircleListByType',// 获取歌手列表
   'getMusicPlayMenu': host + '/service/myMusic-getway/getMusicPlayMenu',// 获取我的歌单
   'getMySinger': host + '/service/myMusic-getway/getMySinger',// 获取我关注的歌手
+  'getMusicRecord': host + '/service/myMusic-getway/getMusicRecord',// 获取我关注的歌手
 };
