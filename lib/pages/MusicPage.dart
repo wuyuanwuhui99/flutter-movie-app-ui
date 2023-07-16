@@ -110,7 +110,7 @@ class _MusicPageState extends State<MusicPage>
           MusicModel musicModel;
           if (snapshot.data != null) {
             musicModel = MusicModel.fromJson(snapshot.data);
-            Provider.of<PlayerMusicProvider>(context).setPlayMusic(musicModel);
+            Provider.of<PlayerMusicProvider>(context).setPlayMusic(musicModel,false);
           } else {
             musicModel = Provider.of<PlayerMusicProvider>(context).musicModel;
           }

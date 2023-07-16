@@ -110,6 +110,16 @@ flutter:
    - lib/assets/images/icon-menu-like.png
    - lib/assets/images/icon-menu-add.png
    - lib/assets/images/icon-delete.png
+   - lib/assets/images/icon-music-collect.png
+   - lib/assets/images/icon-music-down.png
+   - lib/assets/images/icon-music-comments.png
+   - lib/assets/images/icon-music-white-menu.png
+   - lib/assets/images/icon-music-next.png
+   - lib/assets/images/icon-music-prev.png
+   - lib/assets/images/icon-music-order.png
+   - lib/assets/images/icon-music-play-menu.png
+   - lib/assets/images/icon-music-play-white.png
+   - lib/assets/images/icon-music-playing.png
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.
 

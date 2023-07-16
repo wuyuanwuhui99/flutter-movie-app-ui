@@ -3,6 +3,9 @@ import 'package:flutter_easyrefresh/easy_refresh.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:flutter_easyrefresh/material_footer.dart';
 import 'package:movie/model/MusicModel.dart';
+import 'package:provider/provider.dart';
+import '../provider/PlayerMusicProvider.dart';
+import '../pages/MusicPlayerPage.dart';
 import '../service/serverMethod.dart';
 import '../theme/ThemeStyle.dart';
 import '../theme/ThemeSize.dart';
@@ -38,7 +41,7 @@ class _MusicRecommentPageState extends State<MusicRecommentPage>
   }
 
   void getRecommendMusicList(int pageNum, pageSize) {
-    getMusicListByClassifyIdService(1, pageNum, pageSize,0).then((res) {
+    getMusicListByClassifyIdService(1, pageNum, pageSize, 0).then((res) {
       setState(() {
         total = res["total"];
         (res["data"] as List).cast().forEach((item) {
@@ -65,9 +68,10 @@ class _MusicRecommentPageState extends State<MusicRecommentPage>
               : Container(
                   width: ThemeSize.middleIcon,
                   height: ThemeSize.middleIcon,
-                  child: Center(child: Text(
-                  (index + 1).toString(),
-                ))),
+                  child: Center(
+                      child: Text(
+                    (index + 1).toString(),
+                  ))),
           SizedBox(width: ThemeSize.containerPadding),
           ClipOval(
               child: Image.network(
@@ -78,25 +82,39 @@ class _MusicRecommentPageState extends State<MusicRecommentPage>
             fit: BoxFit.cover,
           )),
           SizedBox(width: ThemeSize.containerPadding),
-          Expanded(child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(musicModel.songName,softWrap: false,
-                maxLines: 1,
-                overflow: TextOverflow.ellipsis),
-              SizedBox(height: ThemeSize.smallMargin),
-              Text(musicModel.authorName,style: TextStyle(color: ThemeColors.disableColor)),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(musicModel.songName,
+                    softWrap: false,
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis),
+                SizedBox(height: ThemeSize.smallMargin),
+                Text(musicModel.authorName,
+                    style: TextStyle(color: ThemeColors.disableColor)),
+              ],
+            ),
+            flex: 1,
+          ),
+          InkWell(
+              child: Image.asset("lib/assets/images/icon-music-play.png",
+                  width: ThemeSize.smallIcon, height: ThemeSize.smallIcon),
+              onTap: () {
+                Provider.of<PlayerMusicProvider>(context,listen: false)
+                    .setPlayMusic(musicModel,true);
 
-            ],
-          ),flex: 1,),
-          Image.asset("lib/assets/images/icon-music-play.png",width: ThemeSize.smallIcon,
-            height: ThemeSize.smallIcon),
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => MusicPlayerPage()));
+              }),
           SizedBox(width: ThemeSize.containerPadding),
-          Image.asset("lib/assets/images/icon-like${musicModel.isLike == 1?"-active":""}.png",width: ThemeSize.smallIcon,
+          Image.asset(
+              "lib/assets/images/icon-like${musicModel.isLike == 1 ? "-active" : ""}.png",
+              width: ThemeSize.smallIcon,
               height: ThemeSize.smallIcon),
           SizedBox(width: ThemeSize.containerPadding),
-          Image.asset("lib/assets/images/icon-music-menu.png",width: ThemeSize.smallIcon,
-              height: ThemeSize.smallIcon),
+          Image.asset("lib/assets/images/icon-music-menu.png",
+              width: ThemeSize.smallIcon, height: ThemeSize.smallIcon),
         ]));
   }
 

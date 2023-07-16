@@ -13,6 +13,7 @@ class ThemeSize {
   static double modualHeight = 250;// 模块的高度
   static double bigIcon = 40;// 大图标
   static double middleIcon = 30;// 中等图标
+  static double playIcon = 25;// 中等图标
   static double navigationIcon = 30;// 导航图标
   static double smallIcon = 20;// 中等图标
   static double miniIcon = 15;// 超小图片
