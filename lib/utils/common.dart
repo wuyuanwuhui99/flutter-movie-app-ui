@@ -19,3 +19,20 @@ String formatTime(String data) {
     return data;
   }
 }
+
+///补零
+String zeroFill(int i) {
+return i >= 10 ? "$i" : "0$i";
+}
+
+///毫秒转成时分秒
+String getDuration(int sec){
+    sec = sec ~/ 1000;
+    int h = sec ~/  3600;
+    int m = (sec % 3600) ~/ 60;
+    int s = sec % 60;
+    if(h > 0){
+      return "${zeroFill(h)}:${zeroFill(m)}:${zeroFill(s)}";
+    }
+    return  "${zeroFill(m)}:${zeroFill(s)}";
+}

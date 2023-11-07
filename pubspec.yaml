@@ -35,6 +35,7 @@ dependencies:
   crypto: ^2.1.1+1
   flutter_easyloading: ^2.2.2
   image_picker: ^0.6.1+4
+  audioplayers: ^0.16.1
 
 dev_dependencies:
   flutter_test:

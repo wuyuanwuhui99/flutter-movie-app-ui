@@ -15,6 +15,7 @@ import '../theme/ThemeColors.dart';
 import '../config/serviceUrl.dart';
 import './MusicSearchPage.dart';
 import '../utils/LocalStroageUtils.dart';
+import './MusicPlayerPage.dart';
 
 class MusicHomePage extends StatefulWidget {
   MusicHomePage({Key key}) : super(key: key);
@@ -121,13 +122,17 @@ class _MusicHomePageState extends State<MusicHomePage>
                           var result = snapshot.data;
                           String keyword = "";
                           if (result != null && result['data'] != null) {
-                            MusicModel musicModel = MusicModel.fromJson(result["data"]);
-                            PlayerMusicProvider musicProvider = Provider.of<PlayerMusicProvider>(context);
-                            if(musicProvider.musicModel == null){// 如果缓存中没有正在播放的歌曲，用推荐的歌曲作为正在播放的歌曲
-                              musicProvider.setPlayMusic(musicModel,false);
+                            MusicModel musicModel =
+                                MusicModel.fromJson(result["data"]);
+                            PlayerMusicProvider musicProvider =
+                                Provider.of<PlayerMusicProvider>(context);
+                            if (musicProvider.musicModel == null) {
+                              // 如果缓存中没有正在播放的歌曲，用推荐的歌曲作为正在播放的歌曲
+                              musicProvider.setPlayMusic(musicModel, false);
                               LocalStroageUtils.setPlayMusic(musicModel);
                             }
-                            keyword = '${musicModel.authorName} - ${musicModel.songName}';
+                            keyword =
+                                '${musicModel.authorName} - ${musicModel.songName}';
                           }
                           return InkWell(
                               onTap: () {
@@ -247,7 +252,7 @@ class _MusicHomePageState extends State<MusicHomePage>
   // 获取音乐列表
   Widget buildMusicListByClassifyId(int classifyId) {
     return FutureBuilder(
-        future: getMusicListByClassifyIdService(classifyId, 1, 3,1),
+        future: getMusicListByClassifyIdService(classifyId, 1, 3, 1),
         builder: (context, snapshot) {
           if (snapshot.data == null) {
             return Container();
@@ -314,11 +319,19 @@ class _MusicHomePageState extends State<MusicHomePage>
                         ),
                         flex: 1,
                       ),
-                      Image.asset(
-                        "lib/assets/images/icon-music-play.png",
-                        width: ThemeSize.smallIcon,
-                        height: ThemeSize.smallIcon,
-                      ),
+                      InkWell(
+                          child: Image.asset(
+                            "lib/assets/images/icon-music-play.png",
+                            width: ThemeSize.smallIcon,
+                            height: ThemeSize.smallIcon,
+                          ),
+                          onTap: () {
+                            Provider.of<PlayerMusicProvider>(context).setPlayMusic(musicItem,false);
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => MusicPlayerPage()));
+                          }),
                       SizedBox(width: ThemeSize.containerPadding),
                       Image.asset(
                         "lib/assets/images/icon-music-add.png",

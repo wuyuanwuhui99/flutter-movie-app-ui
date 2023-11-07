@@ -3,9 +3,11 @@ import '../theme/ThemeSize.dart';
 import 'dart:ui';
 import '../theme/ThemeColors.dart';
 import 'package:provider/provider.dart';
+import 'package:audioplayers/audioplayers.dart';
 import '../provider/PlayerMusicProvider.dart';
 import '../model/MusicModel.dart';
 import '../config/serviceUrl.dart';
+import '../utils/common.dart';
 
 class MusicPlayerPage extends StatefulWidget {
   MusicPlayerPage({Key key}) : super(key: key);
@@ -19,11 +21,14 @@ class _MusicPlayerPageState extends State<MusicPlayerPage>
   @override
   bool get wantKeepAlive => true;
   double _sliderValue = 20;
+  final player = AudioPlayer();
+  String duration = "00:00";
 
   @override
   Widget build(BuildContext context) {
     MusicModel musicModel =
         Provider.of<PlayerMusicProvider>(context).musicModel;
+    usePlay(musicModel);
     return Scaffold(
         backgroundColor: ThemeColors.colorBg,
         body: Stack(children: [
@@ -192,7 +197,7 @@ class _MusicPlayerPageState extends State<MusicPlayerPage>
     return Row(
       children: [
         SizedBox(width: ThemeSize.containerPadding * 2),
-        Text("01:00", style: TextStyle(color: ThemeColors.colorWhite)),
+        Text("00:00", style: TextStyle(color: ThemeColors.colorWhite)),
         Expanded(
           child: Slider(
             value: this._sliderValue,
@@ -214,7 +219,7 @@ class _MusicPlayerPageState extends State<MusicPlayerPage>
           ),
           flex: 1,
         ),
-        Text("03:38", style: TextStyle(color: ThemeColors.colorWhite)),
+        Text(duration, style: TextStyle(color: ThemeColors.colorWhite)),
         SizedBox(width: ThemeSize.containerPadding * 2),
       ],
     );
@@ -276,5 +281,17 @@ class _MusicPlayerPageState extends State<MusicPlayerPage>
             flex: 1),
       ],
     );
+  }
+
+  /// 播放音乐
+  void  usePlay (MusicModel musicModel) async {
+    print(host + musicModel.localPlayUrl);
+    final result = await player.play(host + musicModel.localPlayUrl);
+    if(result == 1){
+      int sec = await player.getDuration();
+      setState(() {
+        duration = getDuration(sec);
+      });
+    }
   }
 }
