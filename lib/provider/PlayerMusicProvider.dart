@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import '../model/MusicModel.dart';
 import '../utils/LocalStroageUtils.dart';
+import 'package:audioplayers/audioplayers.dart';
 
 class PlayerMusicProvider with ChangeNotifier {
   MusicModel _musicModel;// 正在播放的音乐
   bool _playing = false;
   PlayerMusicProvider(this._musicModel);
+  AudioPlayer _player = AudioPlayer();
 
   void setPlayMusic(MusicModel musicModel,bool playing) {
     _musicModel = musicModel;
@@ -22,4 +24,6 @@ class PlayerMusicProvider with ChangeNotifier {
   get playing => _playing;
 
   get musicModel => _musicModel;
+
+  get player => _player;
 }

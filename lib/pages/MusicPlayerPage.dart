@@ -17,18 +17,41 @@ class MusicPlayerPage extends StatefulWidget {
 }
 
 class _MusicPlayerPageState extends State<MusicPlayerPage>
-    with AutomaticKeepAliveClientMixin {
+    with AutomaticKeepAliveClientMixin, TickerProviderStateMixin {
   @override
   bool get wantKeepAlive => true;
-  double _sliderValue = 20;
-  final player = AudioPlayer();
-  String duration = "00:00";
+  double sliderValue = 0;
+  int duration = 0; // 已经播放额时间
+  int totalSec = 0; // 总时间
+  bool playState = false;
+  MusicModel musicModel;
+  AudioPlayer player;
+
+  /// 会重复播放的控制器
+  AnimationController _repeatController;
+
+  /// 非线性动画
+  Animation<double> _curveAnimation;
+
+  @override
+  void initState() {
+    super.initState();
+    player = Provider.of<PlayerMusicProvider>(context, listen: false).player;
+    musicModel =
+        Provider.of<PlayerMusicProvider>(context, listen: false).musicModel;
+    usePlay(musicModel);
+    _repeatController = AnimationController(
+      duration: const Duration(seconds: 10),
+      vsync: this,
+    )..repeat();
+
+    // 创建一个从0到360弧度的补间动画 v * 2 * π
+    _curveAnimation =
+        Tween<double>(begin: 0, end: 1).animate(_repeatController);
+  }
 
   @override
   Widget build(BuildContext context) {
-    MusicModel musicModel =
-        Provider.of<PlayerMusicProvider>(context).musicModel;
-    usePlay(musicModel);
     return Scaffold(
         backgroundColor: ThemeColors.colorBg,
         body: Stack(children: [
@@ -82,40 +105,40 @@ class _MusicPlayerPageState extends State<MusicPlayerPage>
           color: ThemeColors.opcityColor,
           borderRadius: BorderRadius.circular(playerWidth),
         ),
-        child: Container(
-            width: playerWidth - ThemeSize.smallMargin,
-            height: playerWidth - ThemeSize.smallMargin,
-            margin: EdgeInsets.all(ThemeSize.smallMargin),
-            clipBehavior: Clip.hardEdge,
-            decoration: BoxDecoration(
-              gradient: LinearGradient(
-                begin: Alignment.topCenter,
-                end: Alignment.bottomCenter,
-                colors: [
-                  Colors.black,
-                  Color.fromRGBO(54, 57, 56, 1),
-                  Color.fromRGBO(54, 57, 56, 1),
-                  Colors.black,
-                ],
+        child: RotationTransition(
+          turns: _curveAnimation,
+          child: Container(
+              width: playerWidth - ThemeSize.smallMargin,
+              height: playerWidth - ThemeSize.smallMargin,
+              margin: EdgeInsets.all(ThemeSize.smallMargin),
+              clipBehavior: Clip.hardEdge,
+              decoration: BoxDecoration(
+                gradient: LinearGradient(
+                  begin: Alignment.topCenter,
+                  end: Alignment.bottomCenter,
+                  colors: [
+                    Colors.black,
+                    Color.fromRGBO(54, 57, 56, 1),
+                    Color.fromRGBO(54, 57, 56, 1),
+                    Colors.black,
+                  ],
+                ),
+                borderRadius: BorderRadius.circular(playerWidth),
               ),
-              borderRadius: BorderRadius.circular(playerWidth),
-            ),
-            child: Padding(
-                padding: EdgeInsets.all(ThemeSize.containerPadding * 4),
-                child: ClipOval(
-                    child: Image.network(
-                  host +
-                      Provider.of<PlayerMusicProvider>(context)
-                          .musicModel
-                          .cover,
-                  height: playerWidth -
-                      ThemeSize.smallMargin -
-                      ThemeSize.containerPadding * 3,
-                  width: playerWidth -
-                      ThemeSize.smallMargin -
-                      ThemeSize.containerPadding * 3,
-                  fit: BoxFit.cover,
-                )))));
+              child: Padding(
+                  padding: EdgeInsets.all(ThemeSize.containerPadding * 4),
+                  child: ClipOval(
+                      child: Image.network(
+                    host + musicModel.cover,
+                    height: playerWidth -
+                        ThemeSize.smallMargin -
+                        ThemeSize.containerPadding * 3,
+                    width: playerWidth -
+                        ThemeSize.smallMargin -
+                        ThemeSize.containerPadding * 3,
+                    fit: BoxFit.cover,
+                  )))),
+        ));
   }
 
   Widget buildLyric() {
@@ -128,10 +151,7 @@ class _MusicPlayerPageState extends State<MusicPlayerPage>
         children: [
           Expanded(
             child: Center(
-                child: Text(
-                    Provider.of<PlayerMusicProvider>(context)
-                        .musicModel
-                        .authorName,
+                child: Text(musicModel.authorName,
                     style: TextStyle(
                         decoration: TextDecoration.underline,
                         color: ThemeColors.colorWhite))),
@@ -197,13 +217,14 @@ class _MusicPlayerPageState extends State<MusicPlayerPage>
     return Row(
       children: [
         SizedBox(width: ThemeSize.containerPadding * 2),
-        Text("00:00", style: TextStyle(color: ThemeColors.colorWhite)),
+        Text(getDuration(duration),
+            style: TextStyle(color: ThemeColors.colorWhite)),
         Expanded(
           child: Slider(
-            value: this._sliderValue,
+            value: sliderValue,
             onChanged: (data) {
               setState(() {
-                this._sliderValue = data;
+                sliderValue = data;
               });
             },
             onChangeStart: (data) {
@@ -219,7 +240,8 @@ class _MusicPlayerPageState extends State<MusicPlayerPage>
           ),
           flex: 1,
         ),
-        Text(duration, style: TextStyle(color: ThemeColors.colorWhite)),
+        Text(getDuration(totalSec),
+            style: TextStyle(color: ThemeColors.colorWhite)),
         SizedBox(width: ThemeSize.containerPadding * 2),
       ],
     );
@@ -246,21 +268,38 @@ class _MusicPlayerPageState extends State<MusicPlayerPage>
             child: Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Container(
-                  width: ThemeSize.bigAvater,
-                  height: ThemeSize.bigAvater,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(ThemeSize.bigAvater),
-                    border: Border.all(color: ThemeColors.colorWhite, width: 2),
-                  ),
-                  child: Center(
-                      child: Image.asset(
-                    Provider.of<PlayerMusicProvider>(context).playing
-                        ? "lib/assets/images/icon-music-playing.png"
-                        : "lib/assets/images/icon-music-play-white.png",
-                    width: ThemeSize.playIcon,
-                    height: ThemeSize.playIcon,
-                  )),
+                InkWell(
+                  child: Container(
+                      width: ThemeSize.bigAvater,
+                      height: ThemeSize.bigAvater,
+                      decoration: BoxDecoration(
+                        borderRadius:
+                            BorderRadius.circular(ThemeSize.bigAvater),
+                        border:
+                            Border.all(color: ThemeColors.colorWhite, width: 2),
+                      ),
+                      child: Center(
+                        child: Image.asset(
+                          playState
+                              ? "lib/assets/images/icon-music-playing.png"
+                              : "lib/assets/images/icon-music-play-white.png",
+                          width: ThemeSize.playIcon,
+                          height: ThemeSize.playIcon,
+                        ),
+                      )),
+                  onTap: () {
+                    if (playState) {
+                      player.pause();
+                      setState(() {
+                        playState = false;
+                      });
+                    } else {
+                      player.resume();
+                      setState(() {
+                        playState = true;
+                      });
+                    }
+                  },
                 )
               ],
             ),
@@ -284,13 +323,25 @@ class _MusicPlayerPageState extends State<MusicPlayerPage>
   }
 
   /// 播放音乐
-  void  usePlay (MusicModel musicModel) async {
-    print(host + musicModel.localPlayUrl);
+  void usePlay(MusicModel musicModel) async {
     final result = await player.play(host + musicModel.localPlayUrl);
-    if(result == 1){
-      int sec = await player.getDuration();
+    if (result == 1) {
       setState(() {
-        duration = getDuration(sec);
+        // 默认开始播放
+        playState = true;
+      });
+      player.onDurationChanged.listen((event) {
+        if (totalSec == 0) {
+          setState(() {
+            totalSec = event.inSeconds;
+          });
+        }
+      });
+      player.onAudioPositionChanged.listen((event) {
+        setState(() {
+          duration = event.inSeconds;
+          sliderValue = (duration / totalSec) * 100;
+        });
       });
     }
   }
