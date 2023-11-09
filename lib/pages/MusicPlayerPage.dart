@@ -51,6 +51,12 @@ class _MusicPlayerPageState extends State<MusicPlayerPage>
   }
 
   @override
+  void dispose() {
+    super.dispose();
+    _repeatController.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
         backgroundColor: ThemeColors.colorBg,
@@ -293,11 +299,14 @@ class _MusicPlayerPageState extends State<MusicPlayerPage>
                       setState(() {
                         playState = false;
                       });
+                      _repeatController.stop(canceled: false);
                     } else {
                       player.resume();
                       setState(() {
                         playState = true;
                       });
+                      _repeatController.forward();
+                      _repeatController.repeat();
                     }
                   },
                 )

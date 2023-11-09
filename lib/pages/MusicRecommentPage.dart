@@ -11,6 +11,7 @@ import '../theme/ThemeStyle.dart';
 import '../theme/ThemeSize.dart';
 import '../theme/ThemeColors.dart';
 import '../config/serviceUrl.dart';
+import 'package:audioplayers/audioplayers.dart';
 
 class MusicRecommentPage extends StatefulWidget {
   MusicRecommentPage({Key key}) : super(key: key);
@@ -33,11 +34,24 @@ class _MusicRecommentPageState extends State<MusicRecommentPage>
     "lib/assets/images/icon-no2.png",
     "lib/assets/images/icon-no3.png"
   ];
+  MusicModel music;
+  bool playing;
 
   @override
   void initState() {
     super.initState();
     getRecommendMusicList(1, 20);
+    usePlayState();
+  }
+
+  /// 获取播放状态
+  usePlayState() {
+    AudioPlayer player = Provider.of<PlayerMusicProvider>(context, listen: false).player;
+    player.onPlayerStateChanged.listen((event) {
+      setState(() {
+        playing = event.index == 1;
+      });
+    });
   }
 
   void getRecommendMusicList(int pageNum, pageSize) {
@@ -98,12 +112,19 @@ class _MusicRecommentPageState extends State<MusicRecommentPage>
             flex: 1,
           ),
           InkWell(
-              child: Image.asset("lib/assets/images/icon-music-play.png",
-                  width: ThemeSize.smallIcon, height: ThemeSize.smallIcon),
+              child: Image.asset(
+                  playing && musicModel.id == music.id
+                      ? "lib/assets/images/icon-music-playing.png"
+                      : "lib/assets/images/icon-music-play.png",
+                  width: ThemeSize.smallIcon,
+                  height: ThemeSize.smallIcon),
               onTap: () {
+                setState(() {
+                  music = musicModel;
+                  playing = true;
+                });
                 Provider.of<PlayerMusicProvider>(context,listen: false)
-                    .setPlayMusic(musicModel,true);
-
+                    .setPlayMusic(musicModel, true);
                 Navigator.push(context,
                     MaterialPageRoute(builder: (context) => MusicPlayerPage()));
               }),
@@ -120,6 +141,8 @@ class _MusicRecommentPageState extends State<MusicRecommentPage>
 
   @override
   Widget build(BuildContext context) {
+    music = Provider.of<PlayerMusicProvider>(context).musicModel;
+    playing = Provider.of<PlayerMusicProvider>(context).playing;
     return Container(
       width: MediaQuery.of(context).size.width,
       child: EasyRefresh(

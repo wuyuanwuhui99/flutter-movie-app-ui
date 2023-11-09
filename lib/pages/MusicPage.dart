@@ -10,6 +10,8 @@ import '../provider/PlayerMusicProvider.dart';
 import '../model/MusicModel.dart';
 import '../utils/LocalStroageUtils.dart';
 import '../config/serviceUrl.dart';
+import 'package:audioplayers/audioplayers.dart';
+import '../pages/MusicPlayerPage.dart';
 
 class MusicPage extends StatefulWidget {
   MusicPage({Key key}) : super(key: key);
@@ -19,10 +21,15 @@ class MusicPage extends StatefulWidget {
 }
 
 class _MusicPageState extends State<MusicPage>
-    with AutomaticKeepAliveClientMixin {
+    with AutomaticKeepAliveClientMixin, TickerProviderStateMixin {
   @override
   bool get wantKeepAlive => true;
 
+  /// 会重复播放的控制器
+  AnimationController _repeatController;
+  bool playing = false;
+  /// 非线性动画
+  Animation<double> _curveAnimation;
   int _currentIndex = 0;
   List<Widget> pages = [null, null, null, null];
   List<String> normalImgUrls = [
@@ -43,6 +50,36 @@ class _MusicPageState extends State<MusicPage>
   void dispose() {
     super.dispose();
     _pageController.dispose();
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _repeatController = AnimationController(
+      duration: const Duration(seconds: 10),
+      vsync: this,
+    )..repeat();
+
+    // 创建一个从0到360弧度的补间动画 v * 2 * π
+    _curveAnimation =
+        Tween<double>(begin: 0, end: 1).animate(_repeatController);
+    _repeatController.stop(canceled: false);
+    usePlayState();
+  }
+
+  /// 获取播放状态
+  usePlayState() {
+    AudioPlayer player = Provider.of<PlayerMusicProvider>(context, listen: false).player;
+    player.onPlayerStateChanged.listen((event) {
+      print(event.index);
+      if (event.index == 2) {
+        // 暂停播放
+        _repeatController.stop(canceled: false);
+      } else {// 恢复播放
+        _repeatController.forward();
+        _repeatController.repeat();
+      }
+    });
   }
 
   var _pageController = PageController();
@@ -107,12 +144,14 @@ class _MusicPageState extends State<MusicPage>
     return FutureBuilder(
         future: LocalStroageUtils.getPlayMusic(),
         builder: (context, snapshot) {
-          MusicModel musicModel;
-          if (snapshot.data != null) {
+          MusicModel musicModel =
+              Provider.of<PlayerMusicProvider>(context).musicModel;
+          if (snapshot.data == null && musicModel == null) {
+            return SizedBox();
+          } else if (musicModel == null) {
             musicModel = MusicModel.fromJson(snapshot.data);
-            Provider.of<PlayerMusicProvider>(context).setPlayMusic(musicModel,false);
-          } else {
-            musicModel = Provider.of<PlayerMusicProvider>(context).musicModel;
+            Provider.of<PlayerMusicProvider>(context)
+                .setPlayMusic(musicModel, false);
           }
           return Scaffold(
               backgroundColor: ThemeColors.colorBg,
@@ -133,14 +172,22 @@ class _MusicPageState extends State<MusicPage>
                   height: ThemeSize.minPlayIcon,
                   width: ThemeSize.minPlayIcon,
                   child: FloatingActionButton(
+                    backgroundColor: ThemeColors.colorBg,
                     child: musicModel != null
-                        ? ClipOval(
-                            child: Image.network(
-                            host + musicModel.cover,
-                            width: ThemeSize.minPlayIcon,
-                            height: ThemeSize.minPlayIcon,
-                          ))
-                        : SizedBox(),
+                        ? InkWell(
+                            child: RotationTransition(
+                                turns: _curveAnimation,
+                                child: ClipOval(
+                                    child: Image.network(
+                                  host + musicModel.cover,
+                                  width: ThemeSize.minPlayIcon,
+                                  height: ThemeSize.minPlayIcon,
+                                ))),
+                            onTap: () {
+                              Navigator.push(context,
+                                  MaterialPageRoute(builder: (context) => MusicPlayerPage()));
+                            })
+                        : Icon(Icons.music_note, size: ThemeSize.middleIcon),
                     onPressed: () {},
                   )),
               bottomNavigationBar: BottomAppBar(
