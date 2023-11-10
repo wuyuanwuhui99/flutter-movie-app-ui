@@ -121,6 +121,7 @@ flutter:
    - lib/assets/images/icon-music-play-menu.png
    - lib/assets/images/icon-music-play-white.png
    - lib/assets/images/icon-music-playing.png
+   - lib/assets/images/icon-music-playing-grey.png
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.
 

@@ -27,14 +27,13 @@ class _MusicRecommentPageState extends State<MusicRecommentPage>
   int pageNum = 2; // 初始化加载两页共20条数据，后面每页加载10条
   int pageSize = 10;
   int total = 0;
-  int index = 0; // 排名
-  List<Widget> musicWidgetList = [];
+  List<MusicModel> musicModelList = [];
   List<String> iconList = [
     "lib/assets/images/icon-no1.png",
     "lib/assets/images/icon-no2.png",
     "lib/assets/images/icon-no3.png"
   ];
-  MusicModel music;
+  MusicModel currentPlayingMusicModel;
   bool playing;
 
   @override
@@ -46,7 +45,8 @@ class _MusicRecommentPageState extends State<MusicRecommentPage>
 
   /// 获取播放状态
   usePlayState() {
-    AudioPlayer player = Provider.of<PlayerMusicProvider>(context, listen: false).player;
+    AudioPlayer player =
+        Provider.of<PlayerMusicProvider>(context, listen: false).player;
     player.onPlayerStateChanged.listen((event) {
       setState(() {
         playing = event.index == 1;
@@ -59,9 +59,7 @@ class _MusicRecommentPageState extends State<MusicRecommentPage>
       setState(() {
         total = res["total"];
         (res["data"] as List).cast().forEach((item) {
-          MusicModel musicModel = MusicModel.fromJson(item);
-          musicWidgetList.add(buildMusicItem(musicModel, index));
-          index++;
+          musicModelList.add(MusicModel.fromJson(item));
         });
       });
     });
@@ -113,17 +111,13 @@ class _MusicRecommentPageState extends State<MusicRecommentPage>
           ),
           InkWell(
               child: Image.asset(
-                  playing && musicModel.id == music.id
-                      ? "lib/assets/images/icon-music-playing.png"
+                  playing && musicModel.id == currentPlayingMusicModel.id
+                      ? "lib/assets/images/icon-music-playing-grey.png"
                       : "lib/assets/images/icon-music-play.png",
                   width: ThemeSize.smallIcon,
                   height: ThemeSize.smallIcon),
               onTap: () {
-                setState(() {
-                  music = musicModel;
-                  playing = true;
-                });
-                Provider.of<PlayerMusicProvider>(context,listen: false)
+                Provider.of<PlayerMusicProvider>(context, listen: false)
                     .setPlayMusic(musicModel, true);
                 Navigator.push(context,
                     MaterialPageRoute(builder: (context) => MusicPlayerPage()));
@@ -139,9 +133,20 @@ class _MusicRecommentPageState extends State<MusicRecommentPage>
         ]));
   }
 
+  List<Widget> buildMusicWedgetList() {
+    List<Widget> musicWedgetList = [];
+    int index = 0;
+    musicModelList.forEach((element) {
+      musicWedgetList.add(buildMusicItem(element, index));
+      index++;
+    });
+    return musicWedgetList;
+  }
+
   @override
   Widget build(BuildContext context) {
-    music = Provider.of<PlayerMusicProvider>(context).musicModel;
+    currentPlayingMusicModel =
+        Provider.of<PlayerMusicProvider>(context).musicModel;
     playing = Provider.of<PlayerMusicProvider>(context).playing;
     return Container(
       width: MediaQuery.of(context).size.width,
@@ -149,7 +154,7 @@ class _MusicRecommentPageState extends State<MusicRecommentPage>
         footer: MaterialFooter(),
         onLoad: () async {
           pageNum++;
-          if (total <= musicWidgetList.length) {
+          if (total <= musicModelList.length) {
             Fluttertoast.showToast(
                 msg: "已经到底了",
                 toastLength: Toast.LENGTH_SHORT,
@@ -163,7 +168,7 @@ class _MusicRecommentPageState extends State<MusicRecommentPage>
           }
         },
         child: Column(
-          children: musicWidgetList,
+          children: buildMusicWedgetList(),
         ),
       ),
     );

@@ -29,21 +29,20 @@ class _MusicHomePageState extends State<MusicHomePage>
   @override
   bool get wantKeepAlive => true;
   int pageNum = 1;
-  List<Widget> currentClassifiesWidget = [];
+  List<MusicClassifyModel> currentClassifiesList = [];
   List<MusicClassifyModel> allClassifies = [];
+  bool playing = false;
+  MusicModel currentPlayingMusicModel;
 
   @override
   void initState() {
     super.initState();
     getMusicClassifyService().then((res) {
-      currentClassifiesWidget.add(buildClassifyWidget());
       allClassifies = (res["data"] as List).cast().map((item) {
         return MusicClassifyModel.fromJson(item);
       }).toList();
       setState(() {
-        allClassifies.sublist(0, 4).forEach((item) {
-          currentClassifiesWidget.add(buildMuiscModuleByClassifyIdWidget(item));
-        });
+        currentClassifiesList.addAll(allClassifies.sublist(0, 4));
       });
     });
   }
@@ -51,14 +50,23 @@ class _MusicHomePageState extends State<MusicHomePage>
   void _getCategoryItem() {
     if (pageNum < allClassifies.length) {
       setState(() {
-        currentClassifiesWidget
-            .add(buildMuiscModuleByClassifyIdWidget(allClassifies[pageNum]));
+        currentClassifiesList.add(allClassifies[pageNum]);
       });
     }
   }
 
+  List<Widget>buildCurrentClassifiesWidget(){
+    List<Widget>currentClassifiesWidget = [];
+    currentClassifiesList.forEach((element) {
+      currentClassifiesWidget.add(buildMuiscModuleByClassifyIdWidget(element));
+    });
+    return currentClassifiesWidget;
+  }
+
   @override
   Widget build(BuildContext context) {
+    currentPlayingMusicModel = Provider.of<PlayerMusicProvider>(context).musicModel;
+    playing = Provider.of<PlayerMusicProvider>(context).playing;
     return Container(
         width: MediaQuery.of(context).size.width,
         padding: ThemeStyle.paddingBox,
@@ -84,7 +92,7 @@ class _MusicHomePageState extends State<MusicHomePage>
                   }
                 },
                 child: Column(
-                  children: currentClassifiesWidget,
+                  children: [buildClassifyWidget(),...buildCurrentClassifiesWidget()],
                 ),
               ))
         ]));
@@ -321,12 +329,14 @@ class _MusicHomePageState extends State<MusicHomePage>
                       ),
                       InkWell(
                           child: Image.asset(
-                            "lib/assets/images/icon-music-play.png",
+                            playing && musicItem.id == currentPlayingMusicModel.id
+                                ? "lib/assets/images/icon-music-playing-grey.png"
+                                : "lib/assets/images/icon-music-play.png",
                             width: ThemeSize.smallIcon,
                             height: ThemeSize.smallIcon,
                           ),
                           onTap: () {
-                            Provider.of<PlayerMusicProvider>(context).setPlayMusic(musicItem,false);
+                            Provider.of<PlayerMusicProvider>(context,listen: false).setPlayMusic(musicItem,true);
                             Navigator.push(
                                 context,
                                 MaterialPageRoute(
