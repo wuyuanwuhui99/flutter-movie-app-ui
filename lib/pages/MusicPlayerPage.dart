@@ -8,6 +8,10 @@ import '../provider/PlayerMusicProvider.dart';
 import '../model/MusicModel.dart';
 import '../config/serviceUrl.dart';
 import '../utils/common.dart';
+import '../component/lyric/lyric_controller.dart';
+import '../component/lyric/lyric_util.dart';
+import '../component/lyric/lyric_widget.dart';
+import '../pages/MusicLyricPage.dart';
 
 class MusicPlayerPage extends StatefulWidget {
   MusicPlayerPage({Key key}) : super(key: key);
@@ -27,6 +31,9 @@ class _MusicPlayerPageState extends State<MusicPlayerPage>
   MusicModel musicModel;
   AudioPlayer player;
 
+  //歌词控制器
+  LyricController _lyricController;
+
   /// 会重复播放的控制器
   AnimationController _repeatController;
 
@@ -36,6 +43,7 @@ class _MusicPlayerPageState extends State<MusicPlayerPage>
   @override
   void initState() {
     super.initState();
+    _lyricController = LyricController(vsync: this);
     player = Provider.of<PlayerMusicProvider>(context, listen: false).player;
     musicModel =
         Provider.of<PlayerMusicProvider>(context, listen: false).musicModel;
@@ -149,10 +157,34 @@ class _MusicPlayerPageState extends State<MusicPlayerPage>
 
   Widget buildLyric() {
     return Column(children: [
-      Text("依然记得从你眼中", style: TextStyle(color: ThemeColors.colorWhite)),
-      SizedBox(height: ThemeSize.containerPadding),
-      Text("滑落的泪伤心欲绝", style: TextStyle(color: ThemeColors.opcityWhiteColor)),
-      SizedBox(height: ThemeSize.containerPadding),
+      Container(
+        height: 80,
+        child: Center(
+            child: musicModel.lyrics != null && musicModel.lyrics != ''
+                ? InkWell(
+                    child: LyricWidget(
+                      lyricStyle: TextStyle(
+                          color: ThemeColors.opcityWhiteColor,
+                          fontSize: ThemeSize.middleFontSize),
+                      currLyricStyle: TextStyle(
+                          color: ThemeColors.colorWhite,
+                          fontSize: ThemeSize.middleFontSize),
+                      size: Size(double.infinity, double.infinity),
+                      lyrics: LyricUtil.formatLyric(musicModel.lyrics),
+                      controller: _lyricController,
+                    ),
+                    onTap: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => MusicLyricPage()));
+                    },
+                  )
+                : Text('暂无歌词',
+                    style: TextStyle(
+                        color: ThemeColors.opcityWhiteColor,
+                        fontSize: ThemeSize.middleFontSize))),
+      ),
       Row(
         children: [
           Expanded(
@@ -347,6 +379,7 @@ class _MusicPlayerPageState extends State<MusicPlayerPage>
         }
       });
       player.onAudioPositionChanged.listen((event) {
+        _lyricController.progress = Duration(seconds: event.inSeconds);
         setState(() {
           duration = event.inSeconds;
           sliderValue = (duration / totalSec) * 100;

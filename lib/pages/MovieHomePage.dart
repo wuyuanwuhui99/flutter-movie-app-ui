@@ -144,7 +144,6 @@ class _MovieHomePageState extends State<MovieHomePage>
             }
             var userInfo = snapshot.data["data"];
             var token = snapshot.data["token"];
-            Global.token = token;
             LocalStroageUtils.setToken(token);
             Provider.of<UserInfoProvider>(context,listen: false)
                 .setUserInfo(UserInfoModel.fromJson(userInfo));

@@ -96,6 +96,7 @@ Future getUserMsgService() async {
     Response response = await dio.get(servicePath['getUserMsg']);
     return getResponseData(response);
   } catch (e) {
+    print(servicePath['getUserMsg']);
     return print('ERROR:======>${e}');
   }
 }

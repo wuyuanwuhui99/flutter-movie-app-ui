@@ -36,6 +36,7 @@ dependencies:
   flutter_easyloading: ^2.2.2
   image_picker: ^0.6.1+4
   audioplayers: ^0.16.1
+  flutter_lyric: ^1.0.0
 
 dev_dependencies:
   flutter_test:
