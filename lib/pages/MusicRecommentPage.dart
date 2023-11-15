@@ -59,6 +59,10 @@ class _MusicRecommentPageState extends State<MusicRecommentPage>
       setState(() {
         total = res["total"];
         (res["data"] as List).cast().forEach((item) {
+          item['classifyId'] = 1;
+          item['pageNum'] = pageNum;
+          item['pageSize'] = pageSize;
+          item['isRedis'] = 0;
           musicModelList.add(MusicModel.fromJson(item));
         });
       });
@@ -66,7 +70,8 @@ class _MusicRecommentPageState extends State<MusicRecommentPage>
   }
 
   // 创建音乐列表项
-  Widget buildMusicItem(MusicModel musicModel, int index) {
+  Widget buildMusicItem(
+      List<MusicModel> musicModelList, MusicModel musicModel, int index) {
     return Container(
         decoration: ThemeStyle.boxDecoration,
         margin: ThemeStyle.margin,
@@ -118,7 +123,7 @@ class _MusicRecommentPageState extends State<MusicRecommentPage>
                   height: ThemeSize.smallIcon),
               onTap: () {
                 Provider.of<PlayerMusicProvider>(context, listen: false)
-                    .setPlayMusic(musicModel, true);
+                    .setPlayMusic(musicModelList, musicModel, index, true);
                 Navigator.push(context,
                     MaterialPageRoute(builder: (context) => MusicPlayerPage()));
               }),
@@ -137,7 +142,7 @@ class _MusicRecommentPageState extends State<MusicRecommentPage>
     List<Widget> musicWedgetList = [];
     int index = 0;
     musicModelList.forEach((element) {
-      musicWedgetList.add(buildMusicItem(element, index));
+      musicWedgetList.add(buildMusicItem(musicModelList, element, index));
       index++;
     });
     return musicWedgetList;

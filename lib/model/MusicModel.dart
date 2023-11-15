@@ -1,6 +1,8 @@
 import 'dart:convert';
 
-class MusicModel {
+import 'package:movie/model/ClassMusicParamsModel.dart';
+
+class MusicModel extends ClassMusicParamsModel{
   int id; //主键
   int albumId; // 专辑id
   String songName; // 歌曲名称

@@ -6,7 +6,6 @@ import 'package:provider/provider.dart';
 import '../service/serverMethod.dart';
 import '../provider/UserInfoProvider.dart';
 import '../provider/TokenProvider.dart';
-import '../config/global.dart';
 import '../utils/LocalStroageUtils.dart';
 import '../component/SearchCommponent.dart';
 import '../component/AvaterComponent.dart';

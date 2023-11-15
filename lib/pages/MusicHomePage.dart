@@ -55,8 +55,8 @@ class _MusicHomePageState extends State<MusicHomePage>
     }
   }
 
-  List<Widget>buildCurrentClassifiesWidget(){
-    List<Widget>currentClassifiesWidget = [];
+  List<Widget> buildCurrentClassifiesWidget() {
+    List<Widget> currentClassifiesWidget = [];
     currentClassifiesList.forEach((element) {
       currentClassifiesWidget.add(buildMuiscModuleByClassifyIdWidget(element));
     });
@@ -65,7 +65,8 @@ class _MusicHomePageState extends State<MusicHomePage>
 
   @override
   Widget build(BuildContext context) {
-    currentPlayingMusicModel = Provider.of<PlayerMusicProvider>(context).musicModel;
+    currentPlayingMusicModel =
+        Provider.of<PlayerMusicProvider>(context).musicModel;
     playing = Provider.of<PlayerMusicProvider>(context).playing;
     return Container(
         width: MediaQuery.of(context).size.width,
@@ -92,7 +93,10 @@ class _MusicHomePageState extends State<MusicHomePage>
                   }
                 },
                 child: Column(
-                  children: [buildClassifyWidget(),...buildCurrentClassifiesWidget()],
+                  children: [
+                    buildClassifyWidget(),
+                    ...buildCurrentClassifiesWidget()
+                  ],
                 ),
               ))
         ]));
@@ -136,7 +140,8 @@ class _MusicHomePageState extends State<MusicHomePage>
                                 Provider.of<PlayerMusicProvider>(context);
                             if (musicProvider.musicModel == null) {
                               // 如果缓存中没有正在播放的歌曲，用推荐的歌曲作为正在播放的歌曲
-                              musicProvider.setPlayMusic(musicModel, false);
+                              musicProvider
+                                  .setPlayMusic([], musicModel, 0, false);
                               LocalStroageUtils.setPlayMusic(musicModel);
                             }
                             keyword =
@@ -265,10 +270,17 @@ class _MusicHomePageState extends State<MusicHomePage>
           if (snapshot.data == null) {
             return Container();
           } else {
-            return Column(
-                children: (snapshot.data["data"] as List).cast().map((item) {
-              MusicModel musicItem = MusicModel.fromJson(item);
-              return Padding(
+            List<MusicModel> musicModelList = [];
+            List<Widget> musicWidgetList = [];
+            int index = 0;
+            (snapshot.data["data"] as List).cast().forEach((element) {
+              element['classifyId'] = classifyId;
+              element['classifyId'] = 1;
+              element['classifyId'] = 3;
+              element['isRedis'] = 1;
+              MusicModel musicItem = MusicModel.fromJson(element);
+              musicModelList.add(musicItem);
+              musicWidgetList.add(Padding(
                   padding: EdgeInsets.only(
                     top: ThemeSize.containerPadding,
                   ),
@@ -329,14 +341,18 @@ class _MusicHomePageState extends State<MusicHomePage>
                       ),
                       InkWell(
                           child: Image.asset(
-                            playing && musicItem.id == currentPlayingMusicModel.id
+                            playing &&
+                                    musicItem.id == currentPlayingMusicModel.id
                                 ? "lib/assets/images/icon-music-playing-grey.png"
                                 : "lib/assets/images/icon-music-play.png",
                             width: ThemeSize.smallIcon,
                             height: ThemeSize.smallIcon,
                           ),
                           onTap: () {
-                            Provider.of<PlayerMusicProvider>(context,listen: false).setPlayMusic(musicItem,true);
+                            Provider.of<PlayerMusicProvider>(context,
+                                    listen: false)
+                                .setPlayMusic(
+                                    musicModelList, musicItem, index, true);
                             Navigator.push(
                                 context,
                                 MaterialPageRoute(
@@ -355,8 +371,10 @@ class _MusicHomePageState extends State<MusicHomePage>
                         height: ThemeSize.smallIcon,
                       )
                     ],
-                  ));
-            }).toList());
+                  )));
+              index++;
+            });
+            return Column(children: musicWidgetList);
           }
         });
   }

@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:shared_preferences/shared_preferences.dart';
 import '../model/MusicModel.dart';
+import '../model/ClassMusicParamsModel.dart';
 
 class LocalStroageUtils {
   static Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
@@ -26,9 +27,22 @@ class LocalStroageUtils {
   static Future getPlayMusic() async {
     final SharedPreferences prefs = await _prefs;
     String playMusic = prefs.getString('playMusic') ?? null;
-    if(playMusic != null){
+    if (playMusic != null) {
       return json.decode(playMusic);
-    }else{
+    } else {
+      return null;
+    }
+  }
+
+  ///  @desc 从缓存中获取正在播放的列表的参数
+  ///  @data 2023-11-15 21:01
+  ///  @author wuwenqiang
+  static Future getClassMusicParams() async {
+    final SharedPreferences prefs = await _prefs;
+    String classMusicParams = prefs.getString('classMusicParams') ?? null;
+    if (classMusicParams != null) {
+      return ClassMusicParamsModel.fromJson(json.decode(classMusicParams));
+    } else {
       return null;
     }
   }

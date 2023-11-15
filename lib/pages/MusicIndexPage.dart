@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:movie/model/ClassMusicParamsModel.dart';
 import '../theme/ThemeSize.dart';
 import '../theme/ThemeColors.dart';
 import '../pages/MusicHomePage.dart';
@@ -12,15 +13,16 @@ import '../utils/LocalStroageUtils.dart';
 import '../config/serviceUrl.dart';
 import 'package:audioplayers/audioplayers.dart';
 import '../pages/MusicPlayerPage.dart';
+import '../service/serverMethod.dart';
 
-class MusicPage extends StatefulWidget {
-  MusicPage({Key key}) : super(key: key);
+class MusicIndexPage extends StatefulWidget {
+  MusicIndexPage({Key key}) : super(key: key);
 
   @override
-  _MusicPageState createState() => _MusicPageState();
+  _MusicIndexPageState createState() => _MusicIndexPageState();
 }
 
-class _MusicPageState extends State<MusicPage>
+class _MusicIndexPageState extends State<MusicIndexPage>
     with AutomaticKeepAliveClientMixin, TickerProviderStateMixin {
   @override
   bool get wantKeepAlive => true;
@@ -28,6 +30,7 @@ class _MusicPageState extends State<MusicPage>
   /// 会重复播放的控制器
   AnimationController _repeatController;
   bool playing = false;
+
   /// 非线性动画
   Animation<double> _curveAnimation;
   int _currentIndex = 0;
@@ -65,17 +68,20 @@ class _MusicPageState extends State<MusicPage>
         Tween<double>(begin: 0, end: 1).animate(_repeatController);
     _repeatController.stop(canceled: false);
     usePlayState();
+    getClassMusicList(); // 通过缓存参数获取上次播放的音乐列表
   }
 
   /// 获取播放状态
   usePlayState() {
-    AudioPlayer player = Provider.of<PlayerMusicProvider>(context, listen: false).player;
+    AudioPlayer player =
+        Provider.of<PlayerMusicProvider>(context, listen: false).player;
     player.onPlayerStateChanged.listen((event) {
       print(event.index);
       if (event.index == 2) {
         // 暂停播放
         _repeatController.stop(canceled: false);
-      } else {// 恢复播放
+      } else {
+        // 恢复播放
         _repeatController.forward();
         _repeatController.repeat();
       }
@@ -139,6 +145,33 @@ class _MusicPageState extends State<MusicPage>
     return item;
   }
 
+  ///  @desc 通过缓存参数获取上次播放的音乐列表
+  ///  @data 2023-11-15 21:52
+  ///  @author wuwenqiang
+  void getClassMusicList() async {
+    ClassMusicParamsModel classMusicParamsModel =
+        await LocalStroageUtils.getClassMusicParams();
+    if (classMusicParamsModel != null) {
+      getMusicListByClassifyIdService(
+              classMusicParamsModel.classifyId,
+              classMusicParamsModel.pageNum,
+              classMusicParamsModel.pageSize,
+              classMusicParamsModel.isRedis)
+          .then((res) {
+        List<MusicModel> musicModelList =
+            (res["data"] as List).cast().map((item) {
+          item = {
+            ...item,
+            ...ClassMusicParamsModel.toMap(classMusicParamsModel)
+          };
+          return MusicModel.fromJson(item);
+        });
+        Provider.of<PlayerMusicProvider>(context)
+            .setPlayMusicList(musicModelList);
+      });
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return FutureBuilder(
@@ -151,7 +184,7 @@ class _MusicPageState extends State<MusicPage>
           } else if (musicModel == null) {
             musicModel = MusicModel.fromJson(snapshot.data);
             Provider.of<PlayerMusicProvider>(context)
-                .setPlayMusic(musicModel, false);
+                .setPlayMusic([], musicModel, 0, false);
           }
           return Scaffold(
               backgroundColor: ThemeColors.colorBg,
@@ -184,8 +217,10 @@ class _MusicPageState extends State<MusicPage>
                                   height: ThemeSize.minPlayIcon,
                                 ))),
                             onTap: () {
-                              Navigator.push(context,
-                                  MaterialPageRoute(builder: (context) => MusicPlayerPage()));
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => MusicPlayerPage()));
                             })
                         : Icon(Icons.music_note, size: ThemeSize.middleIcon),
                     onPressed: () {},

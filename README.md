@@ -74,3 +74,7 @@ vue在线音乐项目：https://github.com/wuyuanwuhui99/vue-music-app-ui
 vue3+ts明日头条项目：https://github.com/wuyuanwuhui99/vue3-ts-toutiao-app-ui
 
 音乐播放器正在开发中，音乐数据来自于python爬虫程序，爬取酷狗音乐数据，敬请关注
+
+接口和数据请在本地电脑中，暂时没有购买和部署服务器，仅限本地调试，如有需要调试请联系本人启动外网映射
+
+联系方式：（微信）wuwenqiang_99、（邮箱）275018723@qq.com

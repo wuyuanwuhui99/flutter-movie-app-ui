@@ -11,7 +11,7 @@ import '../theme/ThemeSize.dart';
 import '../theme/ThemeColors.dart';
 import '../model/MovieDetailModel.dart';
 import '../pages/WebViewPage.dart';
-import '../pages/MusicPage.dart';
+import '../pages/MusicIndexPage.dart';
 
 class MovieMyPage extends StatefulWidget {
   MovieMyPage({Key key}) : super(key: key);
@@ -280,7 +280,7 @@ class PannelComponent extends StatelessWidget {
                     Navigator.push(
                         context,
                         MaterialPageRoute(
-                            builder: (context) => MusicPage()));
+                            builder: (context) => MusicIndexPage()));
                   },
                     child: Row(
                   children: <Widget>[
