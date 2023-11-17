@@ -275,8 +275,8 @@ class _MusicHomePageState extends State<MusicHomePage>
             int index = 0;
             (snapshot.data["data"] as List).cast().forEach((element) {
               element['classifyId'] = classifyId;
-              element['classifyId'] = 1;
-              element['classifyId'] = 3;
+              element['pageNum'] = 1;
+              element['pageSize'] = 20;
               element['isRedis'] = 1;
               MusicModel musicItem = MusicModel.fromJson(element);
               musicModelList.add(musicItem);

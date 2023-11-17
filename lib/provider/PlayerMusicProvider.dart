@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import '../model/MusicModel.dart';
 import '../utils/LocalStroageUtils.dart';
 import 'package:audioplayers/audioplayers.dart';
+import '../config/serviceUrl.dart';
 
 class PlayerMusicProvider with ChangeNotifier {
   MusicModel _musicModel; // 正在播放的音乐
@@ -40,6 +41,7 @@ class PlayerMusicProvider with ChangeNotifier {
       return element.id == _musicModel.id;
     });
     _playIndex = playIndex != -1 ? playIndex : _playIndex;
+    notifyListeners();
   }
 
   void setPlaying(bool playing) {
@@ -47,9 +49,26 @@ class PlayerMusicProvider with ChangeNotifier {
     notifyListeners();
   }
 
+  ///  @desc 设置上一首获取下一首
+  ///  @data 2023-11-17 21:47
+  ///  @author wuwenqiang
+  void setPlayIndex(int playIndex){
+    if(playIndex <= _playMusicModelList.length - 1 && playIndex >= 0){
+      _musicModel = _playMusicModelList[playIndex];
+      _playIndex = playIndex;
+      LocalStroageUtils.setPlayMusic(_musicModel);
+      _player.play(host + _musicModel.localPlayUrl);
+      notifyListeners();
+    }
+  }
+
   get playing => _playing;
 
   get musicModel => _musicModel;
 
   get player => _player;
+
+  get playIndex => _playIndex;
+
+  get playMusicModelList => _playMusicModelList;
 }

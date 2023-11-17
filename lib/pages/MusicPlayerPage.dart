@@ -30,6 +30,7 @@ class _MusicPlayerPageState extends State<MusicPlayerPage>
   bool playState = false;
   MusicModel musicModel;
   AudioPlayer player;
+  int currentPlayIndex = -1; // 当前播放音乐的下标
 
   //歌词控制器
   LyricController _lyricController;
@@ -56,6 +57,10 @@ class _MusicPlayerPageState extends State<MusicPlayerPage>
     // 创建一个从0到360弧度的补间动画 v * 2 * π
     _curveAnimation =
         Tween<double>(begin: 0, end: 1).animate(_repeatController);
+
+    // 获取当前正在播放的音乐下标
+    currentPlayIndex =
+        Provider.of<PlayerMusicProvider>(context, listen: false).playIndex;
   }
 
   @override
@@ -286,6 +291,7 @@ class _MusicPlayerPageState extends State<MusicPlayerPage>
   }
 
   Widget buildPlayBtn() {
+    List<MusicModel> playMusicModelList = Provider.of<PlayerMusicProvider>(context, listen: false).playMusicModelList;
     return Row(
       children: [
         Expanded(
@@ -296,11 +302,22 @@ class _MusicPlayerPageState extends State<MusicPlayerPage>
             ),
             flex: 1),
         Expanded(
-            child: Image.asset(
-              "lib/assets/images/icon-music-prev.png",
-              width: ThemeSize.playIcon,
-              height: ThemeSize.playIcon,
-            ),
+            child: InkWell(
+                child: Opacity(
+                    opacity: currentPlayIndex == 0 ? 0.5 : 1,
+                    child: Image.asset(
+                      "lib/assets/images/icon-music-prev.png",
+                      width: ThemeSize.playIcon,
+                      height: ThemeSize.playIcon,
+                    )),
+                onTap: () {
+                  if (currentPlayIndex > 0) {
+                    currentPlayIndex--;
+                    musicModel = playMusicModelList[currentPlayIndex];
+                    Provider.of<PlayerMusicProvider>(context, listen: false)
+                        .setPlayIndex(currentPlayIndex);
+                  }
+                }),
             flex: 1),
         Expanded(
             child: Row(
@@ -346,11 +363,21 @@ class _MusicPlayerPageState extends State<MusicPlayerPage>
             ),
             flex: 2),
         Expanded(
-            child: Image.asset(
-              "lib/assets/images/icon-music-next.png",
-              width: ThemeSize.playIcon,
-              height: ThemeSize.playIcon,
-            ),
+            child: InkWell(
+                child: Opacity(
+                    opacity: currentPlayIndex == playMusicModelList.length - 1 ? 0.5 : 1,
+                    child: Image.asset(
+                      "lib/assets/images/icon-music-next.png",
+                      width: ThemeSize.playIcon,
+                      height: ThemeSize.playIcon,
+                    )),
+                onTap: () {
+                  if (currentPlayIndex < playMusicModelList.length - 1) {
+                    currentPlayIndex++;
+                    musicModel = playMusicModelList[currentPlayIndex];
+                    Provider.of<PlayerMusicProvider>(context, listen: false).setPlayIndex(currentPlayIndex);
+                  }
+                }),
             flex: 1),
         Expanded(
             child: Image.asset(
