@@ -31,15 +31,10 @@ class _MusicPlayerPageState extends State<MusicPlayerPage>
   MusicModel musicModel;
   AudioPlayer player;
   int currentPlayIndex = -1; // 当前播放音乐的下标
-
-  //歌词控制器
-  LyricController _lyricController;
-
-  /// 会重复播放的控制器
-  AnimationController _repeatController;
-
-  /// 非线性动画
-  Animation<double> _curveAnimation;
+  List<MusicModel> playMusicModelList;// 播放的列表
+  LyricController _lyricController;//歌词控制器
+  AnimationController _repeatController;// 会重复播放的控制器
+  Animation<double> _curveAnimation;// 非线性动画
 
   @override
   void initState() {
@@ -61,6 +56,8 @@ class _MusicPlayerPageState extends State<MusicPlayerPage>
     // 获取当前正在播放的音乐下标
     currentPlayIndex =
         Provider.of<PlayerMusicProvider>(context, listen: false).playIndex;
+
+    playMusicModelList = Provider.of<PlayerMusicProvider>(context, listen: false).playMusicModelList;
   }
 
   @override
@@ -312,10 +309,11 @@ class _MusicPlayerPageState extends State<MusicPlayerPage>
                     )),
                 onTap: () {
                   if (currentPlayIndex > 0) {
-                    currentPlayIndex--;
-                    musicModel = playMusicModelList[currentPlayIndex];
-                    Provider.of<PlayerMusicProvider>(context, listen: false)
-                        .setPlayIndex(currentPlayIndex);
+                    Provider.of<PlayerMusicProvider>(context, listen: false).setPlayIndex(currentPlayIndex);
+                    setState(() {
+                      currentPlayIndex--;
+                      musicModel = playMusicModelList[currentPlayIndex];
+                    });
                   }
                 }),
             flex: 1),
@@ -371,13 +369,7 @@ class _MusicPlayerPageState extends State<MusicPlayerPage>
                       width: ThemeSize.playIcon,
                       height: ThemeSize.playIcon,
                     )),
-                onTap: () {
-                  if (currentPlayIndex < playMusicModelList.length - 1) {
-                    currentPlayIndex++;
-                    musicModel = playMusicModelList[currentPlayIndex];
-                    Provider.of<PlayerMusicProvider>(context, listen: false).setPlayIndex(currentPlayIndex);
-                  }
-                }),
+                onTap: useNextMusic),
             flex: 1),
         Expanded(
             child: Image.asset(
@@ -412,6 +404,19 @@ class _MusicPlayerPageState extends State<MusicPlayerPage>
           sliderValue = (duration / totalSec) * 100;
         });
       });
+      player.onPlayerCompletion.listen((event) {
+        useNextMusic();// 切换下一首
+      });
+    }
+  }
+
+  void useNextMusic(){
+    if (currentPlayIndex < playMusicModelList.length - 1) {
+      setState(() {
+        currentPlayIndex++;
+        musicModel = playMusicModelList[currentPlayIndex];
+      });
+      Provider.of<PlayerMusicProvider>(context, listen: false).setPlayIndex(currentPlayIndex);
     }
   }
 }
