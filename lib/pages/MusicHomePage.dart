@@ -225,7 +225,7 @@ class _MusicHomePageState extends State<MusicHomePage>
                 Image.asset("lib/assets/images/icon-music-classics.png",
                     width: ThemeSize.bigAvater, height: ThemeSize.bigAvater),
                 SizedBox(height: ThemeSize.smallMargin),
-                Text("经典老哥")
+                Text("经典老歌")
               ],
             ),
             flex: 1,

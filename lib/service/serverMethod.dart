@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'package:dio/dio.dart';
+import 'package:movie/model/MusicModel.dart';
 import '../config/serviceUrl.dart';
 import '../utils/LocalStroageUtils.dart';
 import '../config/common.dart';
@@ -428,6 +429,18 @@ Future getMySingerService(int pageNum,int pageSize) async {
 Future getMusicRecordService(int pageNum,int pageSize) async {
   try {
     Response response = await dio.get("${servicePath['getMusicRecord']}?pageNum=${pageNum}&pageSize=${pageSize}");
+    return getResponseData(response);
+  } catch (e) {
+    return print('ERROR:======>${e}');
+  }
+}
+
+///@author: wuwenqiang
+///@description: 获取我关注的歌手
+/// @date: 2023-11-20 22:15
+Future insertMusicRecordService(MusicModel musicModel) async {
+  try {
+    Response response = await dio.post(servicePath['insertMusicRecord'],data:MusicModel.toMap(musicModel));
     return getResponseData(response);
   } catch (e) {
     return print('ERROR:======>${e}');

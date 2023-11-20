@@ -98,8 +98,8 @@ class MusicModel extends ClassMusicParamsModel{
         times: json["times"]);
   }
 
-  static String stringigy(MusicModel musicModel) {
-    Map musicMap = {
+  static Map toMap(MusicModel musicModel) {
+    return {
       "id": musicModel.id,
       "albumId": musicModel.albumId,
       "songName": musicModel.songName,
@@ -130,6 +130,9 @@ class MusicModel extends ClassMusicParamsModel{
       "isLike": musicModel.isLike,
       "times": musicModel.times
     };
-    return json.encode(musicMap);
+  }
+
+  static String stringigy(MusicModel musicModel) {
+    return json.encode(MusicModel.toMap(musicModel));
   }
 }

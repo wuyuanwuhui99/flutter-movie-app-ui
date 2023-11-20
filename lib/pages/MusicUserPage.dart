@@ -221,11 +221,6 @@ class _MusicUserPageState extends State<MusicUserPage>
             height: ThemeSize.smallIcon,
           ),
           SizedBox(width: ThemeSize.containerPadding * 2),
-          Image.asset(
-            "lib/assets/images/icon-delete.png",
-            width: ThemeSize.smallIcon,
-            height: ThemeSize.smallIcon,
-          ),
           SizedBox(width: ThemeSize.containerPadding * 2),
           Image.asset(
             "lib/assets/images/icon-music-menu.png",

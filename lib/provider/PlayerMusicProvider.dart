@@ -3,6 +3,7 @@ import '../model/MusicModel.dart';
 import '../utils/LocalStroageUtils.dart';
 import 'package:audioplayers/audioplayers.dart';
 import '../config/serviceUrl.dart';
+import '../service/serverMethod.dart';
 
 class PlayerMusicProvider with ChangeNotifier {
   MusicModel _musicModel; // 正在播放的音乐
@@ -26,6 +27,7 @@ class PlayerMusicProvider with ChangeNotifier {
       _playMusicModelList = playMusicModelList;
       _playIndex = playIndex;
     }
+    insertMusicRecordService(_musicModel);// 插入播放记录
     LocalStroageUtils.setPlayMusic(_musicModel);
     notifyListeners();
   }
@@ -56,6 +58,7 @@ class PlayerMusicProvider with ChangeNotifier {
     if(playIndex <= _playMusicModelList.length - 1 && playIndex >= 0){
       _musicModel = _playMusicModelList[playIndex];
       _playIndex = playIndex;
+      insertMusicRecordService(_musicModel);
       LocalStroageUtils.setPlayMusic(_musicModel);
       _player.play(host + _musicModel.localPlayUrl);
       notifyListeners();
