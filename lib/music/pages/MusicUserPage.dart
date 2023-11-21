@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../service/serverMethod.dart';
-import '../../movie//provider/UserInfoProvider.dart';
-import '../../movie//model/UserInfoModel.dart';
+import '../../movie/provider/UserInfoProvider.dart';
+import '../../movie/model/UserInfoModel.dart';
 import '../../theme/ThemeStyle.dart';
 import '../../theme/ThemeSize.dart';
 import '../../theme/ThemeColors.dart';

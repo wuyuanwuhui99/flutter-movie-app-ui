@@ -1,4 +1,3 @@
-import '../../config/common.dart';
 const servicePath = {
   'getUserData': '/service/movie/getUserData', // 获取用户信息
   'getCategoryList': '/service/movie/getCategoryList', //获取分类影片
