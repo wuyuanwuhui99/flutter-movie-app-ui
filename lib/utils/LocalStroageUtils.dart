@@ -1,8 +1,8 @@
 import 'dart:convert';
 
 import 'package:shared_preferences/shared_preferences.dart';
-import '../model/MusicModel.dart';
-import '../model/ClassMusicParamsModel.dart';
+import '../music//model/MusicModel.dart';
+import '../music//model/ClassMusicParamsModel.dart';
 
 class LocalStroageUtils {
   static Future<SharedPreferences> _prefs = SharedPreferences.getInstance();

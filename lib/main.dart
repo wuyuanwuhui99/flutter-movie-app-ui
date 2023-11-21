@@ -1,12 +1,10 @@
 import 'package:flutter/material.dart';
 import 'BottomNavigationWidget.dart';
 import 'package:provider/provider.dart';
-import 'provider/UserInfoProvider.dart';
-import 'provider/TokenProvider.dart';
-import 'provider/PlayerMusicProvider.dart';
-import 'model/UserInfoModel.dart';
-
-// void main() => runApp(MyApp());
+import './movie/provider/UserInfoProvider.dart';
+import './movie/provider/TokenProvider.dart';
+import './music/provider/PlayerMusicProvider.dart';
+import './movie/model/UserInfoModel.dart';
 
 void main() {
   runApp(

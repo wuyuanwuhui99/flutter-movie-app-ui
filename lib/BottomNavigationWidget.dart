@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
-import 'pages/MovieHomePage.dart';
-import 'pages/MoviePage.dart';
-import 'pages/VideoPage.dart';
-import 'pages/MovieMyPage.dart';
-import 'theme/ThemeColors.dart';
-import './theme/ThemeSize.dart';
+import './movie/pages/MovieHomePage.dart';
+import './movie/pages/MoviePage.dart';
+import './movie/pages/VideoPage.dart';
+import './movie/pages/MovieMyPage.dart';
 import './theme/ThemeColors.dart';
+import './theme/ThemeSize.dart';
 
 class BottomNavigationWidget extends StatefulWidget {
   _BottomNavigationWidgetState createState() => _BottomNavigationWidgetState();
