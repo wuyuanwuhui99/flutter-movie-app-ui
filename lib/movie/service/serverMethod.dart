@@ -10,7 +10,7 @@ Future getUserDataService() async {
   try {
     String token = await LocalStroageUtils.getToken(); //从缓存中获取
     HttpUtil.getInstance().setToken(token);
-   Response response = await HttpUtil.getInstance().dio.get(servicePath["getUserData"]);
+   Response response = await dio.get(servicePath["getUserData"]);
     HttpUtil.getInstance().setToken(response.data['token']);
     return response.data;
   } catch (e) {
@@ -20,7 +20,7 @@ Future getUserDataService() async {
 
 Future getCategoryListService(String category, String classify) async {
   try {
-    Response response = await HttpUtil.getInstance().dio.get(servicePath['getCategoryList'],
+    Response response = await dio.get(servicePath['getCategoryList'],
         queryParameters: {"category": category, "classify": classify});
     return response.data;
   } catch (e) {
@@ -30,7 +30,7 @@ Future getCategoryListService(String category, String classify) async {
 
 Future getKeyWordService(String classify) async {
   try {
-    Response response = await HttpUtil.getInstance().dio.get(servicePath['getKeyWord'],
+    Response response = await dio.get(servicePath['getKeyWord'],
         queryParameters: {"classify": classify});
     return response.data;
   } catch (e) {
@@ -41,7 +41,7 @@ Future getKeyWordService(String classify) async {
 //按classify大类查询所有catory小类
 Future getAllCategoryByClassifyService(String classify) async {
   try {
-    Response response = await HttpUtil.getInstance().dio.get(servicePath['getAllCategoryByClassify'],
+    Response response = await dio.get(servicePath['getAllCategoryByClassify'],
         queryParameters: {"classify": classify});
     return response.data;
   } catch (e) {
@@ -52,7 +52,7 @@ Future getAllCategoryByClassifyService(String classify) async {
 //按classify大类查询所有catory小类
 Future getAllCategoryListByPageNameService(String pageName) async {
   try {
-    Response response = await HttpUtil.getInstance().dio.get(servicePath['getAllCategoryListByPageName'],
+    Response response = await dio.get(servicePath['getAllCategoryListByPageName'],
         queryParameters: {"pageName": pageName});
     return response.data;
   } catch (e) {
@@ -63,7 +63,7 @@ Future getAllCategoryListByPageNameService(String pageName) async {
 //按classify大类查询所有catory小类
 Future getUserMsgService() async {
   try {
-    Response response = await HttpUtil.getInstance().dio.get(servicePath['getUserMsg']);
+    Response response = await dio.get(servicePath['getUserMsg']);
     return response.data;
   } catch (e) {
     return print('ERROR:======>${e}');
@@ -74,7 +74,7 @@ Future getUserMsgService() async {
 Future getSearchResultService(String keyword,
     {int pageSize = 20, int pageNum = 1}) async {
   try {
-    Response response = await HttpUtil.getInstance().dio.get(servicePath['getSearchResult'], queryParameters: {
+    Response response = await dio.get(servicePath['getSearchResult'], queryParameters: {
       "keyword": keyword,
       "pageSize": pageSize,
       "pageNum": pageNum
@@ -91,7 +91,7 @@ Future loginService(String userId, String password) async {
     var map = {};
     map['userId'] = userId;
     map['password'] = password;
-    Response response = await HttpUtil.getInstance().dio.post(servicePath['login'], data: map);
+    Response response = await dio.post(servicePath['login'], data: map);
     return response.data;
   } catch (e) {
     return print('ERROR:======>${e}');
@@ -101,7 +101,7 @@ Future loginService(String userId, String password) async {
 //获取演员列表
 Future getStarService(int movieId) async {
   try {
-    Response response = await HttpUtil.getInstance().dio.get(servicePath['getStar']+movieId.toString());
+    Response response = await dio.get(servicePath['getStar']+movieId.toString());
     return response.data;
   } catch (e) {
     return print('ERROR:======>${e}');
@@ -111,7 +111,7 @@ Future getStarService(int movieId) async {
 //按classify大类查询所有catory小类
 Future getMovieUrlService(int movieId) async {
   try {
-    Response response = await HttpUtil.getInstance().dio.get(servicePath['getMovieUrl'], queryParameters: {
+    Response response = await dio.get(servicePath['getMovieUrl'], queryParameters: {
       "movieId": movieId.toString(),
     });
     return response.data;
@@ -125,7 +125,7 @@ Future getMovieUrlService(int movieId) async {
 /// @date: 2021-03-04 23:08
 Future savePlayRecordService(MovieDetailModel movieEntity) async {
   try {
-    Response response = await HttpUtil.getInstance().dio.post(servicePath['savePlayRecord'], data: movieEntity.toMap());
+    Response response = await dio.post(servicePath['savePlayRecord'], data: movieEntity.toMap());
     return response.data;
   } catch (e) {
     return print('ERROR:======>${e}');
@@ -137,7 +137,7 @@ Future savePlayRecordService(MovieDetailModel movieEntity) async {
 /// @date: 2021-03-04 23:08
 Future getPlayRecordService() async {
   try {
-    Response response = await HttpUtil.getInstance().dio.get(servicePath['getPlayRecord']);
+    Response response = await dio.get(servicePath['getPlayRecord']);
     return response.data;
   } catch (e) {
     return print('ERROR:======>${e}');
@@ -149,7 +149,7 @@ Future getPlayRecordService() async {
 /// @date: 2021-03-04 23:08
 Future saveFavoriteService(MovieDetailModel movieEntity) async {
   try {
-    Response response = await HttpUtil.getInstance().dio.post(servicePath['saveFavorite'], data: movieEntity);
+    Response response = await dio.post(servicePath['saveFavorite'], data: movieEntity);
     return response.data;
   } catch (e) {
     return print('ERROR:======>${e}');
@@ -161,7 +161,7 @@ Future saveFavoriteService(MovieDetailModel movieEntity) async {
 /// @date: 2021-03-04 23:08
 Future getFavoriteService() async {
   try {
-    Response response = await HttpUtil.getInstance().dio.get(servicePath['getFavorite']);
+    Response response = await dio.get(servicePath['getFavorite']);
     return response.data;
   } catch (e) {
     return print('ERROR:======>${e}');
@@ -173,7 +173,7 @@ Future getFavoriteService() async {
 /// @date: 2021-03-04 23:08
 Future deleteFavoriteService(int movieId) async {
   try {
-    Response response = await HttpUtil.getInstance().dio.delete(servicePath['deleteFavorite'],
+    Response response = await dio.delete(servicePath['deleteFavorite'],
         queryParameters: {"movieId": movieId});
     return response.data;
   } catch (e) {
@@ -186,7 +186,7 @@ Future deleteFavoriteService(int movieId) async {
 /// @date: 2021-03-04 23:08
 Future isFavoriteService(int movieId) async {
   try {
-    Response response = await HttpUtil.getInstance().dio.get(servicePath['isFavorite'],
+    Response response = await dio.get(servicePath['isFavorite'],
         queryParameters: {"movieId": movieId.toString()});
     return response.data;
   } catch (e) {
@@ -199,7 +199,7 @@ Future isFavoriteService(int movieId) async {
 /// @date: 2021-03-04 23:08
 Future getYourLikesService(String labels) async {
   try {
-    Response response = await HttpUtil.getInstance().dio.get(servicePath['getYourLikes'], queryParameters: {"labels": labels});
+    Response response = await dio.get(servicePath['getYourLikes'], queryParameters: {"labels": labels});
     return response.data;
   } catch (e) {
     return print('ERROR:======>${e}');
@@ -211,7 +211,7 @@ Future getYourLikesService(String labels) async {
 /// @date: 2021-03-04 23:08
 Future getRecommendSerivce(String classify) async {
   try {
-    Response response = await HttpUtil.getInstance().dio.get(servicePath['getRecommend'],
+    Response response = await dio.get(servicePath['getRecommend'],
         queryParameters: {"classify": classify});
     return response.data;
   } catch (e) {
@@ -225,7 +225,7 @@ Future getRecommendSerivce(String classify) async {
 /// @date: 2021-04-20 23:57
 Future updateUserData(Map map) async {
   try {
-    Response response = await HttpUtil.getInstance().dio.put(servicePath['updateUser'],data: map);
+    Response response = await dio.put(servicePath['updateUser'],data: map);
     return response.data;
   } catch (e) {
     return print('ERROR:======>${e}');
@@ -238,7 +238,7 @@ Future updateUserData(Map map) async {
 /// @date: 2021-04-20 23:57
 Future updatePasswordService(Map map) async {
   try {
-    Response response = await HttpUtil.getInstance().dio.put(servicePath['updatePassword'],data: map);
+    Response response = await dio.put(servicePath['updatePassword'],data: map);
     return response.data;
   } catch (e) {
     return print('ERROR:======>${e}');
@@ -250,7 +250,7 @@ Future updatePasswordService(Map map) async {
 /// @date: 2021-10-26 23:05
 Future getCommentCountService(int relationId,String type) async {
   try {
-    Response response = await HttpUtil.getInstance().dio.get(servicePath['getCommentCount'],queryParameters: {"relationId": relationId,"type":type});
+    Response response = await dio.get(servicePath['getCommentCount'],queryParameters: {"relationId": relationId,"type":type});
     return response.data;
   } catch (e) {
     return print('ERROR:======>${e}');
@@ -262,7 +262,7 @@ Future getCommentCountService(int relationId,String type) async {
 /// @date: 2021-10-28 22:01
 Future getTopCommentListService(int relationId,String type,int pageSize,int pageNum) async {
   try {
-    Response response = await HttpUtil.getInstance().dio.get(servicePath['getTopCommentList'],queryParameters: {"relationId": relationId,"type":type,"pageSize":pageSize,"pageNum":pageNum});
+    Response response = await dio.get(servicePath['getTopCommentList'],queryParameters: {"relationId": relationId,"type":type,"pageSize":pageSize,"pageNum":pageNum});
     return response.data;
   } catch (e) {
     return print('ERROR:======>${e}');
@@ -275,7 +275,7 @@ Future getTopCommentListService(int relationId,String type,int pageSize,int page
 /// @date: 2021-10-29 22:54
 Future getReplyCommentListService(int topId,int pageSize,int pageNum) async {
   try {
-    Response response = await HttpUtil.getInstance().dio.get(servicePath['getReplyCommentList'],queryParameters: {"topId": topId,"pageSize":pageSize,"pageNum":pageNum});
+    Response response = await dio.get(servicePath['getReplyCommentList'],queryParameters: {"topId": topId,"pageSize":pageSize,"pageNum":pageNum});
     return response.data;
   } catch (e) {
     return print('ERROR:======>${e}');
@@ -287,7 +287,7 @@ Future getReplyCommentListService(int topId,int pageSize,int pageNum) async {
 /// @date: 2021-10-31 10:31
 Future insertCommentService(Map commentMap) async {
   try {
-    Response response = await HttpUtil.getInstance().dio.post(servicePath['insertCommentService'],data:commentMap);
+    Response response = await dio.post(servicePath['insertCommentService'],data:commentMap);
     return response.data;
   } catch (e) {
     return print('ERROR:======>${e}');
@@ -299,7 +299,7 @@ Future insertCommentService(Map commentMap) async {
 /// @date: 2022-12-17 22:44
 Future updateAvaterService(Map avaterMap) async {
   try {
-    Response response = await HttpUtil.getInstance().dio.put(servicePath['updateAvaterService'],data:avaterMap);
+    Response response = await dio.put(servicePath['updateAvaterService'],data:avaterMap);
     return response.data;
   } catch (e) {
     return print('ERROR:======>${e}');

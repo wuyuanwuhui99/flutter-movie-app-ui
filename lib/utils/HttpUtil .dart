@@ -57,3 +57,5 @@ class HttpUtil {
     ));
   }
 }
+
+Dio dio = HttpUtil.getInstance().dio;
