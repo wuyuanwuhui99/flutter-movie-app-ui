@@ -417,7 +417,7 @@ class _MoviePlayerPageState extends State<MoviePlayerPage> {
   //获取播放地址
   Widget playUrlWidget() {
     return FutureBuilder(
-        future: getMovieUrlService(widget.movieItem.movieId),
+        future: getMovieUrlService(widget.movieItem.id),
         builder: (context, snapshot) {
           if (snapshot.data == null) {
             return Container();

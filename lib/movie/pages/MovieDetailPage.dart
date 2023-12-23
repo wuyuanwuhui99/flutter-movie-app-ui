@@ -40,7 +40,7 @@ class _MovieDetailPageState extends State<MovieDetailPage> {
                   children: <Widget>[
                     buildMovieInfoComponent(widget.movieItem,context),
                     buildPlotComponent(widget.movieItem.plot),
-                    buildStarComponent(widget.movieItem.movieId),
+                    buildStarComponent(widget.movieItem.id),
                     widget.movieItem.label != null
                         ? YouLikesComponent(label: widget.movieItem.label)
                         : SizedBox(),
@@ -169,10 +169,10 @@ class _MovieDetailPageState extends State<MovieDetailPage> {
     }
   }
 
-  Widget buildStarComponent(int movieId){
-    if (movieId == null) return Container();
+  Widget buildStarComponent(int id){
+    if (id == null) return Container();
     return FutureBuilder(
-        future: getStarService(movieId),
+        future: getStarService(id),
         builder: (context, snapshot) {
           if (snapshot.data == null) {
             return Center(

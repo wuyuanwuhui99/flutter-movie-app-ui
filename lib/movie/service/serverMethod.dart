@@ -10,6 +10,8 @@ Future getUserDataService() async {
   try {
     String token = await LocalStroageUtils.getToken(); //从缓存中获取
     HttpUtil.getInstance().setToken(token);
+    print("------------------------------------");
+    print(servicePath["getUserData"]);
    Response response = await dio.get(servicePath["getUserData"]);
     HttpUtil.getInstance().setToken(response.data['token']);
     return response.data;
@@ -99,9 +101,9 @@ Future loginService(String userId, String password) async {
 }
 
 //获取演员列表
-Future getStarService(int movieId) async {
+Future getStarService(int id) async {
   try {
-    Response response = await dio.get(servicePath['getStar']+movieId.toString());
+    Response response = await dio.get(servicePath['getStar']+id.toString());
     return response.data;
   } catch (e) {
     return print('ERROR:======>${e}');
@@ -109,10 +111,10 @@ Future getStarService(int movieId) async {
 }
 
 //按classify大类查询所有catory小类
-Future getMovieUrlService(int movieId) async {
+Future getMovieUrlService(int id) async {
   try {
     Response response = await dio.get(servicePath['getMovieUrl'], queryParameters: {
-      "movieId": movieId.toString(),
+      "id": id.toString(),
     });
     return response.data;
   } catch (e) {
