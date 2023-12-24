@@ -7,7 +7,7 @@ class MovieUrlModel{
   String createTime;//创建时间
   String updateTime;//更新时间
   String url;//播放地址
-  int playGroup;//播放分组，1, 2
+  String playGroup;//播放分组，1, 2
   MovieUrlModel({
     this.id,
     this.movieName,

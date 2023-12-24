@@ -24,7 +24,7 @@ class SwiperComponent extends StatelessWidget {
           if (result != null && result['data'] != null) {
             swiperDataList = (result['data'] as List).cast().map((item){
               return MovieDetailModel.fromJson(item);
-            }).toList(); // 顶部轮播组件数
+            }).toList().sublist(0,5); // 顶部轮播组件数
           }
           return Container(
               height: ThemeSize.swiperHeight,

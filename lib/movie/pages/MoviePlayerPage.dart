@@ -44,17 +44,17 @@ class _MoviePlayerPageState extends State<MoviePlayerPage> {
   void initState() {
     super.initState();
     isFavorite(); //查询电影是否已经收藏过
-    savePlayRecordService(widget.movieItem);
     keywordController.addListener(() {
       setState(() {
         disabledSend = keywordController.text == "";
       });
     });
-    getCommentCountService(widget.movieItem.movieId,"电影").then((res) {
+    getCommentCountService(widget.movieItem.id, "movie").then((res) {
       setState(() {
         commentCount = res["data"];
       });
     });
+    savePlayRecordService(widget.movieItem);
   }
 
   void isFavorite() {
@@ -417,7 +417,8 @@ class _MoviePlayerPageState extends State<MoviePlayerPage> {
   //获取播放地址
   Widget playUrlWidget() {
     return FutureBuilder(
-        future: getMovieUrlService(widget.movieItem.id),
+        // 测试数据
+        future: getMovieUrlService(72667 /*widget.movieItem.id*/),
         builder: (context, snapshot) {
           if (snapshot.data == null) {
             return Container();
@@ -429,101 +430,103 @@ class _MoviePlayerPageState extends State<MoviePlayerPage> {
             if (playList.length == 0) {
               return Container();
             }
-            List<List<MovieUrlModel>> playGroupList = [];
+            List<List<MovieUrlModel>> movieUrlGroup = [];
             for (int i = 0; i < playList.length; i++) {
               if (i == 0) {
                 url = playList[0].url;
               }
-              int playGroup = playList[i].playGroup;
-              if (playGroupList.length < playGroup) {
-                playGroupList.add(<MovieUrlModel>[]);
+              bool findPlayGroup = false;
+              for (int j = 0; j < movieUrlGroup.length; j++) {
+                if (movieUrlGroup[j][0].playGroup == playList[i].playGroup) {
+                  movieUrlGroup[j].add(playList[i]);
+                  findPlayGroup = true;
+                  break;
+                }
               }
-              playGroupList[playGroup - 1].add(playList[i]);
+              if (!findPlayGroup) {
+                movieUrlGroup.add([playList[i]]);
+              }
             }
-            Widget tabs = _renderTab(playGroupList.length);
-            Widget series = _getPlaySeries(playGroupList);
             return Container(
                 decoration: ThemeStyle.boxDecoration,
                 padding: ThemeStyle.padding,
                 margin: ThemeStyle.margin,
+                width: MediaQuery.of(context).size.width -
+                    ThemeSize.containerPadding * 2,
                 child: Column(children: [
-                  tabs,
+                  _renderTab(movieUrlGroup),
                   SizedBox(
-                      height: playGroupList.length > 1
+                      height: movieUrlGroup.length > 1
                           ? ThemeSize.containerPadding
                           : 0),
-                  series
+                  _getPlaySeries(movieUrlGroup)
                 ]));
           }
         });
   }
 
-  Widget _renderTab(int length) {
-    List<Widget> tabs = <Widget>[];
-    if (length > 1) {
-      for (int i = 0; i < length; i++) {
-        tabs.add(InkWell(
-            onTap: () {
-              setState(() {
-                currentIndex = i;
-              });
-            },
-            child: Container(
-                decoration: BoxDecoration(
-                    borderRadius: BorderRadius.only(
-                        topLeft:
-                            Radius.circular(i == 0 ? ThemeSize.bigRadius : 0),
-                        bottomLeft:
-                            Radius.circular(i == 0 ? ThemeSize.bigRadius : 0),
-                        topRight: Radius.circular(
-                            i == length - 1 ? ThemeSize.bigRadius : 0),
-                        bottomRight: Radius.circular(
-                            i == length - 1 ? ThemeSize.bigRadius : 0)),
-                    color: currentIndex == i
-                        ? ThemeColors.activeColor
-                        : ThemeColors.colorWhite,
-                    border: Border(
-                        left: BorderSide(
-                            width: ThemeSize.borderWidth,
-                            color: ThemeColors.borderColor),
-                        right: BorderSide(
-                            width: ThemeSize.borderWidth,
-                            color: ThemeColors.borderColor),
-                        top: BorderSide(
-                            width: ThemeSize.borderWidth,
-                            color: ThemeColors.borderColor),
-                        bottom: BorderSide(
-                            width: ThemeSize.borderWidth,
-                            color: ThemeColors.borderColor))),
-                height: ThemeSize.buttonHeight,
-                padding: EdgeInsets.only(
-                    left: ThemeSize.smallMargin, right: ThemeSize.smallMargin),
-                child: Center(
-                    child: Text("播放地址${(i + 1).toString()}", style: TextStyle(color: currentIndex == i ? ThemeColors.colorWhite : Colors.black))))));
-      }
-    }
-    return Row(
-      children: tabs,
-      mainAxisAlignment: MainAxisAlignment.center,
+  Widget _renderTab(List<List<MovieUrlModel>> movieUrlGroup) {
+    print(movieUrlGroup);
+    return Container(
+      width: MediaQuery.of(context).size.width - ThemeSize.containerPadding * 2,
+      height: 40,
+      child: ListView.builder(
+          scrollDirection: Axis.horizontal,
+          itemCount: movieUrlGroup.length,
+          itemBuilder: (BuildContext context, int index) {
+            return InkWell(
+                onTap: () {
+                  setState(() {
+                    currentIndex = index;
+                  });
+                },
+                child: Container(
+                    padding: EdgeInsets.all(ThemeSize.smallMargin),
+                    decoration: BoxDecoration(
+                        border: Border(
+                      left: BorderSide(
+                          width:
+                              currentIndex == index ? ThemeSize.borderWidth : 0,
+                          color: currentIndex == index ? ThemeColors.borderColor:ThemeColors.colorWhite),
+                      right: BorderSide(
+                          width: currentIndex == index ? ThemeSize.borderWidth : 0,
+                          color: currentIndex == index ? ThemeColors.borderColor:ThemeColors.colorWhite),
+                      top: BorderSide(
+                          width: currentIndex == index ? ThemeSize.borderWidth : 0,
+                          color: currentIndex == index ? ThemeColors.borderColor:ThemeColors.colorWhite),
+                      bottom: BorderSide(
+                          width:  currentIndex == index ? 0 : ThemeSize.borderWidth ,
+                          color: currentIndex == index ? ThemeColors.colorWhite:ThemeColors.borderColor)
+                    )),
+                    child: Text(
+                        RegExp("^[0-9]+\$")
+                                .hasMatch(movieUrlGroup[index][0].playGroup)
+                            ? movieUrlGroup[index][0].playGroup
+                            : '线路${movieUrlGroup[index][0].playGroup}',
+                        style: TextStyle(
+                            color: currentIndex == index
+                                ? Colors.orange
+                                : Colors.black))));
+          }),
     );
   }
 
-  Widget _getPlaySeries(List playGroupList) {
+  Widget _getPlaySeries(List<List<MovieUrlModel>> movieUrlGroup) {
     List<Widget> playSeries = [];
-    for (int i = 0; i < playGroupList[currentIndex].length; i++) {
+    for (int i = 0; i < movieUrlGroup[currentIndex].length; i++) {
       playSeries.add(Container(
         padding: ThemeStyle.padding,
         decoration: BoxDecoration(
             border: Border.all(
-                color: url == playGroupList[currentIndex][i].url
+                color: url == movieUrlGroup[currentIndex][i].url
                     ? Colors.orange
                     : ThemeColors.borderColor),
             borderRadius:
                 BorderRadius.all(Radius.circular(ThemeSize.middleRadius))),
         child: Center(
-          child: Text(playGroupList[0][i].label,
+          child: Text(movieUrlGroup[0][i].label,
               style: TextStyle(
-                  color: url == playGroupList[currentIndex][i].url
+                  color: url == movieUrlGroup[currentIndex][i].url
                       ? Colors.orange
                       : Colors.black)),
         ),
@@ -580,8 +583,8 @@ class _MoviePlayerPageState extends State<MoviePlayerPage> {
               onTap: () {
                 setState(() {
                   showComment = true;
-                  getTopCommentListService(
-                          widget.movieItem.movieId,"movie", ThemeSize.pageSize, pageNum)
+                  getTopCommentListService(widget.movieItem.movieId, "movie",
+                          ThemeSize.pageSize, pageNum)
                       .then((value) {
                     (value["data"] as List).forEach((element) {
                       setState(() {

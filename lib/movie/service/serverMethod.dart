@@ -106,6 +106,7 @@ Future getStarService(int id) async {
     Response response = await dio.get(servicePath['getStar']+id.toString());
     return response.data;
   } catch (e) {
+    print(servicePath['getStar']);
     return print('ERROR:======>${e}');
   }
 }
@@ -127,9 +128,10 @@ Future getMovieUrlService(int id) async {
 /// @date: 2021-03-04 23:08
 Future savePlayRecordService(MovieDetailModel movieEntity) async {
   try {
-    Response response = await dio.post(servicePath['savePlayRecord'], data: movieEntity.toMap());
+    Response response = await dio.post(servicePath['savePlayRecord'], queryParameters: movieEntity.toMap());
     return response.data;
   } catch (e) {
+    print(servicePath['savePlayRecord']);
     return print('ERROR:======>${e}');
   }
 }
@@ -255,6 +257,7 @@ Future getCommentCountService(int relationId,String type) async {
     Response response = await dio.get(servicePath['getCommentCount'],queryParameters: {"relationId": relationId,"type":type});
     return response.data;
   } catch (e) {
+    print(servicePath['getCommentCount']);
     return print('ERROR:======>${e}');
   }
 }
