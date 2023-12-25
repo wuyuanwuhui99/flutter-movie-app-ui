@@ -435,15 +435,12 @@ class _MoviePlayerPageState extends State<MoviePlayerPage> {
               if (i == 0) {
                 url = playList[0].url;
               }
-              bool findPlayGroup = false;
-              for (int j = 0; j < movieUrlGroup.length; j++) {
-                if (movieUrlGroup[j][0].playGroup == playList[i].playGroup) {
-                  movieUrlGroup[j].add(playList[i]);
-                  findPlayGroup = true;
-                  break;
-                }
-              }
-              if (!findPlayGroup) {
+              int index = movieUrlGroup.indexWhere((element){
+                return element[0].playGroup == playList[i].playGroup;
+              });
+              if (index != -1) {
+                movieUrlGroup[index].add(playList[i]);
+              }else{
                 movieUrlGroup.add([playList[i]]);
               }
             }
