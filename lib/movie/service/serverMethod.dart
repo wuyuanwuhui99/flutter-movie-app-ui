@@ -112,10 +112,10 @@ Future getStarService(int id) async {
 }
 
 //按classify大类查询所有catory小类
-Future getMovieUrlService(int id) async {
+Future getMovieUrlService(int movieId) async {
   try {
     Response response = await dio.get(servicePath['getMovieUrl'], queryParameters: {
-      "id": id.toString(),
+      "movieId": movieId.toString(),
     });
     return response.data;
   } catch (e) {

@@ -128,10 +128,28 @@ class _MusicRecommentPageState extends State<MusicRecommentPage>
                     MaterialPageRoute(builder: (context) => MusicPlayerPage()));
               }),
           SizedBox(width: ThemeSize.containerPadding),
-          Image.asset(
-              "lib/assets/images/icon-like${musicModel.isLike == 1 ? "-active" : ""}.png",
+          InkWell(child: Image.asset(
+              "lib/assets/images/icon-like${musicModel.isFavorite == 1 ? "-active" : ""}.png",
               width: ThemeSize.smallIcon,
-              height: ThemeSize.smallIcon),
+              height: ThemeSize.smallIcon),onTap: (){
+            if(musicModel.isFavorite == 0){
+              insertMusicFavorite(musicModel).then((res) => {
+                if(res["data"] > 0){
+                  setState(() {
+                    musicModel.isFavorite = 1;
+                  })
+                }
+              });
+            }else{
+              deleteMusicFavorite(musicModel.id).then((res) => {
+                if(res["data"] > 0){
+                  setState(() {
+                    musicModel.isFavorite = 0;
+                  })
+                }
+              });
+            }
+          }),
           SizedBox(width: ThemeSize.containerPadding),
           Image.asset("lib/assets/images/icon-music-menu.png",
               width: ThemeSize.smallIcon, height: ThemeSize.smallIcon),
