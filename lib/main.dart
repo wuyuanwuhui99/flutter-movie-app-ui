@@ -5,6 +5,7 @@ import './movie/provider/UserInfoProvider.dart';
 import './movie/provider/TokenProvider.dart';
 import './music/provider/PlayerMusicProvider.dart';
 import './movie/model/UserInfoModel.dart';
+import './router/index.dart';
 
 void main() {
   runApp(
@@ -20,9 +21,13 @@ void main() {
 }
 
 class MyApp extends StatelessWidget {
+  MyApp() {
+    Routes.initRoutes();
+  }
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+        onGenerateRoute: Routes.router.generator,
         title: 'Flutter bottomNavigationBar',
         debugShowCheckedModeBanner:false,
         theme: ThemeData.light(),

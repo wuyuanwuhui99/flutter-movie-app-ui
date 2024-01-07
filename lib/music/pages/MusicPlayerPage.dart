@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:movie/router/index.dart';
 import 'dart:ui';
 import 'package:provider/provider.dart';
 import 'package:audioplayers/audioplayers.dart';
@@ -11,7 +12,6 @@ import '../../utils/common.dart';
 import '../component/lyric/lyric_controller.dart';
 import '../component/lyric/lyric_util.dart';
 import '../component/lyric/lyric_widget.dart';
-import '../../music/pages/MusicLyricPage.dart';
 
 class MusicPlayerPage extends StatefulWidget {
   MusicPlayerPage({Key key}) : super(key: key);
@@ -176,10 +176,7 @@ class _MusicPlayerPageState extends State<MusicPlayerPage>
                       controller: _lyricController,
                     ),
                     onTap: () {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => MusicLyricPage()));
+                      Routes.router.navigateTo(context, '/MusicLyricPage');
                     },
                   )
                 : Text('暂无歌词',

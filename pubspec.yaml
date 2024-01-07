@@ -37,6 +37,7 @@ dependencies:
   image_picker: ^0.6.1+4
   audioplayers: ^0.16.1
   flutter_lyric: ^1.0.0
+  fluro: ^1.5.1
 
 dev_dependencies:
   flutter_test:
