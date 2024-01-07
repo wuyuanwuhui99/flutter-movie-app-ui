@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:movie/router/index.dart';
 import 'package:movie/theme/ThemeColors.dart';
-import 'MoviePlayerPage.dart';
 import '../service/serverMethod.dart';
 import '../component/ScoreComponent.dart';
 import '../component/YouLikesComponent.dart';
@@ -66,11 +66,7 @@ class _MovieDetailPageState extends State<MovieDetailPage> {
             InkWell(
                 onTap: () {
                   if (movieInfo.movieName != null) {
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) =>
-                                MoviePlayerPage(movieItem: movieInfo)));
+                    Routes.router.navigateTo(context, '/MoviePlayerPage');
                   }
                 },
                 child: Container(

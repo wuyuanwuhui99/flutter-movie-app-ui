@@ -3,10 +3,10 @@ import 'package:flutter_easyrefresh/easy_refresh.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:flutter_easyrefresh/material_footer.dart';
 import 'package:audioplayers/audioplayers.dart';
+import 'package:movie/router/index.dart';
 import '../model/MusicModel.dart';
 import 'package:provider/provider.dart';
 import '../provider/PlayerMusicProvider.dart';
-import '../pages/MusicPlayerPage.dart';
 import '../service/serverMethod.dart';
 import '../../theme/ThemeStyle.dart';
 import '../../theme/ThemeSize.dart';
@@ -124,8 +124,7 @@ class _MusicRecommentPageState extends State<MusicRecommentPage>
               onTap: () {
                 Provider.of<PlayerMusicProvider>(context, listen: false)
                     .setPlayMusic(musicModelList, musicModel, index, true);
-                Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => MusicPlayerPage()));
+                Routes.router.navigateTo(context, '/MusicPlayerPage');
               }),
           SizedBox(width: ThemeSize.containerPadding),
           InkWell(child: Image.asset(

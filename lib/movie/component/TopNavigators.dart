@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:movie/router/index.dart';
 import '../pages/NewMoviePage.dart';
 import '../../theme/ThemeSize.dart';
 import '../../theme/ThemeStyle.dart';
@@ -16,11 +17,7 @@ class TopNavigators extends StatelessWidget {
       return InkWell(
           onTap: () {
             if(value["title"] == "最新"){
-              Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) =>
-                          NewMoviePage()));
+              Routes.router.navigateTo(context, '/NewMoviePage');
             }
           },
           child: Container(

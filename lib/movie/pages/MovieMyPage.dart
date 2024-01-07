@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:movie/router/index.dart';
 import 'package:provider/provider.dart';
 import '../service/serverMethod.dart';
 import '../provider/UserInfoProvider.dart';
@@ -11,7 +12,6 @@ import '../../theme/ThemeSize.dart';
 import '../../theme/ThemeColors.dart';
 import '../model/MovieDetailModel.dart';
 import 'WebViewPage.dart';
-import '../../music/pages/MusicIndexPage.dart';
 
 class MovieMyPage extends StatefulWidget {
   MovieMyPage({Key key}) : super(key: key);
@@ -277,10 +277,7 @@ class PannelComponent extends StatelessWidget {
                 padding: EdgeInsets.only(bottom: ThemeSize.containerPadding),
                 child: InkWell(
                   onTap: (){
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => MusicIndexPage()));
+                    Routes.router.navigateTo(context, '/MusicIndexPage');
                   },
                     child: Row(
                   children: <Widget>[

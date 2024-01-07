@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:movie/router/index.dart';
 import '../../config/common.dart';
 import '../provider/UserInfoProvider.dart';
 import '../pages/MovieUserPage.dart';
@@ -13,8 +14,7 @@ class AvaterComponent extends StatelessWidget {
   Widget build(BuildContext context) {
     return InkWell(
       onTap: () {
-        Navigator.push(
-            context, MaterialPageRoute(builder: (context) => MovieUserPage()));
+        Routes.router.navigateTo(context, '/MovieUserPage');
       },
       child: Container(
           width: size,

@@ -349,10 +349,7 @@ class _MusicHomePageState extends State<MusicHomePage>
                                     listen: false)
                                 .setPlayMusic(
                                     musicModelList, musicItem, index, true);
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => MusicPlayerPage()));
+                            Routes.router.navigateTo(context, '/MusicPlayerPage');
                           }),
                       SizedBox(width: ThemeSize.containerPadding),
                       Image.asset(

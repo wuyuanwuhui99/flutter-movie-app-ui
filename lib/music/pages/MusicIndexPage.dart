@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:movie/router/index.dart';
 import 'package:provider/provider.dart';
 import 'package:audioplayers/audioplayers.dart';
 import '../model/ClassMusicParamsModel.dart';
@@ -12,7 +13,6 @@ import '../provider/PlayerMusicProvider.dart';
 import '../model/MusicModel.dart';
 import '../../utils/LocalStroageUtils.dart';
 import '../../config/common.dart';
-import './MusicPlayerPage.dart';
 import '../service/serverMethod.dart';
 
 class MusicIndexPage extends StatefulWidget {
@@ -217,10 +217,7 @@ class _MusicIndexPageState extends State<MusicIndexPage>
                                   height: ThemeSize.minPlayIcon,
                                 ))),
                             onTap: () {
-                              Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) => MusicPlayerPage()));
+                              Routes.router.navigateTo(context, '/MusicPlayerPage');
                             })
                         : Icon(Icons.music_note, size: ThemeSize.middleIcon),
                     onPressed: () {},
