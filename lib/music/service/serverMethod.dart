@@ -118,7 +118,7 @@ Future insertMusicRecordService(MusicModel musicModel) async {
 ///@author: wuwenqiang
 ///@description: 插入收藏
 /// @date: 2024-01-05 22:26
-Future insertMusicFavorite(MusicModel musicModel) async {
+Future insertMusicFavoriteService(MusicModel musicModel) async {
   try {
     Response response = await dio.post(servicePath['insertMusicFavorite'],data:MusicModel.toMap(musicModel));
     return response.data;
@@ -130,7 +130,7 @@ Future insertMusicFavorite(MusicModel musicModel) async {
 ///@author: wuwenqiang
 ///@description: 删除收藏
 /// @date: 2024-01-05 23:44
-Future deleteMusicFavorite(int id) async {
+Future deleteMusicFavoriteService(int id) async {
   try {
     Response response = await dio.delete(servicePath['deleteMusicFavorite'] + id.toString());
     return response.data;
@@ -142,9 +142,23 @@ Future deleteMusicFavorite(int id) async {
 ///@author: wuwenqiang
 ///@description: 删除收藏
 /// @date: 2024-01-05 23:44
-Future queryMusicFavorite(int pageNum,int pageSize) async {
+Future queryMusicFavoriteService(int pageNum,int pageSize) async {
   try {
     Response response = await dio.get("${servicePath['queryMusicFavorite']}?pageNum=${pageNum}&pageSize=${pageSize}");
+    return response.data;
+  } catch (e) {
+    return print('ERROR:======>${e}');
+  }
+}
+
+
+///@author: wuwenqiang
+///@description: 搜索
+/// @date: 2024-01-27 16:46
+Future searchMusicService(String keyword,int pageNum,int pageSize) async {
+  try {
+    print("${servicePath['searchMusic']}?keyword=${keyword}&pageNum=${pageNum.toString()}&pageSize=${pageSize.toString()}");
+    Response response = await dio.get("${servicePath['searchMusic']}?keyword=${keyword}&pageNum=${pageNum.toString()}&pageSize=${pageSize.toString()}");
     return response.data;
   } catch (e) {
     return print('ERROR:======>${e}');

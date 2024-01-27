@@ -14,7 +14,6 @@ import '../../theme/ThemeSize.dart';
 import '../../theme/ThemeColors.dart';
 import '../../config/common.dart';
 import '../../utils/LocalStroageUtils.dart';
-import '../pages/MusicPlayerPage.dart';
 import '../../router/index.dart';
 
 class MusicHomePage extends StatefulWidget {
@@ -149,7 +148,7 @@ class _MusicHomePageState extends State<MusicHomePage>
                           }
                           return InkWell(
                               onTap: () {
-                                Routes.router.navigateTo(context, '/MusicSearchPage');
+                                Routes.router.navigateTo(context, '/MusicSearchPage?keyword=${Uri.encodeComponent(keyword)}');
                               },
                               child: Container(
                                   height: ThemeSize.buttonHeight,

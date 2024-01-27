@@ -36,7 +36,7 @@ class _MovieSearchPageState extends State<MovieSearchPage> {
         showClearIcon = keywordController.text != "";
       });
     });
-    _getHistory();
+    getHistory();
   }
 
   @override
@@ -48,7 +48,7 @@ class _MovieSearchPageState extends State<MovieSearchPage> {
           child: Container(
             padding: ThemeStyle.paddingBox,
             child: Column(children: <Widget>[
-              SearchInputComponent(),
+              buildSearchInputWidget(),
               searching
                   ? Expanded(
                       flex: 1,
@@ -66,7 +66,7 @@ class _MovieSearchPageState extends State<MovieSearchPage> {
                       flex: 1,
                       child: SingleChildScrollView(
                           child: Column(children: <Widget>[
-                        HistorySearchComponent(),
+                        buildHistorySearchWidget(),
                         RecommendComponent(
                             classify: "电影", direction: "vertical", title: "推荐")
                       ]))),
@@ -167,7 +167,7 @@ class _MovieSearchPageState extends State<MovieSearchPage> {
     );
   }
 
-  Widget SearchInputComponent() {
+  Widget buildSearchInputWidget() {
     return Container(
       decoration: ThemeStyle.boxDecoration,
       padding: ThemeStyle.padding,
@@ -238,7 +238,7 @@ class _MovieSearchPageState extends State<MovieSearchPage> {
                   } else {
                     myHistoryLabelsName.add(keywordController.text);
                   }
-                  prefs.setString("historyLabels", myHistoryLabelsName.join(","));
+                  prefs.setString("historyMovieLabels", myHistoryLabelsName.join(","));
                   setState(() {
                     showClearIcon = true;
                     myHistoryLabels.insert(0, Label(keywordController.text));
@@ -302,9 +302,9 @@ class _MovieSearchPageState extends State<MovieSearchPage> {
     );
   }
 
-  _getHistory() async {
+  getHistory() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    String historyLabels = prefs.getString('historyLabels');
+    String historyLabels = prefs.getString('historyMovieLabels');
     if (historyLabels != null && historyLabels != '') {
       setState(() {
         myHistoryLabelsName = historyLabels.split(",");
@@ -317,7 +317,7 @@ class _MovieSearchPageState extends State<MovieSearchPage> {
     }
   }
 
-  Widget HistorySearchComponent() {
+  Widget buildHistorySearchWidget() {
     return Container(
       decoration: ThemeStyle.boxDecoration,
       padding: ThemeStyle.padding,

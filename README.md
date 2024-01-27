@@ -46,11 +46,13 @@ dart版本：2.12.1
 
 ## 使用的插件
 
-轮播：flutter_swiper: ^1.0.6
+轮播：flutter_swiper: ^1.0.6   
 
-网络请求：dio: ^3.0.10
+网络请求：dio: ^3.0.10   
 
-屏幕相关：flutter_screenutil: ^0.5.1
+路由：fluro: ^1.5.1    
+
+屏幕相关：flutter_screenutil: ^0.5.1   
 
 状态管理器: provider: ^3.1.0+1	
 
@@ -62,25 +64,57 @@ dart版本：2.12.1
 
 webview：webview_flutter: ^0.3.10+4
 
-后端接口项目和sql语句：https://github.com/wuyuanwuhui99/springboot-app-service
+flutter版本参见:    
+通用地址：https://github.com/wuyuanwuhui99/flutter-movie-app-ui   
+国内镜像地址：https://hub.nuaa.cf/wuyuanwuhui99/flutter-movie-app-ui
 
-react native版本参见: https://github.com/wuyuanwuhui99/react-native-app-ui
+react native版本参见:   
+通用地址：https://github.com/wuyuanwuhui99/react-native-app-ui   
+国内镜像地址：https://hub.nuaa.cf/wuyuanwuhui99/react-native-app-ui   
 
-harmony鸿蒙版本参见: https://github.com/wuyuanwuhui99/Harmony_movie_app_ui
+在线音乐和电影后端接口项目和sql语句：   
+通用地址：https://github.com/wuyuanwuhui99/springboot-app-service   
+国内镜像地址：https://hub.nuaa.cf/wuyuanwuhui99/springboot-app-service
 
-java安卓原生版本参见：https://github.com/wuyuanwuhui99/android-java-movie-app-ui
+harmony鸿蒙java版本参见:
+通用地址：https://github.com/wuyuanwuhui99/Harmony_movie_app_ui   
+国内镜像地址：https://hub.nuaa.cf/wuyuanwuhui99/Harmony_movie_app_ui
 
-微信小程序版本参见：https://github.com/wuyuanwuhui99/android-java-movie-app-ui
+harmony鸿蒙arkts版本参见:
+通用地址：https://github.com/wuyuanwuhui99/Harmony-arkts-movie-music-app-ui   
+国内镜像地址：https://hub.nuaa.cf/wuyuanwuhui99/Harmony-arkts-movie-music-app-ui
 
-uniapp版本参见：https://github.com/wuyuanwuhui99/uniapp-vite-vue3-ts-movie-app-ui
+java安卓原生版本参见：   
+通用地址：https://github.com/wuyuanwuhui99/android-java-movie-app-ui   
+国内镜像地址：https://hub.nuaa.cf/wuyuanwuhui99/android-java-movie-app-ui
 
-vue在线音乐项目：https://github.com/wuyuanwuhui99/vue-music-app-ui
+kotlin安卓原生版本参见：   
+通用地址：https://github.com/wuyuanwuhui99/android-kotlin-jetpack-movie-app   
+国内镜像地址：https://hub.nuaa.cf/wuyuanwuhui99/android-kotlin-jetpack-movie-app
 
-在线音乐后端项目：https://github.com/wuyuanwuhui99/koa2-music-app-service
+微信小程序版本参见：
+通用地址: https://github.com/wuyuanwuhui99/weixin-movie-app-ui   
+国内镜像地址：https://hub.nuaa.cf/wuyuanwuhui99/weixin-movie-app-ui
 
-vue3+ts明日头条项目：https://github.com/wuyuanwuhui99/vue3-ts-toutiao-app-ui
+uniapp版本参见：
+通用地址: https://github.com/wuyuanwuhui99/uniapp-vite-vue3-ts-movie-app-ui   
+国内镜像地址：https://hub.nuaa.cf/wuyuanwuhui99/uniapp-vite-vue3-ts-movie-app-ui
 
-音乐播放器正在开发中，音乐数据来自于python爬虫程序，爬取酷狗音乐数据，敬请关注
+vue2在线音乐项目：
+通用地址: https://github.com/wuyuanwuhui99/vue-music-app-ui   
+国内镜像地址: https://hub.nuaa.cf/wuyuanwuhui99/vue-music-app-ui
+
+在线音乐后端项目：
+通用地址: https://github.com/wuyuanwuhui99/koa2-music-app-service
+国内镜像地址: https://hub.nuaa.cf/wuyuanwuhui99/koa2-music-app-service
+
+vue3+ts明日头条项目：
+通用地址: https://github.com/wuyuanwuhui99/vue3-ts-toutiao-app-ui   
+国内镜像地址: https://hub.nuaa.cf/wuyuanwuhui99/vue3-ts-toutiao-app-ui
+
+使用token做登录验证，/service/movie/接口不需要验证，/service/movie-getway/接口需要token验证
+
+乐播放器正在开发中，音乐数据来自于python爬虫程序，爬取酷狗音乐数据，敬请关注
 
 接口和数据请在本地电脑中，暂时没有购买和部署服务器，仅限本地调试，如有需要调试请联系本人启动外网映射
 

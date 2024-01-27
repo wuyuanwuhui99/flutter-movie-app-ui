@@ -11,4 +11,5 @@ const servicePath = {
   'insertMusicFavorite': '/service/myMusic-getway/insertMusicFavorite',// 插入收藏
   'deleteMusicFavorite': '/service/myMusic-getway/deleteMusicFavorite/',// 删除收藏
   'queryMusicFavorite': '/service/myMusic-getway/queryMusicFavorite',// 查询收藏
+  'searchMusic': '/service/myMusic/searchMusic',// 音乐搜索
 };

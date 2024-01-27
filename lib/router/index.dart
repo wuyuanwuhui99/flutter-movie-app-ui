@@ -18,8 +18,8 @@ class Routes {
           debugPrint('未找到目标页');
           return NotFoundPage();
         });
-    router.define('/MusicSearchPage', handler: Handler(handlerFunc: (_, params) {
-      return MusicSearchPage();
+    router.define('/MusicSearchPage', handler: Handler(handlerFunc: (_, Map<String, List<String>> params) {
+      return MusicSearchPage(keyword:params['keyword'].first);
     }));
     router.define('/MusicPlayerPage', handler: Handler(handlerFunc: (_, params) {
       return MusicPlayerPage();
