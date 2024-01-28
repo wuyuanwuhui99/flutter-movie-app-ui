@@ -9,6 +9,12 @@ import '../model/MusicModel.dart';
 import "package:shared_preferences/shared_preferences.dart";
 import '../../movie/component/TitleComponent.dart';
 import '../service/serverMethod.dart';
+import '../../config/common.dart';
+import 'package:provider/provider.dart';
+import '../provider/PlayerMusicProvider.dart';
+import 'package:movie/router/index.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:audioplayers/audioplayers.dart';
 
 class MusicSearchPage extends StatefulWidget {
   final String keyword;
@@ -25,15 +31,31 @@ class _SearchMusicPageState extends State<MusicSearchPage> {
   bool showClearIcon = false;
   int pageNum = 1;
   int pageSize = 20;
+  int total = 0;
   List<MusicModel> searchResult = [];
   List<Widget> myHistoryLabels = [];
   List<String> myHistoryLabelsName = [];
   TextEditingController keywordController = TextEditingController();
+  MusicModel currentPlayingMusicModel;
+  bool playing = false;
+  EasyRefreshController easyRefreshController = EasyRefreshController();
 
   @override
   void initState() {
     super.initState();
     getHistory();
+    usePlayState();
+  }
+
+  /// 获取播放状态
+  usePlayState() {
+    AudioPlayer player =
+        Provider.of<PlayerMusicProvider>(context, listen: false).player;
+    player.onPlayerStateChanged.listen((event) {
+      setState(() {
+        playing = event.index == 1;
+      });
+    });
   }
 
   getHistory() async {
@@ -43,7 +65,7 @@ class _SearchMusicPageState extends State<MusicSearchPage> {
       setState(() {
         myHistoryLabelsName = historyLabels.split(",");
         int length =
-        myHistoryLabelsName.length <= 20 ? myHistoryLabelsName.length : 20;
+            myHistoryLabelsName.length <= 20 ? myHistoryLabelsName.length : 20;
         for (int i = 0; i < length; i++) {
           myHistoryLabels.add(Label(myHistoryLabelsName[i]));
         }
@@ -54,64 +76,70 @@ class _SearchMusicPageState extends State<MusicSearchPage> {
   ///@author: wuwenqiang
   ///@description: 搜索
   /// @date: 2024-01-27 16:46
-  goSearch(){
-    searchMusicService(Uri.encodeComponent(keywordController.text),pageNum,pageSize).then((res){
+  goSearch() {
+    searchMusicService(
+            Uri.encodeComponent(keywordController.text), pageNum, pageSize)
+        .then((res) {
       setState(() {
         loading = false;
-        searchResult = (res["data"] as List).cast().map((item) {
-          return MusicModel.fromJson(item);
-        }).toList(); // 顶部轮播组件数
-        print('--------');
-        print(searchResult.length);
+        total = res['total'];
+        (res["data"] as List).cast().forEach((item) {
+          searchResult.add(MusicModel.fromJson(item));
+        }); // 顶部轮播组件数
       });
     }).catchError(() {
       setState(() {
-        searching = true;
+        loading = false;
       });
-    });;
+    });
   }
 
   @override
   Widget build(BuildContext context) {
+    currentPlayingMusicModel =
+        Provider.of<PlayerMusicProvider>(context).musicModel;
+    playing = Provider.of<PlayerMusicProvider>(context).playing;
     return Scaffold(
-        backgroundColor: ThemeColors.colorBg,
-
-        body: SafeArea(
-          top: true,
-          child: Container(
-              padding: ThemeStyle.paddingBox,
+      backgroundColor: ThemeColors.colorBg,
+      body: SafeArea(
+        top: true,
+        child: Container(
+            padding: ThemeStyle.paddingBox,
             child: EasyRefresh(
-              footer: MaterialFooter(),
+              controller: easyRefreshController,
+              footer: total > searchResult.length ? MaterialFooter() : null,
               onLoad: () async {
-                // if(sea)
-                // pageNum++;
-                // if (pageNum >= allClassifies.length) {
-                //   Fluttertoast.showToast(
-                //       msg: "已经到底了",
-                //       toastLength: Toast.LENGTH_SHORT,
-                //       gravity: ToastGravity.CENTER,
-                //       timeInSecForIos: 1,
-                //       backgroundColor: Colors.blue,
-                //       textColor: Colors.white,
-                //       fontSize: ThemeSize.middleFontSize);
-                // } else {
-                //   _getCategoryItem();
-                // }
+                if (total > searchResult.length) {
+                  pageNum++;
+                  goSearch();
+                } else {
+                  // easyRefreshController
+                  Fluttertoast.showToast(
+                      msg: "已经到底了",
+                      toastLength: Toast.LENGTH_SHORT,
+                      gravity: ToastGravity.CENTER,
+                      timeInSecForIos: 1,
+                      backgroundColor: Colors.blue,
+                      textColor: Colors.white,
+                      fontSize: ThemeSize.middleFontSize);
+                }
               },
-              child: Column(children: [
-                buildSearchInputWidget(),
-                this.searching ? (
-                  this.loading ? SizedBox() : buildMusicListWidget()
-                ) : Column(children: [
-                  buildHistorySearchWidget()
-                ],)
-              ],),
+              child: Column(
+                children: [
+                  buildSearchInputWidget(),
+                  this.searching
+                      ? (this.loading ? SizedBox() : buildMusicListWidget())
+                      : Column(
+                          children: [buildHistorySearchWidget()],
+                        )
+                ],
+              ),
             )),
-          ),
-        );
+      ),
+    );
   }
 
-  Widget buildSearchInputWidget(){
+  Widget buildSearchInputWidget() {
     return Container(
       decoration: ThemeStyle.boxDecoration,
       padding: ThemeStyle.padding,
@@ -124,41 +152,41 @@ class _SearchMusicPageState extends State<MusicSearchPage> {
                   //修饰黑色背景与圆角
                   decoration: new BoxDecoration(
                     color: ThemeColors.colorBg,
-                    borderRadius:
-                    new BorderRadius.all(new Radius.circular(ThemeSize.superRadius)),
+                    borderRadius: new BorderRadius.all(
+                        new Radius.circular(ThemeSize.superRadius)),
                   ),
                   alignment: Alignment.center,
-                  padding: EdgeInsets.only(left: ThemeSize.smallMargin*2),
+                  padding: EdgeInsets.only(left: ThemeSize.smallMargin * 2),
                   child: Row(
                     children: <Widget>[
                       Expanded(
                           flex: 1,
-                          child:
-                          TextField(
+                          child: TextField(
                               controller: keywordController,
                               cursorColor: Colors.grey, //设置光标
                               decoration: InputDecoration(
                                 hintText: widget.keyword,
-                                hintStyle:
-                                TextStyle(fontSize: ThemeSize.smallFontSize, color: Colors.grey),
+                                hintStyle: TextStyle(
+                                    fontSize: ThemeSize.smallFontSize,
+                                    color: Colors.grey),
                                 border: InputBorder.none,
-                                contentPadding:
-                                EdgeInsets.only(bottom: ThemeSize.smallMargin),
+                                contentPadding: EdgeInsets.only(
+                                    bottom: ThemeSize.smallMargin),
                               ))),
                       showClearIcon
                           ? InkWell(
-                          onTap: () {
-                            setState(() {
-                              keywordController.text = ""; //清除输入框的值
-                              searching = false;
-                              showClearIcon = false;
-                            });
-                          },
-                          child: Image.asset(
-                            "lib/assets/images/icon-clear.png",
-                            height: ThemeSize.smallIcon,
-                            width: ThemeSize.smallIcon,
-                          ))
+                              onTap: () {
+                                setState(() {
+                                  keywordController.text = ""; //清除输入框的值
+                                  searching = false;
+                                  showClearIcon = false;
+                                });
+                              },
+                              child: Image.asset(
+                                "lib/assets/images/icon-clear.png",
+                                height: ThemeSize.smallIcon,
+                                width: ThemeSize.smallIcon,
+                              ))
                           : SizedBox(),
                       SizedBox(width: ThemeSize.smallMargin)
                     ],
@@ -170,26 +198,27 @@ class _SearchMusicPageState extends State<MusicSearchPage> {
               child: RaisedButton(
                 color: Theme.of(context).accentColor,
                 onPressed: () async {
-                  if(this.loading)return;
-                  this.setState(() {
-                    this.searching = this.loading = true;
-                  });
+                  if (this.loading) return;
                   if (keywordController.text == "")
                     keywordController.text = widget.keyword;
                   SharedPreferences prefs =
-                  await SharedPreferences.getInstance();
+                      await SharedPreferences.getInstance();
                   int index =
-                  myHistoryLabelsName.indexOf(keywordController.text);
+                      myHistoryLabelsName.indexOf(keywordController.text);
                   if (index != -1) {
                     myHistoryLabelsName.removeAt(index);
                     myHistoryLabelsName.insert(0, keywordController.text);
                   } else {
                     myHistoryLabelsName.add(keywordController.text);
                   }
-                  prefs.setString("historyMusicLabels", myHistoryLabelsName.join(","));
+                  prefs.setString(
+                      "historyMusicLabels", myHistoryLabelsName.join(","));
                   setState(() {
+                    pageNum = 1;
                     showClearIcon = true;
                     myHistoryLabels.insert(0, Label(keywordController.text));
+                    this.searching = this.loading = true;
+                    searchResult = [];
                   });
                   goSearch();
                 },
@@ -202,7 +231,8 @@ class _SearchMusicPageState extends State<MusicSearchPage> {
                 ///圆角
                 shape: RoundedRectangleBorder(
                     side: BorderSide.none,
-                    borderRadius: BorderRadius.all(Radius.circular(ThemeSize.bigRadius))),
+                    borderRadius:
+                        BorderRadius.all(Radius.circular(ThemeSize.bigRadius))),
               ))
         ],
       ),
@@ -217,10 +247,11 @@ class _SearchMusicPageState extends State<MusicSearchPage> {
       onPressed: () {
         setState(() {
           keywordController.text = text;
-          searching = true;
+          loading = searching = true;
           showClearIcon = true;
+          searchResult = [];
         });
-        // goSearch();
+        goSearch();
       },
       child: Text(
         text,
@@ -246,27 +277,104 @@ class _SearchMusicPageState extends State<MusicSearchPage> {
             TitleComponent(title: "历史搜索"),
             myHistoryLabels.length > 0
                 ? Wrap(
-              spacing: ThemeSize.smallMargin,
-              children: myHistoryLabels,
-            )
+                    spacing: ThemeSize.smallMargin,
+                    children: myHistoryLabels,
+                  )
                 : Container(
-              height: 80,
-              child: Text("暂无搜索记录"),
-              alignment: Alignment.center,
-            )
+                    height: 80,
+                    child: Text("暂无搜索记录"),
+                    alignment: Alignment.center,
+                  )
           ]),
     );
   }
-  
-  Widget buildMusicListWidget(){
+
+  Widget buildMusicListWidget() {
+    int index = -1;
     return Container(
-        child: searchResult.length > 0 ?
-            Column(children:
-              searchResult.map((musicItem){
-                return Text(musicItem.songName);
-              }).toList()
-            )
-        : Text("暂无数据")
-      );
+        decoration: ThemeStyle.boxDecoration,
+        padding: ThemeStyle.padding,
+        margin: ThemeStyle.margin,
+        child: searchResult.length > 0
+            ? Column(
+                children: searchResult.map((musicItem) {
+                index++;
+                return Padding(
+                    padding: index == searchResult.length - 1
+                        ? EdgeInsets.only(bottom: 0)
+                        : ThemeStyle.margin,
+                    child: Row(children: [
+                      ClipOval(
+                          child: Image.network(
+                        //从全局的provider中获取用户信息
+                        HOST + musicItem.cover,
+                        height: ThemeSize.middleAvater,
+                        width: ThemeSize.middleAvater,
+                        fit: BoxFit.cover,
+                      )),
+                      SizedBox(width: ThemeSize.containerPadding),
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(musicItem.songName,
+                                softWrap: false,
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis),
+                            SizedBox(height: ThemeSize.smallMargin),
+                            Text(musicItem.authorName,
+                                style:
+                                    TextStyle(color: ThemeColors.disableColor)),
+                          ],
+                        ),
+                        flex: 1,
+                      ),
+                      InkWell(
+                          child: Image.asset(
+                              playing &&
+                                      musicItem.id ==
+                                          currentPlayingMusicModel.id
+                                  ? "lib/assets/images/icon-music-playing-grey.png"
+                                  : "lib/assets/images/icon-music-play.png",
+                              width: ThemeSize.smallIcon,
+                              height: ThemeSize.smallIcon),
+                          onTap: () {
+                            Provider.of<PlayerMusicProvider>(context,
+                                    listen: false)
+                                .setPlayMusic(
+                                    searchResult, musicItem, index, true);
+                            Routes.router
+                                .navigateTo(context, '/MusicPlayerPage');
+                          }),
+                      SizedBox(width: ThemeSize.containerPadding),
+                      // InkWell(child: Image.asset(
+                      //     "lib/assets/images/icon-like${musicItem.isFavorite == 1 ? "-active" : ""}.png",
+                      //     width: ThemeSize.smallIcon,
+                      //     height: ThemeSize.smallIcon),onTap: (){
+                      //   if(musicItem.isFavorite == 0){
+                      //     insertMusicFavoriteService(musicItem).then((res) => {
+                      //       if(res["data"] > 0){
+                      //         setState(() {
+                      //           musicItem.isFavorite = 1;
+                      //         })
+                      //       }
+                      //     });
+                      //   }else{
+                      //     deleteMusicFavoriteService(musicItem.id).then((res) => {
+                      //       if(res["data"] > 0){
+                      //         setState(() {
+                      //           musicItem.isFavorite = 0;
+                      //         })
+                      //       }
+                      //     });
+                      //   }
+                      // }),
+                      SizedBox(width: ThemeSize.containerPadding),
+                      Image.asset("lib/assets/images/icon-music-menu.png",
+                          width: ThemeSize.smallIcon,
+                          height: ThemeSize.smallIcon),
+                    ]));
+              }).toList())
+            : Text("暂无数据"));
   }
 }

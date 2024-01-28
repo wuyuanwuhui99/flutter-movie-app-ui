@@ -105,7 +105,7 @@ vue2在线音乐项目：
 国内镜像地址: https://hub.nuaa.cf/wuyuanwuhui99/vue-music-app-ui
 
 在线音乐后端项目：  
-通用地址: https://github.com/wuyuanwuhui99/koa2-music-app-service
+通用地址: https://github.com/wuyuanwuhui99/koa2-music-app-service   
 国内镜像地址: https://hub.nuaa.cf/wuyuanwuhui99/koa2-music-app-service
 
 vue3+ts明日头条项目：  
