@@ -299,19 +299,25 @@ class _SearchMusicPageState extends State<MusicSearchPage> {
             ? Column(
                 children: searchResult.map((musicItem) {
                 index++;
-                return Padding(
-                    padding: index == searchResult.length - 1
-                        ? EdgeInsets.only(bottom: 0)
-                        : ThemeStyle.margin,
+                return Container(
+                    padding: EdgeInsets.only(
+                      top: index == 0 ? 0 : ThemeSize.smallMargin,
+                        bottom:  index == searchResult.length ? 0 :ThemeSize.smallMargin),
+                    decoration: index == searchResult.length ? null : BoxDecoration(border: Border(
+                      bottom: BorderSide(
+                        color: ThemeColors.colorBg, // 边框颜色
+                        width: 1, // 边框宽度
+                      ),
+                    )),
                     child: Row(children: [
                       ClipOval(
                           child: Image.network(
-                        //从全局的provider中获取用户信息
-                        HOST + musicItem.cover,
-                        height: ThemeSize.middleAvater,
-                        width: ThemeSize.middleAvater,
-                        fit: BoxFit.cover,
-                      )),
+                            //从全局的provider中获取用户信息
+                            HOST + musicItem.cover,
+                            height: ThemeSize.middleAvater,
+                            width: ThemeSize.middleAvater,
+                            fit: BoxFit.cover,
+                          )),
                       SizedBox(width: ThemeSize.containerPadding),
                       Expanded(
                         child: Column(
@@ -324,7 +330,7 @@ class _SearchMusicPageState extends State<MusicSearchPage> {
                             SizedBox(height: ThemeSize.smallMargin),
                             Text(musicItem.authorName,
                                 style:
-                                    TextStyle(color: ThemeColors.disableColor)),
+                                TextStyle(color: ThemeColors.disableColor)),
                           ],
                         ),
                         flex: 1,
@@ -332,43 +338,43 @@ class _SearchMusicPageState extends State<MusicSearchPage> {
                       InkWell(
                           child: Image.asset(
                               playing &&
-                                      musicItem.id ==
-                                          currentPlayingMusicModel.id
+                                  musicItem.id ==
+                                      currentPlayingMusicModel.id
                                   ? "lib/assets/images/icon-music-playing-grey.png"
                                   : "lib/assets/images/icon-music-play.png",
                               width: ThemeSize.smallIcon,
                               height: ThemeSize.smallIcon),
                           onTap: () {
                             Provider.of<PlayerMusicProvider>(context,
-                                    listen: false)
+                                listen: false)
                                 .setPlayMusic(
-                                    searchResult, musicItem, index, true);
+                                searchResult, musicItem, index, true);
                             Routes.router
                                 .navigateTo(context, '/MusicPlayerPage');
                           }),
                       SizedBox(width: ThemeSize.containerPadding),
-                      // InkWell(child: Image.asset(
-                      //     "lib/assets/images/icon-like${musicItem.isFavorite == 1 ? "-active" : ""}.png",
-                      //     width: ThemeSize.smallIcon,
-                      //     height: ThemeSize.smallIcon),onTap: (){
-                      //   if(musicItem.isFavorite == 0){
-                      //     insertMusicFavoriteService(musicItem).then((res) => {
-                      //       if(res["data"] > 0){
-                      //         setState(() {
-                      //           musicItem.isFavorite = 1;
-                      //         })
-                      //       }
-                      //     });
-                      //   }else{
-                      //     deleteMusicFavoriteService(musicItem.id).then((res) => {
-                      //       if(res["data"] > 0){
-                      //         setState(() {
-                      //           musicItem.isFavorite = 0;
-                      //         })
-                      //       }
-                      //     });
-                      //   }
-                      // }),
+                      InkWell(child: Image.asset(
+                          "lib/assets/images/icon-like${musicItem.isFavorite == 1 ? "-active" : ""}.png",
+                          width: ThemeSize.smallIcon,
+                          height: ThemeSize.smallIcon),onTap: (){
+                        if(musicItem.isFavorite == 0){
+                          insertMusicFavoriteService(musicItem).then((res) => {
+                            if(res["data"] > 0){
+                              setState(() {
+                                musicItem.isFavorite = 1;
+                              })
+                            }
+                          });
+                        }else{
+                          deleteMusicFavoriteService(musicItem.id).then((res) => {
+                            if(res["data"] > 0){
+                              setState(() {
+                                musicItem.isFavorite = 0;
+                              })
+                            }
+                          });
+                        }
+                      }),
                       SizedBox(width: ThemeSize.containerPadding),
                       Image.asset("lib/assets/images/icon-music-menu.png",
                           width: ThemeSize.smallIcon,
