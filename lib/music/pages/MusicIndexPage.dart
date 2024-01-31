@@ -76,7 +76,6 @@ class _MusicIndexPageState extends State<MusicIndexPage>
     AudioPlayer player =
         Provider.of<PlayerMusicProvider>(context, listen: false).player;
     player.onPlayerStateChanged.listen((event) {
-      print(event.index);
       if (event.index == 2) {
         // 暂停播放
         _repeatController.stop(canceled: false);

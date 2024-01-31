@@ -19,9 +19,38 @@ class MusicUserPage extends StatefulWidget {
 }
 
 class _MusicUserPageState extends State<MusicUserPage>
-    with AutomaticKeepAliveClientMixin {
+    with AutomaticKeepAliveClientMixin, TickerProviderStateMixin {
   @override
   bool get wantKeepAlive => true;
+  List playRecordList = []; // 播放记录列表
+  // 创建一个从0到360弧度的补间动画 v * 2 * π
+  AnimationController _repeatController; // 会重复播放的控制器
+  Animation<double> _curveAnimation;
+
+  @override
+  void initState() {
+    super.initState();
+    _repeatController = AnimationController(
+      duration: const Duration(seconds: 1),
+      vsync: this,
+    );
+
+    // 创建一个从0到360弧度的补间动画 v * 2 * π
+    _curveAnimation =
+        Tween<double>(begin: 0, end: 1).animate(_repeatController);
+
+    getMusicRecordService(1, 10).then((value) {
+      this.setState(() {
+        playRecordList = value["data"] as List;
+      });
+    });
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    _repeatController.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -31,7 +60,7 @@ class _MusicUserPageState extends State<MusicUserPage>
       buildMenuWidget(),
       buildMyPlaylMenuWidget(),
       buildMySingerList(),
-          buildRecordList()
+      buildRecordList()
     ]));
   }
 
@@ -256,7 +285,7 @@ class _MusicUserPageState extends State<MusicUserPage>
               ],
             ),
             FutureBuilder(
-                future: getMySingerService(1,3),
+                future: getMySingerService(1, 3),
                 builder: (context, snapshot) {
                   if (snapshot.data == null) {
                     return Container();
@@ -347,7 +376,7 @@ class _MusicUserPageState extends State<MusicUserPage>
         decoration: ThemeStyle.boxDecoration,
         margin: ThemeStyle.margin,
         width:
-        MediaQuery.of(context).size.width - ThemeSize.containerPadding * 2,
+            MediaQuery.of(context).size.width - ThemeSize.containerPadding * 2,
         padding: ThemeStyle.padding,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -358,75 +387,101 @@ class _MusicUserPageState extends State<MusicUserPage>
                 Image.asset("lib/assets/images/icon-down.png",
                     width: ThemeSize.smallIcon, height: ThemeSize.smallIcon),
                 SizedBox(width: ThemeSize.smallMargin),
-                Text("最近播放的歌曲")
+                Expanded(child: Text("最近播放的歌曲"), flex: 1),
+                RotationTransition(
+                    turns: _curveAnimation,
+                    child: InkWell(
+                      child: Image.asset(
+                          "lib/assets/images/icon-music-refresh.png",
+                          width: ThemeSize.smallIcon,
+                          height: ThemeSize.smallIcon),
+                      onTap: () {
+                        _repeatController.forward();
+                        _repeatController.repeat();
+                        getMusicRecordService(1, 10).then((value) {
+                          Future.delayed(new Duration(seconds: 1),(){
+                            _repeatController.stop(canceled: false);
+                          });
+                          this.setState(() {
+                            playRecordList = value["data"] as List;
+                          });
+                        });
+
+                      },
+                    ))
               ],
             ),
-            FutureBuilder(
-                future: getMusicRecordService(1,3),
-                builder: (context, snapshot) {
-                  if (snapshot.data == null) {
-                    return Container();
-                  } else {
-                    List<Widget> playMenuList = [];
-                    (snapshot.data["data"] as List).cast().forEach((item) {
-                      MusicModel musicModel =
-                      MusicModel.fromJson(item);
-                      playMenuList.add(buildRecordItem(musicModel));
-                    });
-                    if (playMenuList.length == 0) {
-                      return Container();
-                    } else {
-                      return Column(children: playMenuList);
-                    }
-                  }
-                })
+            Column(
+              children: getRecordList(),
+            )
+            // FutureBuilder(
+            //     future: getMusicRecordService(1, 10),
+            //     builder: (context, snapshot) {
+            //       if (snapshot.data == null) {
+            //         return Container();
+            //       } else {
+            //         List<Widget> playMenuList = [];
+            //         (snapshot.data["data"] as List).cast().forEach((item) {
+            //           MusicModel musicModel = MusicModel.fromJson(item);
+            //           playMenuList.add(buildRecordItem(musicModel));
+            //         });
+            //         if (playMenuList.length == 0) {
+            //           return Container();
+            //         } else {
+            //           return Column(children: playMenuList);
+            //         }
+            //       }
+            //     })
           ],
         ));
   }
 
-  Widget buildRecordItem(MusicModel musicModel){
-    return Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-      SizedBox(height: ThemeSize.containerPadding),
-      Row(
-        children: [
-          ClipOval(
-              child: Image.network(
-                HOST + musicModel.cover,
-                width: ThemeSize.bigAvater,
-                height: ThemeSize.bigAvater,
-              )),
-          SizedBox(width: ThemeSize.containerPadding),
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(musicModel.songName),
-                SizedBox(height: ThemeSize.smallMargin),
-                Text("听过" + musicModel.times.toString() + "次",
-                    style: TextStyle(color: ThemeColors.subTitle))
-              ],
+  List<Widget> getRecordList() {
+    return playRecordList.map((item) {
+      MusicModel musicModel = MusicModel.fromJson(item);
+      return Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+        SizedBox(height: ThemeSize.containerPadding),
+        Row(
+          children: [
+            ClipOval(
+                child: Image.network(
+              HOST + musicModel.cover,
+              width: ThemeSize.bigAvater,
+              height: ThemeSize.bigAvater,
+            )),
+            SizedBox(width: ThemeSize.containerPadding),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(musicModel.songName),
+                  SizedBox(height: ThemeSize.smallMargin),
+                  Text("听过" + musicModel.times.toString() + "次",
+                      style: TextStyle(color: ThemeColors.subTitle))
+                ],
+              ),
+              flex: 1,
             ),
-            flex: 1,
-          ),
-          Image.asset(
-            "lib/assets/images/icon-music-play.png",
-            width: ThemeSize.smallIcon,
-            height: ThemeSize.smallIcon,
-          ),
-          SizedBox(width: ThemeSize.containerPadding * 2),
-          Image.asset(
-            "lib/assets/images/icon-delete.png",
-            width: ThemeSize.smallIcon,
-            height: ThemeSize.smallIcon,
-          ),
-          SizedBox(width: ThemeSize.containerPadding * 2),
-          Image.asset(
-            "lib/assets/images/icon-music-menu.png",
-            width: ThemeSize.smallIcon,
-            height: ThemeSize.smallIcon,
-          )
-        ],
-      )
-    ]);
+            Image.asset(
+              "lib/assets/images/icon-music-play.png",
+              width: ThemeSize.smallIcon,
+              height: ThemeSize.smallIcon,
+            ),
+            SizedBox(width: ThemeSize.containerPadding * 2),
+            Image.asset(
+              "lib/assets/images/icon-delete.png",
+              width: ThemeSize.smallIcon,
+              height: ThemeSize.smallIcon,
+            ),
+            SizedBox(width: ThemeSize.containerPadding * 2),
+            Image.asset(
+              "lib/assets/images/icon-music-menu.png",
+              width: ThemeSize.smallIcon,
+              height: ThemeSize.smallIcon,
+            )
+          ],
+        )
+      ]);
+    }).toList();
   }
 }
