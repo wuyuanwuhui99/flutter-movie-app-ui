@@ -164,3 +164,16 @@ Future searchMusicService(String keyword,int pageNum,int pageSize) async {
     return print('ERROR:======>${e}');
   }
 }
+
+
+///@author: wuwenqiang
+///@description: 获取歌手分类
+/// @date: 2024-02-27 22:51
+Future getSingerCategoryService() async {
+  try {
+    Response response = await dio.get(servicePath['getSingerCategory']);
+    return response.data;
+  } catch (e) {
+    return print('ERROR:======>${e}');
+  }
+}

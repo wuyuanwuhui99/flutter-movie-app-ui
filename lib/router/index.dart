@@ -8,6 +8,7 @@ import '../movie/pages/MoviePlayerPage.dart';
 import '../movie/pages/MovieUserPage.dart';
 import '../movie/pages/NewMoviePage.dart';
 import '../music/pages/MusicIndexPage.dart';
+import '../music/pages/MusicSingerPage.dart';
 
 class Routes {
   static final FluroRouter router = FluroRouter();
@@ -38,6 +39,9 @@ class Routes {
     }));
     router.define('/MusicIndexPage', handler: Handler(handlerFunc: (_, params) {
       return MusicIndexPage();
+    }));
+    router.define('/MusicSingerPage', handler: Handler(handlerFunc: (_, params) {
+      return MusicSingerPage();
     }));
   }
 }

@@ -180,7 +180,7 @@ class _MusicHomePageState extends State<MusicHomePage>
         padding: ThemeStyle.padding,
         child: Row(children: [
           Expanded(
-            child: Column(
+            child: InkWell(child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Image.asset("lib/assets/images/icon-music-singer.png",
@@ -188,7 +188,9 @@ class _MusicHomePageState extends State<MusicHomePage>
                 SizedBox(height: ThemeSize.smallMargin),
                 Text("歌手")
               ],
-            ),
+            ),onTap: (){
+              Routes.router.navigateTo(context, '/MusicSingerPage');
+            },),
             flex: 1,
           ),
           Expanded(
