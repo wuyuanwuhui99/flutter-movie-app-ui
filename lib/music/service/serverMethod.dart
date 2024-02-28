@@ -45,9 +45,9 @@ Future getMusicListByClassifyIdService(int classifyId,int pageNum,int pageSize,i
 ///@author: wuwenqiang
 ///@description: 获取分类音乐列表
 /// @date: 2023-05-25 22:45
-Future getSingerListService(int pageNum,int pageSize) async {
+Future getSingerListService(String category,int pageNum,int pageSize) async {
   try {
-    Response response = await dio.get("${servicePath['getSingerList']}?pageNum=${pageNum}&pageSize=${pageSize}");
+    Response response = await dio.get("${servicePath['getSingerList']}?${category!= '' && category != null ? "category=" + category + "&" : ""}pageNum=${pageNum}&pageSize=${pageSize}");
     return response.data;
   } catch (e) {
     return print('ERROR:======>${e}');

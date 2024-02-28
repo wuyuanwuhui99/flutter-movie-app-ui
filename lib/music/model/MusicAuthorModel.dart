@@ -12,6 +12,7 @@ class MusicAuthorModel {
   int rank;// 排名
   String createTime;// 创建时间
   String updateTime;// 更新时间
+  int total;// 歌曲总数
 
   MusicAuthorModel(
       {this.id,
@@ -26,7 +27,8 @@ class MusicAuthorModel {
       this.identity,
       this.rank,
       this.createTime,
-      this.updateTime
+      this.updateTime,
+        this.total
   });
 
   //工厂模式-用这种模式可以省略New关键字
@@ -44,7 +46,8 @@ class MusicAuthorModel {
         identity: json["identity"],
         rank: json["rank"],
         createTime: json["createTime"],
-        updateTime: json["updateTime"]
+        updateTime: json["updateTime"],
+        total: json["total"]
     );
   }
 }
