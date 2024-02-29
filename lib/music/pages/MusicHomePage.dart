@@ -398,16 +398,20 @@ class _MusicHomePageState extends State<MusicHomePage>
                       child: Column(
                         children: [
                           ClipOval(
-                            child: Image.network(
+                            child: authorModel.avatar != null && authorModel.avatar != ""
+                                ? Image.network(
                               //从全局的provider中获取用户信息
                               authorModel.avatar.indexOf("http") != -1
-                                  ? authorModel.avatar
-                                      .replaceAll("{size}", "480")
+                                  ? authorModel.avatar.replaceAll("{size}", "480")
                                   : HOST + authorModel.avatar,
                               height: size,
                               width: size,
                               fit: BoxFit.cover,
-                            ),
+                            )
+                                : Image.asset("lib/assets/images/default-avater.png",
+                                height: size,
+                                width: size,
+                                fit: BoxFit.cover),
                           ),
                           SizedBox(height: ThemeSize.containerPadding),
                           Text(authorModel.authorName)
