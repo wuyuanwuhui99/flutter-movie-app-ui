@@ -234,6 +234,7 @@ class _MusicHomePageState extends State<MusicHomePage>
   Widget buildMuiscModuleByClassifyIdWidget(
       MusicClassifyModel musicClassifyModel) {
     return Container(
+      key: ValueKey(musicClassifyModel.classifyName),
         decoration: ThemeStyle.boxDecoration,
         margin: ThemeStyle.margin,
         width:
