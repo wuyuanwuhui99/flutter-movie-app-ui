@@ -82,8 +82,8 @@ class _SearchMusicPageState extends State<MusicSearchPage> {
         .then((res) {
       setState(() {
         loading = false;
-        total = res['total'];
-        (res["data"] as List).cast().forEach((item) {
+        total = res.total;
+        res.data.forEach((item) {
           searchResult.add(MusicModel.fromJson(item));
         }); // 顶部轮播组件数
       });
@@ -359,7 +359,7 @@ class _SearchMusicPageState extends State<MusicSearchPage> {
                           height: ThemeSize.smallIcon),onTap: (){
                         if(musicItem.isFavorite == 0){
                           insertMusicFavoriteService(musicItem).then((res) => {
-                            if(res["data"] > 0){
+                            if(res.data > 0){
                               setState(() {
                                 musicItem.isFavorite = 1;
                               })
@@ -367,7 +367,7 @@ class _SearchMusicPageState extends State<MusicSearchPage> {
                           });
                         }else{
                           deleteMusicFavoriteService(musicItem.id).then((res) => {
-                            if(res["data"] > 0){
+                            if(res.data > 0){
                               setState(() {
                                 musicItem.isFavorite = 0;
                               })

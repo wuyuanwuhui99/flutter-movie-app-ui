@@ -41,7 +41,7 @@ class _MusicUserPageState extends State<MusicUserPage>
 
     getMusicRecordService(1, 10).then((value) {
       this.setState(() {
-        playRecordList = value["data"] as List;
+        playRecordList = value.data;
       });
     });
   }
@@ -188,7 +188,7 @@ class _MusicUserPageState extends State<MusicUserPage>
                     return Container();
                   } else {
                     List<Widget> playMenuList = [];
-                    (snapshot.data["data"] as List).cast().forEach((item) {
+                    snapshot.data.data.forEach((item) {
                       MuiscPlayMenuModel muiscPlayMenuModel =
                           MuiscPlayMenuModel.fromJson(item);
                       playMenuList.add(buildPlayMenuItem(muiscPlayMenuModel));
@@ -291,7 +291,7 @@ class _MusicUserPageState extends State<MusicUserPage>
                     return Container();
                   } else {
                     List<Widget> playMenuList = [];
-                    (snapshot.data["data"] as List).cast().forEach((item) {
+                    snapshot.data.data.forEach((item) {
                       MuiscMySingerModel mySingerModel =
                           MuiscMySingerModel.fromJson(item);
                       playMenuList.add(buildMySingerItem(mySingerModel));
@@ -403,7 +403,7 @@ class _MusicUserPageState extends State<MusicUserPage>
                             _repeatController.stop(canceled: false);
                           });
                           this.setState(() {
-                            playRecordList = value["data"] as List;
+                            playRecordList = value.data;
                           });
                         });
 

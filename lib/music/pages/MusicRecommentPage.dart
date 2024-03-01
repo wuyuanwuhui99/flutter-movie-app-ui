@@ -57,8 +57,8 @@ class _MusicRecommentPageState extends State<MusicRecommentPage>
   void getRecommendMusicList(int pageNum, pageSize) {
     getMusicListByClassifyIdService(1, pageNum, pageSize, 0).then((res) {
       setState(() {
-        total = res["total"];
-        (res["data"] as List).cast().forEach((item) {
+        total = res.total;
+        res.data.forEach((item) {
           item['classifyId'] = 1;
           item['pageNum'] = pageNum;
           item['pageSize'] = pageSize;
@@ -133,7 +133,7 @@ class _MusicRecommentPageState extends State<MusicRecommentPage>
               height: ThemeSize.smallIcon),onTap: (){
             if(musicModel.isFavorite == 0){
               insertMusicFavoriteService(musicModel).then((res) => {
-                if(res["data"] > 0){
+                if(res.data > 0){
                   setState(() {
                     musicModel.isFavorite = 1;
                   })
@@ -141,7 +141,7 @@ class _MusicRecommentPageState extends State<MusicRecommentPage>
               });
             }else{
               deleteMusicFavoriteService(musicModel.id).then((res) => {
-                if(res["data"] > 0){
+                if(res.data > 0){
                   setState(() {
                     musicModel.isFavorite = 0;
                   })

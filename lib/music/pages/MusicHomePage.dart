@@ -37,7 +37,7 @@ class _MusicHomePageState extends State<MusicHomePage>
   void initState() {
     super.initState();
     getMusicClassifyService().then((res) {
-      allClassifies = (res["data"] as List).cast().map((item) {
+      allClassifies = res.data.map((item) {
         return MusicClassifyModel.fromJson(item);
       }).toList();
       setState(() {
@@ -132,9 +132,9 @@ class _MusicHomePageState extends State<MusicHomePage>
                           }
                           var result = snapshot.data;
                           String keyword = "";
-                          if (result != null && result['data'] != null) {
+                          if (result != null && result.data != null) {
                             MusicModel musicModel =
-                                MusicModel.fromJson(result["data"]);
+                                MusicModel.fromJson(result.data);
                             PlayerMusicProvider musicProvider =
                                 Provider.of<PlayerMusicProvider>(context);
                             if (musicProvider.musicModel == null) {
@@ -271,7 +271,7 @@ class _MusicHomePageState extends State<MusicHomePage>
             List<MusicModel> musicModelList = [];
             List<Widget> musicWidgetList = [];
             int index = 0;
-            (snapshot.data["data"] as List).cast().forEach((element) {
+            snapshot.data.data.forEach((element) {
               element['classifyId'] = classifyId;
               element['pageNum'] = 1;
               element['pageSize'] = 20;
@@ -382,7 +382,7 @@ class _MusicHomePageState extends State<MusicHomePage>
           if (snapshot.data == null) {
             return Container();
           } else {
-            List authorsList = snapshot.data["data"] as List;
+            List authorsList = snapshot.data.data as List;
             // 动态计算歌手头像大小
             double size = (MediaQuery.of(context).size.width -
                     (authorsList.length + 3) * ThemeSize.containerPadding) /

@@ -158,7 +158,7 @@ class _MusicIndexPageState extends State<MusicIndexPage>
               classMusicParamsModel.isRedis)
           .then((res) {
         List<MusicModel> musicModelList =
-            (res["data"] as List).cast().map((item) {
+            res.data.map((item) {
           item = {
             ...item,
             ...ClassMusicParamsModel.toMap(classMusicParamsModel)

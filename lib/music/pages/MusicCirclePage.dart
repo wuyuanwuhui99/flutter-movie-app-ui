@@ -38,8 +38,8 @@ class _MusicCirclePageState extends State<MusicCirclePage>
   void getCircleWidgetListByType() {
     getCircleListByTypeService('music', pageNum, pageSize).then((res) {
       setState(() {
-        total = res["total"];
-        (res["data"] as List).cast().forEach((item) {
+        total = res.total;
+        res.data.forEach((item) {
           CircleModel circleModel = CircleModel.fromJson(item);
           circleWidgeList.add(buildCircleItem(circleModel, index));
           index++;

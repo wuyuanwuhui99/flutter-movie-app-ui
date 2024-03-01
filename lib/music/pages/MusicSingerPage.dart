@@ -32,7 +32,7 @@ class _MusicSingerPageState extends State<MusicSingerPage>
     super.initState();
     getSingerCategoryService().then((res) {
       setState(() {
-        (res["data"] as List).cast().forEach((item) {
+        res.data.forEach((item) {
           singerCategoryList.add(SingerCategoryModel.fromJson(item));
         });
       });
@@ -48,8 +48,8 @@ class _MusicSingerPageState extends State<MusicSingerPage>
             singerCategoryList[activeIndex].category, pageNum, pageSize)
         .then((value) {
       setState(() {
-        total = value["total"];
-        (value["data"] as List).cast().forEach((item) {
+        total = value.total;
+        value.data.forEach((item) {
           musicAuthorList.add(MusicAuthorModel.fromJson(item));
         });
       });
