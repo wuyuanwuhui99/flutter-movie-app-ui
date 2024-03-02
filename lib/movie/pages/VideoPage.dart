@@ -32,7 +32,7 @@ class _VideoPageState extends State<VideoPage>
   void initState() {
     super.initState();
     getAllCategoryByClassifyService("电视剧").then((res) {
-      allCategoryLists = (res["data"] as List).cast(); // 顶部轮播组件数
+      allCategoryLists = res.data; // 顶部轮播组件数
       setState(() {
         allCategoryLists.sublist(0, 2).forEach((item) {
           categoryList.add(CategoryComponent(
@@ -70,14 +70,13 @@ class _VideoPageState extends State<VideoPage>
               decoration: ThemeStyle.boxDecoration,
               margin: ThemeStyle.margin,
               padding: ThemeStyle.padding,
-              child:  Row(
+              child: Row(
                 children: <Widget>[
                   AvaterComponent(size: ThemeSize.middleAvater),
                   Expanded(
                       flex: 1,
                       child: Padding(
-                          padding: EdgeInsets.only(
-                              left: ThemeSize.smallMargin),
+                          padding: EdgeInsets.only(left: ThemeSize.smallMargin),
                           child: SearchCommponent(classify: "电视剧")))
                 ],
               ),

@@ -51,7 +51,7 @@ class _MovieHomePageState extends State<MovieHomePage>
   @override
   void initState() {
     getAllCategoryListByPageNameService("首页").then((res) {
-      allCategoryLists = (res["data"] as List).cast(); // 顶部轮播组件数
+      allCategoryLists = res.data; // 顶部轮播组件数
       setState(() {
         allCategoryLists.sublist(0, 2).forEach((item) {
           categoryList.add(CategoryComponent(
@@ -66,7 +66,8 @@ class _MovieHomePageState extends State<MovieHomePage>
 
   Widget init(BuildContext context) {
     return Container(
-        width: MediaQuery.of(context).size.width - ThemeSize.containerPadding * 2,
+        width:
+            MediaQuery.of(context).size.width - ThemeSize.containerPadding * 2,
         padding: ThemeStyle.paddingBox,
         child: Column(children: <Widget>[
           Row(
@@ -85,7 +86,8 @@ class _MovieHomePageState extends State<MovieHomePage>
                       Expanded(
                           flex: 1,
                           child: Padding(
-                              padding: EdgeInsets.only(left: ThemeSize.smallMargin),
+                              padding:
+                                  EdgeInsets.only(left: ThemeSize.smallMargin),
                               child: SearchCommponent(classify: "电影")))
                     ],
                   ),
@@ -141,13 +143,12 @@ class _MovieHomePageState extends State<MovieHomePage>
                 child: CircularProgressIndicator(),
               );
             }
-            var userInfo = snapshot.data["data"];
-            var token = snapshot.data["token"];
+            var userInfo = snapshot.data.data;
+            var token = snapshot.data.token;
             LocalStroageUtils.setToken(token);
-            Provider.of<UserInfoProvider>(context,listen: false)
+            Provider.of<UserInfoProvider>(context, listen: false)
                 .setUserInfo(UserInfoModel.fromJson(userInfo));
-            Provider.of<TokenProvider>(context)
-                .setToken(token);
+            Provider.of<TokenProvider>(context).setToken(token);
             return init(context);
           });
     } else {

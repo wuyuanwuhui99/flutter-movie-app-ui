@@ -51,7 +51,7 @@ class _MoviePlayerPageState extends State<MoviePlayerPage> {
     });
     getCommentCountService(widget.movieItem.id, "movie").then((res) {
       setState(() {
-        commentCount = res["data"];
+        commentCount = res.data;
       });
     });
     savePlayRecordService(widget.movieItem);
@@ -59,7 +59,7 @@ class _MoviePlayerPageState extends State<MoviePlayerPage> {
 
   void isFavorite() {
     isFavoriteService(widget.movieItem.movieId).then((res) {
-      if (res["data"] > 0) {
+      if (res.data > 0) {
         setState(() {
           isFavoriteFlag = true;
         });
@@ -247,9 +247,7 @@ class _MoviePlayerPageState extends State<MoviePlayerPage> {
                                                                           (value) {
                                                                     setState(
                                                                         () {
-                                                                      (value["data"]
-                                                                              as List)
-                                                                          .cast()
+                                                                      value.data
                                                                           .forEach(
                                                                               (element) {
                                                                         commentList[index]
@@ -356,9 +354,9 @@ class _MoviePlayerPageState extends State<MoviePlayerPage> {
       setState(() {
         commentCount++;
         if (replyTopCommentItem == null) {
-          commentList.add(CommentModel.fromJson(res["data"]));
+          commentList.add(CommentModel.fromJson(res.data));
         } else {
-          replyTopCommentItem.replyList.add(CommentModel.fromJson(res["data"]));
+          replyTopCommentItem.replyList.add(CommentModel.fromJson(res.data));
           replyCommentItem = replyTopCommentItem = null;
         }
         keywordController.text = '';
@@ -423,10 +421,10 @@ class _MoviePlayerPageState extends State<MoviePlayerPage> {
           if (snapshot.data == null) {
             return Container();
           } else {
-            List<MovieUrlModel> playList =
-                (snapshot.data["data"] as List).cast().map((item) {
-              return MovieUrlModel.fromJson(item);
-            }).toList();
+            List<MovieUrlModel> playList = [];
+            snapshot.data.data.forEach((item) {
+              playList.add(MovieUrlModel.fromJson(item));
+            });
             if (playList.length == 0) {
               return Container();
             }
@@ -435,12 +433,12 @@ class _MoviePlayerPageState extends State<MoviePlayerPage> {
               if (i == 0) {
                 url = playList[0].url;
               }
-              int index = movieUrlGroup.indexWhere((element){
+              int index = movieUrlGroup.indexWhere((element) {
                 return element[0].playGroup == playList[i].playGroup;
               });
               if (index != -1) {
                 movieUrlGroup[index].add(playList[i]);
-              }else{
+              } else {
                 movieUrlGroup.add([playList[i]]);
               }
             }
@@ -481,20 +479,34 @@ class _MoviePlayerPageState extends State<MoviePlayerPage> {
                     padding: EdgeInsets.all(ThemeSize.smallMargin),
                     decoration: BoxDecoration(
                         border: Border(
-                      left: BorderSide(
-                          width:
-                              currentIndex == index ? ThemeSize.borderWidth : 0,
-                          color: currentIndex == index ? ThemeColors.borderColor:ThemeColors.colorWhite),
-                      right: BorderSide(
-                          width: currentIndex == index ? ThemeSize.borderWidth : 0,
-                          color: currentIndex == index ? ThemeColors.borderColor:ThemeColors.colorWhite),
-                      top: BorderSide(
-                          width: currentIndex == index ? ThemeSize.borderWidth : 0,
-                          color: currentIndex == index ? ThemeColors.borderColor:ThemeColors.colorWhite),
-                      bottom: BorderSide(
-                          width:  currentIndex == index ? 0 : ThemeSize.borderWidth ,
-                          color: currentIndex == index ? ThemeColors.colorWhite:ThemeColors.borderColor)
-                    )),
+                            left: BorderSide(
+                                width: currentIndex == index
+                                    ? ThemeSize.borderWidth
+                                    : 0,
+                                color: currentIndex == index
+                                    ? ThemeColors.borderColor
+                                    : ThemeColors.colorWhite),
+                            right: BorderSide(
+                                width: currentIndex == index
+                                    ? ThemeSize.borderWidth
+                                    : 0,
+                                color: currentIndex == index
+                                    ? ThemeColors.borderColor
+                                    : ThemeColors.colorWhite),
+                            top: BorderSide(
+                                width: currentIndex == index
+                                    ? ThemeSize.borderWidth
+                                    : 0,
+                                color: currentIndex == index
+                                    ? ThemeColors.borderColor
+                                    : ThemeColors.colorWhite),
+                            bottom: BorderSide(
+                                width: currentIndex == index
+                                    ? 0
+                                    : ThemeSize.borderWidth,
+                                color: currentIndex == index
+                                    ? ThemeColors.colorWhite
+                                    : ThemeColors.borderColor))),
                     child: Text(
                         RegExp("^[0-9]+\$")
                                 .hasMatch(movieUrlGroup[index][0].playGroup)
@@ -583,8 +595,8 @@ class _MoviePlayerPageState extends State<MoviePlayerPage> {
                   getTopCommentListService(widget.movieItem.movieId, "movie",
                           ThemeSize.pageSize, pageNum)
                       .then((value) {
-                    (value["data"] as List).forEach((element) {
-                      setState(() {
+                    setState(() {
+                      value.data.forEach((element) {
                         commentList.add(CommentModel.fromJson(element));
                       });
                     });
@@ -597,7 +609,7 @@ class _MoviePlayerPageState extends State<MoviePlayerPage> {
               if (isFavoriteFlag) {
                 //如果已经收藏过了，点击之后取消收藏
                 deleteFavoriteService(widget.movieItem.movieId).then((res) {
-                  if (res["data"] > 0) {
+                  if (res.data > 0) {
                     setState(() {
                       isFavoriteFlag = false;
                     });
@@ -606,7 +618,7 @@ class _MoviePlayerPageState extends State<MoviePlayerPage> {
               } else {
                 //如果没有收藏过，点击之后添加收藏
                 saveFavoriteService(widget.movieItem).then((res) {
-                  if (res["data"] > 0) {
+                  if (res.data > 0) {
                     setState(() {
                       isFavoriteFlag = true;
                     });

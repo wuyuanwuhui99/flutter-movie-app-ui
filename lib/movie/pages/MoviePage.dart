@@ -30,7 +30,7 @@ class _MoviePageState extends State<MoviePage>
   void initState() {
     super.initState();
     getAllCategoryByClassifyService("电影").then((res) {
-      allCategoryLists = (res["data"] as List).cast(); //
+      allCategoryLists = res.data; //
       setState(() {
         allCategoryLists.sublist(0, 2).forEach((item) {
           categoryList.add(CategoryComponent(
@@ -68,18 +68,19 @@ class _MoviePageState extends State<MoviePage>
                 margin: ThemeStyle.margin,
                 decoration: ThemeStyle.boxDecoration,
                 padding: ThemeStyle.padding,
-                child:Row(
+                child: Row(
                   children: <Widget>[
-                    AvaterComponent(size: ThemeSize.middleAvater,),
+                    AvaterComponent(
+                      size: ThemeSize.middleAvater,
+                    ),
                     Expanded(
                         flex: 1,
                         child: Padding(
                             padding:
-                            EdgeInsets.only(left: ThemeSize.smallMargin),
+                                EdgeInsets.only(left: ThemeSize.smallMargin),
                             child: SearchCommponent(classify: "电影")))
                   ],
-                )
-            )
+                ))
           ],
         ),
         Expanded(

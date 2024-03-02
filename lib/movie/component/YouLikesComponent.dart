@@ -19,10 +19,10 @@ class YouLikesComponent extends StatelessWidget {
           if (snapshot.data == null) {
             return Container();
           } else {
-            List<MovieDetailModel> movieList =
-                (snapshot.data["data"] as List).cast().map((item) {
-              return MovieDetailModel.fromJson(item);
-            }).toList();
+            List<MovieDetailModel> movieList = [];
+            snapshot.data.data.forEach((item) {
+              movieList.add(MovieDetailModel.fromJson(item));
+            });
             return Container(
                 decoration: ThemeStyle.boxDecoration,
                 margin: ThemeStyle.margin,

@@ -38,7 +38,7 @@ class _MovieDetailPageState extends State<MovieDetailPage> {
                 child: SingleChildScrollView(
                     child: Column(
                   children: <Widget>[
-                    buildMovieInfoComponent(widget.movieItem,context),
+                    buildMovieInfoComponent(widget.movieItem, context),
                     buildPlotComponent(widget.movieItem.plot),
                     buildStarComponent(widget.movieItem.id),
                     widget.movieItem.label != null
@@ -53,7 +53,8 @@ class _MovieDetailPageState extends State<MovieDetailPage> {
                 )))));
   }
 
-  Widget buildMovieInfoComponent(MovieDetailModel movieInfo,BuildContext context){
+  Widget buildMovieInfoComponent(
+      MovieDetailModel movieInfo, BuildContext context) {
     return Container(
       decoration: ThemeStyle.boxDecoration,
       margin: ThemeStyle.margin,
@@ -80,7 +81,7 @@ class _MovieDetailPageState extends State<MovieDetailPage> {
                             fit: BoxFit.cover)),
                     decoration: BoxDecoration(
                         borderRadius:
-                        BorderRadius.circular(ThemeSize.middleRadius),
+                            BorderRadius.circular(ThemeSize.middleRadius),
                         image: DecorationImage(
                           image: NetworkImage(movieInfo.img),
                           fit: BoxFit.cover,
@@ -103,19 +104,19 @@ class _MovieDetailPageState extends State<MovieDetailPage> {
                     SizedBox(height: 10),
                     movieInfo.description != null
                         ? Text(
-                      movieInfo.description,
-                      style: TextStyle(
-                          fontSize: 16,
-                          color: Color.fromRGBO(187, 187, 187, 1)),
-                    )
+                            movieInfo.description.replaceAll('\n\s', ''),
+                            style: TextStyle(
+                                fontSize: 16,
+                                color: Color.fromRGBO(187, 187, 187, 1)),
+                          )
                         : SizedBox(),
                     movieInfo.star != null
                         ? Text(
-                      movieInfo.star,
-                      style: TextStyle(
-                          fontSize: 16,
-                          color: Color.fromRGBO(187, 187, 187, 1)),
-                    )
+                            movieInfo.star,
+                            style: TextStyle(
+                                fontSize: 16,
+                                color: Color.fromRGBO(187, 187, 187, 1)),
+                          )
                         : SizedBox(),
                     SizedBox(height: 10),
                     ScoreComponent(score: movieInfo.score)
@@ -129,7 +130,7 @@ class _MovieDetailPageState extends State<MovieDetailPage> {
     );
   }
 
-  Widget buildPlotComponent(String plot){
+  Widget buildPlotComponent(String plot) {
     if (plot != null) {
       return Container(
           decoration: ThemeStyle.boxDecoration,
@@ -165,7 +166,7 @@ class _MovieDetailPageState extends State<MovieDetailPage> {
     }
   }
 
-  Widget buildStarComponent(int id){
+  Widget buildStarComponent(int id) {
     if (id == null) return Container();
     return FutureBuilder(
         future: getStarService(id),
@@ -175,10 +176,10 @@ class _MovieDetailPageState extends State<MovieDetailPage> {
               child: CircularProgressIndicator(),
             );
           } else {
-            List<MovieStarModel> stars =
-            (snapshot.data["data"] as List).cast().map((item) {
-              return MovieStarModel.fromJson(item);
-            }).toList();
+            List<MovieStarModel> stars = [];
+            snapshot.data.data.forEach((item) {
+              stars.add(MovieStarModel.fromJson(item));
+            });
             if (stars.length > 0) {
               return Container(
                   decoration: ThemeStyle.boxDecoration,
@@ -217,7 +218,7 @@ class _MovieDetailPageState extends State<MovieDetailPage> {
                                             height: 200,
                                             decoration: BoxDecoration(
                                                 borderRadius:
-                                                BorderRadius.circular(15),
+                                                    BorderRadius.circular(15),
                                                 image: DecorationImage(
                                                   image: NetworkImage(
                                                       stars[index].img),

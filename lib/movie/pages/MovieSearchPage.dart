@@ -59,7 +59,8 @@ class _MovieSearchPageState extends State<MovieSearchPage> {
                               child: Center(
                                   child: Text(
                                 "没有查询到影片",
-                                style: TextStyle(fontSize: ThemeSize.bigFontSize),
+                                style:
+                                    TextStyle(fontSize: ThemeSize.bigFontSize),
                               )))
                           : SearchResult())
                   : Expanded(
@@ -97,7 +98,8 @@ class _MovieSearchPageState extends State<MovieSearchPage> {
                     width: ThemeSize.movieWidth,
                     height: ThemeSize.movieHeight,
                     child: ClipRRect(
-                        borderRadius: BorderRadius.circular(ThemeSize.middleRadius),
+                        borderRadius:
+                            BorderRadius.circular(ThemeSize.middleRadius),
                         child: Image(
                             fit: BoxFit.fill,
                             image: NetworkImage(
@@ -127,7 +129,8 @@ class _MovieSearchPageState extends State<MovieSearchPage> {
                                     : "",
                                 maxLines: 1,
                                 overflow: TextOverflow.ellipsis,
-                                style: TextStyle(fontSize: ThemeSize.smallFontSize)),
+                                style: TextStyle(
+                                    fontSize: ThemeSize.smallFontSize)),
                             SizedBox(height: ThemeSize.smallMargin),
                             Text(
                                 searchResult[index].director != null
@@ -135,7 +138,8 @@ class _MovieSearchPageState extends State<MovieSearchPage> {
                                     : "",
                                 maxLines: 1,
                                 overflow: TextOverflow.ellipsis,
-                                style: TextStyle(fontSize: ThemeSize.smallFontSize)),
+                                style: TextStyle(
+                                    fontSize: ThemeSize.smallFontSize)),
                             SizedBox(height: ThemeSize.smallMargin),
                             Text(
                                 searchResult[index].type != null
@@ -143,19 +147,19 @@ class _MovieSearchPageState extends State<MovieSearchPage> {
                                     : "",
                                 maxLines: 1,
                                 overflow: TextOverflow.ellipsis,
-                                style: TextStyle(fontSize: ThemeSize.smallFontSize)),
+                                style: TextStyle(
+                                    fontSize: ThemeSize.smallFontSize)),
                             SizedBox(height: ThemeSize.smallMargin),
                             Text(
                                 searchResult[index].releaseTime != null
-                                    ? "上映时间：" +
-                                    searchResult[index].releaseTime
+                                    ? "上映时间：" + searchResult[index].releaseTime
                                     : "",
                                 maxLines: 1,
                                 overflow: TextOverflow.ellipsis,
-                                style: TextStyle(fontSize: ThemeSize.smallFontSize)),
+                                style: TextStyle(
+                                    fontSize: ThemeSize.smallFontSize)),
                             SizedBox(height: ThemeSize.smallMargin),
-                            ScoreComponent(
-                                score: searchResult[index].score),
+                            ScoreComponent(score: searchResult[index].score),
                             SizedBox(height: ThemeSize.smallMargin),
                           ],
                         ),
@@ -180,26 +184,26 @@ class _MovieSearchPageState extends State<MovieSearchPage> {
                   //修饰黑色背景与圆角
                   decoration: new BoxDecoration(
                     color: ThemeColors.colorBg,
-                    borderRadius:
-                        new BorderRadius.all(new Radius.circular(ThemeSize.superRadius)),
+                    borderRadius: new BorderRadius.all(
+                        new Radius.circular(ThemeSize.superRadius)),
                   ),
                   alignment: Alignment.center,
-                  padding: EdgeInsets.only(left: ThemeSize.smallMargin*2),
+                  padding: EdgeInsets.only(left: ThemeSize.smallMargin * 2),
                   child: Row(
                     children: <Widget>[
                       Expanded(
                           flex: 1,
-                          child:
-                          TextField(
+                          child: TextField(
                               controller: keywordController,
                               cursorColor: Colors.grey, //设置光标
                               decoration: InputDecoration(
                                 hintText: widget.keyword,
-                                hintStyle:
-                                    TextStyle(fontSize: ThemeSize.smallFontSize, color: Colors.grey),
+                                hintStyle: TextStyle(
+                                    fontSize: ThemeSize.smallFontSize,
+                                    color: Colors.grey),
                                 border: InputBorder.none,
-                                contentPadding:
-                                EdgeInsets.only(bottom: ThemeSize.smallMargin),
+                                contentPadding: EdgeInsets.only(
+                                    bottom: ThemeSize.smallMargin),
                               ))),
                       showClearIcon
                           ? InkWell(
@@ -238,7 +242,8 @@ class _MovieSearchPageState extends State<MovieSearchPage> {
                   } else {
                     myHistoryLabelsName.add(keywordController.text);
                   }
-                  prefs.setString("historyMovieLabels", myHistoryLabelsName.join(","));
+                  prefs.setString(
+                      "historyMovieLabels", myHistoryLabelsName.join(","));
                   setState(() {
                     showClearIcon = true;
                     myHistoryLabels.insert(0, Label(keywordController.text));
@@ -254,7 +259,8 @@ class _MovieSearchPageState extends State<MovieSearchPage> {
                 ///圆角
                 shape: RoundedRectangleBorder(
                     side: BorderSide.none,
-                    borderRadius: BorderRadius.all(Radius.circular(ThemeSize.bigRadius))),
+                    borderRadius:
+                        BorderRadius.all(Radius.circular(ThemeSize.bigRadius))),
               ))
         ],
       ),
@@ -262,13 +268,15 @@ class _MovieSearchPageState extends State<MovieSearchPage> {
   }
 
   void goSearch() {
-    getSearchResultService(keywordController.text, pageSize: ThemeSize.pageSize, pageNum: 1)
+    getSearchResultService(keywordController.text,
+            pageSize: ThemeSize.pageSize, pageNum: 1)
         .then((res) {
       setState(() {
         searching = true;
-        searchResult = (res["data"] as List).cast().map((item) {
-          return MovieDetailModel.fromJson(item);
-        }).toList(); // 顶部轮播组件数
+        // 顶部轮播组件数
+        res.data.forEach((element) {
+          searchResult.add(MovieDetailModel.fromJson(element));
+        });
       });
     }).catchError(() {
       setState(() {

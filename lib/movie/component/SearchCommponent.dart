@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:movie/movie/model/MovieDetailModel.dart';
 import '../pages/MovieSearchPage.dart';
 import '../service/serverMethod.dart';
 import '../../theme/ThemeColors.dart';
@@ -7,6 +8,7 @@ import '../../theme/ThemeSize.dart';
 /*-----------------------搜索------------------------*/
 class SearchCommponent extends StatelessWidget {
   final String classify;
+
   const SearchCommponent({Key key, this.classify}) : super(key: key);
 
   @override
@@ -17,26 +19,26 @@ class SearchCommponent extends StatelessWidget {
           if (snapshot.data == null) {
             return Container();
           }
-          // var result = json.decode(snapshot.data.toString());
           var result = snapshot.data;
           String keyword = "";
-          if (result != null && result['data'] != null) {
-            keyword = result["data"]["movieName"];
+          if (result != null && result.data != null) {
+            keyword = MovieDetailModel.fromJson(result.data).movieName;
           }
           return InkWell(
               onTap: () {
                 Navigator.push(
                     context,
                     MaterialPageRoute(
-                        builder: (context) => MovieSearchPage(keyword: keyword)));
+                        builder: (context) =>
+                            MovieSearchPage(keyword: keyword)));
               },
               child: Container(
                   height: ThemeSize.buttonHeight,
                   //修饰黑色背景与圆角
                   decoration: new BoxDecoration(
                     color: ThemeColors.colorBg,
-                    borderRadius:
-                    new BorderRadius.all(new Radius.circular(ThemeSize.bigRadius)),
+                    borderRadius: new BorderRadius.all(
+                        new Radius.circular(ThemeSize.bigRadius)),
                   ),
                   alignment: Alignment.centerLeft,
                   padding: EdgeInsets.only(left: ThemeSize.containerPadding),

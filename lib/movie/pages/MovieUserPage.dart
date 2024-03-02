@@ -337,7 +337,7 @@ class _MovieUserPageState extends State<MovieUserPage> {
     String base64Str = "data:image/png;base64," + base64Encode(imageBytes);
     Map avaterMap = {"img": base64Str};
     updateAvaterService(avaterMap).then((res) {
-      userInfo.avater = res["data"];
+      userInfo.avater = res.data;
       Provider.of<UserInfoProvider>(context, listen: false)
           .setUserInfo(userInfo);
     });

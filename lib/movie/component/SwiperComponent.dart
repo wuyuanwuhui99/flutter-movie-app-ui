@@ -22,10 +22,10 @@ class SwiperComponent extends StatelessWidget {
           }
           var result = snapshot.data;
           List<MovieDetailModel> swiperDataList = [];
-          if (result != null && result['data'] != null) {
-            swiperDataList = (result['data'] as List).cast().map((item){
-              return MovieDetailModel.fromJson(item);
-            }).toList().sublist(0,5); // 顶部轮播组件数
+          if (result != null && result.data != null) {
+            result.data.sublist(0, 5).forEach((item) {
+              swiperDataList.add(MovieDetailModel.fromJson(item));
+            });
           }
           return Container(
               height: ThemeSize.swiperHeight,

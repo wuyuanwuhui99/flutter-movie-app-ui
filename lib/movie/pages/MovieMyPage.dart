@@ -20,7 +20,8 @@ class MovieMyPage extends StatefulWidget {
   _MovieMyPageState createState() => _MovieMyPageState();
 }
 
-class _MovieMyPageState extends State<MovieMyPage> with AutomaticKeepAliveClientMixin {
+class _MovieMyPageState extends State<MovieMyPage>
+    with AutomaticKeepAliveClientMixin {
   @override
   bool get wantKeepAlive => true;
 
@@ -101,7 +102,7 @@ class UserMsgComponent extends StatelessWidget {
           if (snapshot.data == null) {
             return Container();
           } else {
-            UserMsgModel userMsg = UserMsgModel.fromJson(snapshot.data["data"]);
+            UserMsgModel userMsg = UserMsgModel.fromJson(snapshot.data.data);
             return Container(
                 decoration: ThemeStyle.boxDecoration,
                 padding: ThemeStyle.padding,
@@ -158,10 +159,10 @@ class HistoryComponent extends StatelessWidget {
           if (snapshot.data == null) {
             return Container();
           } else {
-            List<MovieDetailModel> movieList =
-                (snapshot.data["data"] as List).cast().map((item) {
-              return MovieDetailModel.fromJson(item);
-            }).toList();
+            List<MovieDetailModel> movieList = [];
+            snapshot.data.data.forEach((item) {
+              movieList.add(MovieDetailModel.fromJson(item));
+            });
             if (movieList.length == 0) {
               return Container(
                   alignment: Alignment.center,
@@ -242,7 +243,10 @@ class PannelComponent extends StatelessWidget {
                           context,
                           MaterialPageRoute(
                               builder: (context) => WebViewPage(
-                                  url: "http://192.168.0.103:3003/#/?_t=" + DateTime.now().microsecondsSinceEpoch.toString(),
+                                  url: "http://192.168.0.103:3003/#/?_t=" +
+                                      DateTime.now()
+                                          .microsecondsSinceEpoch
+                                          .toString(),
                                   title: "电影圈")));
                     },
                     child: Row(
@@ -276,28 +280,29 @@ class PannelComponent extends StatelessWidget {
                 decoration: ThemeStyle.bottomDecoration,
                 padding: EdgeInsets.only(bottom: ThemeSize.containerPadding),
                 child: InkWell(
-                  onTap: (){
-                    Routes.router.navigateTo(context, '/MusicIndexPage');
-                  },
+                    onTap: () {
+                      Routes.router.navigateTo(context, '/MusicIndexPage');
+                    },
                     child: Row(
-                  children: <Widget>[
-                    Image.asset("lib/assets/images/icon-music.png",
-                        height: ThemeSize.middleIcon,
-                        width: ThemeSize.middleIcon,
-                        fit: BoxFit.cover),
-                    SizedBox(width: 10),
-                    Text("音乐",
-                        style: TextStyle(fontSize: ThemeSize.middleFontSize)),
-                    Expanded(
-                      flex: 1,
-                      child: SizedBox(),
-                    ),
-                    Image.asset("lib/assets/images/icon-arrow.png",
-                        height: ThemeSize.smallIcon,
-                        width: ThemeSize.smallIcon,
-                        fit: BoxFit.cover),
-                  ],
-                ))),
+                      children: <Widget>[
+                        Image.asset("lib/assets/images/icon-music.png",
+                            height: ThemeSize.middleIcon,
+                            width: ThemeSize.middleIcon,
+                            fit: BoxFit.cover),
+                        SizedBox(width: 10),
+                        Text("音乐",
+                            style:
+                                TextStyle(fontSize: ThemeSize.middleFontSize)),
+                        Expanded(
+                          flex: 1,
+                          child: SizedBox(),
+                        ),
+                        Image.asset("lib/assets/images/icon-arrow.png",
+                            height: ThemeSize.smallIcon,
+                            width: ThemeSize.smallIcon,
+                            fit: BoxFit.cover),
+                      ],
+                    ))),
             Container(
                 margin: EdgeInsets.only(top: ThemeSize.containerPadding),
                 child: Row(

@@ -4,9 +4,11 @@ import 'MovieListComponent.dart';
 import '../model/MovieDetailModel.dart';
 import '../../theme/ThemeStyle.dart';
 import 'TitleComponent.dart';
+
 /*-----------------------分类电影------------------------*/
 class CategoryComponent extends StatelessWidget {
   final String category, classify;
+
   const CategoryComponent({Key key, this.category, this.classify})
       : super(key: key);
 
@@ -20,19 +22,23 @@ class CategoryComponent extends StatelessWidget {
           }
           var result = snapshot.data;
           List<MovieDetailModel> categoryList = [];
-          if (result != null && result['data'] != null) {
-            categoryList = (result['data'] as List).cast().map((item){
-              return MovieDetailModel.fromJson(item);
-            }).toList();
+          if (result != null && result.data != null) {
+            result.data.forEach((item) {
+              categoryList.add(MovieDetailModel.fromJson(item));
+            });
           }
-          return Container(decoration: ThemeStyle.boxDecoration,
+          return Container(
+            decoration: ThemeStyle.boxDecoration,
             margin: ThemeStyle.margin,
             padding: ThemeStyle.padding,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
                 TitleComponent(title: category),
-                MovieListComponent(movieList: categoryList,direction: "horizontal",)
+                MovieListComponent(
+                  movieList: categoryList,
+                  direction: "horizontal",
+                )
               ],
             ),
           );
