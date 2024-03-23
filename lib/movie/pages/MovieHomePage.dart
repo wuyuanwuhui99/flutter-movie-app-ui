@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyrefresh/easy_refresh.dart';
 import 'package:flutter_easyrefresh/material_footer.dart';
@@ -15,6 +16,7 @@ import '../model/UserInfoModel.dart';
 import '../component/TopNavigators.dart';
 import '../../theme/ThemeSize.dart';
 import '../../theme/ThemeStyle.dart';
+import '../model/CategoryModel.dart';
 
 /*-----------------------首页------------------------*/
 class MovieHomePage extends StatefulWidget {
@@ -31,18 +33,18 @@ class _MovieHomePageState extends State<MovieHomePage>
 
   List<Widget> categoryList = [];
 
-  List<Map> allCategoryLists = [];
+  List<CategoryModel> allCategoryLists = [];
 
   int pageNum = 1;
 
   void _getCategoryItem() {
     if (pageNum < allCategoryLists.length) {
       setState(() {
-        var item = allCategoryLists[pageNum];
+        CategoryModel item = allCategoryLists[pageNum];
         categoryList.add(CategoryComponent(
           key: GlobalKey(),
-          category: item["category"],
-          classify: item["classify"],
+          category: item.category,
+          classify: item.classify,
         ));
       });
     }
@@ -51,12 +53,14 @@ class _MovieHomePageState extends State<MovieHomePage>
   @override
   void initState() {
     getAllCategoryListByPageNameService("首页").then((res) {
-      allCategoryLists = res.data; // 顶部轮播组件数
+      res.data.forEach((element) {
+        allCategoryLists.add(CategoryModel.fromJson(element));
+      }); // 顶部轮播组件数
       setState(() {
-        allCategoryLists.sublist(0, 2).forEach((item) {
+        allCategoryLists.sublist(0, 2).forEach((CategoryModel item) {
           categoryList.add(CategoryComponent(
-            category: item["category"],
-            classify: item["classify"],
+            category: item.category,
+            classify: item.classify
           ));
         });
       });

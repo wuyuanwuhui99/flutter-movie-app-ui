@@ -9,6 +9,7 @@ import '../component/CategoryComponent.dart';
 import '../component/SwiperComponent.dart';
 import '../../theme/ThemeSize.dart';
 import '../../theme/ThemeStyle.dart';
+import '../model/CategoryModel.dart';
 
 class MoviePage extends StatefulWidget {
   MoviePage({Key key}) : super(key: key);
@@ -22,7 +23,7 @@ class _MoviePageState extends State<MoviePage>
   @override
   bool get wantKeepAlive => true;
   List<Widget> categoryList = [];
-  List<Map> allCategoryLists = [];
+  List<CategoryModel> allCategoryLists = [];
 
   int pageNum = 1;
 
@@ -30,12 +31,14 @@ class _MoviePageState extends State<MoviePage>
   void initState() {
     super.initState();
     getAllCategoryByClassifyService("电影").then((res) {
-      allCategoryLists = res.data; //
+      allCategoryLists = res.data.map((element){
+        return CategoryModel.fromJson(element);
+      }).toList();
       setState(() {
         allCategoryLists.sublist(0, 2).forEach((item) {
           categoryList.add(CategoryComponent(
-            category: item["category"],
-            classify: item["classify"],
+            category: item.category,
+            classify: item.classify,
           ));
         });
       });
@@ -47,8 +50,8 @@ class _MoviePageState extends State<MoviePage>
       setState(() {
         var item = allCategoryLists[pageNum];
         categoryList.add(CategoryComponent(
-          category: item["category"],
-          classify: item["classify"],
+          category: item.category,
+          classify: item.classify,
         ));
       });
     }

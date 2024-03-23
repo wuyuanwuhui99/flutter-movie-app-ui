@@ -132,7 +132,7 @@ class MusicModel extends ClassMusicParamsModel{
     };
   }
 
-  static String stringigy(MusicModel musicModel) {
+  static String stringify(MusicModel musicModel) {
     return json.encode(MusicModel.toMap(musicModel));
   }
 }

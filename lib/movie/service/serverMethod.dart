@@ -43,11 +43,12 @@ Future<ResponseModel<dynamic>> getKeyWordService(String classify) async {
 }
 
 //按classify大类查询所有catory小类
-Future<ResponseModel<List>> getAllCategoryByClassifyService(
+Future<ResponseModel<List<Map>>> getAllCategoryByClassifyService(
     String classify) async {
   try {
     Response response = await dio.get(servicePath['getAllCategoryByClassify'],
         queryParameters: {"classify": classify});
+    print(response.data.toString());
     return ResponseModel.fromJson(response.data);
   } catch (e) {
     print('ERROR:======>${e}');

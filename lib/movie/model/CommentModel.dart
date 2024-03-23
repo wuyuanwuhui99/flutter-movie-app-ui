@@ -3,7 +3,7 @@ class CommentModel{
   String content;//评论内容
   int parentId;//父节点id
   int topId;//顶级节点id
-  int movieId;//影片id
+  int relationId;//影片id
   String createTime;//创建时间
   String updateTime;//更新时间
   int replyCount;//回复数量
@@ -20,7 +20,7 @@ class CommentModel{
     this.content,
     this.parentId,
     this.topId,
-    this.movieId,
+    this.relationId,
     this.createTime,
     this.updateTime,
     this.replyCount,
@@ -39,7 +39,7 @@ class CommentModel{
         content:json['content'],
         parentId:json['parentId'],
         topId:json['topId'],
-        movieId:json['movieId'],
+        relationId:json['relationId'],
         createTime:json['createTime'],
         updateTime:json['updateTime'],
         replyCount:json['replyCount'],
@@ -59,7 +59,7 @@ class CommentModel{
       'content':content,
       'parentId':parentId,
       'topId':topId,
-      'movieId':movieId,
+      'relationId':relationId,
       'createTime':createTime,
       'updateTime':updateTime,
       'replyCount':replyCount,
