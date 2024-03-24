@@ -18,15 +18,14 @@ class MovieDetailModel {
   String createTime; //创建时间
   String localImg; //本地图片
   String label; //标签
-  String originalHref; //源地址
   String description; //简单描述
-  String targetHref; //链接地址
   String useStatus; //0代表未使用，1表示正在使用，是banner和carousel图的才有
   double score; //评分
   String category; //类目，值为banner首屏，carousel：滚动轮播
   String ranks; //排名
-  String userId; //用户名，这这个表不需要，为了跟记录叫和收藏表的结构一致
   String doubanUrl; //对应豆瓣网的地址
+  String duration;// 时长
+  String privilegeId;// 权限
   MovieDetailModel(
       {this.id,
       this.movieId,
@@ -47,14 +46,11 @@ class MovieDetailModel {
       this.createTime,
       this.localImg,
       this.label,
-      this.originalHref,
       this.description,
-      this.targetHref,
       this.useStatus,
       this.score,
       this.category,
       this.ranks,
-      this.userId,
       this.doubanUrl});
 
   //工厂模式-用这种模式可以省略New关键字
@@ -79,14 +75,11 @@ class MovieDetailModel {
         createTime: json["createTime"].toString(),
         localImg: json["localImg"],
         label: json["label"],
-        originalHref: json["originalHref"],
         description: json["description"],
-        targetHref: json["targetHref"],
         useStatus: json["useStatus"],
         score: json["score"],
         category: json["category"],
         ranks: json["ranks"],
-        userId: json["userId"],
         doubanUrl: json["doubanUrl"]);
   }
 
@@ -111,14 +104,11 @@ class MovieDetailModel {
       'createTime': createTime, //创建时间
       'localImg': localImg, //本地图片
       'label': label, //标签
-      'originalHref': originalHref, //源地址
       'description': description, //简单描述
-      'targetHref': targetHref, //链接地址
       'useStatus': useStatus, //0代表未使用，1表示正在使用，是banner和carousel图的才有
       'score': score, //评分
       'category': category, //类目，值为banner首屏，carousel：滚动轮播
       'ranks': ranks, //排名
-      'userId': userId, //用户名，这这个表不需要，为了跟记录叫和收藏表的结构一致
       'doubanUrl': doubanUrl //对应豆瓣网的地址
     };
   }

@@ -9,6 +9,7 @@ import '../component/CategoryComponent.dart';
 import '../component/SwiperComponent.dart';
 import '../../theme/ThemeStyle.dart';
 import '../../theme/ThemeSize.dart';
+import '../model/CategoryModel.dart';
 
 class VideoPage extends StatefulWidget {
   VideoPage({Key key}) : super(key: key);
@@ -24,7 +25,7 @@ class _VideoPageState extends State<VideoPage>
 
   List<Widget> categoryList = [];
 
-  List<Map> allCategoryLists = [];
+  List<CategoryModel> allCategoryLists = [];
 
   int pageNum = 1;
 
@@ -32,12 +33,14 @@ class _VideoPageState extends State<VideoPage>
   void initState() {
     super.initState();
     getAllCategoryByClassifyService("电视剧").then((res) {
-      allCategoryLists = res.data; // 顶部轮播组件数
+      allCategoryLists = res.data.map((element) {
+        return CategoryModel.fromJson(element);
+      }); // 顶部轮播组件数
       setState(() {
         allCategoryLists.sublist(0, 2).forEach((item) {
           categoryList.add(CategoryComponent(
-            category: item["category"],
-            classify: item["classify"],
+            category: item.category,
+            classify: item.classify,
           ));
         });
       });
@@ -49,8 +52,8 @@ class _VideoPageState extends State<VideoPage>
       setState(() {
         var item = allCategoryLists[pageNum];
         categoryList.add(CategoryComponent(
-          category: item["category"],
-          classify: item["classify"],
+          category: item.category,
+          classify: item.classify,
         ));
       });
     }
