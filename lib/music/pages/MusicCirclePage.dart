@@ -98,22 +98,18 @@ class _MusicCirclePageState extends State<MusicCirclePage>
                             child: Image.network(
                           //从全局的provider中获取用户信息
                           HOST + circleModel.musicCover,
-                          height: ThemeSize.bigAvater,
-                          width: ThemeSize.bigAvater,
+                          height: ThemeSize.middleAvater,
+                          width: ThemeSize.middleAvater,
                           fit: BoxFit.cover,
                         )),
                         SizedBox(width: ThemeSize.containerPadding),
-                        Column(children: [
-                          Text(circleModel.musicSongName),
-                          SizedBox(height: ThemeSize.smallMargin),
-                          Text(circleModel.musicAuthorName,
-                              style: TextStyle(color: ThemeColors.disableColor))
-                        ]),
+                        Text(
+                            '${circleModel.musicSongName} - ${circleModel.musicAuthorName}'),
                         Expanded(flex: 1, child: SizedBox()),
                         Image.asset("lib/assets/images/icon-music-play.png",
                             width: ThemeSize.smallIcon,
                             height: ThemeSize.smallIcon),
-                        SizedBox(width: ThemeSize.minPlayIcon / 3)
+                        SizedBox(width: ThemeSize.containerPadding),
                       ],
                     ),
                   ),
@@ -122,8 +118,47 @@ class _MusicCirclePageState extends State<MusicCirclePage>
                     Text(formatTime(circleModel.createTime),
                         style: TextStyle(color: ThemeColors.disableColor)),
                     Expanded(child: SizedBox(), flex: 1),
-                    Image.asset("lib/assets/images/icon-music-menu.png",
-                        width: ThemeSize.smallIcon, height: ThemeSize.smallIcon)
+                    PopupMenuButton(
+                        itemBuilder: (BuildContext context) {
+                          return <PopupMenuEntry<String>>[
+                            PopupMenuItem(
+                                value: '赞',
+                                child: Row(children: [
+                                  Image.asset(
+                                      "lib/assets/images/icon_like_white.png",
+                                      width: ThemeSize.smallIcon,
+                                      height: ThemeSize.smallIcon),
+                                  SizedBox(width: ThemeSize.smallMargin),
+                                  Text(
+                                    '赞',
+                                    style: TextStyle(
+                                        color: ThemeColors.colorWhite),
+                                  )
+                                ])),
+                            PopupMenuItem(
+                                value: '评论',
+                                child: Row(
+                                  children: [
+                                    Image.asset(
+                                        "lib/assets/images/icon_like_white.png",
+                                        width: ThemeSize.smallIcon,
+                                        height: ThemeSize.smallIcon),
+                                    SizedBox(width: ThemeSize.smallMargin),
+                                    Text(
+                                      '评论',
+                                      style: TextStyle(
+                                          color: ThemeColors.colorWhite),
+                                    )
+                                  ],
+                                )),
+                          ];
+                        },
+                        child: Image.asset(
+                            "lib/assets/images/icon-music-menu.png",
+                            width: ThemeSize.smallIcon,
+                            height: ThemeSize.smallIcon)),
+                    // Image.asset("lib/assets/images/icon-music-menu.png",
+                    //     width: ThemeSize.smallIcon, height: ThemeSize.smallIcon)
                   ]),
                   SizedBox(
                       height: circleModel.circleLikes.length > 0
@@ -169,13 +204,16 @@ class _MusicCirclePageState extends State<MusicCirclePage>
             flex: 1,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
-              children: [SizedBox(height: ThemeSize.miniMargin),Text(
-                circleLikes.map((item) => item.username).toList().join("、"),
-                style: TextStyle(color: ThemeColors.blueColor),
-                softWrap: false,
-                maxLines: 5,
-                overflow: TextOverflow.ellipsis)],)
-    )
+              children: [
+                SizedBox(height: ThemeSize.miniMargin),
+                Text(
+                    circleLikes.map((item) => item.username).toList().join("、"),
+                    style: TextStyle(color: ThemeColors.blueColor),
+                    softWrap: false,
+                    maxLines: 5,
+                    overflow: TextOverflow.ellipsis)
+              ],
+            ))
       ],
     );
   }
@@ -192,7 +230,8 @@ class _MusicCirclePageState extends State<MusicCirclePage>
       List<CommentModel> topComments =
           circleComments.where((element) => element.topId == null).toList();
       return Column(
-          children: buildCircleCommentItems(topComments,circleComments, circleLikes,true));
+          children: buildCircleCommentItems(
+              topComments, circleComments, circleLikes, true));
     } else {
       return SizedBox();
     }
@@ -201,21 +240,28 @@ class _MusicCirclePageState extends State<MusicCirclePage>
   List<Widget> buildCircleCommentItems(
       List<CommentModel> circleComments,
       List<CommentModel> allCircleComments,
-      List<CircleLikeModel> circleLikes,bool isTopComment) {
-    if(circleComments.length == 0)return [];
+      List<CircleLikeModel> circleLikes,
+      bool isTopComment) {
+    if (circleComments.length == 0) return [];
     List<Widget> circleCommentWidget = [
-      SizedBox(height: (circleLikes.length > 0 || !isTopComment) ? ThemeSize.containerPadding : 0)
+      SizedBox(
+          height: (circleLikes.length > 0 || !isTopComment)
+              ? ThemeSize.containerPadding
+              : 0)
     ];
     circleComments.forEach((circleComment) => {
-          circleCommentWidget.add(Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
+          circleCommentWidget
+              .add(Row(crossAxisAlignment: CrossAxisAlignment.start, children: [
             ClipOval(
                 child: Image.network(
               //从全局的provider中获取用户信息
               HOST + circleComment.avater,
-              height: isTopComment ? ThemeSize.middleAvater : ThemeSize.middleAvater/2,
-              width: isTopComment ? ThemeSize.middleAvater : ThemeSize.middleAvater/2,
+              height: isTopComment
+                  ? ThemeSize.middleAvater
+                  : ThemeSize.middleAvater / 2,
+              width: isTopComment
+                  ? ThemeSize.middleAvater
+                  : ThemeSize.middleAvater / 2,
               fit: BoxFit.cover,
             )),
             SizedBox(width: ThemeSize.smallMargin),
@@ -223,13 +269,22 @@ class _MusicCirclePageState extends State<MusicCirclePage>
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
-                  Text(circleComment.replyUserName != null ? '${circleComment.username}▶${circleComment.replyUserName}' : circleComment.username,
+                  Text(
+                      circleComment.replyUserName != null
+                          ? '${circleComment.username}▶${circleComment.replyUserName}'
+                          : circleComment.username,
                       style: TextStyle(color: ThemeColors.subTitle)),
                   SizedBox(height: ThemeSize.smallMargin),
                   Text(circleComment.content),
                   SizedBox(height: ThemeSize.smallMargin),
-                  Text(formatTime(circleComment.createTime),style: TextStyle(color: ThemeColors.subTitle)),
-                  ... buildCircleCommentItems(findSubCommentsByTopId(allCircleComments, circleComment.id),[],[],false)
+                  Text(formatTime(circleComment.createTime),
+                      style: TextStyle(color: ThemeColors.subTitle)),
+                  ...buildCircleCommentItems(
+                      findSubCommentsByTopId(
+                          allCircleComments, circleComment.id),
+                      [],
+                      [],
+                      false)
                 ])
           ]))
         });
