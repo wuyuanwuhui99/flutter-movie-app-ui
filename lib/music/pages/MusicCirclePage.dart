@@ -118,47 +118,8 @@ class _MusicCirclePageState extends State<MusicCirclePage>
                     Text(formatTime(circleModel.createTime),
                         style: TextStyle(color: ThemeColors.disableColor)),
                     Expanded(child: SizedBox(), flex: 1),
-                    PopupMenuButton(
-                        itemBuilder: (BuildContext context) {
-                          return <PopupMenuEntry<String>>[
-                            PopupMenuItem(
-                                value: '赞',
-                                child: Row(children: [
-                                  Image.asset(
-                                      "lib/assets/images/icon_like_white.png",
-                                      width: ThemeSize.smallIcon,
-                                      height: ThemeSize.smallIcon),
-                                  SizedBox(width: ThemeSize.smallMargin),
-                                  Text(
-                                    '赞',
-                                    style: TextStyle(
-                                        color: ThemeColors.colorWhite),
-                                  )
-                                ])),
-                            PopupMenuItem(
-                                value: '评论',
-                                child: Row(
-                                  children: [
-                                    Image.asset(
-                                        "lib/assets/images/icon_like_white.png",
-                                        width: ThemeSize.smallIcon,
-                                        height: ThemeSize.smallIcon),
-                                    SizedBox(width: ThemeSize.smallMargin),
-                                    Text(
-                                      '评论',
-                                      style: TextStyle(
-                                          color: ThemeColors.colorWhite),
-                                    )
-                                  ],
-                                )),
-                          ];
-                        },
-                        child: Image.asset(
-                            "lib/assets/images/icon-music-menu.png",
-                            width: ThemeSize.smallIcon,
-                            height: ThemeSize.smallIcon)),
-                    // Image.asset("lib/assets/images/icon-music-menu.png",
-                    //     width: ThemeSize.smallIcon, height: ThemeSize.smallIcon)
+                    Image.asset("lib/assets/images/icon-music-menu.png",
+                        width: ThemeSize.smallIcon, height: ThemeSize.smallIcon)
                   ]),
                   SizedBox(
                       height: circleModel.circleLikes.length > 0
