@@ -30,4 +30,6 @@ class ThemeSize {
   static double childAspectRatio = 1.6;// 网格布局宽高比例
   static int pageSize = 20;// 每页显示大小
   static double minPlayIcon = 80;// 音乐播放器圈圈大小
+  static double menuWidth = 180;// 弹出点赞和评论菜单的宽度
+  static double menuHeight = 40;// 弹出点赞和评论菜单的高度
 }

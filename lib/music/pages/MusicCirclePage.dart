@@ -28,6 +28,7 @@ class _MusicCirclePageState extends State<MusicCirclePage>
   final int pageSize = 10;
   final List<Widget> circleWidgeList = [];
   int index = 0;
+  OverlayEntry overlayEntry;
 
   @override
   void initState() {
@@ -50,6 +51,113 @@ class _MusicCirclePageState extends State<MusicCirclePage>
 
   String getLikeUserName(List<CircleLikeModel> circleLikeModelList) {
     return circleLikeModelList.map((item) => item.username).toList().join(",");
+  }
+
+  ///@author: wuwenqiang
+  ///@description: 点击点赞和评论的弹出图标
+  /// @date: 2024-03-27 00:35
+  onTapMenu(CircleModel circleModel) {
+    if (overlayEntry != null) {
+      overlayEntry.remove();
+    }
+    overlayEntry = new OverlayEntry(builder: (context) {
+      RenderBox renderBox = circleModel.key.currentContext?.findRenderObject();
+      //获取当前屏幕位置
+      Offset offset = renderBox.localToGlobal(Offset.zero);
+      return Positioned(
+          top: 0,
+          left: 0,
+          bottom: 0,
+          right: 0,
+          child: GestureDetector(
+            onTap: () {},
+            child: Stack(
+              children: [
+                Positioned(
+                    top: offset.dy - ThemeSize.smallIcon / 2,
+                    left: offset.dx -
+                        ThemeSize.menuWidth -
+                        ThemeSize.smallMargin,
+                    child: buildLikeMenu())
+              ],
+            ),
+          ));
+    });
+
+    //插入到 Overlay中显示 OverlayEntry
+    Overlay.of(context).insert(overlayEntry);
+  }
+
+  ///@author: wuwenqiang
+  ///@description: 创建弹出点赞和评论选项框
+  /// @date: 2024-03-27 00:35
+  Widget buildLikeMenu() {
+    return Container(
+      width: ThemeSize.menuWidth,
+      height: ThemeSize.menuHeight,
+      decoration: BoxDecoration(
+          borderRadius:
+              BorderRadius.all(Radius.circular(ThemeSize.middleRadius)),
+          color: ThemeColors.subTitle),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Expanded(
+              flex: 1,
+              child: Padding(
+                  padding: EdgeInsets.only(
+                      top: ThemeSize.smallMargin,
+                      bottom: ThemeSize.smallMargin),
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Image.asset(
+                        'lib/assets/images/icon_like_white.png',
+                        width: ThemeSize.smallIcon,
+                        height: ThemeSize.smallIcon,
+                      ),
+                      SizedBox(width: ThemeSize.smallMargin),
+                      Text(
+                        '赞',
+                        style: TextStyle(
+                            decoration: TextDecoration.none,
+                            fontSize: ThemeSize.smallFontSize,
+                            color: ThemeColors.colorWhite,
+                            fontWeight: FontWeight.normal),
+                      )
+                    ],
+                  ))),
+          Expanded(
+              flex: 1,
+              child: Padding(
+                  padding: EdgeInsets.only(
+                      top: ThemeSize.smallMargin,
+                      bottom: ThemeSize.smallMargin),
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Image.asset(
+                        'lib/assets/images/icon_comment_white.png',
+                        width: ThemeSize.smallIcon,
+                        height: ThemeSize.smallIcon,
+                      ),
+                      SizedBox(width: ThemeSize.smallMargin),
+                      Text(
+                        '评论',
+                        style: TextStyle(
+                            decoration: TextDecoration.none,
+                            fontSize: ThemeSize.smallFontSize,
+                            color: ThemeColors.colorWhite,
+                            fontWeight: FontWeight.normal),
+                      )
+                    ],
+                  )))
+        ],
+      ),
+    );
   }
 
   // 音乐圈列表项渲染
@@ -118,8 +226,16 @@ class _MusicCirclePageState extends State<MusicCirclePage>
                     Text(formatTime(circleModel.createTime),
                         style: TextStyle(color: ThemeColors.disableColor)),
                     Expanded(child: SizedBox(), flex: 1),
-                    Image.asset("lib/assets/images/icon-music-menu.png",
-                        width: ThemeSize.smallIcon, height: ThemeSize.smallIcon)
+                    InkWell(
+                      key: circleModel.key,
+                      child: Image.asset(
+                          "lib/assets/images/icon-music-menu.png",
+                          width: ThemeSize.smallIcon,
+                          height: ThemeSize.smallIcon),
+                      onTap: () {
+                        onTapMenu(circleModel);
+                      },
+                    )
                   ]),
                   SizedBox(
                       height: circleModel.circleLikes.length > 0

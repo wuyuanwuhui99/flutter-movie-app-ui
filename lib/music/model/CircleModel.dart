@@ -1,3 +1,5 @@
+import 'package:flutter/cupertino.dart';
+
 import 'CircleLikeModel.dart';
 import '../../movie/model/CommentModel.dart';
 class CircleModel{
@@ -33,6 +35,7 @@ class CircleModel{
   String movieScore;// 电影得分
   List<CircleLikeModel> circleLikes;
   List<CommentModel> circleComments;
+  GlobalKey key;
 
   CircleModel({
     this.id,
@@ -66,7 +69,8 @@ class CircleModel{
     this.movieLocalImg,
     this.movieScore,
     this.circleLikes,
-    this.circleComments
+    this.circleComments,
+    this.key
   });
   //工厂模式-用这种模式可以省略New关键字
   factory CircleModel.fromJson(dynamic json){
@@ -105,8 +109,9 @@ class CircleModel{
           return CircleLikeModel.fromJson(item);
         }).toList(),
         circleComments:(json["circleComments"] as List).cast().map((item) {
-        return CommentModel.fromJson(item);
-      }).toList(),
+          return CommentModel.fromJson(item);
+        }).toList(),
+        key:GlobalKey()
     );
   }
 }
