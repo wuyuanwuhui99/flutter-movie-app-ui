@@ -1,5 +1,7 @@
 import 'dart:async';
 import 'package:dio/dio.dart';
+import 'package:movie/music/model/CircleLikeModel.dart';
+import 'package:movie/music/model/CircleModel.dart';
 import '../model/MusicModel.dart';
 import '../api/api.dart';
 import '../../utils/HttpUtil .dart';
@@ -200,6 +202,32 @@ Future<ResponseModel<List>> getSingerCategoryService() async {
   try {
     Response response = await dio.get(servicePath['getSingerCategory']);
     return ResponseModel<List>.fromJson(response.data);
+  } catch (e) {
+    print('ERROR:======>${e}');
+    return null;
+  }
+}
+
+///@author: wuwenqiang
+///@description: 点赞
+/// @date: 2024-3-28 22:10
+Future<ResponseModel> saveLikeService(CircleLikeModel circleLikeModel) async {
+  try {
+    Response response = await dio.post(servicePath['saveLike'],data:CircleLikeModel.toMap(circleLikeModel));
+    return ResponseModel.fromJson(response.data);
+  } catch (e) {
+    print('ERROR:======>${e}');
+    return null;
+  }
+}
+
+///@author: wuwenqiang
+///@description: 点赞
+/// @date: 2024-3-28 22:10
+Future<ResponseModel<int>> deleteLikeService(int relationId,String type) async {
+  try {
+    Response response = await dio.delete('${servicePath['deleteLike']}?relationId=${relationId.toString()}&type=${type.toString()}');
+    return ResponseModel<int>.fromJson(response.data);
   } catch (e) {
     print('ERROR:======>${e}');
     return null;

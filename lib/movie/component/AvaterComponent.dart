@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:movie/router/index.dart';
 import '../../config/common.dart';
 import '../provider/UserInfoProvider.dart';
-import '../pages/MovieUserPage.dart';
 import 'package:provider/provider.dart';
 
 /*-----------------------头像组件------------------------*/

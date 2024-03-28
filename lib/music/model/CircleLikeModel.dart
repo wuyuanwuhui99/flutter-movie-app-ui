@@ -1,6 +1,7 @@
 class CircleLikeModel{
   int id;
-  int circleId;// 朋友圈id
+  int relationId;// 朋友圈id
+  String type;// 类型
   String userId;// 用户id
   String username;// 用户名称
   String createTime;// 创建时间
@@ -8,7 +9,8 @@ class CircleLikeModel{
 
   CircleLikeModel({
     this.id,
-    this.circleId,
+    this.type,
+    this.relationId,
     this.userId,
     this.username,
     this.createTime,
@@ -19,11 +21,25 @@ class CircleLikeModel{
   factory CircleLikeModel.fromJson(dynamic json){
     return CircleLikeModel(
         id: json["id"],
-        circleId: json["circleId"],
+        type: json['type'],
+        relationId: json["relationId"],
         userId: json["userId"],
         username: json["username"],
         createTime: json["createTime"],
         updateTime: json["updateTime"]
     );
+  }
+
+  //工厂模式-用这种模式可以省略New关键字
+  static Map toMap(CircleLikeModel circleLikeModel){
+    return {
+      "id": circleLikeModel.id,
+      "type": circleLikeModel.type,
+      "relationId": circleLikeModel.relationId,
+      "userId": circleLikeModel.userId,
+      "username": circleLikeModel.username,
+      "createTime": circleLikeModel.createTime,
+      "updateTime": circleLikeModel.updateTime
+    };
   }
 }
