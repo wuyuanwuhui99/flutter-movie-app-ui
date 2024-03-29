@@ -38,6 +38,14 @@ class _MusicCirclePageState extends State<MusicCirclePage>
     getCircleWidgetListByType();
   }
 
+  @override
+  void dispose(){
+    if(overlayEntry != null){
+      overlayEntry.remove();
+      overlayEntry = null;
+    }
+  }
+
   void getCircleWidgetListByType() {
     getCircleListByTypeService('music', pageNum, pageSize).then((res) {
       setState(() {
