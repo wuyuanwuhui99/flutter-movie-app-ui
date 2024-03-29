@@ -28,10 +28,9 @@ class _MusicCirclePageState extends State<MusicCirclePage>
   int pageNum = 1;
   int total = 0;
   final int pageSize = 10;
-  final List<Widget> circleWidgeList = [];
-  int index = 0;
+  final List<CircleModel> circleList = [];
   OverlayEntry overlayEntry;
-  CircleModel circleModel;// 当前点赞或评论的动态
+  CircleModel circleModel;
 
   @override
   void initState() {
@@ -44,9 +43,7 @@ class _MusicCirclePageState extends State<MusicCirclePage>
       setState(() {
         total = res.total;
         res.data.forEach((item) {
-          CircleModel circleModel = CircleModel.fromJson(item);
-          circleWidgeList.add(buildCircleItem(circleModel, index));
-          index++;
+          circleList.add(CircleModel.fromJson(item));
         });
       });
     });
@@ -65,7 +62,7 @@ class _MusicCirclePageState extends State<MusicCirclePage>
       overlayEntry.remove();
     }
     overlayEntry = new OverlayEntry(builder: (context) {
-      RenderBox renderBox = mCircleModel.key.currentContext?.findRenderObject();
+      RenderBox renderBox = circleModel.key.currentContext?.findRenderObject();
       //获取当前屏幕位置
       Offset offset = renderBox.localToGlobal(Offset.zero);
       return Positioned(
@@ -95,8 +92,9 @@ class _MusicCirclePageState extends State<MusicCirclePage>
   ///@description: 创建弹出点赞和评论选项框
   /// @date: 2024-03-27 00:35
   Widget buildLikeMenu() {
-    int index = circleModel.circleLikes.indexWhere((CircleLikeModel element){
-      return element.userId == Provider.of<UserInfoProvider>(context).userInfo.userId;
+    int circleIndex = circleModel.circleLikes.indexWhere((CircleLikeModel element) {
+      return element.userId ==
+          Provider.of<UserInfoProvider>(context).userInfo.userId;
     });
     bool loading = false;
     return Container(
@@ -112,17 +110,18 @@ class _MusicCirclePageState extends State<MusicCirclePage>
         children: [
           Expanded(
               flex: 1,
-              child:
-                GestureDetector(
+              child: GestureDetector(
                   onTap: () {
-                    if(loading)return;
-                    if(index == -1){// 如果已经赞过，点击之后取消点赞
-                      CircleLikeModel likeMode  = CircleLikeModel(
-                          type:'music_circle',
-                          relationId: circleModel.id
-                      );
-                      saveLikeService(likeMode).then((res){
-                        circleModel.circleLikes.add(CircleLikeModel.fromJson(res.data));
+                    if (loading) return;
+                    if (circleIndex == -1) {
+                      // 如果已经赞过，点击之后取消点赞
+                      CircleLikeModel likeMode = CircleLikeModel(
+                          type: 'music_circle',
+                          relationId: circleModel.id);
+                      saveLikeService(likeMode).then((res) {
+                        setState(() {
+                          circleModel.circleLikes.add(CircleLikeModel.fromJson(res.data));
+                        });
                         overlayEntry.remove();
                         overlayEntry = null;
                         loading = false;
@@ -131,10 +130,14 @@ class _MusicCirclePageState extends State<MusicCirclePage>
                         overlayEntry = null;
                         loading = false;
                       });
-                    }else{// 如果已经赞过，点击之后取消点赞
-                      deleteLikeService(circleModel.id, "music_circle").then((res){
-                        print(res);
-                        circleModel.circleLikes.removeAt(index);
+                    } else {
+                      // 如果已经赞过，点击之后取消点赞
+                      deleteLikeService(circleModel.id, "music_circle")
+                          .then((res) {
+                            setState(() {
+                              circleModel.circleLikes.removeAt(circleIndex);
+                            });
+
                         overlayEntry.remove();
                         overlayEntry = null;
                         loading = false;
@@ -143,8 +146,7 @@ class _MusicCirclePageState extends State<MusicCirclePage>
                       });
                     }
                   },
-                  child:
-                  Padding(
+                  child: Padding(
                       padding: EdgeInsets.only(
                           top: ThemeSize.smallMargin,
                           bottom: ThemeSize.smallMargin),
@@ -159,7 +161,7 @@ class _MusicCirclePageState extends State<MusicCirclePage>
                           ),
                           SizedBox(width: ThemeSize.smallMargin),
                           Text(
-                            index != -1 ? '取消赞' :'赞',
+                            circleIndex != -1 ? '取消赞' : '赞',
                             style: TextStyle(
                                 decoration: TextDecoration.none,
                                 fontSize: ThemeSize.smallFontSize,
@@ -167,15 +169,11 @@ class _MusicCirclePageState extends State<MusicCirclePage>
                                 fontWeight: FontWeight.normal),
                           )
                         ],
-                      ))
-              )
-          ),
+                      )))),
           Expanded(
               flex: 1,
-              child:
-              GestureDetector(
-                  child:
-                  Padding(
+              child: GestureDetector(
+                  child: Padding(
                       padding: EdgeInsets.only(
                           top: ThemeSize.smallMargin,
                           bottom: ThemeSize.smallMargin),
@@ -198,100 +196,102 @@ class _MusicCirclePageState extends State<MusicCirclePage>
                                 fontWeight: FontWeight.normal),
                           )
                         ],
-                      )))
-    )
+                      ))))
         ],
       ),
     );
   }
 
   // 音乐圈列表项渲染
-  Widget buildCircleItem(CircleModel circleModel, int index) {
-    return Container(
-      decoration: ThemeStyle.boxDecoration,
-      margin: ThemeStyle.margin,
-      width: MediaQuery.of(context).size.width - ThemeSize.containerPadding * 2,
-      padding: ThemeStyle.padding,
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          ClipOval(
-              child: Image.network(
-            //从全局的provider中获取用户信息
-            HOST + circleModel.useravater,
-            height: ThemeSize.middleAvater,
-            width: ThemeSize.middleAvater,
-            fit: BoxFit.cover,
-          )),
-          SizedBox(width: ThemeSize.containerPadding),
-          Expanded(
-              flex: 1,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(circleModel.username,
-                      style: TextStyle(
-                          color: ThemeColors.blueColor,
-                          fontWeight: FontWeight.bold)),
-                  SizedBox(height: ThemeSize.smallMargin),
-                  Text(circleModel.content,
-                      softWrap: false,
-                      maxLines: 5,
-                      overflow: TextOverflow.ellipsis),
-                  SizedBox(height: ThemeSize.containerPadding),
-                  Container(
-                    decoration: BoxDecoration(
-                      color: ThemeColors.colorBg,
-                      borderRadius: BorderRadius.all(
-                          Radius.circular(ThemeSize.minPlayIcon)),
+  List<Widget> buildCircleList() {
+    return circleList.map((CircleModel circleModel) {
+      return Container(
+        decoration: ThemeStyle.boxDecoration,
+        margin: ThemeStyle.margin,
+        width:
+            MediaQuery.of(context).size.width - ThemeSize.containerPadding * 2,
+        padding: ThemeStyle.padding,
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            ClipOval(
+                child: Image.network(
+              //从全局的provider中获取用户信息
+              HOST + circleModel.useravater,
+              height: ThemeSize.middleAvater,
+              width: ThemeSize.middleAvater,
+              fit: BoxFit.cover,
+            )),
+            SizedBox(width: ThemeSize.containerPadding),
+            Expanded(
+                flex: 1,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(circleModel.username,
+                        style: TextStyle(
+                            color: ThemeColors.blueColor,
+                            fontWeight: FontWeight.bold)),
+                    SizedBox(height: ThemeSize.smallMargin),
+                    Text(circleModel.content,
+                        softWrap: false,
+                        maxLines: 5,
+                        overflow: TextOverflow.ellipsis),
+                    SizedBox(height: ThemeSize.containerPadding),
+                    Container(
+                      decoration: BoxDecoration(
+                        color: ThemeColors.colorBg,
+                        borderRadius: BorderRadius.all(
+                            Radius.circular(ThemeSize.minPlayIcon)),
+                      ),
+                      child: Row(
+                        children: [
+                          ClipOval(
+                              child: Image.network(
+                            //从全局的provider中获取用户信息
+                            HOST + circleModel.musicCover,
+                            height: ThemeSize.middleAvater,
+                            width: ThemeSize.middleAvater,
+                            fit: BoxFit.cover,
+                          )),
+                          SizedBox(width: ThemeSize.containerPadding),
+                          Text(
+                              '${circleModel.musicSongName} - ${circleModel.musicAuthorName}'),
+                          Expanded(flex: 1, child: SizedBox()),
+                          Image.asset("lib/assets/images/icon-music-play.png",
+                              width: ThemeSize.smallIcon,
+                              height: ThemeSize.smallIcon),
+                          SizedBox(width: ThemeSize.containerPadding),
+                        ],
+                      ),
                     ),
-                    child: Row(
-                      children: [
-                        ClipOval(
-                            child: Image.network(
-                          //从全局的provider中获取用户信息
-                          HOST + circleModel.musicCover,
-                          height: ThemeSize.middleAvater,
-                          width: ThemeSize.middleAvater,
-                          fit: BoxFit.cover,
-                        )),
-                        SizedBox(width: ThemeSize.containerPadding),
-                        Text(
-                            '${circleModel.musicSongName} - ${circleModel.musicAuthorName}'),
-                        Expanded(flex: 1, child: SizedBox()),
-                        Image.asset("lib/assets/images/icon-music-play.png",
+                    SizedBox(height: ThemeSize.containerPadding),
+                    Row(children: [
+                      Text(formatTime(circleModel.createTime),
+                          style: TextStyle(color: ThemeColors.disableColor)),
+                      Expanded(child: SizedBox(), flex: 1),
+                      InkWell(
+                        key: circleModel.key,
+                        child: Image.asset(
+                            "lib/assets/images/icon-music-menu.png",
                             width: ThemeSize.smallIcon,
                             height: ThemeSize.smallIcon),
-                        SizedBox(width: ThemeSize.containerPadding),
-                      ],
-                    ),
-                  ),
-                  SizedBox(height: ThemeSize.containerPadding),
-                  Row(children: [
-                    Text(formatTime(circleModel.createTime),
-                        style: TextStyle(color: ThemeColors.disableColor)),
-                    Expanded(child: SizedBox(), flex: 1),
-                    InkWell(
-                      key: circleModel.key,
-                      child: Image.asset(
-                          "lib/assets/images/icon-music-menu.png",
-                          width: ThemeSize.smallIcon,
-                          height: ThemeSize.smallIcon),
-                      onTap: () {
-                        onTapMenu(circleModel);
-                      },
-                    )
-                  ]),
-                  SizedBox(
-                      height: circleModel.circleLikes.length > 0
-                          ? ThemeSize.containerPadding
-                          : 0),
-                  buildCircleLikeAndCommentList(circleModel)
-                ],
-              )),
-        ],
-      ),
-    );
+                        onTap: () {
+                          onTapMenu(circleModel);
+                        },
+                      )
+                    ]),
+                    SizedBox(
+                        height: circleModel.circleLikes.length > 0
+                            ? ThemeSize.containerPadding
+                            : 0),
+                    buildCircleLikeAndCommentList(circleModel)
+                  ],
+                )),
+          ],
+        ),
+      );
+    }).toList();
   }
 
   // 获取每条音乐圈点赞人员
@@ -348,7 +348,7 @@ class _MusicCirclePageState extends State<MusicCirclePage>
   // 评论
   Widget buildCircleCommentList(
       List<CommentModel> circleComments, List<CircleLikeModel> circleLikes) {
-    if (circleComments.length > 0) {
+    if (circleComments.length > 0 || circleLikes.length > 0) {
       List<CommentModel> topComments =
           circleComments.where((element) => element.topId == null).toList();
       return Column(
@@ -415,30 +415,37 @@ class _MusicCirclePageState extends State<MusicCirclePage>
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      width: MediaQuery.of(context).size.width,
-      child: EasyRefresh(
-        footer: MaterialFooter(),
-        onLoad: () async {
-          pageNum++;
-          if(overlayEntry != null)overlayEntry.remove();
-          if (total <= circleWidgeList.length) {
-            Fluttertoast.showToast(
-                msg: "已经到底了",
-                toastLength: Toast.LENGTH_SHORT,
-                gravity: ToastGravity.CENTER,
-                timeInSecForIos: 1,
-                backgroundColor: Colors.blue,
-                textColor: Colors.white,
-                fontSize: ThemeSize.middleFontSize);
-          } else {
-            getCircleWidgetListByType();
+    return GestureDetector(
+        onTap: () {
+          if (overlayEntry != null) {
+            overlayEntry.remove();
+            overlayEntry = null;
           }
         },
-        child: Column(
-          children: circleWidgeList,
-        ),
-      ),
-    );
+        child: Container(
+          width: MediaQuery.of(context).size.width,
+          child: EasyRefresh(
+            footer: MaterialFooter(),
+            onLoad: () async {
+              pageNum++;
+              if (overlayEntry != null) overlayEntry.remove();
+              if (total <= circleList.length) {
+                Fluttertoast.showToast(
+                    msg: "已经到底了",
+                    toastLength: Toast.LENGTH_SHORT,
+                    gravity: ToastGravity.CENTER,
+                    timeInSecForIos: 1,
+                    backgroundColor: Colors.blue,
+                    textColor: Colors.white,
+                    fontSize: ThemeSize.middleFontSize);
+              } else {
+                getCircleWidgetListByType();
+              }
+            },
+            child: Column(
+              children: buildCircleList(),
+            ),
+          ),
+        ));
   }
 }
