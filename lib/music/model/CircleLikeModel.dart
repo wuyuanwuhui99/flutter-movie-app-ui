@@ -31,15 +31,15 @@ class CircleLikeModel{
   }
 
   //工厂模式-用这种模式可以省略New关键字
-  static Map toMap(CircleLikeModel circleLikeModel){
+  Map<String,dynamic> toMap(){
     return {
-      "id": circleLikeModel.id,
-      "type": circleLikeModel.type,
-      "relationId": circleLikeModel.relationId,
-      "userId": circleLikeModel.userId,
-      "username": circleLikeModel.username,
-      "createTime": circleLikeModel.createTime,
-      "updateTime": circleLikeModel.updateTime
+      "id": id,
+      "type": type,
+      "relationId": relationId,
+      "userId": userId,
+      "username": username,
+      "createTime": createTime,
+      "updateTime": updateTime
     };
   }
 }

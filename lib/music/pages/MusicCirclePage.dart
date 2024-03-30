@@ -1,3 +1,5 @@
+import 'dart:html';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_easyrefresh/material_footer.dart';
 import 'package:flutter_easyrefresh/easy_refresh.dart';
@@ -29,9 +31,14 @@ class _MusicCirclePageState extends State<MusicCirclePage>
   int total = 0;
   final int pageSize = 10;
   final List<CircleModel> circleList = [];
-  OverlayEntry overlayEntry;
-  CircleModel circleModel;
-
+  OverlayEntry circleOverlayEntry; // 点赞和评论选项的弹窗
+  OverlayEntry inputOverlayEntry; // 评论输入框的弹窗
+  CircleModel circleModel; // 当前操作的那条点赞和评论框
+  TextEditingController inputController =
+      new TextEditingController(); // 评论框的控制条
+  CommentModel firstCommentModel;// 一级评论
+  CommentModel replyCommentModel;// 回复的评论
+  bool loading = false;
   @override
   void initState() {
     super.initState();
@@ -39,13 +46,16 @@ class _MusicCirclePageState extends State<MusicCirclePage>
   }
 
   @override
-  void dispose(){
-    if(overlayEntry != null){
-      overlayEntry.remove();
-      overlayEntry = null;
+  void dispose() {
+    if (inputOverlayEntry != null) {
+      inputOverlayEntry.remove();
+      inputOverlayEntry = null;
     }
   }
 
+  ///@author: wuwenqiang
+  ///@description: 获取朋友圈动态
+  /// @date: 2024-03-27 00:35
   void getCircleWidgetListByType() {
     getCircleListByTypeService('music', pageNum, pageSize).then((res) {
       setState(() {
@@ -57,6 +67,9 @@ class _MusicCirclePageState extends State<MusicCirclePage>
     });
   }
 
+  ///@author: wuwenqiang
+  ///@description: 获取点赞用户
+  /// @date: 2024-03-27 00:35
   String getLikeUserName(List<CircleLikeModel> circleLikeModelList) {
     return circleLikeModelList.map((item) => item.username).toList().join(",");
   }
@@ -66,10 +79,10 @@ class _MusicCirclePageState extends State<MusicCirclePage>
   /// @date: 2024-03-27 00:35
   onTapMenu(CircleModel mCircleModel) {
     circleModel = mCircleModel;
-    if (overlayEntry != null) {
-      overlayEntry.remove();
+    if (circleOverlayEntry != null) {
+      circleOverlayEntry.remove();
     }
-    overlayEntry = new OverlayEntry(builder: (context) {
+    circleOverlayEntry = new OverlayEntry(builder: (context) {
       RenderBox renderBox = circleModel.key.currentContext?.findRenderObject();
       //获取当前屏幕位置
       Offset offset = renderBox.localToGlobal(Offset.zero);
@@ -86,25 +99,105 @@ class _MusicCirclePageState extends State<MusicCirclePage>
                     top: offset.dy - ThemeSize.smallIcon / 2,
                     left:
                         offset.dx - ThemeSize.menuWidth - ThemeSize.smallMargin,
-                    child: buildLikeMenu())
+                    child: buildMenu())
               ],
             ),
           ));
     });
 
     //插入到 Overlay中显示 OverlayEntry
-    Overlay.of(context).insert(overlayEntry);
+    Overlay.of(context).insert(circleOverlayEntry);
+  }
+
+  ///@author: wuwenqiang
+  ///@description: 创建评论框的弹窗
+  /// @date: 2024-03-30 10:03
+  void buildCommentInputDailog() {
+    if (circleOverlayEntry != null) {
+      circleOverlayEntry.remove();
+      circleOverlayEntry = null;
+    }
+    if (inputOverlayEntry != null) return; // 如果评论框弹窗已经存在，点击其他想回复的评论，不在创建评论框弹窗
+    inputOverlayEntry = new OverlayEntry(builder: (BuildContext context) {
+      return Positioned(
+        bottom: 0,
+        left: 0,
+        right: 0,
+        child: Container(
+            decoration: BoxDecoration(color: ThemeColors.colorWhite),
+            padding: ThemeStyle.padding,
+            child: Row(children: [
+              Expanded(
+                  flex: 1,
+                  child: Material(
+                      child: Container(
+                          height: ThemeSize.middleAvater,
+                          child: TextField(
+                              controller: inputController,
+                              cursorColor: Colors.grey, //设置光标
+                              decoration: InputDecoration(
+                                filled: true,
+                                fillColor: ThemeColors.colorBg,
+                                hintText:
+                                replyCommentModel != null ? "回复${replyCommentModel.username}"
+                                    : (firstCommentModel != null ? "回复${firstCommentModel.username}" : "评论"),
+                                hintStyle: TextStyle(
+                                    fontSize: ThemeSize.smallFontSize,
+                                    color: Colors.grey),
+                                border: OutlineInputBorder(
+                                  borderSide: BorderSide.none,
+                                  borderRadius: BorderRadius.circular(
+                                      ThemeSize.middleAvater), // 圆角的大小
+                                ),
+                                contentPadding: EdgeInsets.only(
+                                    left: ThemeSize.smallMargin),
+                              ))))),
+              SizedBox(width: ThemeSize.containerPadding),
+              Container(
+                height: ThemeSize.middleAvater,
+                child: RaisedButton(
+                  color: Theme.of(context).accentColor,
+                  onPressed: () {
+                    CommentModel mCommentModel = CommentModel(
+                        relationId:circleModel.id,
+                        topId:firstCommentModel != null ? firstCommentModel.id : null,
+                        parentId:replyCommentModel != null ? replyCommentModel.id : null
+                    );
+                    if(loading)return;
+                    loading = true;
+                    insertCommentService(mCommentModel).then((value){
+                      loading = false;
+                      setState(() {
+                        circleModel.circleComments.add(value.data);
+                      });
+                    });
+                  },
+                  child: Text(
+                    '发送',
+                    style: TextStyle(
+                        fontSize: ThemeSize.middleFontSize,
+                        color: Colors.white),
+                  ),
+
+                  ///圆角
+                  shape: RoundedRectangleBorder(
+                      side: BorderSide.none,
+                      borderRadius: BorderRadius.all(
+                          Radius.circular(ThemeSize.bigRadius))),
+                ),
+              )
+            ])),
+      );
+    });
+
+    //插入到 Overlay中显示 OverlayEntry
+    Overlay.of(context).insert(inputOverlayEntry);
   }
 
   ///@author: wuwenqiang
   ///@description: 创建弹出点赞和评论选项框
   /// @date: 2024-03-27 00:35
-  Widget buildLikeMenu() {
-    int circleIndex = circleModel.circleLikes.indexWhere((CircleLikeModel element) {
-      return element.userId ==
-          Provider.of<UserInfoProvider>(context).userInfo.userId;
-    });
-    bool loading = false;
+  Widget buildMenu() {
     return Container(
       width: ThemeSize.menuWidth,
       height: ThemeSize.menuHeight,
@@ -116,98 +209,118 @@ class _MusicCirclePageState extends State<MusicCirclePage>
         crossAxisAlignment: CrossAxisAlignment.center,
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Expanded(
-              flex: 1,
-              child: GestureDetector(
-                  onTap: () {
-                    if (loading) return;
-                    if (circleIndex == -1) {
-                      // 如果已经赞过，点击之后取消点赞
-                      CircleLikeModel likeMode = CircleLikeModel(
-                          type: 'music_circle',
-                          relationId: circleModel.id);
-                      saveLikeService(likeMode).then((res) {
-                        setState(() {
-                          circleModel.circleLikes.add(CircleLikeModel.fromJson(res.data));
-                        });
-                        overlayEntry.remove();
-                        overlayEntry = null;
-                        loading = false;
-                      }).onError((error, stackTrace) {
-                        overlayEntry.remove();
-                        overlayEntry = null;
-                        loading = false;
-                      });
-                    } else {
-                      // 如果已经赞过，点击之后取消点赞
-                      deleteLikeService(circleModel.id, "music_circle")
-                          .then((res) {
-                            setState(() {
-                              circleModel.circleLikes.removeAt(circleIndex);
-                            });
-
-                        overlayEntry.remove();
-                        overlayEntry = null;
-                        loading = false;
-                      }).onError((error, stackTrace) {
-                        loading = false;
-                      });
-                    }
-                  },
-                  child: Padding(
-                      padding: EdgeInsets.only(
-                          top: ThemeSize.smallMargin,
-                          bottom: ThemeSize.smallMargin),
-                      child: Row(
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Image.asset(
-                            'lib/assets/images/icon_like_white.png',
-                            width: ThemeSize.smallIcon,
-                            height: ThemeSize.smallIcon,
-                          ),
-                          SizedBox(width: ThemeSize.smallMargin),
-                          Text(
-                            circleIndex != -1 ? '取消赞' : '赞',
-                            style: TextStyle(
-                                decoration: TextDecoration.none,
-                                fontSize: ThemeSize.smallFontSize,
-                                color: ThemeColors.colorWhite,
-                                fontWeight: FontWeight.normal),
-                          )
-                        ],
-                      )))),
-          Expanded(
-              flex: 1,
-              child: GestureDetector(
-                  child: Padding(
-                      padding: EdgeInsets.only(
-                          top: ThemeSize.smallMargin,
-                          bottom: ThemeSize.smallMargin),
-                      child: Row(
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Image.asset(
-                            'lib/assets/images/icon_comment_white.png',
-                            width: ThemeSize.smallIcon,
-                            height: ThemeSize.smallIcon,
-                          ),
-                          SizedBox(width: ThemeSize.smallMargin),
-                          Text(
-                            '评论',
-                            style: TextStyle(
-                                decoration: TextDecoration.none,
-                                fontSize: ThemeSize.smallFontSize,
-                                color: ThemeColors.colorWhite,
-                                fontWeight: FontWeight.normal),
-                          )
-                        ],
-                      ))))
+          buildLikeMenu(), // 创建点赞选项
+          buildCommentMenu() // 创建评论选项
         ],
       ),
     );
+  }
+
+  ///@author: wuwenqiang
+  ///@description: 创建弹出点赞选项
+  /// @date: 2024-03-30 10:29
+  Widget buildLikeMenu() {
+    int circleIndex =
+        circleModel.circleLikes.indexWhere((CircleLikeModel element) {
+      return element.userId ==
+          Provider.of<UserInfoProvider>(context).userInfo.userId;
+    });
+    bool loading = false;
+    return Expanded(
+        flex: 1,
+        child: GestureDetector(
+            onTap: () {
+              if (loading) return;
+              if (circleIndex == -1) {
+                // 如果已经赞过，点击之后取消点赞
+                CircleLikeModel likeMode = CircleLikeModel(
+                    type: 'music_circle', relationId: circleModel.id);
+                saveLikeService(likeMode).then((res) {
+                  setState(() {
+                    circleModel.circleLikes
+                        .add(CircleLikeModel.fromJson(res.data));
+                  });
+                  // 移除点赞和评论的弹窗
+                  circleOverlayEntry.remove();
+                  circleOverlayEntry = null;
+                  loading = false;
+                }).onError((error, stackTrace) {
+                  // 移除点赞和评论的弹窗
+                  circleOverlayEntry.remove();
+                  circleOverlayEntry = null;
+                  loading = false;
+                });
+              } else {
+                // 如果已经赞过，点击之后取消点赞
+                deleteLikeService(circleModel.id, "music_circle").then((res) {
+                  setState(() {
+                    circleModel.circleLikes.removeAt(circleIndex);
+                  });
+                  // 移除点赞和评论的弹窗
+                  circleOverlayEntry.remove();
+                  circleOverlayEntry = null;
+                  loading = false;
+                }).onError((error, stackTrace) {
+                  loading = false;
+                });
+              }
+            },
+            child: Padding(
+                padding: EdgeInsets.only(
+                    top: ThemeSize.smallMargin, bottom: ThemeSize.smallMargin),
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Image.asset(
+                      'lib/assets/images/icon_like_white.png',
+                      width: ThemeSize.smallIcon,
+                      height: ThemeSize.smallIcon,
+                    ),
+                    SizedBox(width: ThemeSize.smallMargin),
+                    Text(
+                      circleIndex != -1 ? '取消赞' : '赞',
+                      style: TextStyle(
+                          decoration: TextDecoration.none,
+                          fontSize: ThemeSize.smallFontSize,
+                          color: ThemeColors.colorWhite,
+                          fontWeight: FontWeight.normal),
+                    )
+                  ],
+                ))));
+  }
+
+  ///@author: wuwenqiang
+  ///@description: 创建弹出评论选项
+  /// @date: 2024-03-30 10:29
+  Widget buildCommentMenu() {
+    return Expanded(
+        flex: 1,
+        child: GestureDetector(
+            onTap: buildCommentInputDailog, // 显示评论框的弹窗
+            child: Padding(
+                padding: EdgeInsets.only(
+                    top: ThemeSize.smallMargin, bottom: ThemeSize.smallMargin),
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Image.asset(
+                      'lib/assets/images/icon_comment_white.png',
+                      width: ThemeSize.smallIcon,
+                      height: ThemeSize.smallIcon,
+                    ),
+                    SizedBox(width: ThemeSize.smallMargin),
+                    Text(
+                      '评论',
+                      style: TextStyle(
+                          decoration: TextDecoration.none,
+                          fontSize: ThemeSize.smallFontSize,
+                          color: ThemeColors.colorWhite,
+                          fontWeight: FontWeight.normal),
+                    )
+                  ],
+                ))));
   }
 
   // 音乐圈列表项渲染
@@ -361,7 +474,7 @@ class _MusicCirclePageState extends State<MusicCirclePage>
           circleComments.where((element) => element.topId == null).toList();
       return Column(
           children: buildCircleCommentItems(
-              topComments, circleComments, circleLikes, true));
+              topComments, circleComments, circleLikes, null));
     } else {
       return SizedBox();
     }
@@ -371,11 +484,11 @@ class _MusicCirclePageState extends State<MusicCirclePage>
       List<CommentModel> circleComments,
       List<CommentModel> allCircleComments,
       List<CircleLikeModel> circleLikes,
-      bool isTopComment) {
+      CommentModel replyCommentModel) {
     if (circleComments.length == 0) return [];
     List<Widget> circleCommentWidget = [
       SizedBox(
-          height: (circleLikes.length > 0 || !isTopComment)
+          height: (circleLikes.length > 0 || replyCommentModel != null)
               ? ThemeSize.containerPadding
               : 0)
     ];
@@ -386,10 +499,10 @@ class _MusicCirclePageState extends State<MusicCirclePage>
                 child: Image.network(
               //从全局的provider中获取用户信息
               HOST + circleComment.avater,
-              height: isTopComment
+              height: replyCommentModel == null
                   ? ThemeSize.middleAvater
                   : ThemeSize.middleAvater / 2,
-              width: isTopComment
+              width: replyCommentModel == null
                   ? ThemeSize.middleAvater
                   : ThemeSize.middleAvater / 2,
               fit: BoxFit.cover,
@@ -405,7 +518,20 @@ class _MusicCirclePageState extends State<MusicCirclePage>
                           : circleComment.username,
                       style: TextStyle(color: ThemeColors.subTitle)),
                   SizedBox(height: ThemeSize.smallMargin),
-                  Text(circleComment.content),
+                  GestureDetector(
+                    child: Text(circleComment.content),
+                    onTap: () {
+                      setState(() {
+                        if(replyCommentModel == null){// 如果不是二级评论
+                          replyCommentModel = firstCommentModel = circleComment;
+                        }else{// 如果是二级评论
+                          replyCommentModel = circleComment;
+                          firstCommentModel = replyCommentModel;
+                        }
+                        buildCommentInputDailog();
+                      });
+                    },
+                  ),
                   SizedBox(height: ThemeSize.smallMargin),
                   Text(formatTime(circleComment.createTime),
                       style: TextStyle(color: ThemeColors.subTitle)),
@@ -414,7 +540,7 @@ class _MusicCirclePageState extends State<MusicCirclePage>
                           allCircleComments, circleComment.id),
                       [],
                       [],
-                      false)
+                      circleComment)
                 ])
           ]))
         });
@@ -425,9 +551,9 @@ class _MusicCirclePageState extends State<MusicCirclePage>
   Widget build(BuildContext context) {
     return GestureDetector(
         onTap: () {
-          if (overlayEntry != null) {
-            overlayEntry.remove();
-            overlayEntry = null;
+          if (circleOverlayEntry != null) {
+            circleOverlayEntry.remove();
+            circleOverlayEntry = null;
           }
         },
         child: Container(
@@ -436,7 +562,7 @@ class _MusicCirclePageState extends State<MusicCirclePage>
             footer: MaterialFooter(),
             onLoad: () async {
               pageNum++;
-              if (overlayEntry != null) overlayEntry.remove();
+              if (circleOverlayEntry != null) circleOverlayEntry.remove();
               if (total <= circleList.length) {
                 Fluttertoast.showToast(
                     msg: "已经到底了",
