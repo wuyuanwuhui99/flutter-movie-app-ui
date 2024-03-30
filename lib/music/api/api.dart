@@ -14,5 +14,6 @@ const servicePath = {
   'searchMusic': '/service/myMusic/searchMusic',// 音乐搜索
   'getSingerCategory':'/service/myMusic/getSingerCategory',// 获取歌手分类
   'saveLike':'/service/social-getway/saveLike',// 新增点赞
-  'deleteLike': '/service/social-getway/deleteLike'// 删除点赞
+  'deleteLike': '/service/social-getway/deleteLike',// 删除点赞
+  'insertComment':'/service/social-getway/insertComment'// 新增评论
 };

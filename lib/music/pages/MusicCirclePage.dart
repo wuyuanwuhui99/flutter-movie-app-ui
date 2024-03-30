@@ -1,5 +1,3 @@
-import 'dart:html';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_easyrefresh/material_footer.dart';
 import 'package:flutter_easyrefresh/easy_refresh.dart';
@@ -47,6 +45,10 @@ class _MusicCirclePageState extends State<MusicCirclePage>
 
   @override
   void dispose() {
+    if (circleOverlayEntry != null) {
+      circleOverlayEntry.remove();
+      circleOverlayEntry = null;
+    }
     if (inputOverlayEntry != null) {
       inputOverlayEntry.remove();
       inputOverlayEntry = null;
@@ -159,7 +161,9 @@ class _MusicCirclePageState extends State<MusicCirclePage>
                   color: Theme.of(context).accentColor,
                   onPressed: () {
                     CommentModel mCommentModel = CommentModel(
+                        type:"music_circle",
                         relationId:circleModel.id,
+                        content: inputController.text,
                         topId:firstCommentModel != null ? firstCommentModel.id : null,
                         parentId:replyCommentModel != null ? replyCommentModel.id : null
                     );
@@ -168,8 +172,10 @@ class _MusicCirclePageState extends State<MusicCirclePage>
                     insertCommentService(mCommentModel).then((value){
                       loading = false;
                       setState(() {
-                        circleModel.circleComments.add(value.data);
+                        circleModel.circleComments.add(CommentModel.fromJson(value.data));
                       });
+                      inputOverlayEntry.remove();
+                      inputOverlayEntry = null;
                     });
                   },
                   child: Text(
@@ -535,6 +541,7 @@ class _MusicCirclePageState extends State<MusicCirclePage>
                   SizedBox(height: ThemeSize.smallMargin),
                   Text(formatTime(circleComment.createTime),
                       style: TextStyle(color: ThemeColors.subTitle)),
+                  SizedBox(height: ThemeSize.smallMargin),
                   ...buildCircleCommentItems(
                       findSubCommentsByTopId(
                           allCircleComments, circleComment.id),

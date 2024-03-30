@@ -241,12 +241,12 @@ Future<ResponseModel<int>> deleteLikeService(
 ///@author: wuwenqiang
 ///@description: 插入评论
 /// @date: 2024-3-28 22:10
-Future<ResponseModel<CommentModel>> insertCommentService(
+Future<ResponseModel> insertCommentService(
     CommentModel commentModel) async {
   try {
     Response response = await dio.post(servicePath['insertComment'],
         data: commentModel.toMap());
-    return ResponseModel<CommentModel>.fromJson(response.data);
+    return ResponseModel.fromJson(response.data);
   } catch (e) {
     print('ERROR:======>${e}');
     return null;

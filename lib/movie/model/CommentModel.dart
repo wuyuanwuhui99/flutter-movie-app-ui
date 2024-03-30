@@ -1,5 +1,6 @@
 class CommentModel{
   int id;//主键
+  String type;// 类型
   String content;//评论内容
   int parentId;//父节点id
   int topId;//顶级节点id
@@ -17,6 +18,7 @@ class CommentModel{
   List<CommentModel>replyList;
   CommentModel({
     this.id,
+    this.type,
     this.content,
     this.parentId,
     this.topId,
@@ -36,6 +38,7 @@ class CommentModel{
   factory CommentModel.fromJson(dynamic json){
     return CommentModel(
         id:json['id'],
+        type:json['type'],
         content:json['content'],
         parentId:json['parentId'],
         topId:json['topId'],
@@ -56,6 +59,7 @@ class CommentModel{
   Map<String, dynamic> toMap() {
     return {
       'id':id,
+      'type':type,
       'content':content,
       'parentId':parentId,
       'topId':topId,
