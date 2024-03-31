@@ -52,7 +52,9 @@ class CommentModel{
         replyUserId:json['replyUserId'],
         replyUserName:json['replyUserName'],
         replyPageNum:0,
-        replyList:[]
+        replyList: ((json['replyList'] == null ? [] : json['replyList'])as List).map((item){
+          return CommentModel.fromJson(item);
+        }).toList()
     );
   }
 

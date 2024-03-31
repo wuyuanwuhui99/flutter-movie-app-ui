@@ -244,6 +244,7 @@ Future<ResponseModel<int>> deleteLikeService(
 Future<ResponseModel> insertCommentService(
     CommentModel commentModel) async {
   try {
+    print(commentModel.toMap());
     Response response = await dio.post(servicePath['insertComment'],
         data: commentModel.toMap());
     return ResponseModel.fromJson(response.data);

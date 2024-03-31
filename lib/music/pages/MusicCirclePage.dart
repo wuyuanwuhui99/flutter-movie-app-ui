@@ -160,6 +160,8 @@ class _MusicCirclePageState extends State<MusicCirclePage>
                 child: RaisedButton(
                   color: Theme.of(context).accentColor,
                   onPressed: () {
+                    if(loading)return;
+                    loading = true;
                     CommentModel mCommentModel = CommentModel(
                         type:"music_circle",
                         relationId:circleModel.id,
@@ -167,15 +169,19 @@ class _MusicCirclePageState extends State<MusicCirclePage>
                         topId:firstCommentModel != null ? firstCommentModel.id : null,
                         parentId:replyCommentModel != null ? replyCommentModel.id : null
                     );
-                    if(loading)return;
-                    loading = true;
                     insertCommentService(mCommentModel).then((value){
                       loading = false;
                       setState(() {
-                        circleModel.circleComments.add(CommentModel.fromJson(value.data));
+                        if(firstCommentModel != null){
+                            firstCommentModel.replyList.add(CommentModel.fromJson(value.data));
+;                        }else{
+                            circleModel.circleComments.add(CommentModel.fromJson(value.data));
+                        }
                       });
+                      firstCommentModel = replyCommentModel = null;
                       inputOverlayEntry.remove();
                       inputOverlayEntry = null;
+                      inputController.text = "";
                     });
                   },
                   child: Text(
@@ -480,7 +486,7 @@ class _MusicCirclePageState extends State<MusicCirclePage>
           circleComments.where((element) => element.topId == null).toList();
       return Column(
           children: buildCircleCommentItems(
-              topComments, circleComments, circleLikes, null));
+              topComments, circleLikes));
     } else {
       return SizedBox();
     }
@@ -488,9 +494,7 @@ class _MusicCirclePageState extends State<MusicCirclePage>
 
   List<Widget> buildCircleCommentItems(
       List<CommentModel> circleComments,
-      List<CommentModel> allCircleComments,
-      List<CircleLikeModel> circleLikes,
-      CommentModel replyCommentModel) {
+      List<CircleLikeModel> circleLikes) {
     if (circleComments.length == 0) return [];
     List<Widget> circleCommentWidget = [
       SizedBox(
@@ -528,11 +532,11 @@ class _MusicCirclePageState extends State<MusicCirclePage>
                     child: Text(circleComment.content),
                     onTap: () {
                       setState(() {
-                        if(replyCommentModel == null){// 如果不是二级评论
+                        if(circleComment.topId == null){// 如果不是二级评论
                           replyCommentModel = firstCommentModel = circleComment;
                         }else{// 如果是二级评论
                           replyCommentModel = circleComment;
-                          firstCommentModel = replyCommentModel;
+                          firstCommentModel = circleModel.circleComments.firstWhere((element) => element.id == replyCommentModel.topId);
                         }
                         buildCommentInputDailog();
                       });
@@ -543,11 +547,8 @@ class _MusicCirclePageState extends State<MusicCirclePage>
                       style: TextStyle(color: ThemeColors.subTitle)),
                   SizedBox(height: ThemeSize.smallMargin),
                   ...buildCircleCommentItems(
-                      findSubCommentsByTopId(
-                          allCircleComments, circleComment.id),
-                      [],
-                      [],
-                      circleComment)
+                      circleComment.replyList,
+                      [])
                 ])
           ]))
         });
