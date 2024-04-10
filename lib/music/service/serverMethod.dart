@@ -2,7 +2,6 @@ import 'dart:async';
 import 'package:dio/dio.dart';
 import 'package:movie/movie/model/CommentModel.dart';
 import 'package:movie/music/model/CircleLikeModel.dart';
-import 'package:movie/music/model/CircleModel.dart';
 import '../model/MusicModel.dart';
 import '../api/api.dart';
 import '../../utils/HttpUtil .dart';
