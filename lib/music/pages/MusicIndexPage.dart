@@ -178,9 +178,7 @@ class _MusicIndexPageState extends State<MusicIndexPage>
         builder: (context, snapshot) {
           MusicModel musicModel =
               Provider.of<PlayerMusicProvider>(context).musicModel;
-          if (snapshot.data == null && musicModel == null) {
-            return SizedBox();
-          } else if (musicModel == null) {
+          if (musicModel != null) {
             musicModel = MusicModel.fromJson(snapshot.data);
             Provider.of<PlayerMusicProvider>(context)
                 .setPlayMusic([], musicModel, 0, false);
@@ -218,7 +216,7 @@ class _MusicIndexPageState extends State<MusicIndexPage>
                             onTap: () {
                               Routes.router.navigateTo(context, '/MusicPlayerPage');
                             })
-                        : Icon(Icons.music_note, size: ThemeSize.middleIcon),
+                        : Icon(Icons.music_note,color:ThemeColors.colorBg, size: ThemeSize.bigIcon),
                     onPressed: () {},
                   )),
               bottomNavigationBar: BottomAppBar(

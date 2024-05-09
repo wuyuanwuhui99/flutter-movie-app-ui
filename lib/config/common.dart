@@ -1,3 +1,3 @@
 const SUCCESS = "SUCCESS";
 const FAIL = "FAIL";
-const HOST = 'http://192.168.137.1:5001';
+const HOST = 'http://192.168.0.5:5001';

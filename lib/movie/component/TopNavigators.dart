@@ -3,9 +3,11 @@ import 'package:movie/router/index.dart';
 import '../pages/NewMoviePage.dart';
 import '../../theme/ThemeSize.dart';
 import '../../theme/ThemeStyle.dart';
+
 /*-----------------------分类图标------------------------*/
 class TopNavigators extends StatelessWidget {
   const TopNavigators({Key key}) : super(key: key);
+
   List<Widget> _items(BuildContext context) {
     List listData = [
       {"image": "lib/assets/images/icon-hot.png", "title": "热门"},
@@ -14,17 +16,21 @@ class TopNavigators extends StatelessWidget {
       {"image": "lib/assets/images/icon-classify.png", "title": "分类"}
     ];
     var tempList = listData.map((value) {
-      return InkWell(
-          onTap: () {
-            if(value["title"] == "最新"){
-              Routes.router.navigateTo(context, '/NewMoviePage');
-            }
-          },
-          child: Container(
+      return Expanded(
+          flex: 1,
+          child: InkWell(
+              onTap: () {
+                if (value["title"] == "最新") {
+                  Routes.router.navigateTo(context, '/NewMoviePage');
+                }
+              },
               child: Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
                 children: <Widget>[
                   Image.asset(value['image'],
-                      height: ThemeSize.bigIcon, width: ThemeSize.bigIcon, fit: BoxFit.cover),
+                      height: ThemeSize.bigIcon,
+                      width: ThemeSize.bigIcon,
+                      fit: BoxFit.cover),
                   SizedBox(height: ThemeSize.containerPadding),
                   Text(
                     value['title'],
@@ -42,14 +48,13 @@ class TopNavigators extends StatelessWidget {
     return Container(
         decoration: ThemeStyle.boxDecoration,
         width: MediaQuery.of(context).size.width,
-        height: 110,
         margin: ThemeStyle.margin,
-        child: GridView.count(
-            crossAxisSpacing: 10.0, //水平子 Widget 之间间距
-            mainAxisSpacing: 10.0, //垂直子 Widget 之间间距
-            padding: EdgeInsets.all(20),
-            crossAxisCount: 4, //一行的 Widget 数量
-            children: this._items(context)));
+        padding: EdgeInsets.only(
+            top: ThemeSize.containerPadding,
+            bottom: ThemeSize.containerPadding),
+        child: Row(
+          children: this._items(context),
+        ));
   }
 }
 /*-----------------------分类图标------------------------*/
