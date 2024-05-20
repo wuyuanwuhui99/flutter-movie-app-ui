@@ -156,9 +156,22 @@ Future<ResponseModel<int>> savePlayRecordService(
 ///@author: wuwenqiang
 ///@description: 获取播放记录
 /// @date: 2021-03-04 23:08
-Future<ResponseModel<List>> getPlayRecordService() async {
+Future<ResponseModel<List>> getPlayRecordService(int pageNum,int pageSize) async {
   try {
-    Response response = await dio.get(servicePath['getPlayRecord']);
+    Response response = await dio.get('${servicePath['getPlayRecord']}?pageNum=${pageNum.toString()}&pageSize=${pageSize.toString()}');
+    return ResponseModel.fromJson(response.data);
+  } catch (e) {
+    print('ERROR:======>${e}');
+    return null;
+  }
+}
+
+///@author: wuwenqiang
+///@description: 获取浏览记录
+/// @date: 2021-05-20 23:34
+Future<ResponseModel<List>> getViewRecordService(int pageNum,int pageSize) async {
+  try {
+    Response response = await dio.get('${servicePath['getViewRecord']}?pageNum=${pageNum.toString()}&pageSize=${pageSize.toString()}');
     return ResponseModel.fromJson(response.data);
   } catch (e) {
     print('ERROR:======>${e}');
@@ -184,9 +197,9 @@ Future<ResponseModel<int>> saveFavoriteService(
 ///@author: wuwenqiang
 ///@description: 获取收藏
 /// @date: 2021-03-04 23:08
-Future<ResponseModel<List>> getFavoriteService() async {
+Future<ResponseModel<List>> getFavoriteService(int pageNum,int pageSize) async {
   try {
-    Response response = await dio.get(servicePath['getFavorite']);
+    Response response = await dio.get('${servicePath['getFavorite']}?pageNum=${pageNum.toString()}&pageSize=${pageSize.toString()}');
     return ResponseModel.fromJson(response.data);
   } catch (e) {
     print('ERROR:======>${e}');

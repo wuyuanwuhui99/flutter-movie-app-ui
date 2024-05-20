@@ -13,7 +13,7 @@ const servicePath = {
   'saveViewRecord': '/service/movie-getway/saveViewRecord', //浏览历史
   'getPlayRecord': '/service/movie-getway/getPlayRecord', //获取观看记录
   'savePlayRecord': '/service/movie-getway/savePlayRecord', //播放记录
-  'getFavorite': '/service/movie-getway/getFavorite', //获取收藏电影
+  'getFavorite': '/service/movie-getway/getFavoriteList', //获取收藏电影
   'saveFavorite': '/service/movie-getway/saveFavorite', //添加收藏
   'deleteFavorite': '/service/movie-getway/deleteFavorite', //删除收藏
   'getYourLikes': '/service/movie/getYourLikes',//猜你想看
