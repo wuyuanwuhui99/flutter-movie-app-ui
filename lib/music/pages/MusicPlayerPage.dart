@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../../movie/service/serverMethod.dart';
 import 'package:movie/router/index.dart';
 import 'dart:ui';
 import 'package:provider/provider.dart';
@@ -12,6 +13,9 @@ import '../../utils/common.dart';
 import '../component/lyric/lyric_controller.dart';
 import '../component/lyric/lyric_util.dart';
 import '../component/lyric/lyric_widget.dart';
+import '../component/CommentComponent.dart';
+import '../../utils/HttpUtil .dart';
+import '../../movie/model/CommentModel.dart';
 
 class MusicPlayerPage extends StatefulWidget {
   MusicPlayerPage({Key key}) : super(key: key);
@@ -31,10 +35,10 @@ class _MusicPlayerPageState extends State<MusicPlayerPage>
   MusicModel musicModel;
   AudioPlayer player;
   int currentPlayIndex = -1; // 当前播放音乐的下标
-  List<MusicModel> playMusicModelList;// 播放的列表
-  LyricController _lyricController;//歌词控制器
-  AnimationController _repeatController;// 会重复播放的控制器
-  Animation<double> _curveAnimation;// 非线性动画
+  List<MusicModel> playMusicModelList; // 播放的列表
+  LyricController _lyricController; //歌词控制器
+  AnimationController _repeatController; // 会重复播放的控制器
+  Animation<double> _curveAnimation; // 非线性动画
 
   @override
   void initState() {
@@ -57,7 +61,9 @@ class _MusicPlayerPageState extends State<MusicPlayerPage>
     currentPlayIndex =
         Provider.of<PlayerMusicProvider>(context, listen: false).playIndex;
 
-    playMusicModelList = Provider.of<PlayerMusicProvider>(context, listen: false).playMusicModelList;
+    playMusicModelList =
+        Provider.of<PlayerMusicProvider>(context, listen: false)
+            .playMusicModelList;
   }
 
   @override
@@ -86,24 +92,25 @@ class _MusicPlayerPageState extends State<MusicPlayerPage>
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                SizedBox(height: ThemeSize.containerPadding * 4),
+                SizedBox(height: ThemeSize.containerPadding * 2),
                 Text(musicModel.songName,
                     style: TextStyle(
                         color: ThemeColors.colorWhite,
                         fontSize: ThemeSize.bigFontSize,
                         fontWeight: FontWeight.bold)),
-                SizedBox(height: ThemeSize.containerPadding * 2),
+                SizedBox(height: ThemeSize.containerPadding),
                 buildPlayCircle(),
-                SizedBox(
-                  height: ThemeSize.containerPadding * 3,
-                ),
-                buildLyric(),
+                SizedBox(height: ThemeSize.containerPadding),
+                Expanded(flex: 1, child: buildLyric()),
+                SizedBox(height: ThemeSize.containerPadding),
+                buildSinger(),
                 SizedBox(height: ThemeSize.containerPadding),
                 buildPlayMenu(),
                 SizedBox(height: ThemeSize.containerPadding),
                 buildprogress(),
-                SizedBox(height: ThemeSize.containerPadding * 2),
-                buildPlayBtn()
+                SizedBox(height: ThemeSize.containerPadding),
+                buildPlayBtn(),
+                SizedBox(height: ThemeSize.containerPadding)
               ],
             ),
           )
@@ -158,57 +165,62 @@ class _MusicPlayerPageState extends State<MusicPlayerPage>
   }
 
   Widget buildLyric() {
-    return Column(children: [
-      Container(
-        height: 80,
-        child: Center(
-            child: musicModel.lyrics != null && musicModel.lyrics != ''
-                ? InkWell(
-                    child: LyricWidget(
-                      lyricStyle: TextStyle(
-                          color: ThemeColors.opcityWhiteColor,
-                          fontSize: ThemeSize.middleFontSize),
-                      currLyricStyle: TextStyle(
-                          color: ThemeColors.colorWhite,
-                          fontSize: ThemeSize.middleFontSize),
-                      size: Size(double.infinity, double.infinity),
-                      lyrics: LyricUtil.formatLyric(musicModel.lyrics),
-                      controller: _lyricController,
-                    ),
-                    onTap: () {
-                      Routes.router.navigateTo(context, '/MusicLyricPage');
-                    },
-                  )
-                : Text('暂无歌词',
-                    style: TextStyle(
+    return Container(
+      width: double.infinity,
+      height: double.infinity,
+      child: Center(
+          child: musicModel.lyrics != null && musicModel.lyrics != ''
+              ? InkWell(
+                  child: LyricWidget(
+                    lyricStyle: TextStyle(
                         color: ThemeColors.opcityWhiteColor,
-                        fontSize: ThemeSize.middleFontSize))),
-      ),
-      Row(
-        children: [
-          Expanded(
-            child: Center(
-                child: Text(musicModel.authorName,
-                    style: TextStyle(
-                        decoration: TextDecoration.underline,
-                        color: ThemeColors.colorWhite))),
-            flex: 1,
-          ),
-          Expanded(
-            child: SizedBox(),
-            flex: 1,
-          ),
-          Expanded(
-            child: SizedBox(),
-            flex: 1,
-          ),
-          Expanded(
-            child: SizedBox(),
-            flex: 1,
-          ),
-        ],
-      )
-    ]);
+                        fontSize: ThemeSize.middleFontSize),
+                    currLyricStyle: TextStyle(
+                        color: ThemeColors.colorWhite,
+                        fontSize: ThemeSize.middleFontSize),
+                    size: Size(double.infinity, double.infinity),
+                    lyrics: LyricUtil.formatLyric(musicModel.lyrics),
+                    controller: _lyricController,
+                  ),
+                  onTap: () {
+                    Routes.router.navigateTo(context, '/MusicLyricPage');
+                  },
+                )
+              : Text('暂无歌词',
+                  style: TextStyle(
+                      color: ThemeColors.opcityWhiteColor,
+                      fontSize: ThemeSize.middleFontSize))),
+    );
+  }
+
+  ///@author: wuwenqiang
+  ///@description: 创建歌手
+  /// @date: 2024-05-22 22:29
+  Widget buildSinger() {
+    return Row(
+      children: [
+        Expanded(
+          child: Center(
+              child: Text(musicModel.authorName,
+                  style: TextStyle(
+                      decoration: TextDecoration.underline,
+                      color: ThemeColors.colorWhite))),
+          flex: 1,
+        ),
+        Expanded(
+          child: SizedBox(),
+          flex: 1,
+        ),
+        Expanded(
+          child: SizedBox(),
+          flex: 1,
+        ),
+        Expanded(
+          child: SizedBox(),
+          flex: 1,
+        ),
+      ],
+    );
   }
 
   Widget buildPlayMenu() {
@@ -231,11 +243,30 @@ class _MusicPlayerPageState extends State<MusicPlayerPage>
           flex: 1,
         ),
         Expanded(
-          child: Image.asset(
-            "lib/assets/images/icon-music-comments.png",
-            width: ThemeSize.playIcon,
-            height: ThemeSize.playIcon,
-          ),
+          child: InkWell(
+              child: Image.asset(
+                "lib/assets/images/icon-music-comments.png",
+                width: ThemeSize.playIcon,
+                height: ThemeSize.playIcon,
+              ),
+              onTap: () async {
+                print(musicModel);
+                ResponseModel<List> res = await getTopCommentListService(
+                    musicModel.id, CommentEnum.MUSIC, 1, 20);
+                showModalBottomSheet(
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.only(
+                            topLeft: Radius.circular(ThemeSize.middleRadius), topRight: Radius.circular(ThemeSize.middleRadius))),
+                    isScrollControlled: true,
+                    context: context,
+                    builder: (BuildContext context) {
+                      return SizedBox(height: MediaQuery.of(context).size.height * 0.7,child: CommentComponent(
+                          relationId: musicModel.id,
+                          commentList: res.data
+                              .map((ele) {return CommentModel.fromJson(ele);})
+                              .toList()),);
+                    });
+              }),
           flex: 1,
         ),
         Expanded(
@@ -285,7 +316,9 @@ class _MusicPlayerPageState extends State<MusicPlayerPage>
   }
 
   Widget buildPlayBtn() {
-    List<MusicModel> playMusicModelList = Provider.of<PlayerMusicProvider>(context, listen: false).playMusicModelList;
+    List<MusicModel> playMusicModelList =
+        Provider.of<PlayerMusicProvider>(context, listen: false)
+            .playMusicModelList;
     return Row(
       children: [
         Expanded(
@@ -306,7 +339,8 @@ class _MusicPlayerPageState extends State<MusicPlayerPage>
                     )),
                 onTap: () {
                   if (currentPlayIndex > 0) {
-                    Provider.of<PlayerMusicProvider>(context, listen: false).setPlayIndex(currentPlayIndex);
+                    Provider.of<PlayerMusicProvider>(context, listen: false)
+                        .setPlayIndex(currentPlayIndex);
                     setState(() {
                       currentPlayIndex--;
                       musicModel = playMusicModelList[currentPlayIndex];
@@ -360,7 +394,9 @@ class _MusicPlayerPageState extends State<MusicPlayerPage>
         Expanded(
             child: InkWell(
                 child: Opacity(
-                    opacity: currentPlayIndex == playMusicModelList.length - 1 ? 0.5 : 1,
+                    opacity: currentPlayIndex == playMusicModelList.length - 1
+                        ? 0.5
+                        : 1,
                     child: Image.asset(
                       "lib/assets/images/icon-music-next.png",
                       width: ThemeSize.playIcon,
@@ -402,18 +438,19 @@ class _MusicPlayerPageState extends State<MusicPlayerPage>
         });
       });
       player.onPlayerCompletion.listen((event) {
-        useNextMusic();// 切换下一首
+        useNextMusic(); // 切换下一首
       });
     }
   }
 
-  void useNextMusic(){
+  void useNextMusic() {
     if (currentPlayIndex < playMusicModelList.length - 1) {
       setState(() {
         currentPlayIndex++;
         musicModel = playMusicModelList[currentPlayIndex];
       });
-      Provider.of<PlayerMusicProvider>(context, listen: false).setPlayIndex(currentPlayIndex);
+      Provider.of<PlayerMusicProvider>(context, listen: false)
+          .setPlayIndex(currentPlayIndex);
     }
   }
 }

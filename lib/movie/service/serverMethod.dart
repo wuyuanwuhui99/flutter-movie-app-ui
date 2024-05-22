@@ -1,9 +1,11 @@
 import 'dart:async';
 import 'package:dio/dio.dart';
+import 'package:movie/movie/model/CommentModel.dart';
 import '../api//api.dart';
 import '../../utils/LocalStroageUtils.dart';
 import '../model/MovieDetailModel.dart';
 import '../../utils/HttpUtil .dart';
+import '../../config/common.dart';
 
 //获取用户数据
 Future<ResponseModel<dynamic>> getUserDataService() async {
@@ -293,10 +295,10 @@ Future<ResponseModel<int>> updatePasswordService(Map map) async {
 ///@description: 获取评论总数
 /// @date: 2021-10-26 23:05
 Future<ResponseModel<int>> getCommentCountService(
-    int relationId, String type) async {
+    int relationId, CommentEnum type) async {
   try {
     Response response = await dio.get(servicePath['getCommentCount'],
-        queryParameters: {"relationId": relationId, "type": type});
+        queryParameters: {"relationId": relationId, "type": type.toString().split('.').last});
     return ResponseModel.fromJson(response.data);
   } catch (e) {
     print('ERROR:======>${e}');
@@ -308,12 +310,12 @@ Future<ResponseModel<int>> getCommentCountService(
 ///@description: 获取一级评论
 /// @date: 2021-10-28 22:01
 Future<ResponseModel<List>> getTopCommentListService(
-    int relationId, String type, int pageSize, int pageNum) async {
+    int relationId, CommentEnum type, int pageNum,int pageSize) async {
   try {
     Response response = await dio.get(servicePath['getTopCommentList'],
         queryParameters: {
           "relationId": relationId,
-          "type": type,
+          "type": type.toString().split('.').last,
           "pageSize": pageSize,
           "pageNum": pageNum
         });

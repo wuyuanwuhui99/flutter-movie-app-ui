@@ -49,7 +49,7 @@ class _MoviePlayerPageState extends State<MoviePlayerPage> {
         disabledSend = keywordController.text == "";
       });
     });
-    getCommentCountService(widget.movieItem.id, "movie").then((res) {
+    getCommentCountService(widget.movieItem.id, CommentEnum.MOVIE).then((res) {
       setState(() {
         commentCount = res.data;
       });
@@ -592,8 +592,8 @@ class _MoviePlayerPageState extends State<MoviePlayerPage> {
               onTap: () {
                 setState(() {
                   showComment = true;
-                  getTopCommentListService(widget.movieItem.movieId, "movie",
-                          ThemeSize.pageSize, pageNum)
+                  getTopCommentListService(widget.movieItem.movieId, CommentEnum.MOVIE,
+                      pageNum,ThemeSize.pageSize)
                       .then((value) {
                     setState(() {
                       value.data.forEach((element) {
