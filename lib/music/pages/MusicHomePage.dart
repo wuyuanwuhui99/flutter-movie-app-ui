@@ -347,6 +347,7 @@ class _MusicHomePageState extends State<MusicHomePage>
                             height: ThemeSize.smallIcon,
                           ),
                           onTap: () {
+                            LocalStroageUtils.setPlayMusic(musicItem);
                             Provider.of<PlayerMusicProvider>(context,
                                     listen: false)
                                 .setPlayMusic(

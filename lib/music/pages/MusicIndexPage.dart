@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:movie/movie/model/CommentModel.dart';
 import 'package:movie/router/index.dart';
 import 'package:provider/provider.dart';
 import 'package:audioplayers/audioplayers.dart';
@@ -48,7 +49,7 @@ class _MusicIndexPageState extends State<MusicIndexPage>
     "lib/assets/images/icon-user-active.png"
   ];
   List<String> titles = ["首页", "推荐", "音乐圈", "我的"];
-
+  MusicModel musicModel;
   @override
   void dispose() {
     super.dispose();
@@ -69,6 +70,11 @@ class _MusicIndexPageState extends State<MusicIndexPage>
     _repeatController.stop(canceled: false);
     usePlayState();
     getClassMusicList(); // 通过缓存参数获取上次播放的音乐列表
+    LocalStroageUtils.getPlayMusic().then((value){
+      if(value != null){
+        Provider.of<PlayerMusicProvider>(context, listen: false).setPlayMusic([], MusicModel.fromJson(value), 0, false);
+      }
+    });
   }
 
   /// 获取播放状态
@@ -173,65 +179,55 @@ class _MusicIndexPageState extends State<MusicIndexPage>
 
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder(
-        future: LocalStroageUtils.getPlayMusic(),
-        builder: (context, snapshot) {
-          MusicModel musicModel =
-              Provider.of<PlayerMusicProvider>(context).musicModel;
-          if (musicModel != null) {
-            musicModel = MusicModel.fromJson(snapshot.data);
-            Provider.of<PlayerMusicProvider>(context)
-                .setPlayMusic([], musicModel, 0, false);
-          }
-          return Scaffold(
-              backgroundColor: ThemeColors.colorBg,
-              body: SafeArea(
-                  top: true,
-                  child: PageView.builder(
-                      controller: _pageController,
-                      physics: NeverScrollableScrollPhysics(),
-                      onPageChanged: _pageChanged,
-                      itemCount: 4,
-                      itemBuilder: (context, index) {
-                        return _getPage();
-                      })),
-              floatingActionButtonLocation:
-                  FloatingActionButtonLocation.centerDocked,
-              //悬浮按钮
-              floatingActionButton: SizedBox(
-                  height: ThemeSize.minPlayIcon,
-                  width: ThemeSize.minPlayIcon,
-                  child: FloatingActionButton(
-                    backgroundColor: ThemeColors.colorBg,
-                    child: musicModel != null
-                        ? InkWell(
-                            child: RotationTransition(
-                                turns: _curveAnimation,
-                                child: ClipOval(
-                                    child: Image.network(
-                                  HOST + musicModel.cover,
-                                  width: ThemeSize.minPlayIcon,
-                                  height: ThemeSize.minPlayIcon,
-                                ))),
-                            onTap: () {
-                              Routes.router.navigateTo(context, '/MusicPlayerPage');
-                            })
-                        : Icon(Icons.music_note,color:ThemeColors.colorBg, size: ThemeSize.bigIcon),
-                    onPressed: () {},
-                  )),
-              bottomNavigationBar: BottomAppBar(
-                  shape: CircularNotchedRectangle(),
-                  child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceAround,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: <Widget>[
-                        bottomAppBarItem(0),
-                        bottomAppBarItem(1),
-                        SizedBox(width: 50),
-                        bottomAppBarItem(2),
-                        bottomAppBarItem(3)
-                      ])));
-        });
+      MusicModel musicModel = Provider.of<PlayerMusicProvider>(context).musicModel;
+      return Scaffold(
+          backgroundColor: ThemeColors.colorBg,
+          body: SafeArea(
+              top: true,
+              child: PageView.builder(
+                  controller: _pageController,
+                  physics: NeverScrollableScrollPhysics(),
+                  onPageChanged: _pageChanged,
+                  itemCount: 4,
+                  itemBuilder: (context, index) {
+                    return _getPage();
+                  })),
+          floatingActionButtonLocation:
+          FloatingActionButtonLocation.centerDocked,
+          //悬浮按钮
+          floatingActionButton: SizedBox(
+              height: ThemeSize.minPlayIcon,
+              width: ThemeSize.minPlayIcon,
+              child: FloatingActionButton(
+                backgroundColor: ThemeColors.colorBg,
+                child: musicModel != null
+                    ? InkWell(
+                    child: RotationTransition(
+                        turns: _curveAnimation,
+                        child: ClipOval(
+                            child: Image.network(
+                              HOST + musicModel.cover,
+                              width: ThemeSize.minPlayIcon,
+                              height: ThemeSize.minPlayIcon,
+                            ))),
+                    onTap: () {
+                      Routes.router.navigateTo(context, '/MusicPlayerPage');
+                    })
+                    : Icon(Icons.music_note,color:ThemeColors.colorBg, size: ThemeSize.bigIcon),
+                onPressed: () {},
+              )),
+          bottomNavigationBar: BottomAppBar(
+              shape: CircularNotchedRectangle(),
+              child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: <Widget>[
+                    bottomAppBarItem(0),
+                    bottomAppBarItem(1),
+                    SizedBox(width: 50),
+                    bottomAppBarItem(2),
+                    bottomAppBarItem(3)
+                  ])));
   }
 
   void _pageChanged(int index) {
