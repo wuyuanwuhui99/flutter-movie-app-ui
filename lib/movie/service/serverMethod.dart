@@ -185,10 +185,10 @@ Future<ResponseModel<List>> getViewRecordService(int pageNum,int pageSize) async
 ///@description: 添加收藏
 /// @date: 2021-03-04 23:08
 Future<ResponseModel<int>> saveFavoriteService(
-    MovieDetailModel movieEntity) async {
+    int movieId) async {
   try {
     Response response =
-        await dio.post(servicePath['saveFavorite'], data: movieEntity.toMap());
+        await dio.post('${servicePath['saveFavorite']}/${movieId.toString()}', data: {});
     return ResponseModel.fromJson(response.data);
   } catch (e) {
     print('ERROR:======>${e}');
@@ -214,8 +214,7 @@ Future<ResponseModel<List>> getFavoriteService(int pageNum,int pageSize) async {
 /// @date: 2021-03-04 23:08
 Future<ResponseModel<int>> deleteFavoriteService(int movieId) async {
   try {
-    Response response = await dio.delete(servicePath['deleteFavorite'],
-        queryParameters: {"movieId": movieId});
+    Response response = await dio.delete('${servicePath['deleteFavorite']}/${movieId.toString()}');
     return ResponseModel.fromJson(response.data);
   } catch (e) {
     print('ERROR:======>${e}');

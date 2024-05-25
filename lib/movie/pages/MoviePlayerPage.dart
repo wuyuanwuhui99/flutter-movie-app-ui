@@ -311,7 +311,7 @@ class _MoviePlayerPageState extends State<MoviePlayerPage> {
                 });
               } else {
                 //如果没有收藏过，点击之后添加收藏
-                saveFavoriteService(widget.movieItem).then((res) {
+                saveFavoriteService(widget.movieItem.id).then((res) {
                   if (res.data > 0) {
                     setState(() {
                       isFavoriteFlag = true;
