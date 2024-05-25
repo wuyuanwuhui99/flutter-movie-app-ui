@@ -188,7 +188,7 @@ Future<ResponseModel<int>> saveFavoriteService(
     MovieDetailModel movieEntity) async {
   try {
     Response response =
-        await dio.post(servicePath['saveFavorite'], data: movieEntity);
+        await dio.post(servicePath['saveFavorite'], data: movieEntity.toMap());
     return ResponseModel.fromJson(response.data);
   } catch (e) {
     print('ERROR:======>${e}');

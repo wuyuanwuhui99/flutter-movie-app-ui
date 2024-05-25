@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:movie/router/index.dart';
 import 'package:movie/theme/ThemeColors.dart';
@@ -67,7 +69,7 @@ class _MovieDetailPageState extends State<MovieDetailPage> {
             InkWell(
                 onTap: () {
                   if (movieInfo.movieName != null) {
-                    Routes.router.navigateTo(context, '/MoviePlayerPage');
+                    Routes.router.navigateTo(context, '/MoviePlayerPage?movieItem=${Uri.encodeComponent(json.encode(movieInfo.toMap()))}');
                   }
                 },
                 child: Container(

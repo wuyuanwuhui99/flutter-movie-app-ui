@@ -42,6 +42,7 @@ class _MusicPlayerPageState extends State<MusicPlayerPage>
   LyricController _lyricController; //歌词控制器
   AnimationController _repeatController; // 会重复播放的控制器
   Animation<double> _curveAnimation; // 非线性动画
+  int commentTotal = 0;
   // 在父组件中创建 GlobalKey
   @override
   void initState() {
@@ -256,6 +257,7 @@ class _MusicPlayerPageState extends State<MusicPlayerPage>
                 print(musicModel);
                 ResponseModel<List> res = await getTopCommentListService(
                     musicModel.id, CommentEnum.MUSIC, 1, 20);
+                commentTotal = res.total != null ? res.total : 0;
                 showModalBottomSheet(
                     shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.only(
@@ -267,11 +269,9 @@ class _MusicPlayerPageState extends State<MusicPlayerPage>
                       return Container(
                           height: MediaQuery.of(context).size.height * 0.7,
                           child: CommentComponent(
-                              type: CommentEnum.MUSIC,
-                              relationId: musicModel.id,
-                              commentList: res.data.map((ele) {
-                                return CommentModel.fromJson(ele);
-                              }).toList()));
+                            type: CommentEnum.MUSIC,
+                            relationId: musicModel.id,
+                          ));
                     });
               }),
           flex: 1,

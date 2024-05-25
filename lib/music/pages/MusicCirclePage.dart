@@ -11,6 +11,7 @@ import '../../utils/common.dart';
 import '../model/CircleLikeModel.dart';
 import '../../movie/model/CommentModel.dart';
 import '../service/serverMethod.dart';
+import '../../movie/service/serverMethod.dart';
 import '../../movie/provider/UserInfoProvider.dart';
 import 'package:provider/provider.dart';
 
@@ -169,7 +170,7 @@ class _MusicCirclePageState extends State<MusicCirclePage>
                         topId:firstCommentModel != null ? firstCommentModel.id : null,
                         parentId:replyCommentModel != null ? replyCommentModel.id : null
                     );
-                    insertCommentService(mCommentModel).then((value){
+                    insertCommentService(mCommentModel.toMap()).then((value){
                       loading = false;
                       setState(() {
                         if(firstCommentModel != null){

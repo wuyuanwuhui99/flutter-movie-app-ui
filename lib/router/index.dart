@@ -1,5 +1,8 @@
+import 'dart:convert';
+
 import 'package:fluro/fluro.dart';
 import 'package:flutter/material.dart';
+import 'package:movie/movie/model/MovieDetailModel.dart';
 import '../music/pages/MusicSearchPage.dart';
 import '../music/pages/NotFoundPage.dart';
 import '../music/pages/MusicPlayerPage.dart';
@@ -19,28 +22,28 @@ class Routes {
           debugPrint('未找到目标页');
           return NotFoundPage();
         });
-    router.define('/MusicSearchPage', handler: Handler(handlerFunc: (_, Map<String, List<String>> params) {
+    router.define('/MusicSearchPage', handler: Handler(handlerFunc: (BuildContext context, Map<String, List<String>> params) {
       return MusicSearchPage(keyword:params['keyword'].first);
     }));
-    router.define('/MusicPlayerPage', handler: Handler(handlerFunc: (_, params) {
+    router.define('/MusicPlayerPage', handler: Handler(handlerFunc: (BuildContext context, params) {
       return MusicPlayerPage();
     }));
-    router.define('/MusicLyricPage', handler: Handler(handlerFunc: (_, params) {
+    router.define('/MusicLyricPage', handler: Handler(handlerFunc: (BuildContext context, Map<String,List<String>> params) {
       return MusicLyricPage();
     }));
-    router.define('/MoviePlayerPage', handler: Handler(handlerFunc: (_, params) {
-      return MoviePlayerPage();
+    router.define('/MoviePlayerPage', handler: Handler(handlerFunc: (BuildContext context, params) {
+      return MoviePlayerPage(movieItem: MovieDetailModel.fromJson(json.decode(params["movieItem"].first)));
     }));
-    router.define('/MovieUserPage', handler: Handler(handlerFunc: (_, params) {
+    router.define('/MovieUserPage', handler: Handler(handlerFunc: (BuildContext context, params) {
       return MovieUserPage();
     }));
-    router.define('/NewMoviePage', handler: Handler(handlerFunc: (_, params) {
+    router.define('/NewMoviePage', handler: Handler(handlerFunc: (BuildContext context, params) {
       return NewMoviePage();
     }));
-    router.define('/MusicIndexPage', handler: Handler(handlerFunc: (_, params) {
+    router.define('/MusicIndexPage', handler: Handler(handlerFunc: (BuildContext context, params) {
       return MusicIndexPage();
     }));
-    router.define('/MusicSingerPage', handler: Handler(handlerFunc: (_, params) {
+    router.define('/MusicSingerPage', handler: Handler(handlerFunc: (BuildContext context, params) {
       return MusicSingerPage();
     }));
   }

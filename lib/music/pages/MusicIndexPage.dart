@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:movie/movie/model/CommentModel.dart';
 import 'package:movie/router/index.dart';
 import 'package:provider/provider.dart';
 import 'package:audioplayers/audioplayers.dart';

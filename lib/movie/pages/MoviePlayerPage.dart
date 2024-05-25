@@ -15,6 +15,7 @@ import '../model/CommentModel.dart';
 import '../../theme/ThemeColors.dart';
 import '../../theme/ThemeSize.dart';
 import '../../utils/common.dart';
+import '../../music/component/CommentComponent.dart';
 
 class MoviePlayerPage extends StatefulWidget {
   final MovieDetailModel movieItem;
@@ -30,7 +31,7 @@ class _MoviePlayerPageState extends State<MoviePlayerPage> {
   int currentIndex = 0;
   List<Widget> playGroupWidget = [];
   bool isFavoriteFlag = false;
-  int commentCount = 0;
+  int commentTotal = 0;
   bool showComment = false;
   List<CommentModel> commentList = [];
   int pageNum = 1;
@@ -51,7 +52,7 @@ class _MoviePlayerPageState extends State<MoviePlayerPage> {
     });
     getCommentCountService(widget.movieItem.id, CommentEnum.MOVIE).then((res) {
       setState(() {
-        commentCount = res.data;
+        commentTotal = res.data;
       });
     });
     savePlayRecordService(widget.movieItem);
@@ -59,11 +60,9 @@ class _MoviePlayerPageState extends State<MoviePlayerPage> {
 
   void isFavorite() {
     isFavoriteService(widget.movieItem.movieId).then((res) {
-      if (res.data > 0) {
-        setState(() {
-          isFavoriteFlag = true;
-        });
-      }
+      setState(() {
+        isFavoriteFlag = res.data > 0;
+      });
     });
   }
 
@@ -97,319 +96,9 @@ class _MoviePlayerPageState extends State<MoviePlayerPage> {
                       )
                     ])),
               ]),
-              showComment ? getTopCommentWidget() : SizedBox()
             ],
           )),
     );
-  }
-
-  //获取一级评论
-  Widget getTopCommentWidget() {
-    return Positioned(
-        child: Container(
-            width: MediaQuery.of(context).size.width,
-            height: MediaQuery.of(context).size.height,
-            color: Color.fromRGBO(0, 0, 0, 0.5),
-            child: Column(
-              children: <Widget>[
-                SizedBox(
-                  height: MediaQuery.of(context).size.width / 16 * 9,
-                ),
-                Expanded(
-                  flex: 1,
-                  child: Container(
-                      color: ThemeColors.colorBg,
-                      child: Column(children: <Widget>[
-                        SizedBox(height: ThemeSize.smallMargin),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: <Widget>[
-                            Text(commentCount.toString() + "条评论")
-                          ],
-                        ),
-                        Expanded(
-                            flex: 1,
-                            child: Padding(
-                                padding: EdgeInsets.only(
-                                    left: ThemeSize.containerPadding,
-                                    right: ThemeSize.containerPadding,
-                                    top: 0),
-                                child: ListView.builder(
-                                    scrollDirection: Axis.vertical,
-                                    itemCount: commentList.length,
-                                    itemBuilder: (content, index) {
-                                      return Padding(
-                                          padding: EdgeInsets.only(
-                                              bottom: ThemeSize.smallMargin),
-                                          child: Row(
-                                              crossAxisAlignment:
-                                                  CrossAxisAlignment.start,
-                                              children: <Widget>[
-                                                ClipOval(
-                                                    child: Image.network(
-                                                        HOST +
-                                                            commentList[index]
-                                                                .avater,
-                                                        height:
-                                                            ThemeSize.bigIcon,
-                                                        width:
-                                                            ThemeSize.bigIcon,
-                                                        fit: BoxFit.cover)),
-                                                SizedBox(
-                                                    width:
-                                                        ThemeSize.smallMargin),
-                                                Expanded(
-                                                  flex: 1,
-                                                  child: Column(
-                                                      crossAxisAlignment:
-                                                          CrossAxisAlignment
-                                                              .start,
-                                                      children: <Widget>[
-                                                        InkWell(
-                                                            onTap: () {
-                                                              setState(() {
-                                                                replyCommentItem =
-                                                                    replyTopCommentItem =
-                                                                        commentList[
-                                                                            index];
-                                                              });
-                                                            },
-                                                            child: Column(
-                                                                crossAxisAlignment:
-                                                                    CrossAxisAlignment
-                                                                        .start,
-                                                                children: <
-                                                                    Widget>[
-                                                                  Text(
-                                                                      commentList[
-                                                                              index]
-                                                                          .username,
-                                                                      style: TextStyle(
-                                                                          color:
-                                                                              ThemeColors.subTitle)),
-                                                                  SizedBox(
-                                                                      height: ThemeSize
-                                                                          .miniMargin),
-                                                                  Text(commentList[
-                                                                          index]
-                                                                      .content),
-                                                                  SizedBox(
-                                                                      height: ThemeSize
-                                                                          .miniMargin),
-                                                                  Text(
-                                                                    formatTime(commentList[index]
-                                                                            .createTime) +
-                                                                        '  回复',
-                                                                    style: TextStyle(
-                                                                        color: ThemeColors
-                                                                            .subTitle),
-                                                                  ),
-                                                                ])),
-                                                        commentList[index]
-                                                                    .replyList
-                                                                    .length >
-                                                                0
-                                                            ? getReplyList(
-                                                                commentList[
-                                                                        index]
-                                                                    .replyList,
-                                                                commentList[
-                                                                    index])
-                                                            : SizedBox(),
-                                                        commentList[index]
-                                                                        .replyCount >
-                                                                    0 &&
-                                                                commentList[index]
-                                                                            .replyCount -
-                                                                        10 *
-                                                                            commentList[index]
-                                                                                .replyPageNum >
-                                                                    0
-                                                            ? InkWell(
-                                                                child: Padding(
-                                                                    padding: EdgeInsets
-                                                                        .only(
-                                                                            top:
-                                                                                5),
-                                                                    child: Text(
-                                                                        '--展开${commentList[index].replyCount - 10 * commentList[index].replyPageNum}条回复 >',
-                                                                        style: TextStyle(
-                                                                            color:
-                                                                                ThemeColors.subTitle))),
-                                                                onTap: () {
-                                                                  getReplyCommentListService(
-                                                                          commentList[index]
-                                                                              .id,
-                                                                          10,
-                                                                          commentList[index].replyPageNum +
-                                                                              1)
-                                                                      .then(
-                                                                          (value) {
-                                                                    setState(
-                                                                        () {
-                                                                      value.data
-                                                                          .forEach(
-                                                                              (element) {
-                                                                        commentList[index]
-                                                                            .replyList
-                                                                            .add(CommentModel.fromJson(element));
-                                                                      });
-                                                                      commentList[
-                                                                              index]
-                                                                          .replyPageNum++;
-                                                                    });
-                                                                  });
-                                                                })
-                                                            : SizedBox()
-                                                      ]),
-                                                )
-                                              ]));
-                                    }))),
-                        Padding(
-                            padding: ThemeStyle.padding,
-                            child: Row(children: <Widget>[
-                              Expanded(
-                                child: Container(
-                                    height: 45,
-                                    //修饰黑色背景与圆角
-                                    decoration: new BoxDecoration(
-                                      //灰色的一层边框
-                                      color: ThemeColors.borderColor,
-                                      borderRadius: new BorderRadius.all(
-                                          new Radius.circular(
-                                              ThemeSize.bigRadius)),
-                                    ),
-                                    alignment: Alignment.center,
-                                    padding: EdgeInsets.only(
-                                        left: ThemeSize.smallMargin, top: 0),
-                                    child: TextField(
-                                        controller: keywordController,
-                                        cursorColor: Colors.grey, //设置光标
-                                        decoration: InputDecoration(
-                                          hintText: replyCommentItem != null
-                                              ? '回复${replyCommentItem.username}'
-                                              : '有爱评论，说点好听的~',
-                                          hintStyle: TextStyle(
-                                              fontSize: ThemeSize.smallFontSize,
-                                              color: Colors.grey),
-                                          contentPadding: EdgeInsets.only(
-                                              left: ThemeSize.smallMargin,
-                                              top: 0),
-                                          border: InputBorder.none,
-                                        ))),
-                              ),
-                              SizedBox(width: ThemeSize.smallMargin),
-                              Container(
-                                height: 45,
-                                child: RaisedButton(
-                                    highlightColor: Colors.transparent,
-                                    splashColor: Colors.transparent,
-                                    color: disabledSend
-                                        ? ThemeColors.disableColor
-                                        : Theme.of(context).accentColor,
-                                    child: Text("发送",
-                                        style: TextStyle(
-                                            color: disabledSend
-                                                ? ThemeColors.subTitle
-                                                : Colors.white)),
-                                    shape: RoundedRectangleBorder(
-                                        side: BorderSide.none,
-                                        borderRadius: BorderRadius.all(
-                                            Radius.circular(
-                                                ThemeSize.superRadius))),
-                                    onPressed: () async {
-                                      if (disabledSend) {
-                                        Fluttertoast.showToast(
-                                            msg: "已经到底了",
-                                            toastLength: Toast.LENGTH_SHORT,
-                                            gravity: ToastGravity.CENTER,
-                                            timeInSecForIos: 1,
-                                            backgroundColor:
-                                                ThemeColors.disableColor,
-                                            textColor: Colors.white,
-                                            fontSize: ThemeSize.middleFontSize);
-                                      } else {
-                                        onInserComment();
-                                      }
-                                    }),
-                              )
-                            ]))
-                      ])),
-                )
-              ],
-            )));
-  }
-
-  void onInserComment() {
-    Map commentMap = {};
-    commentMap["content"] = keywordController.text;
-    commentMap["parentId"] =
-        replyCommentItem == null ? null : replyCommentItem.id;
-    commentMap["topId"] =
-        replyCommentItem == null ? null : replyTopCommentItem.topId;
-    commentMap["movieId"] = widget.movieItem.movieId;
-    commentMap["replyUserId"] =
-        replyCommentItem == null ? null : replyCommentItem.userId;
-    insertCommentService(commentMap).then((res) {
-      setState(() {
-        commentCount++;
-        if (replyTopCommentItem == null) {
-          commentList.add(CommentModel.fromJson(res.data));
-        } else {
-          replyTopCommentItem.replyList.add(CommentModel.fromJson(res.data));
-          replyCommentItem = replyTopCommentItem = null;
-        }
-        keywordController.text = '';
-      });
-    });
-  }
-
-  //获取回复
-  Widget getReplyList(List<CommentModel> replyList, topCommentItem) {
-    List<Widget> replyListWidget = [];
-    replyList.forEach((element) {
-      replyListWidget.add(Padding(
-          padding: EdgeInsets.only(top: ThemeSize.smallMargin),
-          child: Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[
-              ClipOval(
-                  child: Image.network(HOST + element.avater,
-                      height: ThemeSize.middleIcon,
-                      width: ThemeSize.middleIcon,
-                      fit: BoxFit.cover)),
-              SizedBox(width: 10),
-              Expanded(
-                flex: 1,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: <Widget>[
-                    InkWell(
-                        onTap: () {
-                          setState(() {
-                            replyTopCommentItem = topCommentItem;
-                            replyCommentItem = element;
-                          });
-                        },
-                        child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: <Widget>[
-                              Text(
-                                  '${element.username}▶${element.replyUserName}',
-                                  style:
-                                      TextStyle(color: ThemeColors.subTitle)),
-                              SizedBox(height: ThemeSize.miniMargin),
-                              Text(element.content),
-                              Text(formatTime(element.createTime) + '  回复',
-                                  style: TextStyle(color: ThemeColors.subTitle))
-                            ]))
-                  ],
-                ),
-              )
-            ],
-          )));
-    });
-    return Column(children: replyListWidget);
   }
 
   //获取播放地址
@@ -586,21 +275,26 @@ class _MoviePlayerPageState extends State<MoviePlayerPage> {
                     height: ThemeSize.middleIcon,
                   ),
                   SizedBox(width: ThemeSize.smallMargin),
-                  Text(commentCount.toString()),
+                  Text(commentTotal.toString()),
                 ],
               ),
               onTap: () {
                 setState(() {
-                  showComment = true;
-                  getTopCommentListService(widget.movieItem.movieId, CommentEnum.MOVIE,
-                      pageNum,ThemeSize.pageSize)
-                      .then((value) {
-                    setState(() {
-                      value.data.forEach((element) {
-                        commentList.add(CommentModel.fromJson(element));
+                  showModalBottomSheet(
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.only(
+                              topLeft: Radius.circular(ThemeSize.middleRadius),
+                              topRight: Radius.circular(ThemeSize.middleRadius))),
+                      isScrollControlled: true,
+                      context: context,
+                      builder: (BuildContext context) {
+                        return Container(
+                            height: MediaQuery.of(context).size.height * 0.8,
+                            child:  CommentComponent(
+                              type: CommentEnum.MOVIE,
+                              relationId: widget.movieItem.id,
+                            ));
                       });
-                    });
-                  });
                 });
               }),
           Expanded(flex: 1, child: SizedBox()),

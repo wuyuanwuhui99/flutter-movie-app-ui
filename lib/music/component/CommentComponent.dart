@@ -5,13 +5,12 @@ import '../../theme/ThemeSize.dart';
 import '../../theme/ThemeColors.dart';
 import '../../config/common.dart';
 import '../../utils/common.dart';
-import '../service/serverMethod.dart';
+import '../../movie/service/serverMethod.dart';
 
 class CommentComponent extends StatefulWidget {
-  final List<CommentModel> commentList;
   final int relationId;
   final CommentEnum type;
-  CommentComponent({Key key, this.commentList,this.relationId,this.type}) : super(key: key);
+  CommentComponent({Key key,this.relationId,this.type}) : super(key: key);
 
   @override
   _CommentComponentState createState() => _CommentComponentState();
@@ -19,27 +18,40 @@ class CommentComponent extends StatefulWidget {
 
 class _CommentComponentState extends State<CommentComponent>{
   List<CommentModel>commentList = [];
-  @override
-  void initState() {
-    super.initState();
-    commentList.addAll(widget.commentList);
-  }
-
   CommentModel replyCommentModel;
   CommentModel firstCommentModel;
   bool disabledSend = false;
   bool loading = false;
+  int commentTotal = 0;
   TextEditingController inputController = new TextEditingController(); // 评论框的控制条
+
+  @override
+  void initState() {
+    super.initState();
+    getTopCommentListService(widget.relationId, CommentEnum.MOVIE, 1,20).then((res) {
+      setState(() {
+        res.data.forEach((element) {
+          commentList.add(CommentModel.fromJson(element));
+        });
+        commentTotal = res.total;
+      });
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
     return Column(children: [
-      Expanded(flex: 1,child: SingleChildScrollView(child:Padding(padding: ThemeStyle.padding,child: buildCommentList(commentList),))),
+      Padding(padding: ThemeStyle.padding,child: Text('${commentTotal.toString()}条评论',textAlign: TextAlign.center)),
+      Divider(height: 1,color:ThemeColors.borderColor),
+      Expanded(flex: 1,child: commentList.length > 0 ? SingleChildScrollView(child:Padding(padding: ThemeStyle.padding,child: buildCommentList(commentList),)):Center(child: Text("暂无评论"))),
+      Divider(height: 1,color:ThemeColors.borderColor),
       buildSendWidget()
-    ],);
-    return buildCommentList(commentList);
+    ]);
   }
 
+  ///@author: wuwenqiang
+  ///@description: 创建评论和回复列表
+  /// @date: 2024-05-25 14:28
   Widget buildCommentList(List<CommentModel>commentList){
     return Column(children:commentList.map((CommentModel commentModel){
       return Row(crossAxisAlignment: CrossAxisAlignment.start, children: [
@@ -84,6 +96,9 @@ class _CommentComponentState extends State<CommentComponent>{
     }).toList());
   }
 
+  ///@author: wuwenqiang
+  ///@description: 创建发送按钮
+  /// @date: 2024-05-25 14:28
   Widget buildSendWidget(){
     return Container(
         decoration: BoxDecoration(color: ThemeColors.colorWhite),
@@ -128,13 +143,13 @@ class _CommentComponentState extends State<CommentComponent>{
                     topId:firstCommentModel != null ? firstCommentModel.id : null,
                     parentId:replyCommentModel != null ? replyCommentModel.id : null
                 );
-                insertCommentService(mCommentModel).then((value){
+                insertCommentService(mCommentModel.toMap()).then((value){
                   loading = false;
                   inputController.text = "";
                   setState(() {
                     if(firstCommentModel != null){
                       firstCommentModel.replyList.add(CommentModel.fromJson(value.data));
-                      ;                        }else{
+                    }else{
                       commentList.add(CommentModel.fromJson(value.data));
                     }
                   });
