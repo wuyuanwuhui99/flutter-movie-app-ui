@@ -38,9 +38,6 @@ dependencies:
   audioplayers: ^0.16.1
   flutter_lyric: ^1.0.0
   fluro: ^1.5.1
-  chewie: ^1.8.1
-  chewie_audio: ^1.5.0
-  video_player: ^2.7.0
 
 dev_dependencies:
   flutter_test:

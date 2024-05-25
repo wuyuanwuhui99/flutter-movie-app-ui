@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:movie/theme/ThemeStyle.dart';
 import '../../movie/service/serverMethod.dart';
 import 'package:movie/router/index.dart';
+import 'package:flutter_easyrefresh/easy_refresh.dart';
+import 'package:flutter_easyrefresh/material_footer.dart';
 import 'dart:ui';
 import 'package:provider/provider.dart';
 import 'package:audioplayers/audioplayers.dart';
@@ -39,7 +42,7 @@ class _MusicPlayerPageState extends State<MusicPlayerPage>
   LyricController _lyricController; //歌词控制器
   AnimationController _repeatController; // 会重复播放的控制器
   Animation<double> _curveAnimation; // 非线性动画
-
+  // 在父组件中创建 GlobalKey
   @override
   void initState() {
     super.initState();
@@ -256,15 +259,19 @@ class _MusicPlayerPageState extends State<MusicPlayerPage>
                 showModalBottomSheet(
                     shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.only(
-                            topLeft: Radius.circular(ThemeSize.middleRadius), topRight: Radius.circular(ThemeSize.middleRadius))),
+                            topLeft: Radius.circular(ThemeSize.middleRadius),
+                            topRight: Radius.circular(ThemeSize.middleRadius))),
                     isScrollControlled: true,
                     context: context,
                     builder: (BuildContext context) {
-                      return SizedBox(height: MediaQuery.of(context).size.height * 0.7,child: CommentComponent(
-                          relationId: musicModel.id,
-                          commentList: res.data
-                              .map((ele) {return CommentModel.fromJson(ele);})
-                              .toList()),);
+                      return Container(
+                          height: MediaQuery.of(context).size.height * 0.7,
+                          child: CommentComponent(
+                              type: CommentEnum.MUSIC,
+                              relationId: musicModel.id,
+                              commentList: res.data.map((ele) {
+                                return CommentModel.fromJson(ele);
+                              }).toList()));
                     });
               }),
           flex: 1,

@@ -22,6 +22,7 @@ class ThemeSize {
   static double smallFontSize = 14;//常规字体
   static double middleFontSize = 16;//常规字体
   static double bigFontSize = 20;// 大标题字体
+  static double smallAvater = 30;// 小头像
   static double middleAvater = 40;// 中等头像
   static double bigAvater = 60;// 大头像
   static double borderWidth = 1;// 边框大小
