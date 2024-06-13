@@ -323,9 +323,6 @@ class _MusicPlayerPageState extends State<MusicPlayerPage>
   }
 
   Widget buildPlayBtn() {
-    List<MusicModel> playMusicModelList =
-        Provider.of<PlayerMusicProvider>(context, listen: false)
-            .playMusicModelList;
     return Row(
       children: [
         Expanded(
@@ -337,22 +334,21 @@ class _MusicPlayerPageState extends State<MusicPlayerPage>
             flex: 1),
         Expanded(
             child: InkWell(
-                child: Opacity(
-                    opacity: currentPlayIndex == 0 ? 0.5 : 1,
-                    child: Image.asset(
-                      "lib/assets/images/icon-music-prev.png",
-                      width: ThemeSize.playIcon,
-                      height: ThemeSize.playIcon,
-                    )),
+                child: Image.asset(
+                  "lib/assets/images/icon-music-prev.png",
+                  width: ThemeSize.playIcon,
+                  height: ThemeSize.playIcon,
+                ),
                 onTap: () {
+                  List<MusicModel> playMusicModelList = Provider.of<PlayerMusicProvider>(context, listen: false).playMusicModelList;
                   if (currentPlayIndex > 0) {
-                    Provider.of<PlayerMusicProvider>(context, listen: false)
-                        .setPlayIndex(currentPlayIndex);
-                    setState(() {
-                      currentPlayIndex--;
-                      musicModel = playMusicModelList[currentPlayIndex];
-                    });
+                    currentPlayIndex--;
+                  }else{
+                    currentPlayIndex = playMusicModelList.length - 1;
                   }
+                  setState(() {
+                    musicModel = playMusicModelList[currentPlayIndex];
+                  });
                 }),
             flex: 1),
         Expanded(
@@ -400,15 +396,11 @@ class _MusicPlayerPageState extends State<MusicPlayerPage>
             flex: 2),
         Expanded(
             child: InkWell(
-                child: Opacity(
-                    opacity: currentPlayIndex == playMusicModelList.length - 1
-                        ? 0.5
-                        : 1,
-                    child: Image.asset(
-                      "lib/assets/images/icon-music-next.png",
-                      width: ThemeSize.playIcon,
-                      height: ThemeSize.playIcon,
-                    )),
+                child: Image.asset(
+                  "lib/assets/images/icon-music-next.png",
+                  width: ThemeSize.playIcon,
+                  height: ThemeSize.playIcon,
+                ),
                 onTap: useNextMusic),
             flex: 1),
         Expanded(
@@ -450,14 +442,19 @@ class _MusicPlayerPageState extends State<MusicPlayerPage>
     }
   }
 
+  ///@author: wuwenqiang
+  ///@description: 切换下一首歌曲
+  /// @date: 2024-06-14 00:15
   void useNextMusic() {
+    List<MusicModel> playMusicModelList = Provider.of<PlayerMusicProvider>(context, listen: false).playMusicModelList;
     if (currentPlayIndex < playMusicModelList.length - 1) {
-      setState(() {
-        currentPlayIndex++;
-        musicModel = playMusicModelList[currentPlayIndex];
-      });
-      Provider.of<PlayerMusicProvider>(context, listen: false)
-          .setPlayIndex(currentPlayIndex);
+      currentPlayIndex++;
+    }else{
+      currentPlayIndex = 0;
     }
+    setState(() {
+      musicModel = playMusicModelList[currentPlayIndex];
+    });
+    Provider.of<PlayerMusicProvider>(context, listen: false).setPlayIndex(currentPlayIndex);
   }
 }

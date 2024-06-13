@@ -13,6 +13,7 @@ class PlayerMusicProvider with ChangeNotifier {
 
   AudioPlayer _player = AudioPlayer();
   List<MusicModel> _playMusicModelList = []; // 正在播放的列表
+  List<MusicModel> _unPlayMusicModelList = []; // 待播放的歌曲列表
   int _playIndex = 0; // 音乐播放的下标
 
   ///  @desc 设置正在播放额音乐
@@ -27,6 +28,7 @@ class PlayerMusicProvider with ChangeNotifier {
       _playMusicModelList = playMusicModelList;
       _playIndex = playIndex;
     }
+    removeMusic();
     insertMusicRecordService(_musicModel);// 插入播放记录
     LocalStroageUtils.setPlayMusic(_musicModel);
     notifyListeners();
@@ -37,13 +39,17 @@ class PlayerMusicProvider with ChangeNotifier {
   ///  @author wuwenqiang
   void setPlayMusicList(List<MusicModel> playMusicModelList) {
     _playMusicModelList = playMusicModelList;
+    _unPlayMusicModelList = List.from(playMusicModelList);
     if (_musicModel == null) return;
-    int playIndex = playMusicModelList.indexWhere((element) {
-      // 查找正在播放的下标
-      return element.id == _musicModel.id;
-    });
+    int playIndex = playMusicModelList.indexWhere((element) => element.id == _musicModel.id);
     _playIndex = playIndex != -1 ? playIndex : _playIndex;
+    removeMusic();
     notifyListeners();
+  }
+
+  void removeMusic(){
+    int playIndex = _unPlayMusicModelList.indexWhere((element) => element.id == _musicModel.id);
+    if(playIndex != -1)_unPlayMusicModelList.removeAt(playIndex);
   }
 
   void setPlaying(bool playing) {
@@ -61,6 +67,7 @@ class PlayerMusicProvider with ChangeNotifier {
       insertMusicRecordService(_musicModel);
       LocalStroageUtils.setPlayMusic(_musicModel);
       _player.play(HOST + _musicModel.localPlayUrl);
+      removeMusic();
       notifyListeners();
     }
   }

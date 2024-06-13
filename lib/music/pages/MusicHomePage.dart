@@ -347,11 +347,13 @@ class _MusicHomePageState extends State<MusicHomePage>
                             height: ThemeSize.smallIcon,
                           ),
                           onTap: () {
+                            getMusicListByClassifyIdService(classifyId, 1, 500, 1).then((value){
+                              List<MusicModel> playMusicModelList = [] ;
+                              value.data.forEach((element) => playMusicModelList.add(MusicModel.fromJson(element)));
+                              Provider.of<PlayerMusicProvider>(context,listen: false).setPlayMusicList(playMusicModelList);
+                            });
                             LocalStroageUtils.setPlayMusic(musicItem);
-                            Provider.of<PlayerMusicProvider>(context,
-                                    listen: false)
-                                .setPlayMusic(
-                                    musicModelList, musicItem, index, true);
+                            Provider.of<PlayerMusicProvider>(context,listen: false).setPlayMusic([], musicItem, index, true);
                             Routes.router.navigateTo(context, '/MusicPlayerPage');
                           }),
                       SizedBox(width: ThemeSize.containerPadding),
