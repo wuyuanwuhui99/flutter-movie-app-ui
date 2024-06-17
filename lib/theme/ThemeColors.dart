@@ -10,4 +10,5 @@ class ThemeColors {
   static Color blueColor = Color.fromRGBO(62,125,155,1);
   static Color opcityColor = Color.fromRGBO(0,0,0,0.1);
   static Color opcityWhiteColor = Color.fromRGBO(255,255,255,0.3);
+  static Color popupMenuColor = Color.fromRGBO(0,0,0,0.8);
 }

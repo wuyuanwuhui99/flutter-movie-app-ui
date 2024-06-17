@@ -183,7 +183,7 @@ class _SearchMusicPageState extends State<MusicSearchPage> {
                                 });
                               },
                               child: Image.asset(
-                                "lib/assets/images/icon-clear.png",
+                                "lib/assets/images/icon_clear.png",
                                 height: ThemeSize.smallIcon,
                                 width: ThemeSize.smallIcon,
                               ))
@@ -340,8 +340,8 @@ class _SearchMusicPageState extends State<MusicSearchPage> {
                               playing &&
                                   musicItem.id ==
                                       currentPlayingMusicModel.id
-                                  ? "lib/assets/images/icon-music-playing-grey.png"
-                                  : "lib/assets/images/icon-music-play.png",
+                                  ? "lib/assets/images/icon_music_playing_grey.png"
+                                  : "lib/assets/images/icon_music_play.png",
                               width: ThemeSize.smallIcon,
                               height: ThemeSize.smallIcon),
                           onTap: () {
@@ -354,7 +354,7 @@ class _SearchMusicPageState extends State<MusicSearchPage> {
                           }),
                       SizedBox(width: ThemeSize.containerPadding),
                       InkWell(child: Image.asset(
-                          "lib/assets/images/icon-like${musicItem.isFavorite == 1 ? "-active" : ""}.png",
+                          "lib/assets/images/icon_like${musicItem.isFavorite == 1 ? "_active" : ""}.png",
                           width: ThemeSize.smallIcon,
                           height: ThemeSize.smallIcon),onTap: (){
                         if(musicItem.isFavorite == 0){
@@ -376,7 +376,7 @@ class _SearchMusicPageState extends State<MusicSearchPage> {
                         }
                       }),
                       SizedBox(width: ThemeSize.containerPadding),
-                      Image.asset("lib/assets/images/icon-music-menu.png",
+                      Image.asset("lib/assets/images/icon_music_menu.png",
                           width: ThemeSize.smallIcon,
                           height: ThemeSize.smallIcon),
                     ]));

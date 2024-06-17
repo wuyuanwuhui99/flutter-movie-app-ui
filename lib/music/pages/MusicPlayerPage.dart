@@ -43,19 +43,30 @@ class _MusicPlayerPageState extends State<MusicPlayerPage>
   AnimationController _repeatController; // 会重复播放的控制器
   Animation<double> _curveAnimation; // 非线性动画
   int commentTotal = 0;
+  Map<LoopModeEnum, String> loopMode = {
+    LoopModeEnum.ORDER: "lib/assets/images/icon_music_order.png",
+    LoopModeEnum.REPEAT: "lib/assets/images/icon_music_random.png",
+    LoopModeEnum.RANDOM: "lib/assets/images/icon_music_order.png"
+  };
+
   // 在父组件中创建 GlobalKey
   @override
   void initState() {
     super.initState();
     _lyricController = LyricController(vsync: this);
-    player = Provider.of<PlayerMusicProvider>(context, listen: false).player;
+    player = Provider
+        .of<PlayerMusicProvider>(context, listen: false)
+        .player;
     musicModel =
-        Provider.of<PlayerMusicProvider>(context, listen: false).musicModel;
+        Provider
+            .of<PlayerMusicProvider>(context, listen: false)
+            .musicModel;
     usePlay(musicModel);
     _repeatController = AnimationController(
       duration: const Duration(seconds: 10),
       vsync: this,
-    )..repeat();
+    )
+      ..repeat();
 
     // 创建一个从0到360弧度的补间动画 v * 2 * π
     _curveAnimation =
@@ -63,10 +74,13 @@ class _MusicPlayerPageState extends State<MusicPlayerPage>
 
     // 获取当前正在播放的音乐下标
     currentPlayIndex =
-        Provider.of<PlayerMusicProvider>(context, listen: false).playIndex;
+        Provider
+            .of<PlayerMusicProvider>(context, listen: false)
+            .playIndex;
 
     playMusicModelList =
-        Provider.of<PlayerMusicProvider>(context, listen: false)
+        Provider
+            .of<PlayerMusicProvider>(context, listen: false)
             .playMusicModelList;
   }
 
@@ -81,18 +95,31 @@ class _MusicPlayerPageState extends State<MusicPlayerPage>
     return Scaffold(
         backgroundColor: ThemeColors.colorBg,
         body: Stack(children: [
+
           /// 图片在Stack最底层
           ImageFiltered(
             imageFilter: ImageFilter.blur(
                 sigmaX: 50, sigmaY: 50, tileMode: TileMode.mirror),
             child: Image.network(HOST + musicModel.cover,
                 fit: BoxFit.cover,
-                height: MediaQuery.of(context).size.height,
-                width: MediaQuery.of(context).size.width),
+                height: MediaQuery
+                    .of(context)
+                    .size
+                    .height,
+                width: MediaQuery
+                    .of(context)
+                    .size
+                    .width),
           ),
           Container(
-            width: MediaQuery.of(context).size.width,
-            height: MediaQuery.of(context).size.height,
+            width: MediaQuery
+                .of(context)
+                .size
+                .width,
+            height: MediaQuery
+                .of(context)
+                .size
+                .height,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
@@ -123,7 +150,10 @@ class _MusicPlayerPageState extends State<MusicPlayerPage>
 
   Widget buildPlayCircle() {
     double playerWidth =
-        MediaQuery.of(context).size.width - ThemeSize.containerPadding * 6;
+        MediaQuery
+            .of(context)
+            .size
+            .width - ThemeSize.containerPadding * 6;
     return Container(
         width: playerWidth,
         height: playerWidth,
@@ -156,15 +186,15 @@ class _MusicPlayerPageState extends State<MusicPlayerPage>
                   padding: EdgeInsets.all(ThemeSize.containerPadding * 4),
                   child: ClipOval(
                       child: Image.network(
-                    HOST + musicModel.cover,
-                    height: playerWidth -
-                        ThemeSize.smallMargin -
-                        ThemeSize.containerPadding * 3,
-                    width: playerWidth -
-                        ThemeSize.smallMargin -
-                        ThemeSize.containerPadding * 3,
-                    fit: BoxFit.cover,
-                  )))),
+                        HOST + musicModel.cover,
+                        height: playerWidth -
+                            ThemeSize.smallMargin -
+                            ThemeSize.containerPadding * 3,
+                        width: playerWidth -
+                            ThemeSize.smallMargin -
+                            ThemeSize.containerPadding * 3,
+                        fit: BoxFit.cover,
+                      )))),
         ));
   }
 
@@ -175,25 +205,25 @@ class _MusicPlayerPageState extends State<MusicPlayerPage>
       child: Center(
           child: musicModel.lyrics != null && musicModel.lyrics != ''
               ? InkWell(
-                  child: LyricWidget(
-                    lyricStyle: TextStyle(
-                        color: ThemeColors.opcityWhiteColor,
-                        fontSize: ThemeSize.middleFontSize),
-                    currLyricStyle: TextStyle(
-                        color: ThemeColors.colorWhite,
-                        fontSize: ThemeSize.middleFontSize),
-                    size: Size(double.infinity, double.infinity),
-                    lyrics: LyricUtil.formatLyric(musicModel.lyrics),
-                    controller: _lyricController,
-                  ),
-                  onTap: () {
-                    Routes.router.navigateTo(context, '/MusicLyricPage');
-                  },
-                )
+            child: LyricWidget(
+              lyricStyle: TextStyle(
+                  color: ThemeColors.opcityWhiteColor,
+                  fontSize: ThemeSize.middleFontSize),
+              currLyricStyle: TextStyle(
+                  color: ThemeColors.colorWhite,
+                  fontSize: ThemeSize.middleFontSize),
+              size: Size(double.infinity, double.infinity),
+              lyrics: LyricUtil.formatLyric(musicModel.lyrics),
+              controller: _lyricController,
+            ),
+            onTap: () {
+              Routes.router.navigateTo(context, '/MusicLyricPage');
+            },
+          )
               : Text('暂无歌词',
-                  style: TextStyle(
-                      color: ThemeColors.opcityWhiteColor,
-                      fontSize: ThemeSize.middleFontSize))),
+              style: TextStyle(
+                  color: ThemeColors.opcityWhiteColor,
+                  fontSize: ThemeSize.middleFontSize))),
     );
   }
 
@@ -232,7 +262,7 @@ class _MusicPlayerPageState extends State<MusicPlayerPage>
       children: [
         Expanded(
           child: Image.asset(
-            "lib/assets/images/icon-music-collect.png",
+            "lib/assets/images/icon_music_collect.png",
             width: ThemeSize.playIcon,
             height: ThemeSize.playIcon,
           ),
@@ -240,7 +270,7 @@ class _MusicPlayerPageState extends State<MusicPlayerPage>
         ),
         Expanded(
           child: Image.asset(
-            "lib/assets/images/icon-music-down.png",
+            "lib/assets/images/icon_music_down.png",
             width: ThemeSize.playIcon,
             height: ThemeSize.playIcon,
           ),
@@ -249,7 +279,7 @@ class _MusicPlayerPageState extends State<MusicPlayerPage>
         Expanded(
           child: InkWell(
               child: Image.asset(
-                "lib/assets/images/icon-music-comments.png",
+                "lib/assets/images/icon_music_comments.png",
                 width: ThemeSize.playIcon,
                 height: ThemeSize.playIcon,
               ),
@@ -267,7 +297,10 @@ class _MusicPlayerPageState extends State<MusicPlayerPage>
                     context: context,
                     builder: (BuildContext context) {
                       return Container(
-                          height: MediaQuery.of(context).size.height * 0.7,
+                          height: MediaQuery
+                              .of(context)
+                              .size
+                              .height * 0.7,
                           child: CommentComponent(
                             type: CommentEnum.MUSIC,
                             relationId: musicModel.id,
@@ -278,7 +311,7 @@ class _MusicPlayerPageState extends State<MusicPlayerPage>
         ),
         Expanded(
           child: Image.asset(
-            "lib/assets/images/icon-music-white-menu.png",
+            "lib/assets/images/icon_music_white_menu.png",
             width: ThemeSize.playIcon,
             height: ThemeSize.playIcon,
           ),
@@ -323,32 +356,90 @@ class _MusicPlayerPageState extends State<MusicPlayerPage>
   }
 
   Widget buildPlayBtn() {
+    LoopModeEnum loopModeEnum = Provider
+        .of<PlayerMusicProvider>(context, listen: true)
+        .loopMode;
     return Row(
       children: [
         Expanded(
-            child: Image.asset(
-              "lib/assets/images/icon-music-order.png",
-              width: ThemeSize.playIcon,
-              height: ThemeSize.playIcon,
-            ),
+            child:
+            PopupMenuButton<LoopModeEnum>(
+              color: ThemeColors.popupMenuColor,
+              initialValue: loopModeEnum,
+              child: Image.asset(
+                loopMode[loopModeEnum],
+                width: ThemeSize.playIcon,
+                height: ThemeSize.playIcon,
+              ),
+              onSelected: (LoopModeEnum loopModeEnum) {
+                Provider.of<PlayerMusicProvider>(context, listen: true)
+                    .setLoopMode(loopModeEnum);
+              },
+              itemBuilder: (context) {
+                return <PopupMenuEntry<LoopModeEnum>>[
+                  PopupMenuItem<LoopModeEnum>(
+                      value: LoopModeEnum.ORDER,
+                      child: Row(
+                          children: <Widget>[
+                            Image.asset(
+                                "lib/assets/images/icon_music_order.png",
+                                width: ThemeSize.smallIcon,
+                                height: ThemeSize.smallIcon),
+                            SizedBox(width: ThemeSize.smallMargin),
+                            Text(
+                                '顺序播放', style: TextStyle(color: ThemeColors.colorWhite))
+                          ])
+                  ),
+                  PopupMenuItem<LoopModeEnum>(
+                    value: LoopModeEnum.REPEAT,
+                    child: Row(
+                        children: <Widget>[
+                          Image.asset('lib/assets/images/icon_music_loop.png',
+                              width: ThemeSize.smallIcon,
+                              height: ThemeSize.smallIcon),
+                          SizedBox(width: ThemeSize.smallMargin),
+                          Text('单曲循环',
+                              style: TextStyle(color: ThemeColors.colorWhite))
+                        ]),
+                  ),
+                  PopupMenuItem<LoopModeEnum>(
+                    value: LoopModeEnum.RANDOM,
+                    child: Row(
+                        children: <Widget>[
+                          Image.asset('lib/assets/images/icon_music_random.png',
+                              width: ThemeSize.smallIcon,
+                              height: ThemeSize.smallIcon),
+                          SizedBox(width: ThemeSize.smallMargin),
+                          Text('随机播放',
+                              style: TextStyle(color: ThemeColors.colorWhite))
+                        ]),
+                  )
+                ];
+              },
+            )
+            ,
             flex: 1),
         Expanded(
             child: InkWell(
                 child: Image.asset(
-                  "lib/assets/images/icon-music-prev.png",
+                  "lib/assets/images/icon_music_prev.png",
                   width: ThemeSize.playIcon,
                   height: ThemeSize.playIcon,
                 ),
                 onTap: () {
-                  List<MusicModel> playMusicModelList = Provider.of<PlayerMusicProvider>(context, listen: false).playMusicModelList;
+                  List<MusicModel> playMusicModelList = Provider
+                      .of<PlayerMusicProvider>(context, listen: false)
+                      .playMusicModelList;
                   if (currentPlayIndex > 0) {
                     currentPlayIndex--;
-                  }else{
+                  } else {
                     currentPlayIndex = playMusicModelList.length - 1;
                   }
                   setState(() {
                     musicModel = playMusicModelList[currentPlayIndex];
                   });
+                  Provider.of<PlayerMusicProvider>(context, listen: false)
+                      .setPlayIndex(currentPlayIndex);
                 }),
             flex: 1),
         Expanded(
@@ -361,15 +452,15 @@ class _MusicPlayerPageState extends State<MusicPlayerPage>
                       height: ThemeSize.bigAvater,
                       decoration: BoxDecoration(
                         borderRadius:
-                            BorderRadius.circular(ThemeSize.bigAvater),
+                        BorderRadius.circular(ThemeSize.bigAvater),
                         border:
-                            Border.all(color: ThemeColors.colorWhite, width: 2),
+                        Border.all(color: ThemeColors.colorWhite, width: 2),
                       ),
                       child: Center(
                         child: Image.asset(
                           playState
-                              ? "lib/assets/images/icon-music-playing.png"
-                              : "lib/assets/images/icon-music-play-white.png",
+                              ? "lib/assets/images/icon_music_playing.png"
+                              : "lib/assets/images/icon_music_play_white.png",
                           width: ThemeSize.playIcon,
                           height: ThemeSize.playIcon,
                         ),
@@ -397,7 +488,7 @@ class _MusicPlayerPageState extends State<MusicPlayerPage>
         Expanded(
             child: InkWell(
                 child: Image.asset(
-                  "lib/assets/images/icon-music-next.png",
+                  "lib/assets/images/icon_music_next.png",
                   width: ThemeSize.playIcon,
                   height: ThemeSize.playIcon,
                 ),
@@ -405,7 +496,7 @@ class _MusicPlayerPageState extends State<MusicPlayerPage>
             flex: 1),
         Expanded(
             child: Image.asset(
-              "lib/assets/images/icon-music-play-menu.png",
+              "lib/assets/images/icon_music_play_menu.png",
               width: ThemeSize.playIcon,
               height: ThemeSize.playIcon,
             ),
@@ -446,15 +537,18 @@ class _MusicPlayerPageState extends State<MusicPlayerPage>
   ///@description: 切换下一首歌曲
   /// @date: 2024-06-14 00:15
   void useNextMusic() {
-    List<MusicModel> playMusicModelList = Provider.of<PlayerMusicProvider>(context, listen: false).playMusicModelList;
+    List<MusicModel> playMusicModelList = Provider
+        .of<PlayerMusicProvider>(context, listen: false)
+        .playMusicModelList;
     if (currentPlayIndex < playMusicModelList.length - 1) {
       currentPlayIndex++;
-    }else{
+    } else {
       currentPlayIndex = 0;
     }
     setState(() {
       musicModel = playMusicModelList[currentPlayIndex];
     });
-    Provider.of<PlayerMusicProvider>(context, listen: false).setPlayIndex(currentPlayIndex);
+    Provider.of<PlayerMusicProvider>(context, listen: false).setPlayIndex(
+        currentPlayIndex);
   }
 }

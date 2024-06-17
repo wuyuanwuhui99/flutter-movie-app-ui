@@ -5,6 +5,12 @@ import '../../config/common.dart';
 import '../service/serverMethod.dart';
 import '../model/MusicModel.dart';
 
+enum  LoopModeEnum {
+  ORDER,// 顺序播放
+  RANDOM,// 随机播放
+  REPEAT// 单曲循环
+}
+
 class PlayerMusicProvider with ChangeNotifier {
   MusicModel _musicModel; // 正在播放的音乐
   bool _playing = false;
@@ -15,6 +21,7 @@ class PlayerMusicProvider with ChangeNotifier {
   List<MusicModel> _playMusicModelList = []; // 正在播放的列表
   List<MusicModel> _unPlayMusicModelList = []; // 待播放的歌曲列表
   int _playIndex = 0; // 音乐播放的下标
+  LoopModeEnum _loopMode = LoopModeEnum.ORDER;
 
   ///  @desc 设置正在播放额音乐
   ///  @data 2023-11-15 21:51
@@ -72,6 +79,10 @@ class PlayerMusicProvider with ChangeNotifier {
     }
   }
 
+  void setLoopMode(LoopModeEnum loopMode){
+    _loopMode = loopMode;
+  }
+
   get playing => _playing;
 
   get musicModel => _musicModel;
@@ -81,4 +92,6 @@ class PlayerMusicProvider with ChangeNotifier {
   get playIndex => _playIndex;
 
   get playMusicModelList => _playMusicModelList;
+
+  get loopMode => _loopMode;
 }

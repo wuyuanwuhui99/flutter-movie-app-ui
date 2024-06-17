@@ -10,10 +10,10 @@ class TopNavigators extends StatelessWidget {
 
   List<Widget> _items(BuildContext context) {
     List listData = [
-      {"image": "lib/assets/images/icon-hot.png", "title": "热门"},
-      {"image": "lib/assets/images/icon-play.png", "title": "预告"},
-      {"image": "lib/assets/images/icon-top.png", "title": "最新"},
-      {"image": "lib/assets/images/icon-classify.png", "title": "分类"}
+      {"image": "lib/assets/images/icon_hot.png", "title": "热门"},
+      {"image": "lib/assets/images/icon_play.png", "title": "预告"},
+      {"image": "lib/assets/images/icon_top.png", "title": "最新"},
+      {"image": "lib/assets/images/icon_classify.png", "title": "分类"}
     ];
     var tempList = listData.map((value) {
       return Expanded(

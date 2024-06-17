@@ -36,16 +36,16 @@ class _MusicIndexPageState extends State<MusicIndexPage>
   int _currentIndex = 0;
   List<Widget> pages = [null, null, null, null];
   List<String> normalImgUrls = [
-    "lib/assets/images/icon-home.png",
-    "lib/assets/images/icon-recomment.png",
-    "lib/assets/images/icon-music-circle.png",
-    "lib/assets/images/icon-user.png"
+    "lib/assets/images/icon_home.png",
+    "lib/assets/images/icon_recomment.png",
+    "lib/assets/images/icon_music_circle.png",
+    "lib/assets/images/icon_user.png"
   ];
   List<String> selectedImgUrls = [
-    "lib/assets/images/icon-home-active.png",
-    "lib/assets/images/icon-recomment-active.png",
-    "lib/assets/images/icon-music-circle-active.png",
-    "lib/assets/images/icon-user-active.png"
+    "lib/assets/images/icon_home_active.png",
+    "lib/assets/images/icon_recomment_active.png",
+    "lib/assets/images/icon_music_circle_active.png",
+    "lib/assets/images/icon_user_active.png"
   ];
   List<String> titles = ["首页", "推荐", "音乐圈", "我的"];
   MusicModel musicModel;

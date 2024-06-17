@@ -215,7 +215,7 @@ class _MovieSearchPageState extends State<MovieSearchPage> {
                                 });
                               },
                               child: Image.asset(
-                                "lib/assets/images/icon-clear.png",
+                                "lib/assets/images/icon_clear.png",
                                 height: ThemeSize.smallIcon,
                                 width: ThemeSize.smallIcon,
                               ))

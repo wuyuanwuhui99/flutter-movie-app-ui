@@ -1,10 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:movie/movie/service/serverMethod.dart';
+import 'package:provider/provider.dart';
 import './movie/pages/MovieHomePage.dart';
 import './movie/pages/MoviePage.dart';
 import './movie/pages/VideoPage.dart';
 import './movie/pages/MovieMyPage.dart';
 import './theme/ThemeColors.dart';
 import './theme/ThemeSize.dart';
+import './movie/model/UserInfoModel.dart';
+import './movie/provider/UserInfoProvider.dart';
+
 
 class BottomNavigationWidget extends StatefulWidget {
   _BottomNavigationWidgetState createState() => _BottomNavigationWidgetState();
@@ -13,6 +18,17 @@ class BottomNavigationWidget extends StatefulWidget {
 class _BottomNavigationWidgetState extends State<BottomNavigationWidget> {
   int _currentIndex = 0;
   List<Widget> pages = [null, null, null, null];
+  bool isInit = false;
+  @override
+  void initState(){
+    super.initState();
+    getUserDataService().then((value){
+      Provider.of<UserInfoProvider>(context,listen: false).setUserInfo(UserInfoModel.fromJson(value.data));
+      setState(() {
+        isInit = true;
+      });
+    });
+  }
 
   @override
   void dispose() {
@@ -21,16 +37,16 @@ class _BottomNavigationWidgetState extends State<BottomNavigationWidget> {
   }
 
   List<String> normalImgUrls = [
-    "lib/assets/images/icon-home.png",
-    "lib/assets/images/icon-movie.png",
-    "lib/assets/images/icon-tv.png",
-    "lib/assets/images/icon-user.png"
+    "lib/assets/images/icon_home.png",
+    "lib/assets/images/icon_movie.png",
+    "lib/assets/images/icon_tv.png",
+    "lib/assets/images/icon_user.png"
   ];
   List<String> selectedImgUrls = [
-    "lib/assets/images/icon-home-active.png",
-    "lib/assets/images/icon-movie-active.png",
-    "lib/assets/images/icon-tv-active.png",
-    "lib/assets/images/icon-user-active.png"
+    "lib/assets/images/icon_home_active.png",
+    "lib/assets/images/icon_movie_active.png",
+    "lib/assets/images/icon_tv_active.png",
+    "lib/assets/images/icon_user_active.png"
   ];
   List<String> titles = ["首页", "电影", "电视剧", "我的"];
 
@@ -93,29 +109,36 @@ class _BottomNavigationWidgetState extends State<BottomNavigationWidget> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-        backgroundColor: ThemeColors.colorBg,
-        body: SafeArea(
-            top: true,
-            child: PageView.builder(
-                controller: _pageController,
-                physics: NeverScrollableScrollPhysics(),
-                onPageChanged: _pageChanged,
-                itemCount: 4,
-                itemBuilder: (context, index) {
-                  return _getPage();
-                })),
-        bottomNavigationBar: BottomAppBar(
-            child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceAround,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: <Widget>[
-            bottomAppBarItem(0),
-            bottomAppBarItem(1),
-            bottomAppBarItem(2),
-            bottomAppBarItem(3)
-          ],
-        )));
+    if(isInit){
+      return Scaffold(
+          backgroundColor: ThemeColors.colorBg,
+          body: SafeArea(
+              top: true,
+              child: PageView.builder(
+                  controller: _pageController,
+                  physics: NeverScrollableScrollPhysics(),
+                  onPageChanged: _pageChanged,
+                  itemCount: 4,
+                  itemBuilder: (context, index) {
+                    return _getPage();
+                  })),
+          bottomNavigationBar: BottomAppBar(
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: <Widget>[
+                  bottomAppBarItem(0),
+                  bottomAppBarItem(1),
+                  bottomAppBarItem(2),
+                  bottomAppBarItem(3)
+                ],
+              )));
+    }else{
+      return  Scaffold(body:  Center(
+        child: CircularProgressIndicator(),
+      ));
+    }
+
   }
 
   void _pageChanged(int index) {

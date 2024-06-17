@@ -15,7 +15,7 @@ class ScoreComponent extends StatelessWidget {
       for (var i = 0; i < integer; i++) {
         //实心星星
         result
-          ..add(Image.asset("lib/assets/images/icon-full-star.png",
+          ..add(Image.asset("lib/assets/images/icon_full_star.png",
               width: 15, height: 15))
           ..add(SizedBox(width: 5));
       }
@@ -23,7 +23,7 @@ class ScoreComponent extends StatelessWidget {
       if (count.round() - temp.floor() == 0.5) {
         //半个星星
         result
-          ..add(Image.asset("lib/assets/images/icon-half-star.png",
+          ..add(Image.asset("lib/assets/images/icon_half_star.png",
               width: 15, height: 15))
           ..add(SizedBox(width: 5));
       }
@@ -31,7 +31,7 @@ class ScoreComponent extends StatelessWidget {
       for (int i = 0; i < leftover; i++) {
         //空心星星
         result
-          ..add(Image.asset("lib/assets/images/icon-empty-star.png",
+          ..add(Image.asset("lib/assets/images/icon_empty_star.png",
               width: 15, height: 15))
           ..add(SizedBox(width: 5));
       }

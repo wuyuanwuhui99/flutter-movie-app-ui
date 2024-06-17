@@ -29,9 +29,9 @@ class _MusicRecommentPageState extends State<MusicRecommentPage>
   int total = 0;
   List<MusicModel> musicModelList = [];
   List<String> iconList = [
-    "lib/assets/images/icon-no1.png",
-    "lib/assets/images/icon-no2.png",
-    "lib/assets/images/icon-no3.png"
+    "lib/assets/images/icon_no1.png",
+    "lib/assets/images/icon_no2.png",
+    "lib/assets/images/icon_no3.png"
   ];
   MusicModel currentPlayingMusicModel;
   bool playing;
@@ -117,8 +117,8 @@ class _MusicRecommentPageState extends State<MusicRecommentPage>
           InkWell(
               child: Image.asset(
                   playing && musicModel.id == currentPlayingMusicModel.id
-                      ? "lib/assets/images/icon-music-playing-grey.png"
-                      : "lib/assets/images/icon-music-play.png",
+                      ? "lib/assets/images/icon_music_playing_grey.png"
+                      : "lib/assets/images/icon_music_play.png",
                   width: ThemeSize.smallIcon,
                   height: ThemeSize.smallIcon),
               onTap: () {
@@ -128,7 +128,7 @@ class _MusicRecommentPageState extends State<MusicRecommentPage>
               }),
           SizedBox(width: ThemeSize.containerPadding),
           InkWell(child: Image.asset(
-              "lib/assets/images/icon-like${musicModel.isFavorite == 1 ? "-active" : ""}.png",
+              "lib/assets/images/icon_like${musicModel.isFavorite == 1 ? "_active" : ""}.png",
               width: ThemeSize.smallIcon,
               height: ThemeSize.smallIcon),onTap: (){
             if(musicModel.isFavorite == 0){
@@ -150,7 +150,7 @@ class _MusicRecommentPageState extends State<MusicRecommentPage>
             }
           }),
           SizedBox(width: ThemeSize.containerPadding),
-          Image.asset("lib/assets/images/icon-music-menu.png",
+          Image.asset("lib/assets/images/icon_music_menu.png",
               width: ThemeSize.smallIcon, height: ThemeSize.smallIcon),
         ]));
   }

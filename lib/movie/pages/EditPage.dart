@@ -35,7 +35,9 @@ class _EditPageState extends State<EditPage> {
   int tabIndex = 0;
   String checkValue = "";
 
+  @override
   void initState() {
+    super.initState();
     checkValue = myController.text = widget.value;
     myController.addListener(() {
       setState(() {
@@ -63,7 +65,7 @@ class _EditPageState extends State<EditPage> {
                       onTap: () {
                         Navigator.of(context).pop();
                       },
-                      child: Image.asset("lib/assets/images/icon-back.png",
+                      child: Image.asset("lib/assets/images/icon_back.png",
                           width: ThemeSize.smallIcon,
                           height: ThemeSize.smallIcon),
                     ),

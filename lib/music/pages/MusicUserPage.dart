@@ -114,7 +114,7 @@ class _MusicUserPageState extends State<MusicUserPage>
             Expanded(
                 child: Column(
                   children: [
-                    Image.asset("lib/assets/images/icon-menu-board.png",
+                    Image.asset("lib/assets/images/icon_menu_board.png",
                         width: ThemeSize.middleIcon,
                         height: ThemeSize.middleIcon),
                     SizedBox(height: ThemeSize.smallMargin),
@@ -125,7 +125,7 @@ class _MusicUserPageState extends State<MusicUserPage>
             Expanded(
                 child: Column(
                   children: [
-                    Image.asset("lib/assets/images/icon-menu-like.png",
+                    Image.asset("lib/assets/images/icon_menu_like.png",
                         width: ThemeSize.middleIcon,
                         height: ThemeSize.middleIcon),
                     SizedBox(height: ThemeSize.smallMargin),
@@ -136,7 +136,7 @@ class _MusicUserPageState extends State<MusicUserPage>
             Expanded(
                 child: Column(
                   children: [
-                    Image.asset("lib/assets/images/icon-menu-collect.png",
+                    Image.asset("lib/assets/images/icon_menu_collect.png",
                         width: ThemeSize.middleIcon,
                         height: ThemeSize.middleIcon),
                     SizedBox(height: ThemeSize.smallMargin),
@@ -147,7 +147,7 @@ class _MusicUserPageState extends State<MusicUserPage>
             Expanded(
                 child: Column(
                   children: [
-                    Image.asset("lib/assets/images/icon-menu-history.png",
+                    Image.asset("lib/assets/images/icon_menu_history.png",
                         width: ThemeSize.middleIcon,
                         height: ThemeSize.middleIcon),
                     SizedBox(height: ThemeSize.smallMargin),
@@ -172,12 +172,12 @@ class _MusicUserPageState extends State<MusicUserPage>
             Row(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                Image.asset("lib/assets/images/icon-down.png",
+                Image.asset("lib/assets/images/icon_down.png",
                     width: ThemeSize.smallIcon, height: ThemeSize.smallIcon),
                 SizedBox(width: ThemeSize.smallMargin),
                 Text("我的歌单"),
                 Expanded(child: SizedBox(), flex: 1),
-                Image.asset("lib/assets/images/icon-menu-add.png",
+                Image.asset("lib/assets/images/icon_menu_add.png",
                     width: ThemeSize.smallIcon, height: ThemeSize.smallIcon),
               ],
             ),
@@ -245,14 +245,14 @@ class _MusicUserPageState extends State<MusicUserPage>
             flex: 1,
           ),
           Image.asset(
-            "lib/assets/images/icon-music-play.png",
+            "lib/assets/images/icon_music_play.png",
             width: ThemeSize.smallIcon,
             height: ThemeSize.smallIcon,
           ),
           SizedBox(width: ThemeSize.containerPadding * 2),
           SizedBox(width: ThemeSize.containerPadding * 2),
           Image.asset(
-            "lib/assets/images/icon-music-menu.png",
+            "lib/assets/images/icon_music_menu.png",
             width: ThemeSize.smallIcon,
             height: ThemeSize.smallIcon,
           )
@@ -275,12 +275,12 @@ class _MusicUserPageState extends State<MusicUserPage>
             Row(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                Image.asset("lib/assets/images/icon-down.png",
+                Image.asset("lib/assets/images/icon_down.png",
                     width: ThemeSize.smallIcon, height: ThemeSize.smallIcon),
                 SizedBox(width: ThemeSize.smallMargin),
                 Text("我的关注的歌手"),
                 Expanded(child: SizedBox(), flex: 1),
-                Image.asset("lib/assets/images/icon-menu-add.png",
+                Image.asset("lib/assets/images/icon_menu_add.png",
                     width: ThemeSize.smallIcon, height: ThemeSize.smallIcon),
               ],
             ),
@@ -349,19 +349,19 @@ class _MusicUserPageState extends State<MusicUserPage>
             flex: 1,
           ),
           Image.asset(
-            "lib/assets/images/icon-music-play.png",
+            "lib/assets/images/icon_music_play.png",
             width: ThemeSize.smallIcon,
             height: ThemeSize.smallIcon,
           ),
           SizedBox(width: ThemeSize.containerPadding * 2),
           Image.asset(
-            "lib/assets/images/icon-delete.png",
+            "lib/assets/images/icon_delete.png",
             width: ThemeSize.smallIcon,
             height: ThemeSize.smallIcon,
           ),
           SizedBox(width: ThemeSize.containerPadding * 2),
           Image.asset(
-            "lib/assets/images/icon-music-menu.png",
+            "lib/assets/images/icon_music_menu.png",
             width: ThemeSize.smallIcon,
             height: ThemeSize.smallIcon,
           )
@@ -384,7 +384,7 @@ class _MusicUserPageState extends State<MusicUserPage>
             Row(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                Image.asset("lib/assets/images/icon-down.png",
+                Image.asset("lib/assets/images/icon_down.png",
                     width: ThemeSize.smallIcon, height: ThemeSize.smallIcon),
                 SizedBox(width: ThemeSize.smallMargin),
                 Expanded(child: Text("最近播放的歌曲"), flex: 1),
@@ -392,7 +392,7 @@ class _MusicUserPageState extends State<MusicUserPage>
                     turns: _curveAnimation,
                     child: InkWell(
                       child: Image.asset(
-                          "lib/assets/images/icon-music-refresh.png",
+                          "lib/assets/images/icon_music_refresh.png",
                           width: ThemeSize.smallIcon,
                           height: ThemeSize.smallIcon),
                       onTap: () {
@@ -463,19 +463,19 @@ class _MusicUserPageState extends State<MusicUserPage>
               flex: 1,
             ),
             Image.asset(
-              "lib/assets/images/icon-music-play.png",
+              "lib/assets/images/icon_music_play.png",
               width: ThemeSize.smallIcon,
               height: ThemeSize.smallIcon,
             ),
             SizedBox(width: ThemeSize.containerPadding * 2),
             Image.asset(
-              "lib/assets/images/icon-delete.png",
+              "lib/assets/images/icon_delete.png",
               width: ThemeSize.smallIcon,
               height: ThemeSize.smallIcon,
             ),
             SizedBox(width: ThemeSize.containerPadding * 2),
             Image.asset(
-              "lib/assets/images/icon-music-menu.png",
+              "lib/assets/images/icon_music_menu.png",
               width: ThemeSize.smallIcon,
               height: ThemeSize.smallIcon,
             )

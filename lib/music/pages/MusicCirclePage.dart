@@ -392,7 +392,7 @@ class _MusicCirclePageState extends State<MusicCirclePage>
                           Text(
                               '${circleModel.musicSongName} - ${circleModel.musicAuthorName}'),
                           Expanded(flex: 1, child: SizedBox()),
-                          Image.asset("lib/assets/images/icon-music-play.png",
+                          Image.asset("lib/assets/images/icon_music_play.png",
                               width: ThemeSize.smallIcon,
                               height: ThemeSize.smallIcon),
                           SizedBox(width: ThemeSize.containerPadding),
@@ -407,7 +407,7 @@ class _MusicCirclePageState extends State<MusicCirclePage>
                       InkWell(
                         key: circleModel.key,
                         child: Image.asset(
-                            "lib/assets/images/icon-music-menu.png",
+                            "lib/assets/images/icon_music_menu.png",
                             width: ThemeSize.smallIcon,
                             height: ThemeSize.smallIcon),
                         onTap: () {
@@ -453,7 +453,7 @@ class _MusicCirclePageState extends State<MusicCirclePage>
       crossAxisAlignment: CrossAxisAlignment.start,
       mainAxisAlignment: MainAxisAlignment.start,
       children: [
-        Image.asset("lib/assets/images/icon-music-like.png",
+        Image.asset("lib/assets/images/icon_music_like.png",
             width: ThemeSize.smallIcon, height: ThemeSize.smallIcon),
         SizedBox(width: ThemeSize.smallMargin),
         Expanded(

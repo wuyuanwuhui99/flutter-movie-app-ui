@@ -155,7 +155,7 @@ class _MovieMyPageState extends State<MovieMyPage>
               InkWell(
                 child: Transform.rotate(
                     angle: (isExpandPlayRecord ? 90 : 0) * pi / 180,
-                    child: Image.asset("lib/assets/images/icon-arrow.png",
+                    child: Image.asset("lib/assets/images/icon_arrow.png",
                         height: ThemeSize.smallIcon,
                         width: ThemeSize.smallIcon,
                         fit: BoxFit.cover)),
@@ -207,7 +207,7 @@ class _MovieMyPageState extends State<MovieMyPage>
         child: Column(children: <Widget>[
           Container(child: Row(
             children: <Widget>[
-              Image.asset("lib/assets/images/icon-collection.png",
+              Image.asset("lib/assets/images/icon_collection.png",
                   height: ThemeSize.middleIcon,
                   width: ThemeSize.middleIcon,
                   fit: BoxFit.cover),
@@ -221,7 +221,7 @@ class _MovieMyPageState extends State<MovieMyPage>
               InkWell(
                 child: Transform.rotate(
                     angle: (isExpandMyFavorite ? 90 : 0) * pi / 180,
-                    child: Image.asset("lib/assets/images/icon-arrow.png",
+                    child: Image.asset("lib/assets/images/icon_arrow.png",
                         height: ThemeSize.smallIcon,
                         width: ThemeSize.smallIcon,
                         fit: BoxFit.cover)),
@@ -274,7 +274,7 @@ class _MovieMyPageState extends State<MovieMyPage>
           Container(child:
           Row(
             children: <Widget>[
-              Image.asset("lib/assets/images/icon-collection.png",
+              Image.asset("lib/assets/images/icon_collection.png",
                   height: ThemeSize.middleIcon,
                   width: ThemeSize.middleIcon,
                   fit: BoxFit.cover),
@@ -288,7 +288,7 @@ class _MovieMyPageState extends State<MovieMyPage>
               InkWell(
                 child: Transform.rotate(
                     angle: (isExpandMyView ? 90 : 0) * pi / 180,
-                    child: Image.asset("lib/assets/images/icon-arrow.png",
+                    child: Image.asset("lib/assets/images/icon_arrow.png",
                         height: ThemeSize.smallIcon,
                         width: ThemeSize.smallIcon,
                         fit: BoxFit.cover)),
@@ -348,7 +348,7 @@ class _MovieMyPageState extends State<MovieMyPage>
                   },
                   child: Row(
                     children: <Widget>[
-                      Image.asset("lib/assets/images/icon-music.png",
+                      Image.asset("lib/assets/images/icon_music.png",
                           height: ThemeSize.middleIcon,
                           width: ThemeSize.middleIcon,
                           fit: BoxFit.cover),
@@ -360,7 +360,7 @@ class _MovieMyPageState extends State<MovieMyPage>
                         flex: 1,
                         child: SizedBox(),
                       ),
-                      Image.asset("lib/assets/images/icon-arrow.png",
+                      Image.asset("lib/assets/images/icon_arrow.png",
                           height: ThemeSize.smallIcon,
                           width: ThemeSize.smallIcon,
                           fit: BoxFit.cover),
@@ -383,7 +383,7 @@ class _MovieMyPageState extends State<MovieMyPage>
                   },
                   child: Row(
                     children: <Widget>[
-                      Image.asset("lib/assets/images/icon-talk.png",
+                      Image.asset("lib/assets/images/icon_talk.png",
                           height: ThemeSize.middleIcon,
                           width: ThemeSize.middleIcon,
                           fit: BoxFit.cover),
@@ -396,7 +396,7 @@ class _MovieMyPageState extends State<MovieMyPage>
                         flex: 1,
                         child: SizedBox(),
                       ),
-                      Image.asset("lib/assets/images/icon-arrow.png",
+                      Image.asset("lib/assets/images/icon_arrow.png",
                           height: ThemeSize.smallIcon,
                           width: ThemeSize.smallIcon,
                           fit: BoxFit.cover),
@@ -406,7 +406,7 @@ class _MovieMyPageState extends State<MovieMyPage>
               margin: EdgeInsets.only(top: ThemeSize.containerPadding),
               child: Row(
                 children: <Widget>[
-                  Image.asset("lib/assets/images/icon-app.png",
+                  Image.asset("lib/assets/images/icon_app.png",
                       height: ThemeSize.middleIcon,
                       width: ThemeSize.middleIcon,
                       fit: BoxFit.cover),
@@ -417,7 +417,7 @@ class _MovieMyPageState extends State<MovieMyPage>
                     flex: 1,
                     child: SizedBox(),
                   ),
-                  Image.asset("lib/assets/images/icon-arrow.png",
+                  Image.asset("lib/assets/images/icon_arrow.png",
                       height: ThemeSize.smallIcon,
                       width: ThemeSize.smallIcon,
                       fit: BoxFit.cover),

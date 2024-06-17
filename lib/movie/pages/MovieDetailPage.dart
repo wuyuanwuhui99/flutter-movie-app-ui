@@ -77,7 +77,7 @@ class _MovieDetailPageState extends State<MovieDetailPage> {
                     height: ThemeSize.movieHeight,
                     child: Center(
                         child: Image.asset(
-                            "lib/assets/images/icon-detail-play.png",
+                            "lib/assets/images/icon_detail_play.png",
                             height: ThemeSize.bigIcon,
                             width: ThemeSize.bigIcon,
                             fit: BoxFit.cover)),

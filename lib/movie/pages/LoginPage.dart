@@ -40,7 +40,7 @@ class LoginPage extends StatelessWidget {
                     children: <Widget>[
                       Center(
                           child: Image.asset(
-                        "lib/assets/images/icon-logo.png",
+                        "lib/assets/images/icon_logo.png",
                         width: ThemeSize.movieWidth / 2,
                         height: ThemeSize.movieWidth / 2,
                       )),
@@ -75,7 +75,7 @@ class LoginPage extends StatelessWidget {
                               decoration: InputDecoration(
                                 hintText: "请输入用户名",
                                 icon: Image.asset(
-                                    "lib/assets/images/icon-user.png",
+                                    "lib/assets/images/icon_user.png",
                                     width: ThemeSize.smallIcon,
                                     height: ThemeSize.smallIcon),
                                 hintStyle:
@@ -111,7 +111,7 @@ class LoginPage extends StatelessWidget {
                               //设置光标
                               decoration: InputDecoration(
                                 icon: Image.asset(
-                                    "lib/assets/images/icon-password.png",
+                                    "lib/assets/images/icon_password.png",
                                     width: ThemeSize.smallIcon,
                                     height: ThemeSize.smallIcon),
                                 hintText: "请输入密码",
