@@ -46,6 +46,11 @@ class _MusicHomePageState extends State<MusicHomePage>
     });
   }
 
+  @override
+  deactivate(){
+    super.deactivate();
+  }
+
   void _getCategoryItem() {
     if (pageNum < allClassifies.length) {
       setState(() {

@@ -81,6 +81,7 @@ class PlayerMusicProvider with ChangeNotifier {
 
   void setLoopMode(LoopModeEnum loopMode){
     _loopMode = loopMode;
+    notifyListeners();
   }
 
   get playing => _playing;

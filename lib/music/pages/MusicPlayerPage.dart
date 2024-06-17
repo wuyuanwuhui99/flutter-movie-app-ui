@@ -45,43 +45,32 @@ class _MusicPlayerPageState extends State<MusicPlayerPage>
   int commentTotal = 0;
   Map<LoopModeEnum, String> loopMode = {
     LoopModeEnum.ORDER: "lib/assets/images/icon_music_order.png",
-    LoopModeEnum.REPEAT: "lib/assets/images/icon_music_random.png",
-    LoopModeEnum.RANDOM: "lib/assets/images/icon_music_order.png"
+    LoopModeEnum.REPEAT: "lib/assets/images/icon_music_loop.png",
+    LoopModeEnum.RANDOM: "lib/assets/images/icon_music_random.png"
   };
+  LoopModeEnum loopModeEnum;
 
   // 在父组件中创建 GlobalKey
   @override
   void initState() {
     super.initState();
     _lyricController = LyricController(vsync: this);
-    player = Provider
-        .of<PlayerMusicProvider>(context, listen: false)
-        .player;
-    musicModel =
-        Provider
-            .of<PlayerMusicProvider>(context, listen: false)
-            .musicModel;
+    loopModeEnum = Provider.of<PlayerMusicProvider>(context, listen: false).loopMode;
+    player = Provider.of<PlayerMusicProvider>(context, listen: false).player;
+    musicModel = Provider.of<PlayerMusicProvider>(context, listen: false).musicModel;
     usePlay(musicModel);
     _repeatController = AnimationController(
       duration: const Duration(seconds: 10),
       vsync: this,
-    )
-      ..repeat();
+    )..repeat();
 
     // 创建一个从0到360弧度的补间动画 v * 2 * π
-    _curveAnimation =
-        Tween<double>(begin: 0, end: 1).animate(_repeatController);
+    _curveAnimation = Tween<double>(begin: 0, end: 1).animate(_repeatController);
 
     // 获取当前正在播放的音乐下标
-    currentPlayIndex =
-        Provider
-            .of<PlayerMusicProvider>(context, listen: false)
-            .playIndex;
+    currentPlayIndex = Provider.of<PlayerMusicProvider>(context, listen: false).playIndex;
 
-    playMusicModelList =
-        Provider
-            .of<PlayerMusicProvider>(context, listen: false)
-            .playMusicModelList;
+    playMusicModelList = Provider.of<PlayerMusicProvider>(context, listen: false).playMusicModelList;
   }
 
   @override
@@ -356,9 +345,6 @@ class _MusicPlayerPageState extends State<MusicPlayerPage>
   }
 
   Widget buildPlayBtn() {
-    LoopModeEnum loopModeEnum = Provider
-        .of<PlayerMusicProvider>(context, listen: true)
-        .loopMode;
     return Row(
       children: [
         Expanded(
@@ -371,9 +357,11 @@ class _MusicPlayerPageState extends State<MusicPlayerPage>
                 width: ThemeSize.playIcon,
                 height: ThemeSize.playIcon,
               ),
-              onSelected: (LoopModeEnum loopModeEnum) {
-                Provider.of<PlayerMusicProvider>(context, listen: true)
-                    .setLoopMode(loopModeEnum);
+              onSelected: (LoopModeEnum loopMode) {
+                Provider.of<PlayerMusicProvider>(context, listen: false).setLoopMode(loopMode);
+                setState(() {
+                  loopModeEnum = loopMode;
+                });
               },
               itemBuilder: (context) {
                 return <PopupMenuEntry<LoopModeEnum>>[
