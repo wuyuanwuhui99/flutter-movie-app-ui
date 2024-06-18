@@ -88,8 +88,8 @@ class _MusicPlayerPageState extends State<MusicPlayerPage>
   @override
   void didPush() {
     super.didPush();
-    onDurationChangedListener?.resume();// 恢复监听音乐播放时长
-    onAudioPositionChangedListener?.resume();// 恢复监听音乐播放进度
+    onDurationChangedListener?.cancel();// 恢复监听音乐播放时长
+    onAudioPositionChangedListener?.cancel();// 恢复监听音乐播放进度
   }
 
   ///@author: wuwenqiang
@@ -528,9 +528,6 @@ class _MusicPlayerPageState extends State<MusicPlayerPage>
 
   /// 播放音乐
   void usePlay(MusicModel musicModel) async {
-    PlayerMusicProvider provider = Provider.of<PlayerMusicProvider>(context, listen: false);
-    if(provider.isInitPlayer)return;
-    provider.setInitPlayer();
     final result = await player.play(HOST + musicModel.localPlayUrl);
     if (result == 1) {
       setState(() {
@@ -549,6 +546,7 @@ class _MusicPlayerPageState extends State<MusicPlayerPage>
           sliderValue = (duration / totalSec) * 100;
         });
       });
+      onPlayerCompletionListener?.cancel();
       onPlayerCompletionListener = player.onPlayerCompletion.listen((event) {
         useNextMusic(); // 切换下一首
       });
