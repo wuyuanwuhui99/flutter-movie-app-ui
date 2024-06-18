@@ -21,12 +21,14 @@ void main() {
 }
 
 class MyApp extends StatelessWidget {
+  static final RouteObserver<PageRoute> routeObserver = RouteObserver<PageRoute>();
   MyApp() {
     Routes.initRoutes();
   }
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+        navigatorObservers: [MyApp.routeObserver],
         onGenerateRoute: Routes.router.generator,
         title: 'Flutter bottomNavigationBar',
         debugShowCheckedModeBanner:false,

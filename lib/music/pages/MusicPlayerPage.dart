@@ -1,9 +1,9 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
-import 'package:movie/theme/ThemeStyle.dart';
+import '../../main.dart';
 import '../../movie/service/serverMethod.dart';
 import 'package:movie/router/index.dart';
-import 'package:flutter_easyrefresh/easy_refresh.dart';
-import 'package:flutter_easyrefresh/material_footer.dart';
 import 'dart:ui';
 import 'package:provider/provider.dart';
 import 'package:audioplayers/audioplayers.dart';
@@ -18,7 +18,6 @@ import '../component/lyric/lyric_util.dart';
 import '../component/lyric/lyric_widget.dart';
 import '../component/CommentComponent.dart';
 import '../../utils/HttpUtil .dart';
-import '../../movie/model/CommentModel.dart';
 
 class MusicPlayerPage extends StatefulWidget {
   MusicPlayerPage({Key key}) : super(key: key);
@@ -28,7 +27,7 @@ class MusicPlayerPage extends StatefulWidget {
 }
 
 class _MusicPlayerPageState extends State<MusicPlayerPage>
-    with AutomaticKeepAliveClientMixin, TickerProviderStateMixin {
+    with AutomaticKeepAliveClientMixin, TickerProviderStateMixin, RouteAware {
   @override
   bool get wantKeepAlive => true;
   double sliderValue = 0;
@@ -49,8 +48,10 @@ class _MusicPlayerPageState extends State<MusicPlayerPage>
     LoopModeEnum.RANDOM: "lib/assets/images/icon_music_random.png"
   };
   LoopModeEnum loopModeEnum;
+  StreamSubscription onDurationChangedListener;// 监听总时长
+  StreamSubscription onAudioPositionChangedListener;// 监听播放进度
+  StreamSubscription onPlayerCompletionListener;// 监听播放完成
 
-  // 在父组件中创建 GlobalKey
   @override
   void initState() {
     super.initState();
@@ -74,8 +75,38 @@ class _MusicPlayerPageState extends State<MusicPlayerPage>
   }
 
   @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    // 添加监听订阅
+    MyApp.routeObserver.subscribe(this, ModalRoute.of(context));
+  }
+
+  ///@author: wuwenqiang
+  ///@description: 进入当前页面时
+  ///@date: 2024-06-18 21:57
+  @override
+  void didPush() {
+    super.didPush();
+    onDurationChangedListener?.resume();// 恢复监听音乐播放时长
+    onAudioPositionChangedListener?.resume();// 恢复监听音乐播放进度
+  }
+
+  ///@author: wuwenqiang
+  ///@description: 退出当前页面，返回上一级页面
+  ///@date: 2024-06-18 21:57
+  @override
+  void didPop() {
+    super.didPop();
+    onDurationChangedListener.cancel();// 取消监听音乐播放时长
+    onAudioPositionChangedListener.cancel();// 取消监听音乐播放进度
+    onPlayerCompletionListener.resume();// 进入缓存后仍然监控音乐播放是否完成，播放完成切换下一首歌曲
+  }
+
+  @override
   void dispose() {
     super.dispose();
+    // 移除监听订阅
+    MyApp.routeObserver.unsubscribe(this);
     _repeatController.dispose();
   }
 
@@ -501,21 +532,19 @@ class _MusicPlayerPageState extends State<MusicPlayerPage>
         // 默认开始播放
         playState = true;
       });
-      player.onDurationChanged.listen((event) {
-        if (totalSec == 0) {
-          setState(() {
-            totalSec = event.inSeconds;
-          });
-        }
+      onDurationChangedListener = player.onDurationChanged.listen((event) {
+        setState(() {
+          totalSec = event.inSeconds;
+        });
       });
-      player.onAudioPositionChanged.listen((event) {
+      onAudioPositionChangedListener = player.onAudioPositionChanged.listen((event) {
         _lyricController.progress = Duration(seconds: event.inSeconds);
         setState(() {
           duration = event.inSeconds;
           sliderValue = (duration / totalSec) * 100;
         });
       });
-      player.onPlayerCompletion.listen((event) {
+      onPlayerCompletionListener = player.onPlayerCompletion.listen((event) {
         useNextMusic(); // 切换下一首
       });
     }
@@ -525,9 +554,7 @@ class _MusicPlayerPageState extends State<MusicPlayerPage>
   ///@description: 切换下一首歌曲
   /// @date: 2024-06-14 00:15
   void useNextMusic() {
-    List<MusicModel> playMusicModelList = Provider
-        .of<PlayerMusicProvider>(context, listen: false)
-        .playMusicModelList;
+    List<MusicModel> playMusicModelList = Provider.of<PlayerMusicProvider>(context, listen: false).playMusicModelList;
     if (currentPlayIndex < playMusicModelList.length - 1) {
       currentPlayIndex++;
     } else {
@@ -536,7 +563,6 @@ class _MusicPlayerPageState extends State<MusicPlayerPage>
     setState(() {
       musicModel = playMusicModelList[currentPlayIndex];
     });
-    Provider.of<PlayerMusicProvider>(context, listen: false).setPlayIndex(
-        currentPlayIndex);
+    Provider.of<PlayerMusicProvider>(context, listen: false).setPlayIndex(currentPlayIndex);
   }
 }

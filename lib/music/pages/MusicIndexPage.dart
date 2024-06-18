@@ -1,7 +1,10 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:movie/router/index.dart';
 import 'package:provider/provider.dart';
 import 'package:audioplayers/audioplayers.dart';
+import '../../main.dart';
 import '../model/ClassMusicParamsModel.dart';
 import '../../theme/ThemeSize.dart';
 import '../../theme/ThemeColors.dart';
@@ -23,7 +26,7 @@ class MusicIndexPage extends StatefulWidget {
 }
 
 class _MusicIndexPageState extends State<MusicIndexPage>
-    with AutomaticKeepAliveClientMixin, TickerProviderStateMixin {
+    with AutomaticKeepAliveClientMixin, TickerProviderStateMixin,RouteAware {
   @override
   bool get wantKeepAlive => true;
 
@@ -49,9 +52,47 @@ class _MusicIndexPageState extends State<MusicIndexPage>
   ];
   List<String> titles = ["首页", "推荐", "音乐圈", "我的"];
   MusicModel musicModel;
+  StreamSubscription onPlayerStateChangedListener;
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    // 添加监听订阅
+    MyApp.routeObserver.subscribe(this, ModalRoute.of(context));
+  }
+
+  ///@author: wuwenqiang
+  ///@description: 进入当前页面时
+  ///@date: 2024-06-18 21:57
+  @override
+  void didPush() {
+    super.didPush();
+    onPlayerStateChangedListener?.resume();// 恢复监听音乐播放进度
+  }
+
+  ///@author: wuwenqiang
+  ///@description: 从其他页面返回回当前页面走这里
+  ///@date: 2024-06-18 21:57
+  @override
+  void didPopNext() {
+    super.didPopNext();
+    onPlayerStateChangedListener?.resume();// 恢复监听音乐播放进度
+  }
+
+  ///@author: wuwenqiang
+  ///@description: 退出当前页面，返回上一级页面
+  ///@date: 2024-06-18 21:57
+  @override
+  void didPop() {
+    super.didPop();
+    onPlayerStateChangedListener.cancel();// 取消监听音乐播放进度
+  }
+
   @override
   void dispose() {
     super.dispose();
+    // 移除监听订阅
+    MyApp.routeObserver.unsubscribe(this);
     _pageController.dispose();
   }
 
@@ -80,7 +121,7 @@ class _MusicIndexPageState extends State<MusicIndexPage>
   usePlayState() {
     AudioPlayer player =
         Provider.of<PlayerMusicProvider>(context, listen: false).player;
-    player.onPlayerStateChanged.listen((event) {
+    onPlayerStateChangedListener = player.onPlayerStateChanged.listen((event) {
       if (event.index == 2) {
         // 暂停播放
         _repeatController.stop(canceled: false);
