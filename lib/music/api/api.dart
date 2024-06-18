@@ -7,7 +7,7 @@ const servicePath = {
   'getMusicPlayMenu': '/service/myMusic-getway/getMusicPlayMenu',// 获取我的歌单
   'getMySinger': '/service/myMusic-getway/getMySinger',// 获取我关注的歌手
   'getMusicRecord': '/service/myMusic-getway/getMusicRecord',// 获取播放记录
-  'insertMusicRecord': '/service/myMusic-getway/insertLog',// 记录播放日志
+  'insertMusicRecord': '/service/myMusic-getway/insertMusicRecord',// 记录播放日志
   'insertMusicFavorite': '/service/myMusic-getway/insertMusicFavorite',// 插入收藏
   'deleteMusicFavorite': '/service/myMusic-getway/deleteMusicFavorite/',// 删除收藏
   'queryMusicFavorite': '/service/myMusic-getway/queryMusicFavorite',// 查询收藏

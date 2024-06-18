@@ -36,7 +36,7 @@ class PlayerMusicProvider with ChangeNotifier {
       _playIndex = playIndex;
     }
     removeMusic();
-    insertMusicRecordService(_musicModel);// 插入播放记录
+    if(playing)insertMusicRecordService(_musicModel);// 插入播放记录
     LocalStroageUtils.setPlayMusic(_musicModel);
     notifyListeners();
   }

@@ -53,6 +53,7 @@ class _MusicIndexPageState extends State<MusicIndexPage>
   List<String> titles = ["首页", "推荐", "音乐圈", "我的"];
   MusicModel musicModel;
   StreamSubscription onPlayerStateChangedListener;
+  StreamSubscription onPlayerCompletionListener;// 监听播放完成
 
   @override
   void didChangeDependencies() {
@@ -67,16 +68,18 @@ class _MusicIndexPageState extends State<MusicIndexPage>
   @override
   void didPush() {
     super.didPush();
+    onPlayerCompletionListener?.resume();
     onPlayerStateChangedListener?.resume();// 恢复监听音乐播放进度
   }
 
   ///@author: wuwenqiang
-  ///@description: 从其他页面返回回当前页面走这里
+  ///@description: 从其他页面返回当前页面走这里
   ///@date: 2024-06-18 21:57
   @override
   void didPopNext() {
     super.didPopNext();
     onPlayerStateChangedListener?.resume();// 恢复监听音乐播放进度
+    onPlayerCompletionListener?.resume(); // 切换下一首
   }
 
   ///@author: wuwenqiang
@@ -85,6 +88,7 @@ class _MusicIndexPageState extends State<MusicIndexPage>
   @override
   void didPop() {
     super.didPop();
+    onPlayerCompletionListener.cancel();
     onPlayerStateChangedListener.cancel();// 取消监听音乐播放进度
   }
 
@@ -117,6 +121,20 @@ class _MusicIndexPageState extends State<MusicIndexPage>
     });
   }
 
+  ///@author: wuwenqiang
+  ///@description: 切换下一首歌曲
+  /// @date: 2024-06-14 00:15
+  void useNextMusic() {
+    int currentPlayIndex = Provider.of<PlayerMusicProvider>(context, listen: false).playIndex;
+    List<MusicModel> playMusicModelList = Provider.of<PlayerMusicProvider>(context, listen: false).playMusicModelList;
+    if (currentPlayIndex < playMusicModelList.length - 1) {
+      currentPlayIndex++;
+    } else {
+      currentPlayIndex = 0;
+    }
+    Provider.of<PlayerMusicProvider>(context, listen: false).setPlayIndex(currentPlayIndex);
+  }
+
   /// 获取播放状态
   usePlayState() {
     AudioPlayer player =
@@ -130,6 +148,9 @@ class _MusicIndexPageState extends State<MusicIndexPage>
         _repeatController.forward();
         _repeatController.repeat();
       }
+    });
+    onPlayerCompletionListener = player.onPlayerCompletion.listen((event) {
+      useNextMusic(); // 切换下一首
     });
   }
 

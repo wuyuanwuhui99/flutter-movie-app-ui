@@ -99,7 +99,6 @@ class _MusicPlayerPageState extends State<MusicPlayerPage>
     super.didPop();
     onDurationChangedListener.cancel();// 取消监听音乐播放时长
     onAudioPositionChangedListener.cancel();// 取消监听音乐播放进度
-    onPlayerCompletionListener.resume();// 进入缓存后仍然监控音乐播放是否完成，播放完成切换下一首歌曲
   }
 
   @override
