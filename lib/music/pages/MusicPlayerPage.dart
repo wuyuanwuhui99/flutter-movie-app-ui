@@ -56,9 +56,10 @@ class _MusicPlayerPageState extends State<MusicPlayerPage>
   void initState() {
     super.initState();
     _lyricController = LyricController(vsync: this);
-    loopModeEnum = Provider.of<PlayerMusicProvider>(context, listen: false).loopMode;
-    player = Provider.of<PlayerMusicProvider>(context, listen: false).player;
-    musicModel = Provider.of<PlayerMusicProvider>(context, listen: false).musicModel;
+    PlayerMusicProvider provider = Provider.of<PlayerMusicProvider>(context, listen: false);
+    loopModeEnum =provider.loopMode;
+    player = provider.player;
+    musicModel = provider.musicModel;
     usePlay(musicModel);
     _repeatController = AnimationController(
       duration: const Duration(seconds: 10),
@@ -105,6 +106,8 @@ class _MusicPlayerPageState extends State<MusicPlayerPage>
   void dispose() {
     super.dispose();
     // 移除监听订阅
+    onDurationChangedListener.cancel();// 取消监听音乐播放时长
+    onAudioPositionChangedListener.cancel();// 取消监听音乐播放进度
     MyApp.routeObserver.unsubscribe(this);
     _repeatController.dispose();
   }
@@ -525,6 +528,9 @@ class _MusicPlayerPageState extends State<MusicPlayerPage>
 
   /// 播放音乐
   void usePlay(MusicModel musicModel) async {
+    PlayerMusicProvider provider = Provider.of<PlayerMusicProvider>(context, listen: false);
+    if(provider.isInitPlayer)return;
+    provider.setInitPlayer();
     final result = await player.play(HOST + musicModel.localPlayUrl);
     if (result == 1) {
       setState(() {

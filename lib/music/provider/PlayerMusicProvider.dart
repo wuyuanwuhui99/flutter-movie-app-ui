@@ -14,9 +14,8 @@ enum  LoopModeEnum {
 class PlayerMusicProvider with ChangeNotifier {
   MusicModel _musicModel; // 正在播放的音乐
   bool _playing = false;
-
+  bool _isInitPlayer = false;
   PlayerMusicProvider(this._musicModel);
-
   AudioPlayer _player = AudioPlayer();
   List<MusicModel> _playMusicModelList = []; // 正在播放的列表
   List<MusicModel> _unPlayMusicModelList = []; // 待播放的歌曲列表
@@ -84,6 +83,10 @@ class PlayerMusicProvider with ChangeNotifier {
     notifyListeners();
   }
 
+  void setInitPlayer(){
+    _isInitPlayer = true;
+  }
+
   get playing => _playing;
 
   get musicModel => _musicModel;
@@ -95,4 +98,6 @@ class PlayerMusicProvider with ChangeNotifier {
   get playMusicModelList => _playMusicModelList;
 
   get loopMode => _loopMode;
+
+  get isInitPlayer => _isInitPlayer;
 }
