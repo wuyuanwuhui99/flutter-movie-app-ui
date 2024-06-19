@@ -51,7 +51,7 @@ class _MusicPlayerPageState extends State<MusicPlayerPage>
   StreamSubscription onDurationChangedListener;// 监听总时长
   StreamSubscription onAudioPositionChangedListener;// 监听播放进度
   StreamSubscription onPlayerCompletionListener;// 监听播放完成
-
+  GlobalKey key = GlobalKey();
   @override
   void initState() {
     super.initState();
@@ -80,16 +80,6 @@ class _MusicPlayerPageState extends State<MusicPlayerPage>
     super.didChangeDependencies();
     // 添加监听订阅
     MyApp.routeObserver.subscribe(this, ModalRoute.of(context));
-  }
-
-  ///@author: wuwenqiang
-  ///@description: 进入当前页面时
-  ///@date: 2024-06-18 21:57
-  @override
-  void didPush() {
-    super.didPush();
-    onDurationChangedListener?.cancel();// 恢复监听音乐播放时长
-    onAudioPositionChangedListener?.cancel();// 恢复监听音乐播放进度
   }
 
   ///@author: wuwenqiang
@@ -351,6 +341,7 @@ class _MusicPlayerPageState extends State<MusicPlayerPage>
             style: TextStyle(color: ThemeColors.colorWhite)),
         Expanded(
           child: Slider(
+            key:key,
             value: sliderValue,
             onChanged: (data) {
               setState(() {
@@ -534,6 +525,8 @@ class _MusicPlayerPageState extends State<MusicPlayerPage>
         // 默认开始播放
         playState = true;
       });
+      onDurationChangedListener?.cancel();// 恢复监听音乐播放时长
+      onAudioPositionChangedListener?.cancel();// 恢复监听音乐播放进度
       onDurationChangedListener = player.onDurationChanged.listen((event) {
         setState(() {
           totalSec = event.inSeconds;
