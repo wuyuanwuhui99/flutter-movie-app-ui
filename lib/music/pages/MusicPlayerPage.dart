@@ -51,7 +51,6 @@ class _MusicPlayerPageState extends State<MusicPlayerPage>
   StreamSubscription onDurationChangedListener;// 监听总时长
   StreamSubscription onAudioPositionChangedListener;// 监听播放进度
   StreamSubscription onPlayerCompletionListener;// 监听播放完成
-  GlobalKey key = GlobalKey();
   @override
   void initState() {
     super.initState();
@@ -341,9 +340,9 @@ class _MusicPlayerPageState extends State<MusicPlayerPage>
             style: TextStyle(color: ThemeColors.colorWhite)),
         Expanded(
           child: Slider(
-            key:key,
             value: sliderValue,
             onChanged: (data) {
+              player.seek(Duration(seconds:totalSec*data~/100));
               setState(() {
                 sliderValue = data;
               });
