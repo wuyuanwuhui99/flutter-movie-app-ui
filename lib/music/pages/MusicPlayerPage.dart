@@ -18,6 +18,7 @@ import '../component/lyric/lyric_util.dart';
 import '../component/lyric/lyric_widget.dart';
 import '../component/CommentComponent.dart';
 import '../../utils/HttpUtil .dart';
+import '../service/serverMethod.dart';
 
 class MusicPlayerPage extends StatefulWidget {
   MusicPlayerPage({Key key}) : super(key: key);
@@ -272,11 +273,30 @@ class _MusicPlayerPageState extends State<MusicPlayerPage>
     return Row(
       children: [
         Expanded(
-          child: Image.asset(
-            "lib/assets/images/icon_music_collect.png",
+          child: InkWell(child:Image.asset(musicModel.isFavorite == 0 ? "lib/assets/images/icon_music_collect.png" : "lib/assets/images/icon_collection_active.png",
             width: ThemeSize.playIcon,
             height: ThemeSize.playIcon,
-          ),
+          ),onTap: (){
+            if(musicModel.isFavorite == 0){
+              insertMusicFavoriteService(musicModel.id).then((res){
+                if(res.data > 0){
+                  Provider.of<PlayerMusicProvider>(context, listen: false).setFavorite(1);
+                  setState(() {
+                    musicModel.isFavorite = 1;
+                  });
+                }
+              });
+            }else{
+              deleteMusicFavoriteService(musicModel.id).then((res){
+                if(res.data > 0){
+                  Provider.of<PlayerMusicProvider>(context, listen: false).setFavorite(0);
+                  setState(() {
+                    musicModel.isFavorite = 0;
+                  });
+                }
+              });
+            }
+          },),
           flex: 1,
         ),
         Expanded(

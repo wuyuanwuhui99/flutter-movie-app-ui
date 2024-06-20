@@ -39,6 +39,15 @@ class PlayerMusicProvider with ChangeNotifier {
     notifyListeners();
   }
 
+  ///  @desc 设置音乐是否收藏
+  ///  @data 2023-11-15 21:51
+  ///  @author wuwenqiang
+  void setFavorite(int isFavorite) {
+    _musicModel.isFavorite = isFavorite;
+    LocalStroageUtils.setPlayMusic(_musicModel);
+    notifyListeners();
+  }
+
   ///  @desc 通过缓存参数获取上次播放的音乐列表
   ///  @data 2023-11-15 21:51
   ///  @author wuwenqiang

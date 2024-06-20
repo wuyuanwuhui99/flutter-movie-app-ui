@@ -132,7 +132,7 @@ class _MusicRecommentPageState extends State<MusicRecommentPage>
               width: ThemeSize.smallIcon,
               height: ThemeSize.smallIcon),onTap: (){
             if(musicModel.isFavorite == 0){
-              insertMusicFavoriteService(musicModel).then((res) => {
+              insertMusicFavoriteService(musicModel.id).then((res) => {
                 if(res.data > 0){
                   setState(() {
                     musicModel.isFavorite = 1;

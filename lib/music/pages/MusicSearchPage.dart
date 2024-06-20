@@ -358,7 +358,7 @@ class _SearchMusicPageState extends State<MusicSearchPage> {
                           width: ThemeSize.smallIcon,
                           height: ThemeSize.smallIcon),onTap: (){
                         if(musicItem.isFavorite == 0){
-                          insertMusicFavoriteService(musicItem).then((res) => {
+                          insertMusicFavoriteService(musicItem.id).then((res) => {
                             if(res.data > 0){
                               setState(() {
                                 musicItem.isFavorite = 1;

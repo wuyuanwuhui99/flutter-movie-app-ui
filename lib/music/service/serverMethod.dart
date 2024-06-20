@@ -1,6 +1,5 @@
 import 'dart:async';
 import 'package:dio/dio.dart';
-import 'package:movie/movie/model/CommentModel.dart';
 import 'package:movie/music/model/CircleLikeModel.dart';
 import '../model/MusicModel.dart';
 import '../api/api.dart';
@@ -139,11 +138,9 @@ Future<ResponseModel<int>> insertMusicRecordService(
 ///@author: wuwenqiang
 ///@description: 插入收藏
 /// @date: 2024-01-05 22:26
-Future<ResponseModel<int>> insertMusicFavoriteService(
-    MusicModel musicModel) async {
+Future<ResponseModel<int>> insertMusicFavoriteService(int musicId) async {
   try {
-    Response response = await dio.post(servicePath['insertMusicFavorite'],
-        data: MusicModel.toMap(musicModel));
+    Response response = await dio.post(servicePath['insertMusicFavorite'] + musicId.toString());
     return ResponseModel.fromJson(response.data);
   } catch (e) {
     print('ERROR:======>${e}');
@@ -154,10 +151,10 @@ Future<ResponseModel<int>> insertMusicFavoriteService(
 ///@author: wuwenqiang
 ///@description: 删除收藏
 /// @date: 2024-01-05 23:44
-Future<ResponseModel<int>> deleteMusicFavoriteService(int id) async {
+Future<ResponseModel<int>> deleteMusicFavoriteService(int musicId) async {
   try {
     Response response =
-        await dio.delete(servicePath['deleteMusicFavorite'] + id.toString());
+        await dio.delete(servicePath['deleteMusicFavorite'] + musicId.toString());
     return ResponseModel.fromJson(response.data);
   } catch (e) {
     print('ERROR:======>${e}');
