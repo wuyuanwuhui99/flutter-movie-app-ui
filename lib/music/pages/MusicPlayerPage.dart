@@ -52,6 +52,7 @@ class _MusicPlayerPageState extends State<MusicPlayerPage>
   StreamSubscription onDurationChangedListener;// 监听总时长
   StreamSubscription onAudioPositionChangedListener;// 监听播放进度
   StreamSubscription onPlayerCompletionListener;// 监听播放完成
+  bool loading = false;
   @override
   void initState() {
     super.initState();
@@ -273,30 +274,44 @@ class _MusicPlayerPageState extends State<MusicPlayerPage>
     return Row(
       children: [
         Expanded(
-          child: InkWell(child:Image.asset(musicModel.isFavorite == 0 ? "lib/assets/images/icon_music_collect.png" : "lib/assets/images/icon_collection_active.png",
-            width: ThemeSize.playIcon,
-            height: ThemeSize.playIcon,
-          ),onTap: (){
-            if(musicModel.isFavorite == 0){
-              insertMusicFavoriteService(musicModel.id).then((res){
-                if(res.data > 0){
-                  Provider.of<PlayerMusicProvider>(context, listen: false).setFavorite(1);
-                  setState(() {
-                    musicModel.isFavorite = 1;
-                  });
-                }
-              });
-            }else{
-              deleteMusicFavoriteService(musicModel.id).then((res){
-                if(res.data > 0){
-                  Provider.of<PlayerMusicProvider>(context, listen: false).setFavorite(0);
-                  setState(() {
-                    musicModel.isFavorite = 0;
-                  });
-                }
-              });
-            }
-          },),
+          child: InkWell(
+            child: Image.asset(
+              musicModel.isFavorite == 0
+                  ? "lib/assets/images/icon_music_collect.png"
+                  : "lib/assets/images/icon_collection_active.png",
+              width: ThemeSize.playIcon,
+              height: ThemeSize.playIcon,
+            ),
+            onTap: () {
+              if (loading) return;
+              loading = true;
+              if (musicModel.isFavorite == 0) {
+                insertMusicFavoriteService(musicModel.id).then((res) {
+                  loading = false;
+                  if (res.data > 0) {
+                    Provider.of<PlayerMusicProvider>(context, listen: false).setFavorite(1);
+                    setState(() {
+                      musicModel.isFavorite = 1;
+                    });
+                  }
+                }).catchError(() {
+                  loading = false;
+                });
+              } else {
+                deleteMusicFavoriteService(musicModel.id).then((res) {
+                  loading = false;
+                  if (res.data > 0) {
+                    Provider.of<PlayerMusicProvider>(context, listen: false).setFavorite(0);
+                    setState(() {
+                      musicModel.isFavorite = 0;
+                    });
+                  }
+                }).catchError(() {
+                  loading = false;
+                });
+              }
+            },
+          ),
           flex: 1,
         ),
         Expanded(
