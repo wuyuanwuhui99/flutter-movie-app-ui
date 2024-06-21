@@ -110,10 +110,14 @@ class _MusicIndexPageState extends State<MusicIndexPage>
     _repeatController.stop(canceled: false);
     usePlayState();
     getClassMusicList(); // 通过缓存参数获取上次播放的音乐列表
+    PlayerMusicProvider provider = Provider.of<PlayerMusicProvider>(context, listen: false);
     LocalStroageUtils.getPlayMusic().then((value){
       if(value != null){
-        Provider.of<PlayerMusicProvider>(context, listen: false).setPlayMusic([], MusicModel.fromJson(value), 0, false);
+        provider.setPlayMusic([], value, 0, false);
       }
+    });
+    LocalStroageUtils.getLoopMode().then((value){
+      provider.setLoopMode(value);
     });
   }
 

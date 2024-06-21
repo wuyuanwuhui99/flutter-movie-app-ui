@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:movie/music/provider/PlayerMusicProvider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../music/model/MusicModel.dart';
 import '../music/model/ClassMusicParamsModel.dart';
@@ -24,11 +25,11 @@ class LocalStroageUtils {
     prefs.setString("playMusic", MusicModel.stringify(musicModel));
   }
 
-  static Future getPlayMusic() async {
+  static Future<MusicModel> getPlayMusic() async {
     final SharedPreferences prefs = await _prefs;
     String playMusic = prefs.getString('playMusic') ?? null;
     if (playMusic != null) {
-      return json.decode(playMusic);
+      return MusicModel.fromJson(json.decode(playMusic));
     } else {
       return null;
     }
@@ -37,7 +38,7 @@ class LocalStroageUtils {
   ///  @desc 从缓存中获取正在播放的列表的参数
   ///  @data 2023-11-15 21:01
   ///  @author wuwenqiang
-  static Future getClassMusicParams() async {
+  static Future<ClassMusicParamsModel>getClassMusicParams() async {
     final SharedPreferences prefs = await _prefs;
     String classMusicParams = prefs.getString('classMusicParams') ?? null;
     if (classMusicParams != null) {
@@ -45,5 +46,21 @@ class LocalStroageUtils {
     } else {
       return null;
     }
+  }
+
+  ///  @desc 从缓存中获取正在播放的列表的参数
+  ///  @data 2023-11-15 21:01
+  ///  @author wuwenqiang
+  static Future setLoopMode(LoopModeEnum loopModeEnum) async {
+    final SharedPreferences prefs = await _prefs;
+    prefs.setString("loopMode", loopModeEnum.toString());
+  }
+
+  ///  @desc 获取缓存的枚举值
+  ///  @data 2023-11-15 21:01
+  ///  @author wuwenqiang
+  static Future<LoopModeEnum> getLoopMode() async {
+    final SharedPreferences prefs = await _prefs;
+    return prefs.getString("loopMode") != null ? LoopModeEnum.values.firstWhere((e) => e.toString() == prefs.getString("loopMode")) : LoopModeEnum.ORDER;
   }
 }

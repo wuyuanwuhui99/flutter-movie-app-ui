@@ -1,6 +1,8 @@
 import 'dart:async';
+import 'dart:math';
 
 import 'package:flutter/material.dart';
+import 'package:movie/utils/LocalStroageUtils.dart';
 import '../../main.dart';
 import '../../movie/service/serverMethod.dart';
 import 'package:movie/router/index.dart';
@@ -71,9 +73,9 @@ class _MusicPlayerPageState extends State<MusicPlayerPage>
     _curveAnimation = Tween<double>(begin: 0, end: 1).animate(_repeatController);
 
     // 获取当前正在播放的音乐下标
-    currentPlayIndex = Provider.of<PlayerMusicProvider>(context, listen: false).playIndex;
+    currentPlayIndex = provider.playIndex;
 
-    playMusicModelList = Provider.of<PlayerMusicProvider>(context, listen: false).playMusicModelList;
+    playMusicModelList = provider.playMusicList;
   }
 
   @override
@@ -285,11 +287,12 @@ class _MusicPlayerPageState extends State<MusicPlayerPage>
             onTap: () {
               if (loading) return;
               loading = true;
+              PlayerMusicProvider provider = Provider.of<PlayerMusicProvider>(context, listen: false);
               if (musicModel.isFavorite == 0) {
                 insertMusicFavoriteService(musicModel.id).then((res) {
                   loading = false;
                   if (res.data > 0) {
-                    Provider.of<PlayerMusicProvider>(context, listen: false).setFavorite(1);
+                    provider.setFavorite(1);
                     setState(() {
                       musicModel.isFavorite = 1;
                     });
@@ -301,7 +304,7 @@ class _MusicPlayerPageState extends State<MusicPlayerPage>
                 deleteMusicFavoriteService(musicModel.id).then((res) {
                   loading = false;
                   if (res.data > 0) {
-                    Provider.of<PlayerMusicProvider>(context, listen: false).setFavorite(0);
+                    provider.setFavorite(0);
                     setState(() {
                       musicModel.isFavorite = 0;
                     });
@@ -403,6 +406,7 @@ class _MusicPlayerPageState extends State<MusicPlayerPage>
   }
 
   Widget buildPlayBtn() {
+    PlayerMusicProvider provider = Provider.of<PlayerMusicProvider>(context, listen: false);
     return Row(
       children: [
         Expanded(
@@ -416,7 +420,8 @@ class _MusicPlayerPageState extends State<MusicPlayerPage>
                 height: ThemeSize.playIcon,
               ),
               onSelected: (LoopModeEnum loopMode) {
-                Provider.of<PlayerMusicProvider>(context, listen: false).setLoopMode(loopMode);
+                provider.setLoopMode(loopMode);
+                LocalStroageUtils.setLoopMode(loopMode);
                 setState(() {
                   loopModeEnum = loopMode;
                 });
@@ -472,21 +477,7 @@ class _MusicPlayerPageState extends State<MusicPlayerPage>
                   width: ThemeSize.playIcon,
                   height: ThemeSize.playIcon,
                 ),
-                onTap: () {
-                  List<MusicModel> playMusicModelList = Provider
-                      .of<PlayerMusicProvider>(context, listen: false)
-                      .playMusicModelList;
-                  if (currentPlayIndex > 0) {
-                    currentPlayIndex--;
-                  } else {
-                    currentPlayIndex = playMusicModelList.length - 1;
-                  }
-                  setState(() {
-                    musicModel = playMusicModelList[currentPlayIndex];
-                  });
-                  Provider.of<PlayerMusicProvider>(context, listen: false)
-                      .setPlayIndex(currentPlayIndex);
-                }),
+                onTap: usePrevMusic),
             flex: 1),
         Expanded(
             child: Row(
@@ -581,18 +572,51 @@ class _MusicPlayerPageState extends State<MusicPlayerPage>
   }
 
   ///@author: wuwenqiang
+  ///@description: 切换上一首
+  /// @date: 2024-06-21 23:12
+  usePrevMusic(){
+    PlayerMusicProvider provider = Provider.of<PlayerMusicProvider>(context, listen: false);
+    if(loopModeEnum == LoopModeEnum.RANDOM){// 随机播放
+      if(provider.playMusicList.length > 1){ // 如果已经播放的音乐两首以上，回退上一首
+        MusicModel prevMusic = provider.playMusicList[provider.playMusicList.length - 2];
+        provider.playMusicList.removeAt(provider.playMusicList.length - 1);
+        currentPlayIndex = provider.musicList.indexWhere((item)=>item.id == prevMusic.id);
+      }else if(currentPlayIndex == 0){// 如果已经播放的歌曲只有一首，切换上一首
+        currentPlayIndex = provider.musicList.length - 1;
+      }else{
+        currentPlayIndex -= 1;
+      }
+    }else{
+      if (currentPlayIndex > 0) {
+        currentPlayIndex--;
+      } else {
+        currentPlayIndex = provider.musicList.length - 1;
+      }
+    }
+    setState(() {
+      musicModel = provider.musicList[currentPlayIndex];
+    });
+    provider.setPlayIndex(currentPlayIndex);
+  }
+
+  ///@author: wuwenqiang
   ///@description: 切换下一首歌曲
   /// @date: 2024-06-14 00:15
   void useNextMusic() {
-    List<MusicModel> playMusicModelList = Provider.of<PlayerMusicProvider>(context, listen: false).playMusicModelList;
-    if (currentPlayIndex < playMusicModelList.length - 1) {
-      currentPlayIndex++;
-    } else {
-      currentPlayIndex = 0;
+    PlayerMusicProvider provider = Provider.of<PlayerMusicProvider>(context, listen: false);
+    if(loopModeEnum == LoopModeEnum.RANDOM){
+      int index = Random().nextInt(provider.unPlayMusicList.length - 1);
+      currentPlayIndex = provider.musicList.indexWhere((item) => item.id == provider.unPlayMusicList[index].id);
+    }else{
+      if (currentPlayIndex < provider.musicList.length - 1) {
+        currentPlayIndex++;
+      } else {
+        currentPlayIndex = 0;
+      }
     }
     setState(() {
-      musicModel = playMusicModelList[currentPlayIndex];
+      musicModel = provider.musicList[currentPlayIndex];
     });
-    Provider.of<PlayerMusicProvider>(context, listen: false).setPlayIndex(currentPlayIndex);
+    provider.setPlayIndex(currentPlayIndex);
   }
 }
