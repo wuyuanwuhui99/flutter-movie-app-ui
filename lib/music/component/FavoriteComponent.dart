@@ -40,24 +40,21 @@ class _FavoriteComponentState extends State<FavoriteComponent>{
         Divider(height: 1, color: ThemeColors.borderColor),
         Expanded(
             flex: 1,
-            child: Padding(
-                padding: ThemeStyle.padding,
-                child: ListView.builder(
-                    scrollDirection: Axis.vertical,
-                    itemCount: this.favoriteDirectory.length,
-                    itemBuilder: (BuildContext context, int index) {
-                      return CheckboxListTile(
-                        title: Text(this.favoriteDirectory[index].name),
-                        value: selectedValues[index],
-                        selected: selectedValues[index],
-                        onChanged: (value) {
-                          setState(() {
-                            selectedValues[index] = value;
-                          });
-                        },
-                      );
-                    })
-            ))
+            child: ListView.builder(
+                scrollDirection: Axis.vertical,
+                itemCount: this.favoriteDirectory.length,
+                itemBuilder: (BuildContext context, int index) {
+                  return CheckboxListTile(
+                    title: Text(this.favoriteDirectory[index].name),
+                    value: selectedValues[index],
+                    selected: selectedValues[index],
+                    onChanged: (value) {
+                      setState(() {
+                        selectedValues[index] = value;
+                      });
+                    },
+                  );
+                }))
       ],
     );
   }

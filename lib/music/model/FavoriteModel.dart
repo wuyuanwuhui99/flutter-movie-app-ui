@@ -2,6 +2,7 @@ class FavoriteModel{
   int id;
   String name;// 收藏夹名称
   String userId;// 用户id
+  int total;// 收藏夹总歌曲数
   String createTime;// 创建时间
   String updateTime;// 更新时间
 
@@ -9,6 +10,7 @@ class FavoriteModel{
     this.id,
     this.name,
     this.userId,
+    this.total,
     this.createTime,
     this.updateTime
   });
@@ -19,6 +21,7 @@ class FavoriteModel{
         id: json["id"],
         name: json["name"],
         userId: json["userId"],
+        total:json["total"],
         createTime: json["createTime"],
         updateTime: json["updateTime"]
     );
