@@ -21,6 +21,7 @@ import '../component/lyric/lyric_widget.dart';
 import '../component/CommentComponent.dart';
 import '../../utils/HttpUtil .dart';
 import '../service/serverMethod.dart';
+import '../model/FavoriteModel.dart';
 
 class MusicPlayerPage extends StatefulWidget {
   MusicPlayerPage({Key key}) : super(key: key);
@@ -55,6 +56,8 @@ class _MusicPlayerPageState extends State<MusicPlayerPage>
   StreamSubscription onAudioPositionChangedListener;// 监听播放进度
   StreamSubscription onPlayerCompletionListener;// 监听播放完成
   bool loading = false;
+  List<FavoriteModel> favoriteDirectory = [];
+
   @override
   void initState() {
     super.initState();
@@ -272,13 +275,35 @@ class _MusicPlayerPageState extends State<MusicPlayerPage>
     );
   }
 
+  ///@author: wuwenqiang
+  ///@description: 创建底部弹窗
+  /// @date: 2024-06-23 22:29
+  void buildModalBottomSheet(Widget component){
+    showModalBottomSheet(
+        shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.only(
+                topLeft: Radius.circular(ThemeSize.middleRadius),
+                topRight: Radius.circular(ThemeSize.middleRadius))),
+        isScrollControlled: true,
+        context: context,
+        builder: (BuildContext context) {
+          return Container(
+              height: MediaQuery
+                  .of(context)
+                  .size
+                  .height * 0.7,
+              child: component
+          );
+        });
+  }
+
   Widget buildPlayMenu() {
     return Row(
       children: [
         Expanded(
           child: InkWell(
             child: Image.asset(
-              musicModel.isFavorite == 0
+              musicModel.isLike == 0
                   ? "lib/assets/images/icon_music_collect.png"
                   : "lib/assets/images/icon_collection_active.png",
               width: ThemeSize.playIcon,
@@ -288,25 +313,25 @@ class _MusicPlayerPageState extends State<MusicPlayerPage>
               if (loading) return;
               loading = true;
               PlayerMusicProvider provider = Provider.of<PlayerMusicProvider>(context, listen: false);
-              if (musicModel.isFavorite == 0) {
-                insertMusicFavoriteService(musicModel.id).then((res) {
+              if (musicModel.isLike == 0) {
+                insertMusicLikeService(musicModel.id).then((res) {
                   loading = false;
                   if (res.data > 0) {
                     provider.setFavorite(1);
                     setState(() {
-                      musicModel.isFavorite = 1;
+                      musicModel.isLike = 1;
                     });
                   }
                 }).catchError(() {
                   loading = false;
                 });
               } else {
-                deleteMusicFavoriteService(musicModel.id).then((res) {
+                deleteMusicLikeService(musicModel.id).then((res) {
                   loading = false;
                   if (res.data > 0) {
                     provider.setFavorite(0);
                     setState(() {
-                      musicModel.isFavorite = 0;
+                      musicModel.isLike = 0;
                     });
                   }
                 }).catchError(() {
@@ -337,38 +362,40 @@ class _MusicPlayerPageState extends State<MusicPlayerPage>
                 ResponseModel<List> res = await getTopCommentListService(
                     musicModel.id, CommentEnum.MUSIC, 1, 20);
                 commentTotal = res.total != null ? res.total : 0;
-                showModalBottomSheet(
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.only(
-                            topLeft: Radius.circular(ThemeSize.middleRadius),
-                            topRight: Radius.circular(ThemeSize.middleRadius))),
-                    isScrollControlled: true,
-                    context: context,
-                    builder: (BuildContext context) {
-                      return Container(
-                          height: MediaQuery
-                              .of(context)
-                              .size
-                              .height * 0.7,
-                          child: CommentComponent(
-                            type: CommentEnum.MUSIC,
-                            relationId: musicModel.id,
-                          ));
-                    });
+                buildModalBottomSheet(CommentComponent(
+                  type: CommentEnum.MUSIC,
+                  relationId: musicModel.id,
+                ));
               }),
           flex: 1,
         ),
         Expanded(
-          child: Image.asset(
-            "lib/assets/images/icon_music_white_menu.png",
-            width: ThemeSize.playIcon,
-            height: ThemeSize.playIcon,
+          child: InkWell(
+            child: Image.asset(
+              "lib/assets/images/icon_favorite.png",
+              width: ThemeSize.playIcon,
+              height: ThemeSize.playIcon,
+            ),
+            onTap: (){
+
+            },
           ),
           flex: 1,
         ),
       ],
     );
   }
+
+  Widget buildFavoriteWidget(){
+
+    return Column(children: [
+      Text("选择收藏夹"),
+      ListView.builder(itemBuilder: (BuildContext context, int index){
+
+      })
+    ],);
+  }
+
 
   Widget buildprogress() {
     return Row(

@@ -8,9 +8,9 @@ const servicePath = {
   'getMySinger': '/service/myMusic-getway/getMySinger',// 获取我关注的歌手
   'getMusicRecord': '/service/myMusic-getway/getMusicRecord',// 获取播放记录
   'insertMusicRecord': '/service/myMusic-getway/insertMusicRecord',// 记录播放日志
-  'insertMusicFavorite': '/service/myMusic-getway/insertMusicFavorite/',// 插入收藏
-  'deleteMusicFavorite': '/service/myMusic-getway/deleteMusicFavorite/',// 删除收藏
-  'queryMusicFavorite': '/service/myMusic-getway/queryMusicFavorite',// 查询收藏
+  'insertMusicLike': '/service/myMusic-getway/insertMusicLike/',// 插入收藏
+  'deleteMusicLike': '/service/myMusic-getway/deleteMusicLike/',// 删除收藏
+  'queryMusicLike': '/service/myMusic-getway/queryMusicLike',// 查询收藏
   'searchMusic': '/service/myMusic/searchMusic',// 音乐搜索
   'getSingerCategory':'/service/myMusic/getSingerCategory',// 获取歌手分类
   'saveLike':'/service/social-getway/saveLike',// 新增点赞

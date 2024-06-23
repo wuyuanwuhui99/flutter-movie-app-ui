@@ -44,8 +44,8 @@ class PlayerMusicProvider with ChangeNotifier {
   ///  @desc 设置音乐是否收藏
   ///  @data 2023-11-15 21:51
   ///  @author wuwenqiang
-  void setFavorite(int isFavorite) {
-    _musicModel.isFavorite = isFavorite;
+  void setFavorite(int isLike) {
+    _musicModel.isLike = isLike;
     LocalStroageUtils.setPlayMusic(_musicModel);
     notifyListeners();
   }

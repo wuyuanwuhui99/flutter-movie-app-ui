@@ -138,9 +138,9 @@ Future<ResponseModel<int>> insertMusicRecordService(
 ///@author: wuwenqiang
 ///@description: 插入收藏
 /// @date: 2024-01-05 22:26
-Future<ResponseModel<int>> insertMusicFavoriteService(int musicId) async {
+Future<ResponseModel<int>> insertMusicLikeService(int musicId) async {
   try {
-    Response response = await dio.post(servicePath['insertMusicFavorite'] + musicId.toString());
+    Response response = await dio.post(servicePath['insertMusicLike'] + musicId.toString());
     return ResponseModel.fromJson(response.data);
   } catch (e) {
     print('ERROR:======>${e}');
@@ -151,10 +151,10 @@ Future<ResponseModel<int>> insertMusicFavoriteService(int musicId) async {
 ///@author: wuwenqiang
 ///@description: 删除收藏
 /// @date: 2024-01-05 23:44
-Future<ResponseModel<int>> deleteMusicFavoriteService(int musicId) async {
+Future<ResponseModel<int>> deleteMusicLikeService(int musicId) async {
   try {
     Response response =
-        await dio.delete(servicePath['deleteMusicFavorite'] + musicId.toString());
+        await dio.delete(servicePath['deleteMusicLike'] + musicId.toString());
     return ResponseModel.fromJson(response.data);
   } catch (e) {
     print('ERROR:======>${e}');
@@ -165,11 +165,11 @@ Future<ResponseModel<int>> deleteMusicFavoriteService(int musicId) async {
 ///@author: wuwenqiang
 ///@description: 删除收藏
 /// @date: 2024-01-05 23:44
-Future<ResponseModel<List>> queryMusicFavoriteService(
+Future<ResponseModel<List>> queryMusicLikeService(
     int pageNum, int pageSize) async {
   try {
     Response response = await dio.get(
-        "${servicePath['queryMusicFavorite']}?pageNum=${pageNum}&pageSize=${pageSize}");
+        "${servicePath['queryMusicLike']}?pageNum=${pageNum}&pageSize=${pageSize}");
     return ResponseModel.fromJson(response.data);
   } catch (e) {
     print('ERROR:======>${e}');

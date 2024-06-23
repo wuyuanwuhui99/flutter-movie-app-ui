@@ -354,22 +354,22 @@ class _SearchMusicPageState extends State<MusicSearchPage> {
                           }),
                       SizedBox(width: ThemeSize.containerPadding),
                       InkWell(child: Image.asset(
-                          "lib/assets/images/icon_like${musicItem.isFavorite == 1 ? "_active" : ""}.png",
+                          "lib/assets/images/icon_like${musicItem.isLike == 1 ? "_active" : ""}.png",
                           width: ThemeSize.smallIcon,
                           height: ThemeSize.smallIcon),onTap: (){
-                        if(musicItem.isFavorite == 0){
-                          insertMusicFavoriteService(musicItem.id).then((res) => {
+                        if(musicItem.isLike == 0){
+                          insertMusicLikeService(musicItem.id).then((res) => {
                             if(res.data > 0){
                               setState(() {
-                                musicItem.isFavorite = 1;
+                                musicItem.isLike = 1;
                               })
                             }
                           });
                         }else{
-                          deleteMusicFavoriteService(musicItem.id).then((res) => {
+                          deleteMusicLikeService(musicItem.id).then((res) => {
                             if(res.data > 0){
                               setState(() {
-                                musicItem.isFavorite = 0;
+                                musicItem.isLike = 0;
                               })
                             }
                           });

@@ -30,7 +30,7 @@ class MusicModel extends ClassMusicParamsModel{
   String updateTime; // 更新时间
   String label; // 标签
   String lyrics; // 歌词
-  int isFavorite; // 是否喜欢
+  int isLike; // 是否喜欢
   int times; //  听过的次数，在获取播放记录的时候才有
   MusicModel(
       {this.id, //主键
@@ -60,7 +60,7 @@ class MusicModel extends ClassMusicParamsModel{
       this.updateTime, // 更新时间
       this.label, // 标签
       this.lyrics, // 歌词
-      this.isFavorite, // 是否喜欢
+      this.isLike, // 是否喜欢
       this.times // 听过的次数，在获取播放记录的时候才有
       });
 
@@ -94,7 +94,7 @@ class MusicModel extends ClassMusicParamsModel{
         updateTime: json["updateTime"],
         label: json["label"],
         lyrics: json["lyrics"],
-        isFavorite: json["isFavorite"],
+        isLike: json["isFavorite"],
         times: json["times"]);
   }
 
@@ -127,7 +127,7 @@ class MusicModel extends ClassMusicParamsModel{
       "updateTim": musicModel.updateTime,
       "label": musicModel.label,
       "lyrics": musicModel.lyrics,
-      "isFavorite": musicModel.isFavorite,
+      "isLike": musicModel.isLike,
       "times": musicModel.times
     };
   }

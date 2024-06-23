@@ -128,22 +128,22 @@ class _MusicRecommentPageState extends State<MusicRecommentPage>
               }),
           SizedBox(width: ThemeSize.containerPadding),
           InkWell(child: Image.asset(
-              "lib/assets/images/icon_like${musicModel.isFavorite == 1 ? "_active" : ""}.png",
+              "lib/assets/images/icon_like${musicModel.isLike == 1 ? "_active" : ""}.png",
               width: ThemeSize.smallIcon,
               height: ThemeSize.smallIcon),onTap: (){
-            if(musicModel.isFavorite == 0){
-              insertMusicFavoriteService(musicModel.id).then((res) => {
+            if(musicModel.isLike == 0){
+              insertMusicLikeService(musicModel.id).then((res) => {
                 if(res.data > 0){
                   setState(() {
-                    musicModel.isFavorite = 1;
+                    musicModel.isLike = 1;
                   })
                 }
               });
             }else{
-              deleteMusicFavoriteService(musicModel.id).then((res) => {
+              deleteMusicLikeService(musicModel.id).then((res) => {
                 if(res.data > 0){
                   setState(() {
-                    musicModel.isFavorite = 0;
+                    musicModel.isLike = 0;
                   })
                 }
               });
