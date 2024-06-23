@@ -17,5 +17,13 @@ const servicePath = {
   'deleteLike': '/service/social-getway/deleteLike',// 删除点赞
   'insertComment':'/service/social-getway/insertComment',// 新增评论
   'getTopCommentList':'/service/social/getTopCommentList',// 获取一级评论列表
-  'getCommentCount': '/service/social/getCommentCount'// 获取评论总数
+  'getCommentCount': '/service/social/getCommentCount',// 获取评论总数
+  'getFavoriteDirectory': '/service/myMusic-getway/getFavoriteDirectory',// 查询收藏夹
+  'getMusicListByFavoriteId': '/service/myMusic-getway/getMusicListByFavoriteId',// 根据收藏夹获取音乐列表
+  'insertFavoriteDirectory': '/service/myMusic-getway/insertFavoriteDirectory',// 创建收藏夹
+  'deleteFavoriteDirectory': '/service/myMusic-getway/deleteFavoriteDirectory',// 删除收藏夹
+  'updateFavoriteDirectory': '/service/myMusic-getway/updateFavoriteDirectory',// 更新收藏夹
+  'insertMusicByFavoriteId': '/service/myMusic-getway/insertMusicByFavoriteId',// 把音乐添加入收藏夹
+  'updateMusicFavorite': '/service/myMusic-getway/updateMusicFavorite',// 更新音乐收藏夹目录
+  'deleteMusicFavorite': '/service/myMusic-getway/deleteMusicFavorite',// 删除音乐收藏
 };

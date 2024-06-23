@@ -233,3 +233,16 @@ Future<ResponseModel<int>> deleteLikeService(
     return null;
   }
 }
+
+///@author: wuwenqiang
+///@description: 点赞
+/// @date: 2024-3-28 22:10
+Future<ResponseModel<List>> getFavoriteDirectoryService() async {
+  try {
+    Response response = await dio.get(servicePath['getFavoriteDirectory']);
+    return ResponseModel.fromJson(response.data);
+  } catch (e) {
+    print('ERROR:======>${e}');
+    return null;
+  }
+}

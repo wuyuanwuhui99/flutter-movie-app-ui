@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:math';
 
 import 'package:flutter/material.dart';
+import 'package:movie/theme/ThemeStyle.dart';
 import 'package:movie/utils/LocalStroageUtils.dart';
 import '../../main.dart';
 import '../../movie/service/serverMethod.dart';
@@ -19,9 +20,9 @@ import '../component/lyric/lyric_controller.dart';
 import '../component/lyric/lyric_util.dart';
 import '../component/lyric/lyric_widget.dart';
 import '../component/CommentComponent.dart';
+import '../component/FavoriteComponent.dart';
 import '../../utils/HttpUtil .dart';
 import '../service/serverMethod.dart';
-import '../model/FavoriteModel.dart';
 
 class MusicPlayerPage extends StatefulWidget {
   MusicPlayerPage({Key key}) : super(key: key);
@@ -56,7 +57,6 @@ class _MusicPlayerPageState extends State<MusicPlayerPage>
   StreamSubscription onAudioPositionChangedListener;// 监听播放进度
   StreamSubscription onPlayerCompletionListener;// 监听播放完成
   bool loading = false;
-  List<FavoriteModel> favoriteDirectory = [];
 
   @override
   void initState() {
@@ -297,6 +297,9 @@ class _MusicPlayerPageState extends State<MusicPlayerPage>
         });
   }
 
+  ///@author: wuwenqiang
+  ///@description: 音乐播放操作
+  /// @date: 2024-06-23 22:29
   Widget buildPlayMenu() {
     return Row(
       children: [
@@ -377,7 +380,7 @@ class _MusicPlayerPageState extends State<MusicPlayerPage>
               height: ThemeSize.playIcon,
             ),
             onTap: (){
-
+              buildModalBottomSheet(FavoriteComponent(musicId: musicModel.id));
             },
           ),
           flex: 1,
@@ -386,16 +389,52 @@ class _MusicPlayerPageState extends State<MusicPlayerPage>
     );
   }
 
-  Widget buildFavoriteWidget(){
-
-    return Column(children: [
-      Text("选择收藏夹"),
-      ListView.builder(itemBuilder: (BuildContext context, int index){
-
-      })
-    ],);
-  }
-
+  ///@author: wuwenqiang
+  ///@description: 创建底部添加收藏列表
+  /// @date: 2024-06-23 22:29
+  // Widget buildFavoriteWidget(){
+  //   return Column(
+  //     children: [
+  //       Padding(
+  //         padding: ThemeStyle.padding,
+  //         child: Text("选择收藏夹"),
+  //       ),
+  //       Divider(height: 1, color: ThemeColors.borderColor),
+  //       Expanded(
+  //           flex: 1,
+  //           child: Padding(
+  //             padding: ThemeStyle.padding,
+  //             child: FutureBuilder(
+  //               future: getFavoriteDirectoryService(),
+  //               builder: (BuildContext context,AsyncSnapshot snapshot){
+  //                 if (snapshot.data == null || snapshot.data.data?.length == 0) {
+  //                   return Center(child:Text('暂无收藏夹'));
+  //                 }
+  //                 favoriteDirectory.clear();
+  //                 snapshot.data.data.forEach((item) {
+  //                   favoriteDirectory.add(FavoriteModel.fromJson(item));
+  //                   selectedValues.add(false);
+  //                 });
+  //                 return ListView.builder(
+  //                     scrollDirection: Axis.vertical,
+  //                     itemCount: this.favoriteDirectory.length,
+  //                     itemBuilder: (BuildContext context, int index) {
+  //                       return CheckboxListTile(
+  //                         title: Text(this.favoriteDirectory[index].name),
+  //                         value: selectedValues[index],
+  //                         selected: selectedValues[index],
+  //                         onChanged: (value) {
+  //                           setState(() {
+  //                             selectedValues[index] = value;
+  //                           });
+  //                         },
+  //                       );
+  //                     });
+  //               })
+  //           ))
+  //     ],
+  //   );
+  // }
 
   Widget buildprogress() {
     return Row(
