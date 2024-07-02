@@ -57,6 +57,7 @@ class _MusicPlayerPageState extends State<MusicPlayerPage>
   StreamSubscription onAudioPositionChangedListener;// 监听播放进度
   StreamSubscription onPlayerCompletionListener;// 监听播放完成
   bool loading = false;
+  bool isFavorite = false;// 是否已经收藏
 
   @override
   void initState() {
@@ -79,6 +80,8 @@ class _MusicPlayerPageState extends State<MusicPlayerPage>
     currentPlayIndex = provider.playIndex;
 
     playMusicModelList = provider.playMusicList;
+
+    useIsMusicFavorite(musicModel.id);
   }
 
   @override
@@ -375,7 +378,7 @@ class _MusicPlayerPageState extends State<MusicPlayerPage>
         Expanded(
           child: InkWell(
             child: Image.asset(
-              "lib/assets/images/icon_favorite.png",
+              isFavorite ? "lib/assets/images/icon_full_star.png" : "lib/assets/images/icon_favorite.png",
               width: ThemeSize.playIcon,
               height: ThemeSize.playIcon,
             ),
@@ -388,53 +391,6 @@ class _MusicPlayerPageState extends State<MusicPlayerPage>
       ],
     );
   }
-
-  ///@author: wuwenqiang
-  ///@description: 创建底部添加收藏列表
-  /// @date: 2024-06-23 22:29
-  // Widget buildFavoriteWidget(){
-  //   return Column(
-  //     children: [
-  //       Padding(
-  //         padding: ThemeStyle.padding,
-  //         child: Text("选择收藏夹"),
-  //       ),
-  //       Divider(height: 1, color: ThemeColors.borderColor),
-  //       Expanded(
-  //           flex: 1,
-  //           child: Padding(
-  //             padding: ThemeStyle.padding,
-  //             child: FutureBuilder(
-  //               future: getFavoriteDirectoryService(),
-  //               builder: (BuildContext context,AsyncSnapshot snapshot){
-  //                 if (snapshot.data == null || snapshot.data.data?.length == 0) {
-  //                   return Center(child:Text('暂无收藏夹'));
-  //                 }
-  //                 favoriteDirectory.clear();
-  //                 snapshot.data.data.forEach((item) {
-  //                   favoriteDirectory.add(FavoriteModel.fromJson(item));
-  //                   selectedValues.add(false);
-  //                 });
-  //                 return ListView.builder(
-  //                     scrollDirection: Axis.vertical,
-  //                     itemCount: this.favoriteDirectory.length,
-  //                     itemBuilder: (BuildContext context, int index) {
-  //                       return CheckboxListTile(
-  //                         title: Text(this.favoriteDirectory[index].name),
-  //                         value: selectedValues[index],
-  //                         selected: selectedValues[index],
-  //                         onChanged: (value) {
-  //                           setState(() {
-  //                             selectedValues[index] = value;
-  //                           });
-  //                         },
-  //                       );
-  //                     });
-  //               })
-  //           ))
-  //     ],
-  //   );
-  // }
 
   Widget buildprogress() {
     return Row(
@@ -659,10 +615,19 @@ class _MusicPlayerPageState extends State<MusicPlayerPage>
         currentPlayIndex = provider.musicList.length - 1;
       }
     }
+    useIsMusicFavorite(provider.musicList[currentPlayIndex].id);
     setState(() {
       musicModel = provider.musicList[currentPlayIndex];
     });
     provider.setPlayIndex(currentPlayIndex);
+  }
+
+  void useIsMusicFavorite(musicId){
+    isMusicFavoriteService(musicId).then((value){
+      setState(() {
+        isFavorite = value.data > 0;
+      });
+    });
   }
 
   ///@author: wuwenqiang
@@ -680,6 +645,7 @@ class _MusicPlayerPageState extends State<MusicPlayerPage>
         currentPlayIndex = 0;
       }
     }
+    this.useIsMusicFavorite(provider.musicList[currentPlayIndex].id);
     setState(() {
       musicModel = provider.musicList[currentPlayIndex];
     });

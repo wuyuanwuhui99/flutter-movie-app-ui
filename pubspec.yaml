@@ -131,6 +131,8 @@ flutter:
     - lib/assets/images/icon_music_random.png
     - lib/assets/images/icon_music_loop.png
     - lib/assets/images/icon_favorite.png
+    - lib/assets/images/icon_add.png
+    - lib/assets/images/icon_music_default_cover.png
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.
 

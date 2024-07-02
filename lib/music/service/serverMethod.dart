@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'package:dio/dio.dart';
-import 'package:movie/music/model/CircleLikeModel.dart';
+import '../model/CircleLikeModel.dart';
+import '../model/FavoriteDirectoryModel.dart';
 import '../model/MusicModel.dart';
 import '../api/api.dart';
 import '../../utils/HttpUtil .dart';
@@ -237,9 +238,49 @@ Future<ResponseModel<int>> deleteLikeService(
 ///@author: wuwenqiang
 ///@description: 点赞
 /// @date: 2024-3-28 22:10
-Future<ResponseModel<List>> getFavoriteDirectoryService() async {
+Future<ResponseModel<List>> getFavoriteDirectoryService(int musicId) async {
   try {
-    Response response = await dio.get(servicePath['getFavoriteDirectory']);
+    Response response = await dio.get("${servicePath['getFavoriteDirectory']}?musicId=${musicId.toString()}");
+    return ResponseModel.fromJson(response.data);
+  } catch (e) {
+    print('ERROR:======>${e}');
+    return null;
+  }
+}
+
+///@description: 查询音乐是否已经收藏
+///@date: 2024-06-25 22:02
+///@author wuwenqiang
+Future<ResponseModel<int>> isMusicFavoriteService (int musicId) async {
+  try {
+    Response response = await dio.get(servicePath['isMusicFavorite'] + musicId.toString());
+    return ResponseModel.fromJson(response.data);
+  } catch (e) {
+    print('ERROR:======>${e}');
+    return null;
+  }
+}
+
+
+///@description: 添加音乐收藏
+///@date: 2024-06-29 11:26
+///@author wuwenqiang
+Future<ResponseModel<int>> insertMusicFavoriteService (int musicId,List<FavoriteDirectoryModel>favoriteList) async {
+  try {
+    Response response = await dio.post(servicePath['insertMusicFavorite'] + musicId.toString(),data: favoriteList.map((item) => item.toMap()).toList());
+    return ResponseModel.fromJson(response.data);
+  } catch (e) {
+    print('ERROR:======>${e}');
+    return null;
+  }
+}
+
+///@description: 添加音乐收藏
+///@date: 2024-06-29 11:26
+///@author wuwenqiang
+Future<ResponseModel<Map>> insertFavoriteDirectoryService (FavoriteDirectoryModel favoriteDirectory)async {
+  try {
+    Response response = await dio.post(servicePath['insertFavoriteDirectory'],data: favoriteDirectory);
     return ResponseModel.fromJson(response.data);
   } catch (e) {
     print('ERROR:======>${e}');

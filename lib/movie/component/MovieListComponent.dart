@@ -42,10 +42,10 @@ class MovieListComponent extends StatelessWidget {
       child: Column(
         children: <Widget>[
           ClipRRect(
-              borderRadius: BorderRadius.circular(10),
+              borderRadius: BorderRadius.circular(ThemeSize.middleRadius),
               child: Image(
-                  width: 150,
-                  height: 200,
+                  width: ThemeSize.movieWidth,
+                  height: ThemeSize.movieHeight,
                   fit: BoxFit.fill,
                   image: NetworkImage(item.localImg != null
                       ? HOST + item.localImg
