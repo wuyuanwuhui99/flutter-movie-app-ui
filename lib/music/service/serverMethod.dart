@@ -280,7 +280,7 @@ Future<ResponseModel<int>> insertMusicFavoriteService (int musicId,List<int>favo
 ///@author wuwenqiang
 Future<ResponseModel<Map>> insertFavoriteDirectoryService (FavoriteDirectoryModel favoriteDirectory)async {
   try {
-    Response response = await dio.post(servicePath['insertFavoriteDirectory'],data: favoriteDirectory);
+    Response response = await dio.post(servicePath['insertFavoriteDirectory'],data: favoriteDirectory.toMap());
     return ResponseModel.fromJson(response.data);
   } catch (e) {
     print('ERROR:======>${e}');
