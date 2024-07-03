@@ -265,9 +265,9 @@ Future<ResponseModel<int>> isMusicFavoriteService (int musicId) async {
 ///@description: 添加音乐收藏
 ///@date: 2024-06-29 11:26
 ///@author wuwenqiang
-Future<ResponseModel<int>> insertMusicFavoriteService (int musicId,List<FavoriteDirectoryModel>favoriteList) async {
+Future<ResponseModel<int>> insertMusicFavoriteService (int musicId,List<int>favoriteList) async {
   try {
-    Response response = await dio.post(servicePath['insertMusicFavorite'] + musicId.toString(),data: favoriteList.map((item) => item.toMap()).toList());
+    Response response = await dio.post(servicePath['insertMusicFavorite'] + musicId.toString(),data: favoriteList.map((item) => {"favoriteId":item}).toList());
     return ResponseModel.fromJson(response.data);
   } catch (e) {
     print('ERROR:======>${e}');

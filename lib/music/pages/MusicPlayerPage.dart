@@ -383,7 +383,12 @@ class _MusicPlayerPageState extends State<MusicPlayerPage>
               height: ThemeSize.playIcon,
             ),
             onTap: (){
-              buildModalBottomSheet(FavoriteComponent(musicId: musicModel.id));
+              buildModalBottomSheet(FavoriteComponent(musicId: musicModel.id,isFavorite:isFavorite,onFavorite: (bool isMusicFavorite){
+                Navigator.pop(context);
+                setState(() {
+                  isFavorite = isMusicFavorite;
+                });
+              },));
             },
           ),
           flex: 1,

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:movie/config/common.dart';
 import 'package:movie/theme/ThemeSize.dart';
 import '../service/serverMethod.dart';
@@ -8,8 +9,11 @@ import '../model/FavoriteDirectoryModel.dart';
 
 class FavoriteComponent extends StatefulWidget {
   final int musicId;
+  final bool isFavorite;
+  final Function onFavorite;
 
-  FavoriteComponent({Key key, this.musicId}) : super(key: key);
+  FavoriteComponent({Key key, this.musicId, this.isFavorite, this.onFavorite})
+      : super(key: key);
 
   @override
   _FavoriteComponentState createState() => _FavoriteComponentState();
@@ -17,7 +21,7 @@ class FavoriteComponent extends StatefulWidget {
 
 class _FavoriteComponentState extends State<FavoriteComponent> {
   List<FavoriteDirectoryModel> favoriteDirectory = []; // 收藏夹
-  List<bool> selectedValues = [];
+  List<int> selectedValues = [];
 
   @override
   void initState() {
@@ -25,8 +29,11 @@ class _FavoriteComponentState extends State<FavoriteComponent> {
     getFavoriteDirectoryService(widget.musicId).then((value) {
       setState(() {
         value.data.forEach((item) {
-          favoriteDirectory.add(FavoriteDirectoryModel.fromJson(item));
-          selectedValues.add(false);
+          FavoriteDirectoryModel favoriteDirectoryModel =
+              FavoriteDirectoryModel.fromJson(item);
+          favoriteDirectory.add(favoriteDirectoryModel);
+          if (favoriteDirectoryModel.checked == 1)
+            selectedValues.add(favoriteDirectoryModel.id);
         });
       });
     });
@@ -69,55 +76,104 @@ class _FavoriteComponentState extends State<FavoriteComponent> {
                         Text('新建收藏夹')
                       ],
                     ),
-                    Column(children: this.favoriteDirectory.map((item) {
-                          return Column(
-                              children: [
-                            SizedBox(height: ThemeSize.containerPadding),
-                            Row(
-                              children: [
-                                ClipRRect(
+                    Column(
+                        children: this.favoriteDirectory.map((item) {
+                      return Column(children: [
+                        SizedBox(height: ThemeSize.containerPadding),
+                        Row(
+                          children: [
+                            item.cover == null
+                                ? Container(
+                                    width: ThemeSize.bigAvater,
+                                    height: ThemeSize.bigAvater,
+                                    decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.all(
+                                            Radius.circular(
+                                                ThemeSize.middleRadius)),
+                                        color: ThemeColors.colorBg),
+                                    child: Center(
+                                        child: Image.asset(
+                                      "lib/assets/images/icon_music_default_cover.png",
+                                      width: ThemeSize.middleIcon,
+                                      height: ThemeSize.middleIcon,
+                                    )))
+                                : ClipRRect(
                                     borderRadius: BorderRadius.circular(
                                         ThemeSize.middleRadius),
-                                    child: item.cover != null
-                                        ? Image.network(HOST + item.cover,
-                                            width: ThemeSize.bigAvater,
-                                            height: ThemeSize.bigAvater)
-                                        : Container(
-                                            width: ThemeSize.bigAvater,
-                                            height: ThemeSize.bigAvater,
-                                            decoration: BoxDecoration(
-                                                color: ThemeColors.colorBg),
-                                            child: Center(
-                                                child: Image.asset(
-                                              "lib/assets/images/icon_music_default_cover.png",
-                                              width: ThemeSize.middleIcon,
-                                              height: ThemeSize.middleIcon,
-                                            )))),
-                                SizedBox(width: ThemeSize.containerPadding),
-                                Expanded(
-                                    child: Column(
-                                      crossAxisAlignment: CrossAxisAlignment.start,
-                                      children: [
-                                        Text(item.name),
-                                        SizedBox(height: ThemeSize.smallMargin),
-                                        Text(item.total.toString() + "首",style: TextStyle(color:ThemeColors.disableColor),)
-                                      ],
-                                    ),
-                                    flex: 1),
-                                Checkbox(value: item.checked == 1, onChanged: (value){
+                                    child: Image.network(HOST + item.cover,
+                                        width: ThemeSize.bigAvater,
+                                        height: ThemeSize.bigAvater)),
+                            SizedBox(width: ThemeSize.containerPadding),
+                            Expanded(
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(item.name),
+                                    SizedBox(height: ThemeSize.smallMargin),
+                                    Text(
+                                      item.total.toString() + "首",
+                                      style: TextStyle(
+                                          color: ThemeColors.disableColor),
+                                    )
+                                  ],
+                                ),
+                                flex: 1),
+                            Checkbox(
+                                value: item.checked == 1,
+                                onChanged: (value) {
                                   setState(() {
                                     item.checked = value ? 1 : 0;
+                                    this.selectedValues.clear();
+                                    this.favoriteDirectory.forEach((item) {
+                                      if (item.checked == 1)
+                                        this.selectedValues.add(item.id);
+                                    });
                                   });
                                 })
-                              ],
-                            )
-                          ]);
-
+                          ],
+                        )
+                      ]);
                     }).toList())
                   ],
                 ),
               ),
-            ))
+            )),
+        Container(
+          margin: EdgeInsets.all(ThemeSize.containerPadding),
+          decoration: BoxDecoration(
+            color: Colors.red,
+            borderRadius:
+                BorderRadius.all(Radius.circular(ThemeSize.superRadius)),
+          ),
+          width: double.infinity,
+          height: ThemeSize.buttonHeight,
+          child: InkWell(
+              onTap: !widget.isFavorite && selectedValues.length == 0
+                  ? null
+                  : () {
+                      insertMusicFavoriteService(widget.musicId, selectedValues)
+                          .then((value) {
+                        if (value.data > 0) {
+                          Fluttertoast.showToast(
+                              msg:
+                                  selectedValues.length > 0 ? "收藏成功" : "取消收藏成功",
+                              toastLength: Toast.LENGTH_SHORT,
+                              gravity: ToastGravity.CENTER,
+                              timeInSecForIos: 1,
+                              textColor: Colors.white,
+                              fontSize: ThemeSize.middleFontSize);
+                          widget.onFavorite(selectedValues.length > 0);
+                        }
+                      });
+                    },
+              child: Center(
+                  child: Text(
+                widget.isFavorite && selectedValues.length == 0
+                    ? '取消收藏'
+                    : '添加${selectedValues.length > 0 ? '（已选${selectedValues.length}个）' : ''}',
+                style: TextStyle(color: ThemeColors.colorWhite),
+              ))),
+        ),
       ],
     );
   }
