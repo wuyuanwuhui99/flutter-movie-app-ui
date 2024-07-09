@@ -96,9 +96,9 @@ class _SearchMusicPageState extends State<MusicSearchPage> {
 
   @override
   Widget build(BuildContext context) {
-    currentPlayingMusicModel =
-        Provider.of<PlayerMusicProvider>(context).musicModel;
-    playing = Provider.of<PlayerMusicProvider>(context).playing;
+    PlayerMusicProvider provider = Provider.of<PlayerMusicProvider>(context);
+    currentPlayingMusicModel = provider.musicModel;
+    playing = provider.playing;
     return Scaffold(
       backgroundColor: ThemeColors.colorBg,
       body: SafeArea(
@@ -291,6 +291,7 @@ class _SearchMusicPageState extends State<MusicSearchPage> {
 
   Widget buildMusicListWidget() {
     int index = -1;
+    PlayerMusicProvider provider = Provider.of<PlayerMusicProvider>(context, listen: false);
     return Container(
         decoration: ThemeStyle.boxDecoration,
         padding: ThemeStyle.padding,
@@ -345,12 +346,8 @@ class _SearchMusicPageState extends State<MusicSearchPage> {
                               width: ThemeSize.smallIcon,
                               height: ThemeSize.smallIcon),
                           onTap: () {
-                            Provider.of<PlayerMusicProvider>(context,
-                                listen: false)
-                                .setPlayMusic(
-                                searchResult, musicItem, index, true);
-                            Routes.router
-                                .navigateTo(context, '/MusicPlayerPage');
+                            provider.insertMusic(musicItem, provider.playIndex);
+                            Routes.router.navigateTo(context, '/MusicPlayerPage');
                           }),
                       SizedBox(width: ThemeSize.containerPadding),
                       InkWell(child: Image.asset(

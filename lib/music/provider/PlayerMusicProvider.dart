@@ -41,6 +41,16 @@ class PlayerMusicProvider with ChangeNotifier {
     notifyListeners();
   }
 
+  ///  @desc 插入一首歌曲
+  ///  @data 2024-07-09 23:54
+  ///  @author wuwenqiang
+  insertMusic(MusicModel musicModel,int playIndex){
+    if(_playIndex == playIndex){
+      _musicModel = musicModel;
+    }
+    _musicList.insert(playIndex, musicModel);
+  }
+
   ///  @desc 设置音乐是否收藏
   ///  @data 2023-11-15 21:51
   ///  @author wuwenqiang
