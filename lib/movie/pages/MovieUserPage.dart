@@ -4,7 +4,7 @@ import 'dart:convert';
 import 'package:flutter/cupertino.dart';
 import 'package:provider/provider.dart';
 import 'package:image_picker/image_picker.dart';
-import '../../config/common.dart';
+import '../../common/constant.dart';
 import '../provider/UserInfoProvider.dart';
 import 'LoginPage.dart';
 import 'EditPage.dart';

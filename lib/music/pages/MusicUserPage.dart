@@ -6,7 +6,7 @@ import '../../movie/model/UserInfoModel.dart';
 import '../../theme/ThemeStyle.dart';
 import '../../theme/ThemeSize.dart';
 import '../../theme/ThemeColors.dart';
-import '../../config/common.dart';
+import '../../common/constant.dart';
 import '../model/MuiscPlayMenuModel.dart';
 import '../model/MuiscMySingerModel.dart';
 import '../model/MusicModel.dart';

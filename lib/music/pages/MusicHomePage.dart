@@ -12,7 +12,7 @@ import '../../movie/provider/UserInfoProvider.dart';
 import '../../theme/ThemeStyle.dart';
 import '../../theme/ThemeSize.dart';
 import '../../theme/ThemeColors.dart';
-import '../../config/common.dart';
+import '../../common/constant.dart';
 import '../../utils/LocalStroageUtils.dart';
 import '../../router/index.dart';
 

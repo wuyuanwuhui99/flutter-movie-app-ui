@@ -7,7 +7,7 @@ import '../model/SingerCategoryModel.dart';
 import 'package:flutter_easyrefresh/easy_refresh.dart';
 import 'package:flutter_easyrefresh/material_footer.dart';
 import '../model/MusicAuthorModel.dart';
-import '../../config/common.dart';
+import '../../common/constant.dart';
 
 class MusicSingerPage extends StatefulWidget {
   MusicSingerPage({Key key}) : super(key: key);

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:audioplayers/audioplayers.dart';
 import '../../utils/LocalStroageUtils.dart';
-import '../../config/common.dart';
+import '../../common/constant.dart';
 import '../service/serverMethod.dart';
 import '../model/MusicModel.dart';
 

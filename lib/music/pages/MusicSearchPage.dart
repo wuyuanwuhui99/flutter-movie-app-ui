@@ -9,7 +9,7 @@ import '../model/MusicModel.dart';
 import "package:shared_preferences/shared_preferences.dart";
 import '../../movie/component/TitleComponent.dart';
 import '../service/serverMethod.dart';
-import '../../config/common.dart';
+import '../../common/constant.dart';
 import 'package:provider/provider.dart';
 import '../provider/PlayerMusicProvider.dart';
 import 'package:movie/router/index.dart';

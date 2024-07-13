@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import '../pages/MovieDetailPage.dart';
-import '../../config/common.dart';
+import '../../common/constant.dart';
 import '../model/MovieDetailModel.dart';
 import '../../theme/ThemeSize.dart';
 

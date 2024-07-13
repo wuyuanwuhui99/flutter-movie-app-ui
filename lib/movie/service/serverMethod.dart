@@ -5,7 +5,7 @@ import '../api//api.dart';
 import '../../utils/LocalStroageUtils.dart';
 import '../model/MovieDetailModel.dart';
 import '../../utils/HttpUtil .dart';
-import '../../config/common.dart';
+import '../../common/config.dart';
 
 //获取用户数据
 Future<ResponseModel<dynamic>> getUserDataService() async {

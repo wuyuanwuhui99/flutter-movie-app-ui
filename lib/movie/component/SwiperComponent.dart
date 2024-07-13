@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_swiper/flutter_swiper.dart';
-import 'package:movie/router/index.dart';
 import 'package:movie/theme/ThemeStyle.dart';
 import '../service/serverMethod.dart';
-import '../../config/common.dart';
+import '../../common/constant.dart';
 import '../pages/MovieDetailPage.dart';
 import '../model/MovieDetailModel.dart';
 import '../../theme/ThemeSize.dart';

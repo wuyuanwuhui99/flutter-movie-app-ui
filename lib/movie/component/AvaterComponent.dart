@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:movie/router/index.dart';
-import '../../config/common.dart';
+import '../../common/constant.dart';
+import '../../common/config.dart';
 import '../provider/UserInfoProvider.dart';
 import 'package:provider/provider.dart';
 

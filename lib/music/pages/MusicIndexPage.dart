@@ -15,7 +15,7 @@ import './MusicUserPage.dart';
 import '../provider/PlayerMusicProvider.dart';
 import '../model/MusicModel.dart';
 import '../../utils/LocalStroageUtils.dart';
-import '../../config/common.dart';
+import '../../common/constant.dart';
 import '../service/serverMethod.dart';
 
 class MusicIndexPage extends StatefulWidget {

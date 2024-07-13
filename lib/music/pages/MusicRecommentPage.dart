@@ -11,7 +11,7 @@ import '../service/serverMethod.dart';
 import '../../theme/ThemeStyle.dart';
 import '../../theme/ThemeSize.dart';
 import '../../theme/ThemeColors.dart';
-import '../../config/common.dart';
+import '../../common/constant.dart';
 
 class MusicRecommentPage extends StatefulWidget {
   MusicRecommentPage({Key key}) : super(key: key);

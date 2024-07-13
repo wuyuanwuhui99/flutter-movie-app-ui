@@ -5,7 +5,7 @@ import 'package:movie/theme/ThemeStyle.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 import '../component/ScoreComponent.dart';
-import '../../config/common.dart';
+import '../../common/config.dart';
 import '../service/serverMethod.dart';
 import '../component/RecommendComponent.dart';
 import '../component/YouLikesComponent.dart';

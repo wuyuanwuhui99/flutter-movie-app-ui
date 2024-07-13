@@ -3,7 +3,8 @@ import 'package:movie/movie/model/CommentModel.dart';
 import '../../theme/ThemeStyle.dart';
 import '../../theme/ThemeSize.dart';
 import '../../theme/ThemeColors.dart';
-import '../../config/common.dart';
+import '../../common/constant.dart';
+import '../../common/config.dart';
 import '../../utils/common.dart';
 import '../../movie/service/serverMethod.dart';
 

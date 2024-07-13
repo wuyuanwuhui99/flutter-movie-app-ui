@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'dart:ui';
 import "package:shared_preferences/shared_preferences.dart";
-import '../../config/common.dart';
+import '../../common/constant.dart';
 import '../component/TitleComponent.dart';
 import '../service/serverMethod.dart';
 import './MovieDetailPage.dart';

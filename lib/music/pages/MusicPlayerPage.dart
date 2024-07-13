@@ -2,7 +2,6 @@ import 'dart:async';
 import 'dart:math';
 
 import 'package:flutter/material.dart';
-import 'package:movie/theme/ThemeStyle.dart';
 import 'package:movie/utils/LocalStroageUtils.dart';
 import '../../main.dart';
 import '../../movie/service/serverMethod.dart';
@@ -14,7 +13,8 @@ import '../../theme/ThemeColors.dart';
 import '../../theme/ThemeSize.dart';
 import '../provider/PlayerMusicProvider.dart';
 import '../model/MusicModel.dart';
-import '../../config/common.dart';
+import '../../common/config.dart';
+import '../../common/constant.dart';
 import '../../utils/common.dart';
 import '../component/lyric/lyric_controller.dart';
 import '../component/lyric/lyric_util.dart';

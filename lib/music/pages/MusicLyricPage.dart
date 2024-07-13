@@ -6,7 +6,7 @@ import '../../theme/ThemeColors.dart';
 import '../../theme/ThemeSize.dart';
 import '../provider/PlayerMusicProvider.dart';
 import '../model/MusicModel.dart';
-import '../../config/common.dart';
+import '../../common/constant.dart';
 import '../component/lyric/lyric_controller.dart';
 import '../component/lyric/lyric_util.dart';
 import '../component/lyric/lyric_widget.dart';

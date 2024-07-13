@@ -1,5 +1,4 @@
-
-import '../config/common.dart';
+import '../common/constant.dart';
 import 'package:dio/dio.dart';
 
 class ResponseModel<T> {

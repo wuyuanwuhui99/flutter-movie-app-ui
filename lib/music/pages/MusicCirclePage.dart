@@ -6,7 +6,7 @@ import '../model/CircleModel.dart';
 import '../../theme/ThemeStyle.dart';
 import '../../theme/ThemeSize.dart';
 import '../../theme/ThemeColors.dart';
-import '../../config/common.dart';
+import '../../common/constant.dart';
 import '../../utils/common.dart';
 import '../model/CircleLikeModel.dart';
 import '../../movie/model/CommentModel.dart';
