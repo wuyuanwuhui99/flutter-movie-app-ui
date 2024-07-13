@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:movie/music/service/serverMethod.dart';
-import 'package:movie/router/index.dart';
 import '../model/CircleModel.dart';
 import 'dart:ui';
 import '../../theme/ThemeStyle.dart';
