@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import '../../common/config.dart';
 import '../../common/constant.dart';
 import 'package:movie/theme/ThemeSize.dart';
 import '../service/serverMethod.dart';

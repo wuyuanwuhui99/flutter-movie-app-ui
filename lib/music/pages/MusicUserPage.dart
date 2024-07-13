@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:movie/music/model/FavoriteDirectoryModel.dart';
 import 'package:provider/provider.dart';
 import '../service/serverMethod.dart';
 import '../../movie/provider/UserInfoProvider.dart';
@@ -7,7 +8,6 @@ import '../../theme/ThemeStyle.dart';
 import '../../theme/ThemeSize.dart';
 import '../../theme/ThemeColors.dart';
 import '../../common/constant.dart';
-import '../model/MuiscPlayMenuModel.dart';
 import '../model/MuiscMySingerModel.dart';
 import '../model/MusicModel.dart';
 
@@ -182,16 +182,15 @@ class _MusicUserPageState extends State<MusicUserPage>
               ],
             ),
             FutureBuilder(
-                future: getMusicPlayMenuService(),
+                future: getFavoriteDirectoryService(0),
                 builder: (context, snapshot) {
                   if (snapshot.data == null) {
                     return Container();
                   } else {
                     List<Widget> playMenuList = [];
                     snapshot.data.data.forEach((item) {
-                      MuiscPlayMenuModel muiscPlayMenuModel =
-                          MuiscPlayMenuModel.fromJson(item);
-                      playMenuList.add(buildPlayMenuItem(muiscPlayMenuModel));
+                      FavoriteDirectoryModel favoriteDirectoryModel = FavoriteDirectoryModel.fromJson(item);
+                      playMenuList.add(buildPlayMenuItem(favoriteDirectoryModel));
                     });
                     if (playMenuList.length == 0) {
                       return Container();
@@ -205,15 +204,15 @@ class _MusicUserPageState extends State<MusicUserPage>
   }
 
   // 创建我的歌单item
-  Widget buildPlayMenuItem(MuiscPlayMenuModel muiscPlayMenuModel) {
+  Widget buildPlayMenuItem(FavoriteDirectoryModel favoriteDirectoryModel) {
     return Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
       SizedBox(height: ThemeSize.containerPadding),
       Row(
         children: [
-          muiscPlayMenuModel.cover != null
+          favoriteDirectoryModel.cover != null
               ? ClipOval(
                   child: Image.network(
-                  HOST + muiscPlayMenuModel.cover,
+                  HOST + favoriteDirectoryModel.cover,
                   width: ThemeSize.bigAvater,
                   height: ThemeSize.bigAvater,
                 ))
@@ -228,7 +227,7 @@ class _MusicUserPageState extends State<MusicUserPage>
                   ),
                   child: Center(
                       child: Text(
-                    muiscPlayMenuModel.name.substring(0, 1),
+                        favoriteDirectoryModel.name.substring(0, 1),
                     style: TextStyle(fontSize: ThemeSize.bigFontSize),
                   ))),
           SizedBox(width: ThemeSize.containerPadding),
@@ -236,9 +235,9 @@ class _MusicUserPageState extends State<MusicUserPage>
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(muiscPlayMenuModel.name),
+                Text(favoriteDirectoryModel.name),
                 SizedBox(height: ThemeSize.smallMargin),
-                Text(muiscPlayMenuModel.total.toString() + "首",
+                Text(favoriteDirectoryModel.total.toString() + "首",
                     style: TextStyle(color: ThemeColors.subTitle))
               ],
             ),

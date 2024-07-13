@@ -81,19 +81,6 @@ Future<ResponseModel<List>> getCircleListByTypeService(
 }
 
 ///@author: wuwenqiang
-///@description: 获取用户歌单
-/// @date: 2023-07-08 18:45
-Future<ResponseModel<List>> getMusicPlayMenuService() async {
-  try {
-    Response response = await dio.get(servicePath['getMusicPlayMenu']);
-    return ResponseModel.fromJson(response.data);
-  } catch (e) {
-    print('ERROR:======>${e}');
-    return null;
-  }
-}
-
-///@author: wuwenqiang
 ///@description: 获取我关注的歌手
 /// @date: 2023-07-09 11:29
 Future<ResponseModel<List>> getMySingerService(
