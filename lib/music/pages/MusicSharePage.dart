@@ -1,11 +1,15 @@
-import 'dart:convert';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:movie/music/service/serverMethod.dart';
+import 'package:movie/router/index.dart';
+import '../model/CircleModel.dart';
 import 'dart:ui';
-import 'package:movie/theme/ThemeStyle.dart';
+import '../../theme/ThemeStyle.dart';
 import '../../theme/ThemeColors.dart';
 import '../../theme/ThemeSize.dart';
 import '../model/MusicModel.dart';
 import '../../utils/common.dart';
+import '../../common/config.dart';
 
 class MusicSharePage extends StatefulWidget {
   final MusicModel musicModel;
@@ -17,6 +21,15 @@ class MusicSharePage extends StatefulWidget {
 
 class _MusicSharePageState extends State<MusicSharePage>
     with TickerProviderStateMixin, RouteAware {
+
+ CircleModel circleModel = CircleModel();
+ bool loading = false;
+
+ @override
+ void initState() {
+   circleModel.permission = 1;
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -62,7 +75,9 @@ class _MusicSharePageState extends State<MusicSharePage>
                   height: ThemeSize.buttonHeight,
                   child: RaisedButton(
                     color: ThemeColors.colorWhite,
-                    onPressed: () async {},
+                    onPressed: (){
+                      Navigator.pop(context);
+                    },
                     child: Text(
                       '取消',
                       style: TextStyle(
@@ -82,7 +97,7 @@ class _MusicSharePageState extends State<MusicSharePage>
                   height: ThemeSize.buttonHeight,
                   child: RaisedButton(
                     color: Theme.of(context).accentColor,
-                    onPressed: () async {},
+                    onPressed: useSave,
                     child: Text(
                       '发布',
                       style: TextStyle(
@@ -113,6 +128,9 @@ class _MusicSharePageState extends State<MusicSharePage>
                 Radius.circular(ThemeSize.middleRadius))),
         padding: ThemeStyle.padding,
         child: TextField(
+          onChanged: (String value){
+            circleModel.content = value;
+          },
             maxLines:10,decoration:InputDecoration(
           filled: false,
           contentPadding: EdgeInsets.zero,
@@ -152,7 +170,7 @@ class _MusicSharePageState extends State<MusicSharePage>
     return Container(
       decoration: ThemeStyle.boxDecoration,
       padding: ThemeStyle.padding,
-      child: Row(children: [
+      child: InkWell(child: Row(children: [
         Image.asset(
           'lib/assets/images/icon_permission.png',
           height: ThemeSize.middleIcon,
@@ -161,7 +179,7 @@ class _MusicSharePageState extends State<MusicSharePage>
         ),
         SizedBox(width: ThemeSize.containerPadding),
         Expanded(child: Text('谁可以看'),flex: 1),
-        Text('公开'),
+        Text(PermissionMap[circleModel.permission]),
         SizedBox(width: ThemeSize.smallMargin),
         Image.asset(
           'lib/assets/images/icon_arrow.png',
@@ -169,7 +187,115 @@ class _MusicSharePageState extends State<MusicSharePage>
           width: ThemeSize.smallIcon,
           fit: BoxFit.cover,
         ),
-      ]),
+      ]),onTap: buildModalBottomSheet)
     );
   }
+
+  ///@author: wuwenqiang
+  ///@description: 保存说说
+  /// @date: 2024-07-13 20:34
+  useSave(){
+    if(loading)return;
+    loading = true;
+    circleModel.relationId = widget.musicModel.id;
+    circleModel.type = CircleEnum.MUSIC.toString().split('.').last;
+    saveCircleService(circleModel).then((value){
+      Fluttertoast.showToast(
+          msg: "发布成功",
+          toastLength: Toast.LENGTH_SHORT,
+          gravity: ToastGravity.CENTER,
+          timeInSecForIos: 1,
+          backgroundColor: Colors.blue,
+          textColor: Colors.white,
+          fontSize: ThemeSize.middleFontSize);
+      loading = false;
+      Navigator.pop(context);
+    }).catchError((){
+      loading = false;
+    });
+  }
+
+ Widget itemCreat(BuildContext context, String title) {
+   return Center(
+       child: Text(
+         title,
+         style: TextStyle(
+             fontSize: ThemeSize.middleFontSize),
+         textAlign: TextAlign.center,
+       ));
+ }
+
+ ///@author: wuwenqiang
+ ///@description: 创建底部弹窗
+ /// @date: 2024-07-13 21:23
+ void buildModalBottomSheet(){
+   showModalBottomSheet(
+     context: context,
+     isScrollControlled: false,
+     builder: (ctx) {
+       return Container(
+         color: ThemeColors.opcityColor,
+         height: 160,
+         child: Column(
+           crossAxisAlignment: CrossAxisAlignment.center,
+           children: <Widget>[
+             Container(
+                 margin: EdgeInsets.only(
+                     left: ThemeSize.containerPadding,
+                     right: ThemeSize.containerPadding),
+                 decoration: BoxDecoration(
+                   color: ThemeColors.colorWhite,
+                   borderRadius: BorderRadius.all(
+                       Radius.circular(ThemeSize.middleRadius)),
+                 ),
+                 child: Column(children: [
+                   Container(
+                     height: ThemeSize.buttonHeight,
+                     child: InkWell(
+                       child: itemCreat(context, '私密'),
+                       onTap: () {
+                         Navigator.pop(context);
+                         setState(() {
+                           circleModel.permission = 0;
+                         });
+                       },
+                     ),
+                   ),
+                   Container(
+                       height: 1,
+                       width: double.infinity,
+                       color: ThemeColors.colorBg),
+                   Container(
+                       height: ThemeSize.buttonHeight,
+                       child: InkWell(
+                         child: itemCreat(context, '公开'),
+                         onTap: () {
+                            Navigator.pop(context);
+                            setState(() {
+                              circleModel.permission = 1;
+                            });
+                         },
+                       ))
+                 ])),
+             InkWell(
+               child: Container(
+                 margin: EdgeInsets.all(ThemeSize.containerPadding),
+                 decoration: BoxDecoration(
+                   color: ThemeColors.colorWhite,
+                   borderRadius: BorderRadius.all(
+                       Radius.circular(ThemeSize.middleRadius)),
+                 ),
+                 padding: EdgeInsets.all(ThemeSize.containerPadding),
+                 child: itemCreat(context, '取消'),
+               ),
+               onTap: () {
+                 Navigator.pop(context);
+               },
+             )
+           ],
+         ),
+       );
+     }
+   );
+ }
 }

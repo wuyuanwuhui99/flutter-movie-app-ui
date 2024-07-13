@@ -21,5 +21,6 @@ const servicePath = {
   'isMusicFavorite':'/service/myMusic-getway/isMusicFavorite/', // 查询音乐是否收藏
   'getFavoriteDirectory':'/service/myMusic-getway/getFavoriteDirectory',// 查询收藏夹
   'insertMusicFavorite':'/service/myMusic-getway/insertMusicFavorite/',// 查询收藏夹
-  'insertFavoriteDirectory':'/service/myMusic-getway/insertFavoriteDirectory'// 创建收藏夹
+  'insertFavoriteDirectory':'/service/myMusic-getway/insertFavoriteDirectory',// 创建收藏夹
+  'insertCircle':'/service/circle-getway/insertCircle'// 插入一条朋友圈说说
 };

@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'package:dio/dio.dart';
+import '../model/CircleModel.dart';
 import '../../common/config.dart';
 import '../model/CircleLikeModel.dart';
 import '../model/FavoriteDirectoryModel.dart';
@@ -282,6 +283,19 @@ Future<ResponseModel<int>> insertMusicFavoriteService (int musicId,List<int>favo
 Future<ResponseModel<Map>> insertFavoriteDirectoryService (FavoriteDirectoryModel favoriteDirectory)async {
   try {
     Response response = await dio.post(servicePath['insertFavoriteDirectory'],data: favoriteDirectory.toMap());
+    return ResponseModel.fromJson(response.data);
+  } catch (e) {
+    print('ERROR:======>${e}');
+    return null;
+  }
+}
+
+///@description: 发表说说
+///@date: 2024-07-13 20:42
+///@author wuwenqiang
+Future<ResponseModel<int>> saveCircleService (CircleModel circleModel)async {
+  try {
+    Response response = await dio.post(servicePath['insertCircle'],data: circleModel.toMap());
     return ResponseModel.fromJson(response.data);
   } catch (e) {
     print('ERROR:======>${e}');

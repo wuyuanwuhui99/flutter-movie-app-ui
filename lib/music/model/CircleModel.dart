@@ -33,6 +33,7 @@ class CircleModel{
   String movieClassify;// 电影分类
   String movieLocalImg;// 电影本地图片
   String movieScore;// 电影得分
+  int permission;// 权限， 0：私密，1：公开
   List<CircleLikeModel> circleLikes;
   List<CommentModel> circleComments;
   GlobalKey key;
@@ -70,7 +71,8 @@ class CircleModel{
     this.movieScore,
     this.circleLikes,
     this.circleComments,
-    this.key
+    this.key,
+    this.permission
   });
   //工厂模式-用这种模式可以省略New关键字
   factory CircleModel.fromJson(dynamic json){
@@ -105,6 +107,7 @@ class CircleModel{
         movieClassify: json["movieClassify"],
         movieLocalImg: json["movieLocalImg"],
         movieScore: json["movieScore"],
+        permission:json["permission"],
         circleLikes: (json["circleLikes"] as List).cast().map((item) {
           return CircleLikeModel.fromJson(item);
         }).toList(),
@@ -113,5 +116,15 @@ class CircleModel{
         }).toList(),
         key:GlobalKey()
     );
+  }
+
+  Map<String, dynamic> toMap(){
+    return {
+      "relationId": relationId,
+      "content": content,
+      "imgs": imgs,
+      'type':type,
+      'permission':permission
+    };
   }
 }
