@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'package:dio/dio.dart';
+import '../../common/config.dart';
 import '../model/CircleLikeModel.dart';
 import '../model/FavoriteDirectoryModel.dart';
 import '../model/MusicModel.dart';
@@ -67,10 +68,10 @@ Future<ResponseModel<List>> getSingerListService(
 ///@description: 获取分类音乐列表
 /// @date: 2023-05-25 22:45
 Future<ResponseModel<List>> getCircleListByTypeService(
-    String type, int pageNum, int pageSize) async {
+    CircleEnum type, int pageNum, int pageSize) async {
   try {
     Response response = await dio.get(
-        "${servicePath['getCircleListByType']}?type=${type}&pageNum=${pageNum}&pageSize=${pageSize}");
+        "${servicePath['getCircleListByType']}?type=${type.toString().split('.').last}&pageNum=${pageNum}&pageSize=${pageSize}");
     return ResponseModel.fromJson(response.data);
   } catch (e) {
     print('ERROR:======>${e}');
@@ -224,10 +225,10 @@ Future<ResponseModel> saveLikeService(CircleLikeModel circleLikeModel) async {
 ///@description: 点赞
 /// @date: 2024-3-28 22:10
 Future<ResponseModel<int>> deleteLikeService(
-    int relationId, String type) async {
+    int relationId, CommentEnum type) async {
   try {
     Response response = await dio.delete(
-        '${servicePath['deleteLike']}?relationId=${relationId.toString()}&type=${type.toString()}');
+        '${servicePath['deleteLike']}?relationId=${relationId.toString()}&type=${type.toString().split('.').last}');
     return ResponseModel<int>.fromJson(response.data);
   } catch (e) {
     print('ERROR:======>${e}');

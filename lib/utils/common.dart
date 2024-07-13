@@ -1,4 +1,6 @@
 // md5 加密
+import '../common/constant.dart';
+
 String formatTime(String data) {
   // 获取当前时间对象
   DateTime now = DateTime.now();
@@ -34,4 +36,8 @@ String getDuration(int sec){
       return "${zeroFill(h)}:${zeroFill(m)}:${zeroFill(s)}";
     }
     return  "${zeroFill(m)}:${zeroFill(s)}";
+}
+
+String  getMusicCover (String cover) {
+  return cover.contains('http') ? cover.replaceAll('{size}', '480') : HOST + cover;
 }

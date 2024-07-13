@@ -4,3 +4,8 @@ enum CommentEnum {
   MOVIE,
   MOVIE_CIRCLE
 }
+
+enum CircleEnum {
+  MUSIC,
+  MOVIE
+}

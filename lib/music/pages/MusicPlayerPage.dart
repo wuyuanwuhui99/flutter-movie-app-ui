@@ -1,6 +1,5 @@
 import 'dart:async';
 import 'dart:math';
-
 import 'package:flutter/material.dart';
 import 'package:movie/utils/LocalStroageUtils.dart';
 import '../../main.dart';
@@ -349,10 +348,15 @@ class _MusicPlayerPageState extends State<MusicPlayerPage>
           flex: 1,
         ),
         Expanded(
-          child: Image.asset(
-            "lib/assets/images/icon_music_down.png",
-            width: ThemeSize.playIcon,
-            height: ThemeSize.playIcon,
+          child: InkWell(
+              child: Image.asset(
+              "lib/assets/images/icon_share_music.png",
+              width: ThemeSize.playIcon,
+              height: ThemeSize.playIcon,
+            ),
+            onTap: (){
+              Routes.router.navigateTo(context, '/MusicSharePage?musicItem=${Uri.encodeComponent(MusicModel.stringify(musicModel))}');
+            },
           ),
           flex: 1,
         ),

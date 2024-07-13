@@ -2,6 +2,7 @@ class ThemeSize {
   static double containerPadding = 15;// 每个模块之间的内边距和外边距
   static double columnPadding = 20;// 上下边距
   static double middleRadius = 10;// 圆角大小
+  static double textareaHeight = 150;// 多行文本框的高度
   static double bigRadius = 20;// 圆角大小
   static double superRadius = 30;// 加大版圆角
   static double minBtnRadius = 5;// 小圆角
