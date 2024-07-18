@@ -2,7 +2,7 @@ import 'dart:async';
 import 'package:dio/dio.dart';
 import 'package:movie/movie/model/CommentModel.dart';
 import '../api//api.dart';
-import '../../utils/LocalStroageUtils.dart';
+import '../../utils/LocalStorageUtils.dart';
 import '../model/MovieDetailModel.dart';
 import '../../utils/HttpUtil .dart';
 import '../../common/config.dart';
@@ -10,7 +10,7 @@ import '../../common/config.dart';
 //获取用户数据
 Future<ResponseModel<dynamic>> getUserDataService() async {
   try {
-    String token = await LocalStroageUtils.getToken(); //从缓存中获取
+    String token = await LocalStorageUtils.getToken(); //从缓存中获取
     HttpUtil.getInstance().setToken(token);
     Response response = await dio.get(servicePath["getUserData"]);
     HttpUtil.getInstance().setToken(response.data['token']);

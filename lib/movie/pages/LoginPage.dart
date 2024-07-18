@@ -5,7 +5,7 @@ import '../../utils/crypto.dart';
 import '../../BottomNavigationWidget.dart';
 import '../provider/UserInfoProvider.dart';
 import 'package:provider/provider.dart';
-import '../../utils/LocalStroageUtils.dart';
+import '../../utils/LocalStorageUtils.dart';
 import 'RegisterPage.dart';
 import '../model/UserInfoModel.dart';
 import '../../theme/ThemeStyle.dart';
@@ -140,7 +140,7 @@ class LoginPage extends StatelessWidget {
                               loginService(userId, generateMd5(password))
                                   .then((res) async {
                                 if (res != null && res.data != null) {
-                                  await LocalStroageUtils.setToken(res.token);
+                                  await LocalStorageUtils.setToken(res.token);
                                   await Fluttertoast.showToast(
                                       msg: "登录成功",
                                       toastLength: Toast.LENGTH_SHORT,

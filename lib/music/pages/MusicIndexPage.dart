@@ -14,7 +14,7 @@ import './MusicCirclePage.dart';
 import './MusicUserPage.dart';
 import '../provider/PlayerMusicProvider.dart';
 import '../model/MusicModel.dart';
-import '../../utils/LocalStroageUtils.dart';
+import '../../utils/LocalStorageUtils.dart';
 import '../../common/constant.dart';
 import '../service/serverMethod.dart';
 
@@ -109,18 +109,24 @@ class _MusicIndexPageState extends State<MusicIndexPage>
         Tween<double>(begin: 0, end: 1).animate(_repeatController);
     _repeatController.stop(canceled: false);
     usePlayState();
-    getClassMusicList(); // 通过缓存参数获取上次播放的音乐列表
-    PlayerMusicProvider provider = Provider.of<PlayerMusicProvider>(context, listen: false);
-    LocalStroageUtils.getPlayMusic().then((value){
-      if(value != null){
-        provider.setPlayMusic([], value, 0, false);
-      }
-    });
-    LocalStroageUtils.getLoopMode().then((value){
-      provider.setLoopMode(value);
-    });
+    useStorage();
   }
 
+  useStorage(){
+    PlayerMusicProvider provider = Provider.of<PlayerMusicProvider>(context, listen: false);
+    LocalStorageUtils.getPlayMusic().then((value){
+      if(value != null){
+        provider.setPlayMusic(value,false);
+      }
+    });
+    LocalStorageUtils.getLoopMode().then((value){
+      provider.setLoopMode(value);
+    });
+    LocalStorageUtils.getMusicList().then((value){
+      provider.setMusicList(value);
+    });
+  }
+  
   /// 获取播放状态
   usePlayState() {
     AudioPlayer player =
@@ -192,33 +198,6 @@ class _MusicIndexPageState extends State<MusicIndexPage>
       ),
     );
     return item;
-  }
-
-  ///  @desc 通过缓存参数获取上次播放的音乐列表
-  ///  @data 2023-11-15 21:52
-  ///  @author wuwenqiang
-  void getClassMusicList() async {
-    ClassMusicParamsModel classMusicParamsModel =
-        await LocalStroageUtils.getClassMusicParams();
-    if (classMusicParamsModel != null) {
-      getMusicListByClassifyIdService(
-              classMusicParamsModel.classifyId,
-              classMusicParamsModel.pageNum,
-              classMusicParamsModel.pageSize,
-              classMusicParamsModel.isRedis)
-          .then((res) {
-        List<MusicModel> musicModelList =
-            res.data.map((item) {
-          item = {
-            ...item,
-            ...ClassMusicParamsModel.toMap(classMusicParamsModel)
-          };
-          return MusicModel.fromJson(item);
-        });
-        Provider.of<PlayerMusicProvider>(context)
-            .setPlayMusicList(musicModelList);
-      });
-    }
   }
 
   @override

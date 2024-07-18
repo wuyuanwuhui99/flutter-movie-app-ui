@@ -1,7 +1,7 @@
 import 'dart:async';
 import 'dart:math';
 import 'package:flutter/material.dart';
-import 'package:movie/utils/LocalStroageUtils.dart';
+import 'package:movie/utils/LocalStorageUtils.dart';
 import '../../main.dart';
 import '../../movie/service/serverMethod.dart';
 import 'package:movie/router/index.dart';
@@ -452,7 +452,7 @@ class _MusicPlayerPageState extends State<MusicPlayerPage>
               ),
               onSelected: (LoopModeEnum loopMode) {
                 provider.setLoopMode(loopMode);
-                LocalStroageUtils.setLoopMode(loopMode);
+                LocalStorageUtils.setLoopMode(loopMode);
                 setState(() {
                   loopModeEnum = loopMode;
                 });

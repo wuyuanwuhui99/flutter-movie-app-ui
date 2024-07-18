@@ -13,7 +13,7 @@ import '../../theme/ThemeStyle.dart';
 import '../../theme/ThemeSize.dart';
 import '../../theme/ThemeColors.dart';
 import '../../common/constant.dart';
-import '../../utils/LocalStroageUtils.dart';
+import '../../utils/LocalStorageUtils.dart';
 import '../../router/index.dart';
 
 class MusicHomePage extends StatefulWidget {
@@ -30,8 +30,6 @@ class _MusicHomePageState extends State<MusicHomePage>
   int pageNum = 1;
   List<MusicClassifyModel> currentClassifiesList = [];
   List<MusicClassifyModel> allClassifies = [];
-  bool playing = false;
-  MusicModel currentPlayingMusicModel;
 
   @override
   void initState() {
@@ -69,9 +67,6 @@ class _MusicHomePageState extends State<MusicHomePage>
 
   @override
   Widget build(BuildContext context) {
-    currentPlayingMusicModel =
-        Provider.of<PlayerMusicProvider>(context).musicModel;
-    playing = Provider.of<PlayerMusicProvider>(context).playing;
     return Container(
         width: MediaQuery.of(context).size.width,
         padding: ThemeStyle.paddingBox,
@@ -99,8 +94,7 @@ class _MusicHomePageState extends State<MusicHomePage>
                 child: Column(
                   children: [
                     buildClassifyWidget(),
-                    ...buildCurrentClassifiesWidget()
-                  ],
+                  ]..addAll(buildCurrentClassifiesWidget()),
                 ),
               ))
         ]));
@@ -144,9 +138,8 @@ class _MusicHomePageState extends State<MusicHomePage>
                                 Provider.of<PlayerMusicProvider>(context);
                             if (musicProvider.musicModel == null) {
                               // 如果缓存中没有正在播放的歌曲，用推荐的歌曲作为正在播放的歌曲
-                              musicProvider
-                                  .setPlayMusic([], musicModel, 0, false);
-                              LocalStroageUtils.setPlayMusic(musicModel);
+                              musicProvider.setPlayMusic( musicModel, false);
+                              LocalStorageUtils.setPlayMusic(musicModel);
                             }
                             keyword =
                                 '${musicModel.authorName} - ${musicModel.songName}';
@@ -260,24 +253,26 @@ class _MusicHomePageState extends State<MusicHomePage>
             ),
             musicClassifyModel.classifyName == "推荐歌手"
                 ? buildSingerListWidget()
-                : buildMusicListByClassifyId(musicClassifyModel.id)
+                : buildMusicListByClassifyId(musicClassifyModel)
           ],
         ));
   }
 
   // 获取音乐列表
-  Widget buildMusicListByClassifyId(int classifyId) {
+  Widget buildMusicListByClassifyId(MusicClassifyModel classifyModel) {
+    PlayerMusicProvider provider = Provider.of<PlayerMusicProvider>(context, listen: false);
     return FutureBuilder(
-        future: getMusicListByClassifyIdService(classifyId, 1, 3, 1),
+        future: getMusicListByClassifyIdService(classifyModel.id, 1, 3, 1),
         builder: (context, snapshot) {
           if (snapshot.data == null) {
             return Container();
           } else {
             List<MusicModel> musicModelList = [];
             List<Widget> musicWidgetList = [];
-            int index = 0;
+            int i= -1;
             snapshot.data.data.forEach((element) {
-              element['classifyId'] = classifyId;
+              int index = ++i;
+              element['classifyId'] = classifyModel.id;
               element['pageNum'] = 1;
               element['pageSize'] = 20;
               element['isRedis'] = 1;
@@ -344,21 +339,20 @@ class _MusicHomePageState extends State<MusicHomePage>
                       ),
                       InkWell(
                           child: Image.asset(
-                            playing &&
-                                    musicItem.id == currentPlayingMusicModel.id
+                            provider.playing && musicItem.id == provider.musicModel?.id
                                 ? "lib/assets/images/icon_music_playing_grey.png"
                                 : "lib/assets/images/icon_music_play.png",
                             width: ThemeSize.smallIcon,
                             height: ThemeSize.smallIcon,
                           ),
-                          onTap: () {
-                            getMusicListByClassifyIdService(classifyId, 1, 500, 1).then((value){
-                              List<MusicModel> playMusicModelList = [] ;
-                              value.data.forEach((element) => playMusicModelList.add(MusicModel.fromJson(element)));
-                              Provider.of<PlayerMusicProvider>(context,listen: false).setPlayMusicList(playMusicModelList);
-                            });
-                            LocalStroageUtils.setPlayMusic(musicItem);
-                            Provider.of<PlayerMusicProvider>(context,listen: false).setPlayMusic([], musicItem, index, true);
+                          onTap:  () async {
+                            if(provider.classifyName != classifyModel.classifyName){
+                              await getMusicListByClassifyIdService(classifyModel.id, 1, 500, 1).then((value){
+                                provider.setClassifyMusic(value.data.map((element) => MusicModel.fromJson(element)).toList(),index,classifyModel.classifyName);
+                              });
+                            }else if(musicItem.id != provider.musicModel?.id){
+                              provider.setPlayMusic(musicItem, true);
+                            }
                             Routes.router.navigateTo(context, '/MusicPlayerPage');
                           }),
                       SizedBox(width: ThemeSize.containerPadding),
