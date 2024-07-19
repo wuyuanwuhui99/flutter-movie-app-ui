@@ -45,8 +45,8 @@ class LocalStorageUtils {
     final SharedPreferences prefs = await _prefs;
     String playMusic = prefs.getString(MUSIC_LIST_STORAGE_KEY) ?? null;
     if (playMusic != null) {
-      List<Map> musicList = json.decode(playMusic);
-      return musicList.map((e) => MusicModel.fromJson(e));
+      List<dynamic> musicList = json.decode(playMusic).toList();
+      return musicList.map((e) => MusicModel.fromJson(e)).toList();
     } else {
       return [];
     }
@@ -57,7 +57,7 @@ class LocalStorageUtils {
   ///  @author wuwenqiang
   static Future setMusicList(List<MusicModel> musicList) async {
     final SharedPreferences prefs = await _prefs;
-    List<Map> myMusicList = musicList.map((e) => MusicModel.toMap(e));
+    List<Map<dynamic, dynamic>> myMusicList = musicList.map((e) => MusicModel.toMap(e)).toList();
     prefs.setString(MUSIC_LIST_STORAGE_KEY, json.encode(myMusicList));
   }
 

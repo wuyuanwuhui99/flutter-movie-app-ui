@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_easyrefresh/easy_refresh.dart';
-import 'package:movie/music/provider/PlayerMusicProvider.dart';
+import 'package:movie/router/index.dart';
+import '../../common/constant.dart';
+import '../provider/PlayerMusicProvider.dart';
 import 'package:provider/provider.dart';
 import '../model/FavoriteDirectoryModel.dart';
 import '../service/serverMethod.dart';
@@ -28,9 +30,11 @@ class _MusicFavoriteListPageState extends State<MusicFavoriteListPage>
   int pageNum = 1;
   int total = 0;
   final int pageSize = 20;
+  PlayerMusicProvider provider;
 
   @override
   void initState() {
+    // 获取当前播放的歌曲，不能设置listen: true，否则会抛出
     useMusicListByFavoriteId();
     super.initState();
   }
@@ -52,6 +56,7 @@ class _MusicFavoriteListPageState extends State<MusicFavoriteListPage>
 
   @override
   Widget build(BuildContext context) {
+    provider = Provider.of<PlayerMusicProvider>(context, listen: true);
     return Scaffold(
         backgroundColor: ThemeColors.colorBg,
         body: SafeArea(
@@ -130,36 +135,46 @@ class _MusicFavoriteListPageState extends State<MusicFavoriteListPage>
               ),
               borderRadius: BorderRadius.circular(ThemeSize.middleRadius)),
           SizedBox(width: ThemeSize.containerPadding),
-          Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-            Text(widget.favoriteDirectoryModel.name),
-            SizedBox(height: ThemeSize.containerPadding),
-            Text(
-              '${widget.favoriteDirectoryModel.total.toString()}首',
-              style: TextStyle(color: ThemeColors.disableColor),
-            )
-          ])
+          Expanded(
+              flex: 1,
+              child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(widget.favoriteDirectoryModel.name),
+                    SizedBox(height: ThemeSize.containerPadding),
+                    Text(
+                      '${widget.favoriteDirectoryModel.total.toString()}首',
+                      style: TextStyle(color: ThemeColors.disableColor),
+                    )
+                  ])),
+          InkWell(
+            child: Image.asset("lib/assets/images/icon_edit.png",
+                width: ThemeSize.middleIcon, height: ThemeSize.middleIcon),
+          )
         ],
       ),
     );
   }
 
-  void useLike(MusicModel musicModel){
-    if(musicModel.isLike == 0){
+  void useLike(MusicModel musicModel) {
+    if (musicModel.isLike == 0) {
       insertMusicLikeService(musicModel.id).then((res) => {
-        if(res.data > 0){
-          setState(() {
-            musicModel.isLike = 1;
-          })
-        }
-      });
-    }else{
+            if (res.data > 0)
+              {
+                setState(() {
+                  musicModel.isLike = 1;
+                })
+              }
+          });
+    } else {
       deleteMusicLikeService(musicModel.id).then((res) => {
-        if(res.data > 0){
-          setState(() {
-            musicModel.isLike = 0;
-          })
-        }
-      });
+            if (res.data > 0)
+              {
+                setState(() {
+                  musicModel.isLike = 0;
+                })
+              }
+          });
     }
   }
 
@@ -168,17 +183,15 @@ class _MusicFavoriteListPageState extends State<MusicFavoriteListPage>
   /// @date: 2024-07-20 00:24
   Widget buildMusicListWidget() {
     int index = -1;
-    PlayerMusicProvider provider =
-        Provider.of<PlayerMusicProvider>(context, listen: false);
     return Container(
       padding: ThemeStyle.padding,
       decoration: ThemeStyle.boxDecoration,
       child: Column(
           children: musicList.map((musicModel) {
-        index++;
+        int i = ++index;
         return Column(
           children: [
-            Row(
+            InkWell(child: Row(
               children: [
                 ClipOval(
                   child: Image.network(
@@ -196,23 +209,27 @@ class _MusicFavoriteListPageState extends State<MusicFavoriteListPage>
                         '${musicModel.authorName} - ${musicModel.songName}')),
                 SizedBox(width: ThemeSize.containerPadding),
                 Image.asset(
-                    provider.playing && provider.musicModel?.id == musicModel.id
+                    provider.playing && provider.musicModel.id == musicModel.id
                         ? 'lib/assets/images/icon_music_playing_grey.png'
                         : 'lib/assets/images/icon_music_play.png',
                     width: ThemeSize.smallIcon,
                     height: ThemeSize.smallIcon),
                 SizedBox(width: ThemeSize.containerPadding),
-                InkWell(child: Image.asset(
-                    "lib/assets/images/icon_like${musicModel.isLike == 1 ? "_active" : ""}.png",
-                    width: ThemeSize.smallIcon,
-                    height: ThemeSize.smallIcon),onTap: (){
-                  useLike(musicModel);
-                }),
+                InkWell(
+                    child: Image.asset(
+                        "lib/assets/images/icon_like${musicModel.isLike == 1 ? "_active" : ""}.png",
+                        width: ThemeSize.smallIcon,
+                        height: ThemeSize.smallIcon),
+                    onTap: () {
+                      useLike(musicModel);
+                    }),
                 SizedBox(width: ThemeSize.containerPadding),
                 Image.asset('lib/assets/images/icon_music_menu.png',
                     width: ThemeSize.smallIcon, height: ThemeSize.smallIcon)
               ],
-            ),
+            ),onTap: (){
+              usePlayRouter(musicModel,i);
+            }),
             SizedBox(
                 height: index != musicList.length - 1
                     ? ThemeSize.containerPadding
@@ -220,9 +237,28 @@ class _MusicFavoriteListPageState extends State<MusicFavoriteListPage>
             index != musicList.length - 1
                 ? Divider(height: 1, color: ThemeColors.borderColor)
                 : SizedBox(),
+            SizedBox(
+                height:
+                    index != musicList.length - 1 ? ThemeSize.smallIcon : 0),
           ],
         );
       }).toList()),
     );
+  }
+
+  ///@author: wuwenqiang
+  ///@description: 播放音乐列表
+  /// @date: 2024-07-20 04:13
+  usePlayRouter(MusicModel musicModel,int index)async{
+    PlayerMusicProvider provider = Provider.of<PlayerMusicProvider>(context, listen: false);
+    String classifyName = MUSIC_FAVORITE_NAME_STORAGE_KEY + widget.favoriteDirectoryModel.name;
+    if(provider.classifyName != classifyName){
+      await getMusicListByFavoriteIdService(widget.favoriteDirectoryModel.id, 1, MAX_FAVORITE_NUMBER).then((value) {
+        provider.setClassifyMusic(value.data.map((e) => MusicModel.fromJson(e)).toList(),index,classifyName);
+      });
+    }else{
+      provider.setPlayMusic(musicModel, true);
+    }
+    Routes.router.navigateTo(context, '/MusicPlayerPage');
   }
 }
