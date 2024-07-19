@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:movie/music/model/FavoriteDirectoryModel.dart';
+import '../model/FavoriteDirectoryModel.dart';
+import '../../router/index.dart';
 import 'package:provider/provider.dart';
 import '../service/serverMethod.dart';
 import '../../movie/provider/UserInfoProvider.dart';
@@ -207,27 +208,27 @@ class _MusicUserPageState extends State<MusicUserPage>
   Widget buildPlayMenuItem(FavoriteDirectoryModel favoriteDirectoryModel) {
     return Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
       SizedBox(height: ThemeSize.containerPadding),
-      Row(
+      InkWell(child: Row(
         children: [
           favoriteDirectoryModel.cover != null
               ? ClipOval(
-                  child: Image.network(
-                  HOST + favoriteDirectoryModel.cover,
-                  width: ThemeSize.bigAvater,
-                  height: ThemeSize.bigAvater,
-                ))
+              child: Image.network(
+                HOST + favoriteDirectoryModel.cover,
+                width: ThemeSize.bigAvater,
+                height: ThemeSize.bigAvater,
+              ))
               : Container(
-                  width: ThemeSize.bigAvater,
-                  height: ThemeSize.bigAvater,
-                  //超出部分，可裁剪
-                  clipBehavior: Clip.hardEdge,
-                  decoration: BoxDecoration(
-                    color: ThemeColors.colorBg,
-                    borderRadius: BorderRadius.circular(ThemeSize.bigAvater),
-                  ),
-                  child: Center(
-                      child: Text(
-                        favoriteDirectoryModel.name.substring(0, 1),
+              width: ThemeSize.bigAvater,
+              height: ThemeSize.bigAvater,
+              //超出部分，可裁剪
+              clipBehavior: Clip.hardEdge,
+              decoration: BoxDecoration(
+                color: ThemeColors.colorBg,
+                borderRadius: BorderRadius.circular(ThemeSize.bigAvater),
+              ),
+              child: Center(
+                  child: Text(
+                    favoriteDirectoryModel.name.substring(0, 1),
                     style: TextStyle(fontSize: ThemeSize.bigFontSize),
                   ))),
           SizedBox(width: ThemeSize.containerPadding),
@@ -256,7 +257,10 @@ class _MusicUserPageState extends State<MusicUserPage>
             height: ThemeSize.smallIcon,
           )
         ],
-      )
+      ),onTap: (){
+        Routes.router.navigateTo(context, '/MusicFavoriteListPage?favoriteDirectoryModel=${Uri.encodeComponent(FavoriteDirectoryModel.stringify(favoriteDirectoryModel))}');
+      },)
+
     ]);
   }
 

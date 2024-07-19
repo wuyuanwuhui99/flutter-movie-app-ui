@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 class FavoriteDirectoryModel{
   int id;
   String name;// 收藏夹名称
@@ -45,5 +47,9 @@ class FavoriteDirectoryModel{
       "createTime": createTime,
       "updateTime": updateTime
     };
+  }
+
+  static String stringify(FavoriteDirectoryModel favoriteDirectoryModel) {
+    return json.encode(favoriteDirectoryModel.toMap());
   }
 }

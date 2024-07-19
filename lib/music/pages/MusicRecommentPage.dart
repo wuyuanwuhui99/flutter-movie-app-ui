@@ -3,7 +3,7 @@ import 'package:flutter_easyrefresh/easy_refresh.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:flutter_easyrefresh/material_footer.dart';
 import 'package:audioplayers/audioplayers.dart';
-import 'package:movie/router/index.dart';
+import '../../router/index.dart';
 import '../model/MusicModel.dart';
 import 'package:provider/provider.dart';
 import '../provider/PlayerMusicProvider.dart';

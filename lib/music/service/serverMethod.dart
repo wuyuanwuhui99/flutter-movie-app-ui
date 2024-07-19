@@ -289,3 +289,16 @@ Future<ResponseModel<int>> saveCircleService (CircleModel circleModel)async {
     return null;
   }
 }
+
+///@description: 根据收藏夹id查询音乐
+///@date: 2024-07-13 20:42
+///@author wuwenqiang
+Future<ResponseModel<List>> getMusicListByFavoriteIdService (int favoriteId,int pageNum,int pageSize)async {
+  try {
+    Response response = await dio.get("${servicePath['getMusicListByFavoriteId']}?favoriteId=${favoriteId.toString()}&pageNum=${pageNum.toString()}&pageSize=${pageSize.toString()}");
+    return ResponseModel.fromJson(response.data);
+  } catch (e) {
+    print('ERROR:======>${e}');
+    return null;
+  }
+}

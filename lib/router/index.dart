@@ -2,8 +2,10 @@ import 'dart:convert';
 
 import 'package:fluro/fluro.dart';
 import 'package:flutter/material.dart';
-import 'package:movie/movie/model/MovieDetailModel.dart';
-import 'package:movie/music/model/MusicModel.dart';
+import '../movie/model/MovieDetailModel.dart';
+import '../music/model/FavoriteDirectoryModel.dart';
+import '../music/model/MusicModel.dart';
+import '../music/pages/MusicFavoriteListPage.dart';
 import '../music/pages/MusicSearchPage.dart';
 import '../music/pages/NotFoundPage.dart';
 import '../music/pages/MusicPlayerPage.dart';
@@ -50,6 +52,9 @@ class Routes {
     }));
     router.define('/MusicSharePage', handler: Handler(handlerFunc: (BuildContext context, Map<String, List<String>> params) {
       return MusicSharePage(musicModel:MusicModel.fromJson(jsonDecode(params['musicItem'].first)));
+    }));
+    router.define('/MusicFavoriteListPage', handler: Handler(handlerFunc: (BuildContext context, Map<String, List<String>> params) {
+      return MusicFavoriteListPage(favoriteDirectoryModel:FavoriteDirectoryModel.fromJson(jsonDecode(params['favoriteDirectoryModel'].first)));
     }));
   }
 }

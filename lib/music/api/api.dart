@@ -21,5 +21,6 @@ const servicePath = {
   'getFavoriteDirectory':'/service/myMusic-getway/getFavoriteDirectory',// 查询收藏夹
   'insertMusicFavorite':'/service/myMusic-getway/insertMusicFavorite/',// 查询收藏夹
   'insertFavoriteDirectory':'/service/myMusic-getway/insertFavoriteDirectory',// 创建收藏夹
-  'insertCircle':'/service/circle-getway/insertCircle'// 插入一条朋友圈说说
+  'insertCircle':'/service/circle-getway/insertCircle',// 插入一条朋友圈说说
+  'getMusicListByFavoriteId':'/service/myMusic-getway/getMusicListByFavoriteId'// 按照收藏夹的id查询音乐列表
 };
