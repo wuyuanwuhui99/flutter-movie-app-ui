@@ -249,6 +249,8 @@ class _MusicPlayerPageState extends State<MusicPlayerPage>
         Expanded(
           child: Center(
               child: Text(provider.musicModel.authorName,
+                  maxLines: 1, // 设置最大行数为1
+                  overflow: TextOverflow.ellipsis, // 设置溢出模式为省略号
                   style: TextStyle(
                       decoration: TextDecoration.underline,
                       color: ThemeColors.colorWhite))),
@@ -397,7 +399,7 @@ class _MusicPlayerPageState extends State<MusicPlayerPage>
           child: Slider(
             value: sliderValue,
             onChanged: (data) {
-              player.seek(Duration(seconds:totalSec*data~/100));
+              provider.player.seek(Duration(seconds:totalSec*data~/100));
               setState(() {
                 sliderValue = data;
               });
@@ -553,7 +555,7 @@ class _MusicPlayerPageState extends State<MusicPlayerPage>
 
   /// 播放音乐
   void usePlay() async {
-    provider = Provider.of<PlayerMusicProvider>(context, listen: false);
+    provider = provider??Provider.of<PlayerMusicProvider>(context, listen: false);
     final result = await provider.player.play(HOST + provider.musicModel.localPlayUrl);
     if (result == 1) {
       provider.setPlaying(true);

@@ -347,7 +347,7 @@ class _MusicHomePageState extends State<MusicHomePage>
                           ),
                           onTap:  () async {
                             if(provider.classifyName != classifyModel.classifyName){
-                              await getMusicListByClassifyIdService(classifyModel.id, 1, 500, 1).then((value){
+                              await getMusicListByClassifyIdService(classifyModel.id, 1, MAX_FAVORITE_NUMBER, 1).then((value){
                                 provider.setClassifyMusic(value.data.map((element) => MusicModel.fromJson(element)).toList(),index,classifyModel.classifyName);
                               });
                             }else if(musicItem.id != provider.musicModel?.id){
