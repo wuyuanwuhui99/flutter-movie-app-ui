@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_easyrefresh/easy_refresh.dart';
-import 'package:movie/router/index.dart';
+import '../../router/index.dart';
 import '../../common/constant.dart';
 import '../provider/PlayerMusicProvider.dart';
 import 'package:provider/provider.dart';
