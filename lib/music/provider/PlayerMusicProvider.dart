@@ -62,7 +62,7 @@ class PlayerMusicProvider with ChangeNotifier {
   ///  @desc 设置分类音乐
   ///  @data 2024-07-18 23:55
   ///  @author wuwenqiang
-  void setClassifyMusic(List<MusicModel> musicList,index,classifyName){
+  void setClassifyMusic(List<MusicModel> musicList,int index,String classifyName){
     _musicModel = musicList[index];
     _musicList = musicList;
     _classifyName = classifyName;
@@ -72,6 +72,8 @@ class PlayerMusicProvider with ChangeNotifier {
     LocalStorageUtils.setPlayMusic(_musicModel);
     LocalStorageUtils.setMusicList(_musicList);
     LocalStorageUtils.setClassifyName(_classifyName);
+    insertMusicRecordService(_musicModel);
+    notifyListeners();
   }
 
   ///  @desc 通过缓存参数获取上次播放的音乐列表
