@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_easyrefresh/easy_refresh.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -248,7 +250,13 @@ class _MusicHomePageState extends State<MusicHomePage>
                 SizedBox(width: ThemeSize.smallMargin),
                 Text(musicClassifyModel.classifyName),
                 Expanded(child: SizedBox(), flex: 1),
-                Text("更多")
+                InkWell(child: Text("更多"),onTap: (){
+                  if( musicClassifyModel.classifyName == "推荐歌手"){
+
+                  }else{
+                    Routes.router.navigateTo(context, '/MusicClassifyListPage?musicClassifyModel=${Uri.encodeComponent(json.encode(musicClassifyModel.toMap()))}');
+                  }
+                },)
               ],
             ),
             musicClassifyModel.classifyName == "推荐歌手"

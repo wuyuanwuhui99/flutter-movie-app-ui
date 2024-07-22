@@ -31,4 +31,16 @@ class MusicClassifyModel {
         updateTime: json["updateTime"]
     );
   }
+
+  Map<String, dynamic> toMap() {
+    return {
+      "id": id,
+      "classifyName": classifyName,
+      "permission": permission,
+      "classifyRank": classifyRank,
+      "disabled": disabled,
+      "createTime": createTime,
+      "updateTime": updateTime
+    };
+  }
 }

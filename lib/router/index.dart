@@ -16,6 +16,8 @@ import '../movie/pages/NewMoviePage.dart';
 import '../music/pages/MusicIndexPage.dart';
 import '../music/pages/MusicSingerPage.dart';
 import '../music/pages/MusicSharePage.dart';
+import '../music/pages/MusicClassifyListPage.dart';
+import '../music/model/MusicClassifyModel.dart';
 
 class Routes {
   static final FluroRouter router = FluroRouter();
@@ -56,5 +58,9 @@ class Routes {
     router.define('/MusicFavoriteListPage', handler: Handler(handlerFunc: (BuildContext context, Map<String, List<String>> params) {
       return MusicFavoriteListPage(favoriteDirectoryModel:FavoriteDirectoryModel.fromJson(jsonDecode(params['favoriteDirectoryModel'].first)));
     }));
+    router.define('/MusicClassifyListPage', handler: Handler(handlerFunc: (BuildContext context, Map<String, List<String>> params) {
+      return MusicClassifyListPage(musicClassifyModel:MusicClassifyModel.fromJson(jsonDecode(params['musicClassifyModel'].first)));
+    }));
+
   }
 }
