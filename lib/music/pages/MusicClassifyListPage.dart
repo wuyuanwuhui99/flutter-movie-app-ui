@@ -3,14 +3,12 @@ import 'package:flutter_easyrefresh/easy_refresh.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:movie/music/model/MusicClassifyModel.dart';
 import 'package:movie/music/service/serverMethod.dart';
-import '../model/CircleModel.dart';
 import 'dart:ui';
 import '../../theme/ThemeStyle.dart';
 import '../../theme/ThemeColors.dart';
 import '../../theme/ThemeSize.dart';
 import '../model/MusicModel.dart';
 import '../../utils/common.dart';
-import '../../common/config.dart';
 import '../../common/constant.dart';
 
 class MusicClassifyListPage extends StatefulWidget {
@@ -48,36 +46,29 @@ class _MusicClassifyListPageState extends State<MusicClassifyListPage>
             child: Column(
               children: [
                 buildTitleWidget(),
-                Padding(
-                  padding: ThemeStyle.padding,
-                  child: Column(
-                    children: [
-                      buildTitleWidget(),
-                      Expanded(
-                          flex: 1,
-                          child: EasyRefresh(
-                            controller: easyRefreshController,
-                            footer: total > pageNum * PAGE_SIZE
-                                ? MaterialFooter()
-                                : null,
-                            onLoad: () async {
-                              if (total > pageNum * PAGE_SIZE) {
-                                pageNum++;
-                                useMusicList();
-                              } else {
-                                // easyRefreshController
-                                Fluttertoast.showToast(
-                                    msg: "已经到底了",
-                                    toastLength: Toast.LENGTH_SHORT,
-                                    gravity: ToastGravity.CENTER,
-                                    timeInSecForIos: 1,
-                                    backgroundColor: Colors.blue,
-                                    textColor: Colors.white,
-                                    fontSize: ThemeSize.middleFontSize);
-                              }
-                            },
-                          ))
-                    ],
+                Expanded(
+                  flex: 1,
+                  child: EasyRefresh(
+                    controller: easyRefreshController,
+                    footer:
+                        total > pageNum * PAGE_SIZE ? MaterialFooter() : null,
+                    onLoad: () async {
+                      if (total > pageNum * PAGE_SIZE) {
+                        pageNum++;
+                        useMusicList();
+                      } else {
+                        // easyRefreshController
+                        Fluttertoast.showToast(
+                            msg: "已经到底了",
+                            toastLength: Toast.LENGTH_SHORT,
+                            gravity: ToastGravity.CENTER,
+                            timeInSecForIos: 1,
+                            backgroundColor: Colors.blue,
+                            textColor: Colors.white,
+                            fontSize: ThemeSize.middleFontSize);
+                      }
+                    },
+                    child: buildMusicListWidget(),
                   ),
                 )
               ],
@@ -109,7 +100,7 @@ class _MusicClassifyListPageState extends State<MusicClassifyListPage>
 
   ///@author: wuwenqiang
   ///@description: 创建音乐模块
-  /// @date: 2024-07-13 18:16
+  /// @date: 2024-07-23 00:25
   Widget buildMusicListWidget() {
     List<Widget> musicListWidget = [];
     int index = -1;
@@ -140,20 +131,23 @@ class _MusicClassifyListPageState extends State<MusicClassifyListPage>
         Image.asset('lib/assets/images/icon_music_menu.png',
             width: ThemeSize.smallIcon, height: ThemeSize.smallIcon),
       ]));
-      if (index != musicList.length) {
+      if (index != musicList.length - 1) {
         musicListWidget.add(Container(
           height: 1,
           decoration: BoxDecoration(color: ThemeColors.borderColor),
-          padding: EdgeInsets.only(
+          margin: EdgeInsets.only(
               top: ThemeSize.containerPadding,
               bottom: ThemeSize.containerPadding),
         ));
-      } else {
-        musicListWidget.add(SizedBox(height: ThemeSize.containerPadding));
       }
     });
-
-    return Column(children: []);
+    return Padding(
+      padding: ThemeStyle.padding,
+      child: Container(
+          padding: ThemeStyle.padding,
+          decoration: ThemeStyle.boxDecoration,
+          child: Column(children: musicListWidget)),
+    );
   }
 
   ///@author: wuwenqiang
