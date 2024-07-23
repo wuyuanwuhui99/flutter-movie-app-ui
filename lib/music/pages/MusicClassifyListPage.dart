@@ -107,15 +107,31 @@ class _MusicClassifyListPageState extends State<MusicClassifyListPage>
     musicList.forEach((ele) {
       index++;
       musicListWidget.add(Row(children: [
-        ClipOval(
-          child: Image.network(
-            //从全局的provider中获取用户信息
-            getMusicCover(ele.cover),
-            height: ThemeSize.middleAvater,
-            width: ThemeSize.middleAvater,
-            fit: BoxFit.cover,
-          ),
-        ),
+        ele.cover != null
+            ? ClipOval(
+                child: Image.network(
+                  //从全局的provider中获取用户信息
+                  getMusicCover(ele.cover),
+                  height: ThemeSize.middleAvater,
+                  width: ThemeSize.middleAvater,
+                  fit: BoxFit.cover,
+                ),
+              )
+            : Container(
+                //从全局的provider中获取用户信息
+                height: ThemeSize.middleAvater,
+                width: ThemeSize.middleAvater,
+                child: Center(
+                    child: Image.asset(
+                  'lib/assets/images/icon_music.png',
+                  height: ThemeSize.smallIcon,
+                  width: ThemeSize.smallIcon,
+                  fit: BoxFit.cover,
+                )),
+                decoration: BoxDecoration(
+                    borderRadius: BorderRadius.all(
+                        Radius.circular(ThemeSize.middleAvater))),
+              ),
         SizedBox(width: ThemeSize.containerPadding),
         Expanded(
           child: Text('${ele.authorName} - ${ele.songName}'),
