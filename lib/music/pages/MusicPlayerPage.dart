@@ -1,13 +1,13 @@
 import 'dart:async';
 import 'dart:math';
 import 'package:flutter/material.dart';
-import '../../utils/LocalStorageUtils.dart';
-import '../../main.dart';
-import '../../movie/service/serverMethod.dart';
-import 'package:movie/router/index.dart';
 import 'dart:ui';
 import 'package:provider/provider.dart';
 import 'package:audioplayers/audioplayers.dart';
+import '../../utils/LocalStorageUtils.dart';
+import '../../main.dart';
+import '../../movie/service/serverMethod.dart';
+import '../../router/index.dart';
 import '../../theme/ThemeColors.dart';
 import '../../theme/ThemeSize.dart';
 import '../provider/PlayerMusicProvider.dart';

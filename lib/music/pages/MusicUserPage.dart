@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import '../model/FavoriteDirectoryModel.dart';
 import '../../router/index.dart';
-import 'package:provider/provider.dart';
 import '../service/serverMethod.dart';
 import '../../movie/provider/UserInfoProvider.dart';
 import '../../movie/model/UserInfoModel.dart';

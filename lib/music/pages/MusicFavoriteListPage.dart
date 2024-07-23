@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_easyrefresh/easy_refresh.dart';
+import 'dart:ui';
+import 'package:provider/provider.dart';
 import '../../router/index.dart';
 import '../../common/constant.dart';
 import '../provider/PlayerMusicProvider.dart';
-import 'package:provider/provider.dart';
 import '../model/FavoriteDirectoryModel.dart';
 import '../service/serverMethod.dart';
-import 'dart:ui';
 import '../../theme/ThemeStyle.dart';
 import '../../theme/ThemeColors.dart';
 import '../../theme/ThemeSize.dart';

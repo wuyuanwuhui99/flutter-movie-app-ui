@@ -1,20 +1,21 @@
 import 'package:flutter/material.dart';
 import 'dart:ui';
-import '../../theme/ThemeColors.dart';
-import '../../theme/ThemeStyle.dart';
-import '../../theme/ThemeSize.dart';
 import 'package:flutter_easyrefresh/easy_refresh.dart';
 import 'package:flutter_easyrefresh/material_footer.dart';
-import '../model/MusicModel.dart';
 import "package:shared_preferences/shared_preferences.dart";
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:audioplayers/audioplayers.dart';
+import 'package:provider/provider.dart';
+import '../../theme/ThemeColors.dart';
+import '../../router/index.dart';
+import '../../theme/ThemeStyle.dart';
+import '../../theme/ThemeSize.dart';
+import '../model/MusicModel.dart';
 import '../../movie/component/TitleComponent.dart';
 import '../service/serverMethod.dart';
 import '../../common/constant.dart';
-import 'package:provider/provider.dart';
 import '../provider/PlayerMusicProvider.dart';
-import 'package:movie/router/index.dart';
-import 'package:fluttertoast/fluttertoast.dart';
-import 'package:audioplayers/audioplayers.dart';
+
 
 class MusicSearchPage extends StatefulWidget {
   final String keyword;

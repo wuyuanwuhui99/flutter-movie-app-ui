@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:movie/movie/service/serverMethod.dart';
 import 'package:provider/provider.dart';
+import './movie/service/serverMethod.dart';
 import './movie/pages/MovieHomePage.dart';
 import './movie/pages/MoviePage.dart';
 import './movie/pages/VideoPage.dart';

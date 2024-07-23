@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_easyrefresh/easy_refresh.dart';
+import 'package:flutter_easyrefresh/material_footer.dart';
 import '../service/serverMethod.dart';
 import '../../theme/ThemeStyle.dart';
 import '../../theme/ThemeSize.dart';
 import '../../theme/ThemeColors.dart';
 import '../model/SingerCategoryModel.dart';
-import 'package:flutter_easyrefresh/easy_refresh.dart';
-import 'package:flutter_easyrefresh/material_footer.dart';
 import '../model/MusicAuthorModel.dart';
 import '../../common/constant.dart';
 

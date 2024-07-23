@@ -1,11 +1,10 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:movie/router/index.dart';
+import '../../router/index.dart';
 import 'package:provider/provider.dart';
 import 'package:audioplayers/audioplayers.dart';
 import '../../main.dart';
-import '../model/ClassMusicParamsModel.dart';
 import '../../theme/ThemeSize.dart';
 import '../../theme/ThemeColors.dart';
 import './MusicHomePage.dart';
@@ -16,7 +15,6 @@ import '../provider/PlayerMusicProvider.dart';
 import '../model/MusicModel.dart';
 import '../../utils/LocalStorageUtils.dart';
 import '../../common/constant.dart';
-import '../service/serverMethod.dart';
 
 class MusicIndexPage extends StatefulWidget {
   MusicIndexPage({Key key}) : super(key: key);
