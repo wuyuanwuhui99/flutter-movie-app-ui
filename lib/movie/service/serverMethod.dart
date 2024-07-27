@@ -3,7 +3,7 @@ import 'package:dio/dio.dart';
 import '../api/api.dart';
 import '../../utils/LocalStorageUtils.dart';
 import '../model/MovieDetailModel.dart';
-import '../../utils/HttpUtil .dart';
+import '../../utils/HttpUtil.dart';
 import '../../common/config.dart';
 
 //获取用户数据

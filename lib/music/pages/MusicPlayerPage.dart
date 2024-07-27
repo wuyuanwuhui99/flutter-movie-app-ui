@@ -20,7 +20,7 @@ import '../component/lyric/lyric_util.dart';
 import '../component/lyric/lyric_widget.dart';
 import '../component/CommentComponent.dart';
 import '../component/FavoriteComponent.dart';
-import '../../utils/HttpUtil .dart';
+import '../../utils/HttpUtil.dart';
 import '../service/serverMethod.dart';
 
 class MusicPlayerPage extends StatefulWidget {

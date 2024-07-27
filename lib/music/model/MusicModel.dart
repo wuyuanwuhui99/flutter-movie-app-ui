@@ -94,7 +94,7 @@ class MusicModel extends ClassMusicParamsModel{
         updateTime: json["updateTime"],
         label: json["label"],
         lyrics: json["lyrics"],
-        isLike: json["isFavorite"],
+        isLike: json["isLike"],
         times: json["times"]);
   }
 

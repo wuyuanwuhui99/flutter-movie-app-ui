@@ -6,7 +6,7 @@ import '../model/CircleLikeModel.dart';
 import '../model/FavoriteDirectoryModel.dart';
 import '../model/MusicModel.dart';
 import '../api/api.dart';
-import '../../utils/HttpUtil .dart';
+import '../../utils/HttpUtil.dart';
 
 ///@author: wuwenqiang
 ///@description: 获取音乐搜索框关键词

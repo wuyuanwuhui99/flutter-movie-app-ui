@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_easyrefresh/easy_refresh.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:movie/music/provider/PlayerMusicProvider.dart';
+import 'package:movie/router/index.dart';
+import 'package:provider/provider.dart';
 import 'dart:ui';
 import '../model/MusicClassifyModel.dart';
 import '../service/serverMethod.dart';
@@ -8,8 +11,8 @@ import '../../theme/ThemeStyle.dart';
 import '../../theme/ThemeColors.dart';
 import '../../theme/ThemeSize.dart';
 import '../model/MusicModel.dart';
-import '../../utils/common.dart';
 import '../../common/constant.dart';
+import '../component/MusicListComponent.dart';
 
 class MusicClassifyListPage extends StatefulWidget {
   final MusicClassifyModel musicClassifyModel;
@@ -57,7 +60,6 @@ class _MusicClassifyListPageState extends State<MusicClassifyListPage>
                         pageNum++;
                         useMusicList();
                       } else {
-                        // easyRefreshController
                         Fluttertoast.showToast(
                             msg: "已经到底了",
                             toastLength: Toast.LENGTH_SHORT,
@@ -68,13 +70,32 @@ class _MusicClassifyListPageState extends State<MusicClassifyListPage>
                             fontSize: ThemeSize.middleFontSize);
                       }
                     },
-                    child: buildMusicListWidget(),
+                    child: Padding(
+                      padding: ThemeStyle.padding,
+                        child: MusicListComponent(musicList: musicList,classifyName: widget.musicClassifyModel.classifyName,onPlayMusic:(MusicModel musicModel,int index){
+                          usePlayRouter(musicModel,index);
+                    })),
                   ),
                 )
               ],
             ),
           ),
         ));
+  }
+
+  ///@author: wuwenqiang
+  ///@description: 播放音乐列表
+  /// @date: 2024-07-20 04:13
+  usePlayRouter(MusicModel musicModel,int index)async{
+    PlayerMusicProvider provider = Provider.of<PlayerMusicProvider>(context, listen: false);
+    if(provider.classifyName != widget.musicClassifyModel.classifyName){
+      await getMusicListByClassifyIdService(widget.musicClassifyModel.id, 1, MAX_FAVORITE_NUMBER,1).then((value) {
+        provider.setClassifyMusic(value.data.map((e) => MusicModel.fromJson(e)).toList(),index,widget.musicClassifyModel.classifyName);
+      });
+    }else{
+      provider.setPlayMusic(musicModel, true);
+    }
+    Routes.router.navigateTo(context, '/MusicPlayerPage');
   }
 
   ///@author: wuwenqiang
@@ -96,74 +117,6 @@ class _MusicClassifyListPageState extends State<MusicClassifyListPage>
           Text(widget.musicClassifyModel.classifyName),
           SizedBox(width: ThemeSize.smallIcon)
         ]));
-  }
-
-  ///@author: wuwenqiang
-  ///@description: 创建音乐模块
-  /// @date: 2024-07-23 00:25
-  Widget buildMusicListWidget() {
-    List<Widget> musicListWidget = [];
-    int index = -1;
-    musicList.forEach((ele) {
-      index++;
-      musicListWidget.add(Row(children: [
-        ele.cover != null
-            ? ClipOval(
-                child: Image.network(
-                  //从全局的provider中获取用户信息
-                  getMusicCover(ele.cover),
-                  height: ThemeSize.middleAvater,
-                  width: ThemeSize.middleAvater,
-                  fit: BoxFit.cover,
-                ),
-              )
-            : Container(
-                //从全局的provider中获取用户信息
-                height: ThemeSize.middleAvater,
-                width: ThemeSize.middleAvater,
-                child: Center(
-                    child: Image.asset(
-                  'lib/assets/images/icon_music.png',
-                  height: ThemeSize.smallIcon,
-                  width: ThemeSize.smallIcon,
-                  fit: BoxFit.cover,
-                )),
-                decoration: BoxDecoration(
-                    borderRadius: BorderRadius.all(
-                        Radius.circular(ThemeSize.middleAvater))),
-              ),
-        SizedBox(width: ThemeSize.containerPadding),
-        Expanded(
-          child: Text('${ele.authorName} - ${ele.songName}'),
-          flex: 1,
-        ),
-        SizedBox(width: ThemeSize.containerPadding),
-        Image.asset('lib/assets/images/icon_music_play.png',
-            width: ThemeSize.smallIcon, height: ThemeSize.smallIcon),
-        SizedBox(width: ThemeSize.containerPadding),
-        Image.asset('lib/assets/images/icon_like.png',
-            width: ThemeSize.smallIcon, height: ThemeSize.smallIcon),
-        SizedBox(width: ThemeSize.containerPadding),
-        Image.asset('lib/assets/images/icon_music_menu.png',
-            width: ThemeSize.smallIcon, height: ThemeSize.smallIcon),
-      ]));
-      if (index != musicList.length - 1) {
-        musicListWidget.add(Container(
-          height: 1,
-          decoration: BoxDecoration(color: ThemeColors.borderColor),
-          margin: EdgeInsets.only(
-              top: ThemeSize.containerPadding,
-              bottom: ThemeSize.containerPadding),
-        ));
-      }
-    });
-    return Padding(
-      padding: ThemeStyle.padding,
-      child: Container(
-          padding: ThemeStyle.padding,
-          decoration: ThemeStyle.boxDecoration,
-          child: Column(children: musicListWidget)),
-    );
   }
 
   ///@author: wuwenqiang

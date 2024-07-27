@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'dart:ui';
 import 'package:flutter_easyrefresh/easy_refresh.dart';
 import 'package:flutter_easyrefresh/material_footer.dart';
+import 'package:movie/music/component/MusicListComponent.dart';
 import "package:shared_preferences/shared_preferences.dart";
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:audioplayers/audioplayers.dart';
 import 'package:provider/provider.dart';
 import '../../theme/ThemeColors.dart';
 import '../../router/index.dart';
@@ -33,30 +33,16 @@ class _SearchMusicPageState extends State<MusicSearchPage> {
   int pageNum = 1;
   int pageSize = 20;
   int total = 0;
-  List<MusicModel> searchResult = [];
+  List<MusicModel> musicList = [];
   List<Widget> myHistoryLabels = [];
   List<String> myHistoryLabelsName = [];
   TextEditingController keywordController = TextEditingController();
-  MusicModel currentPlayingMusicModel;
-  bool playing = false;
   EasyRefreshController easyRefreshController = EasyRefreshController();
-
+  PlayerMusicProvider provider;
   @override
   void initState() {
     super.initState();
     getHistory();
-    usePlayState();
-  }
-
-  /// 获取播放状态
-  usePlayState() {
-    AudioPlayer player =
-        Provider.of<PlayerMusicProvider>(context, listen: false).player;
-    player.onPlayerStateChanged.listen((event) {
-      setState(() {
-        playing = event.index == 1;
-      });
-    });
   }
 
   getHistory() async {
@@ -85,7 +71,7 @@ class _SearchMusicPageState extends State<MusicSearchPage> {
         loading = false;
         total = res.total;
         res.data.forEach((item) {
-          searchResult.add(MusicModel.fromJson(item));
+          musicList.add(MusicModel.fromJson(item));
         }); // 顶部轮播组件数
       });
     }).catchError(() {
@@ -97,9 +83,7 @@ class _SearchMusicPageState extends State<MusicSearchPage> {
 
   @override
   Widget build(BuildContext context) {
-    PlayerMusicProvider provider = Provider.of<PlayerMusicProvider>(context);
-    currentPlayingMusicModel = provider.musicModel;
-    playing = provider.playing;
+    provider = Provider.of<PlayerMusicProvider>(context,listen: true);
     return Scaffold(
       backgroundColor: ThemeColors.colorBg,
       body: SafeArea(
@@ -108,9 +92,9 @@ class _SearchMusicPageState extends State<MusicSearchPage> {
             padding: ThemeStyle.paddingBox,
             child: EasyRefresh(
               controller: easyRefreshController,
-              footer: total > searchResult.length ? MaterialFooter() : null,
+              footer: total > musicList.length ? MaterialFooter() : null,
               onLoad: () async {
-                if (total > searchResult.length) {
+                if (total > musicList.length) {
                   pageNum++;
                   goSearch();
                 } else {
@@ -129,7 +113,10 @@ class _SearchMusicPageState extends State<MusicSearchPage> {
                 children: [
                   buildSearchInputWidget(),
                   this.searching
-                      ? (this.loading ? SizedBox() : buildMusicListWidget())
+                      ? (this.loading ? SizedBox() :
+                  MusicListComponent(musicList: musicList,classifyName: MUSIC_SEARCH_NAME ,onPlayMusic:(MusicModel musicModel,int index){
+                    usePlayRouter(musicModel,index);
+                  }))
                       : Column(
                           children: [buildHistorySearchWidget()],
                         )
@@ -138,6 +125,13 @@ class _SearchMusicPageState extends State<MusicSearchPage> {
             )),
       ),
     );
+  }
+
+  void usePlayRouter(MusicModel musicItem,int index){
+    if(musicItem.id != provider.musicModel?.id){
+      provider.insertMusic(musicItem, provider.playIndex);
+    }
+    Routes.router.navigateTo(context, '/MusicPlayerPage');
   }
 
   Widget buildSearchInputWidget() {
@@ -219,7 +213,7 @@ class _SearchMusicPageState extends State<MusicSearchPage> {
                     showClearIcon = true;
                     myHistoryLabels.insert(0, Label(keywordController.text));
                     this.searching = this.loading = true;
-                    searchResult = [];
+                    musicList = [];
                   });
                   goSearch();
                 },
@@ -250,7 +244,7 @@ class _SearchMusicPageState extends State<MusicSearchPage> {
           keywordController.text = text;
           loading = searching = true;
           showClearIcon = true;
-          searchResult = [];
+          musicList = [];
         });
         goSearch();
       },
@@ -288,97 +282,5 @@ class _SearchMusicPageState extends State<MusicSearchPage> {
                   )
           ]),
     );
-  }
-
-  Widget buildMusicListWidget() {
-    int index = -1;
-    PlayerMusicProvider provider = Provider.of<PlayerMusicProvider>(context, listen: false);
-    return Container(
-        decoration: ThemeStyle.boxDecoration,
-        padding: ThemeStyle.padding,
-        margin: ThemeStyle.margin,
-        child: searchResult.length > 0
-            ? Column(
-                children: searchResult.map((musicItem) {
-                index++;
-                return Container(
-                    padding: EdgeInsets.only(
-                      top: index == 0 ? 0 : ThemeSize.smallMargin,
-                        bottom:  index == searchResult.length ? 0 :ThemeSize.smallMargin),
-                    decoration: index == searchResult.length ? null : BoxDecoration(border: Border(
-                      bottom: BorderSide(
-                        color: ThemeColors.colorBg, // 边框颜色
-                        width: 1, // 边框宽度
-                      ),
-                    )),
-                    child: Row(children: [
-                      ClipOval(
-                          child: Image.network(
-                            //从全局的provider中获取用户信息
-                            HOST + musicItem.cover,
-                            height: ThemeSize.middleAvater,
-                            width: ThemeSize.middleAvater,
-                            fit: BoxFit.cover,
-                          )),
-                      SizedBox(width: ThemeSize.containerPadding),
-                      Expanded(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(musicItem.songName,
-                                softWrap: false,
-                                maxLines: 1,
-                                overflow: TextOverflow.ellipsis),
-                            SizedBox(height: ThemeSize.smallMargin),
-                            Text(musicItem.authorName,
-                                style:
-                                TextStyle(color: ThemeColors.disableColor)),
-                          ],
-                        ),
-                        flex: 1,
-                      ),
-                      InkWell(
-                          child: Image.asset(
-                              playing &&
-                                  musicItem.id ==
-                                      currentPlayingMusicModel.id
-                                  ? "lib/assets/images/icon_music_playing_grey.png"
-                                  : "lib/assets/images/icon_music_play.png",
-                              width: ThemeSize.smallIcon,
-                              height: ThemeSize.smallIcon),
-                          onTap: () {
-                            provider.insertMusic(musicItem, provider.playIndex);
-                            Routes.router.navigateTo(context, '/MusicPlayerPage');
-                          }),
-                      SizedBox(width: ThemeSize.containerPadding),
-                      InkWell(child: Image.asset(
-                          "lib/assets/images/icon_like${musicItem.isLike == 1 ? "_active" : ""}.png",
-                          width: ThemeSize.smallIcon,
-                          height: ThemeSize.smallIcon),onTap: (){
-                        if(musicItem.isLike == 0){
-                          insertMusicLikeService(musicItem.id).then((res) => {
-                            if(res.data > 0){
-                              setState(() {
-                                musicItem.isLike = 1;
-                              })
-                            }
-                          });
-                        }else{
-                          deleteMusicLikeService(musicItem.id).then((res) => {
-                            if(res.data > 0){
-                              setState(() {
-                                musicItem.isLike = 0;
-                              })
-                            }
-                          });
-                        }
-                      }),
-                      SizedBox(width: ThemeSize.containerPadding),
-                      Image.asset("lib/assets/images/icon_music_menu.png",
-                          width: ThemeSize.smallIcon,
-                          height: ThemeSize.smallIcon),
-                    ]));
-              }).toList())
-            : Text("暂无数据"));
   }
 }
