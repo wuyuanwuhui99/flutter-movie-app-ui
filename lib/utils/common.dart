@@ -1,4 +1,6 @@
 // md5 加密
+import 'package:flutter/cupertino.dart';
+
 import '../common/constant.dart';
 
 String formatTime(String data) {
@@ -40,4 +42,42 @@ String getDuration(int sec){
 
 String  getMusicCover (String cover) {
   return cover.contains('http') ? cover.replaceAll('{size}', '480') : HOST + cover;
+}
+
+enum Action { Ok, Cancel }
+
+Future showCustomDialog(BuildContext context,Widget body,String name,Function ok) async {
+  final action = await showCupertinoDialog(
+    context: context,
+    builder: (context) {
+      return CupertinoAlertDialog(
+        title: Text('修改$name'),
+          content:body,
+        actions: [
+          CupertinoDialogAction(
+            child: Text('确认'),
+            onPressed: () {
+              Navigator.pop(context, Action.Ok);
+            },
+          ),
+          CupertinoDialogAction(
+            child: Text('取消'),
+            isDestructiveAction: true,
+            onPressed: () {
+              Navigator.pop(context, Action.Cancel);
+            },
+          ),
+        ],
+      );
+    },
+  );
+
+  switch (action) {
+    case Action.Ok:
+      ok();
+      break;
+    case Action.Cancel:
+      break;
+    default:
+  }
 }

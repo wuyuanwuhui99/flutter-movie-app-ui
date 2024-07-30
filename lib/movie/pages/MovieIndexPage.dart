@@ -1,21 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import './movie/service/serverMethod.dart';
-import './movie/pages/MovieHomePage.dart';
-import './movie/pages/MoviePage.dart';
-import './movie/pages/VideoPage.dart';
-import './movie/pages/MovieMyPage.dart';
-import './theme/ThemeColors.dart';
-import './theme/ThemeSize.dart';
-import './movie/model/UserInfoModel.dart';
-import './movie/provider/UserInfoProvider.dart';
+import '../service/serverMethod.dart';
+import 'MovieHomePage.dart';
+import 'MoviePage.dart';
+import 'VideoPage.dart';
+import 'MovieMyPage.dart';
+import '../../theme/ThemeColors.dart';
+import '../../theme/ThemeSize.dart';
+import '../model/UserInfoModel.dart';
+import '../provider/UserInfoProvider.dart';
 
 
-class BottomNavigationWidget extends StatefulWidget {
-  _BottomNavigationWidgetState createState() => _BottomNavigationWidgetState();
+class MovieIndexPage extends StatefulWidget {
+  _MovieIndexPageState createState() => _MovieIndexPageState();
 }
 
-class _BottomNavigationWidgetState extends State<BottomNavigationWidget> {
+class _MovieIndexPageState extends State<MovieIndexPage> {
   int _currentIndex = 0;
   List<Widget> pages = [null, null, null, null];
   bool isInit = false;
@@ -36,28 +36,21 @@ class _BottomNavigationWidgetState extends State<BottomNavigationWidget> {
     _pageController.dispose();
   }
 
-  List<String> normalImgUrls = [
+  List<String> icons = [
     "lib/assets/images/icon_home.png",
     "lib/assets/images/icon_movie.png",
     "lib/assets/images/icon_tv.png",
     "lib/assets/images/icon_user.png"
   ];
-  List<String> selectedImgUrls = [
-    "lib/assets/images/icon_home_active.png",
-    "lib/assets/images/icon_movie_active.png",
-    "lib/assets/images/icon_tv_active.png",
-    "lib/assets/images/icon_user_active.png"
-  ];
+
   List<String> titles = ["首页", "电影", "电视剧", "我的"];
 
   Widget bottomAppBarItem(int index) {
     //设置默认未选中的状态
     TextStyle style = TextStyle(color: Colors.grey);
-    String imgUrl = normalImgUrls[index];
     if (_currentIndex == index) {
       //选中的话
       style = TextStyle(color: Colors.orange);
-      imgUrl = selectedImgUrls[index];
     }
     //构造返回的Widget
     Widget item = Container(
@@ -68,13 +61,14 @@ class _BottomNavigationWidgetState extends State<BottomNavigationWidget> {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: <Widget>[
-            Image.asset(imgUrl,
+            Image.asset(icons[index],
+                color: _currentIndex == index ? Colors.orange : Colors.black,
                 width: ThemeSize.navigationIcon,
                 height: ThemeSize.navigationIcon),
             SizedBox(height: ThemeSize.smallMargin),
             Text(
               titles[index],
-              style: style,
+              style: TextStyle(color: _currentIndex == index ? Colors.orange : Colors.black),
             )
           ],
         ),

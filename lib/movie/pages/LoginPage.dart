@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import '../service/serverMethod.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import '../../utils/crypto.dart';
-import '../../BottomNavigationWidget.dart';
+import 'MovieIndexPage.dart';
 import '../provider/UserInfoProvider.dart';
 import 'package:provider/provider.dart';
 import '../../utils/LocalStorageUtils.dart';
@@ -156,7 +156,7 @@ class LoginPage extends StatelessWidget {
                                       context,
                                       MaterialPageRoute(
                                           builder: (context) =>
-                                              BottomNavigationWidget()));
+                                              MovieIndexPage()));
                                 } else {
                                   Fluttertoast.showToast(
                                       msg: "登录失败，账号或密码错误",

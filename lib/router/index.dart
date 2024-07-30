@@ -2,6 +2,8 @@ import 'dart:convert';
 
 import 'package:fluro/fluro.dart';
 import 'package:flutter/material.dart';
+import 'package:movie/movie/pages/MovieDetailPage.dart';
+import '../movie/pages/MovieIndexPage.dart';
 import '../movie/model/MovieDetailModel.dart';
 import '../music/model/FavoriteDirectoryModel.dart';
 import '../music/model/MusicModel.dart';
@@ -30,6 +32,12 @@ class Routes {
         });
     router.define('/MusicSearchPage', handler: Handler(handlerFunc: (BuildContext context, Map<String, List<String>> params) {
       return MusicSearchPage(keyword:params['keyword'].first);
+    }));
+    router.define('/MovieDetailPage', handler: Handler(handlerFunc: (BuildContext context, Map<String, List<String>> params) {
+      return MovieDetailPage(movieItem: MovieDetailModel.fromJson(json.decode(params["movieItem"].first)));
+    }));
+    router.define('/MovieIndexPage', handler: Handler(handlerFunc: (BuildContext context, Map<String, List<String>> params) {
+      return MovieIndexPage();
     }));
     router.define('/MusicPlayerPage', handler: Handler(handlerFunc: (BuildContext context, params) {
       return MusicPlayerPage();

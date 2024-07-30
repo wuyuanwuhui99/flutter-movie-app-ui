@@ -1,10 +1,12 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
+import 'package:movie/router/index.dart';
 import 'dart:ui';
 import "package:shared_preferences/shared_preferences.dart";
 import '../../common/constant.dart';
 import '../component/TitleComponent.dart';
 import '../service/serverMethod.dart';
-import './MovieDetailPage.dart';
 import '../component/ScoreComponent.dart';
 import '../component/RecommendComponent.dart';
 import '../model/MovieDetailModel.dart';
@@ -82,11 +84,7 @@ class _MovieSearchPageState extends State<MovieSearchPage> {
       itemBuilder: (BuildContext context, int index) {
         return InkWell(
             onTap: () {
-              Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) =>
-                          MovieDetailPage(movieItem: searchResult[index])));
+              Routes.router.navigateTo(context, '/MovieDetailPage?movieItem=${Uri.encodeComponent(json.encode( searchResult[index].toMap()))}');
             },
             child: Container(
               padding: ThemeStyle.padding,

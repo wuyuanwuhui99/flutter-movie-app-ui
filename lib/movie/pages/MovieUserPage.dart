@@ -13,6 +13,7 @@ import '../../theme/ThemeColors.dart';
 import '../../theme/ThemeSize.dart';
 import '../../theme/ThemeStyle.dart';
 import '../service/serverMethod.dart';
+import '../../utils/common.dart';
 
 class MovieUserPage extends StatefulWidget {
   @override
@@ -21,7 +22,107 @@ class MovieUserPage extends StatefulWidget {
 
 class _MovieUserPageState extends State<MovieUserPage> {
   UserInfoModel userInfo;
+  TextEditingController usernameController = new TextEditingController();
+  TextEditingController telController = new TextEditingController();
+  TextEditingController emailController = new TextEditingController();
+  TextEditingController signController = new TextEditingController();
+  TextEditingController regionController = new TextEditingController();
 
+  ///@author: wuwenqiang
+  ///@description: 修改用户信息弹窗
+  /// @date: 2024-07-30 22:58
+  useDialog(TextEditingController controller, String text, String name,
+      bool isRequire) {
+    controller.text = text;
+    showCustomDialog(
+        context,
+        Scaffold(
+            body: Column(children: [
+          Center(child: Text('修改$name')),
+          Row(
+            children: [
+              Text(name),
+              SizedBox(width: ThemeSize.smallMargin),
+              Expanded(
+                  flex: 1,
+                  child: TextField(
+                      controller: controller,
+                      cursorColor: Colors.grey, //设置光标
+                      decoration: InputDecoration(
+                        hintText: '请输入$name',
+                        hintStyle: TextStyle(
+                            fontSize: ThemeSize.smallFontSize,
+                            color: Colors.grey),
+                        border: InputBorder.none,
+                        contentPadding:
+                            EdgeInsets.only(bottom: ThemeSize.smallMargin),
+                      )))
+            ],
+          )
+        ])),
+        name,
+        () {});
+  }
+
+  ///@author: wuwenqiang
+  ///@description: 生日
+  /// @date: 2024-07-30 22:58
+  useDatePicker(){
+    int year = 0, month = 0, day = 0;
+    List patter = userInfo.birthday != null && userInfo.birthday != ""
+        ? userInfo.birthday.split("-")
+        : [];
+    if (patter.length > 0) {
+      year = int.parse(patter[0]);
+      month = int.parse(patter[1]);
+      day = int.parse(patter[2]);
+    } else {
+      DateTime dateTime = DateTime.now();
+      year = dateTime.year - 20;
+      month = dateTime.month;
+      day = dateTime.day;
+    }
+    showDatePicker(
+      context: context,
+      initialDate: DateTime(year, month, day),
+      // 初始化选中日期
+      firstDate: DateTime(1900, 6),
+      // 开始日期
+      lastDate: DateTime.now(),
+      // 结束日期
+      textDirection: TextDirection.ltr,
+      // 文字方向
+      helpText: "helpText",
+      // 左上方提示
+      cancelText: "取消",
+      // 取消按钮文案
+      confirmText: "确定",
+      // 确认按钮文案
+
+      errorFormatText: "errorFormatText",
+      // 格式错误提示
+      errorInvalidText: "errorInvalidText",
+      // 输入不在 first 与 last 之间日期提示
+
+      fieldLabelText: "fieldLabelText",
+      // 输入框上方提示
+      fieldHintText: "fieldHintText",
+      // 输入框为空时内部提示
+
+      initialDatePickerMode: DatePickerMode.day,
+      // 日期选择模式，默认为天数选择
+      useRootNavigator: true, // 是否为根导航器
+    ).then((DateTime date) {
+      if (date == null) return;
+      setState(() {
+        userInfo.birthday = date.year.toString() +
+            "-" +
+            date.month.toString() +
+            "-" +
+            date.day.toString();
+      });
+    });
+  }
   @override
   Widget build(BuildContext context) {
     userInfo = Provider.of<UserInfoProvider>(context).userInfo;
@@ -75,16 +176,8 @@ class _MovieUserPageState extends State<MovieUserPage> {
                             padding: ThemeStyle.columnPadding,
                             child: InkWell(
                               onTap: () {
-                                Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (context) => EditPage(
-                                              title: "昵称",
-                                              value: userInfo.username,
-                                              type: "input",
-                                              isAllowEmpty: false,
-                                              field: "username",
-                                            )));
+                                useDialog(usernameController, userInfo.username,
+                                    '昵称', true);
                               },
                               child: Row(
                                 mainAxisAlignment: MainAxisAlignment.center,
@@ -109,16 +202,8 @@ class _MovieUserPageState extends State<MovieUserPage> {
                               padding: ThemeStyle.columnPadding,
                               child: InkWell(
                                   onTap: () {
-                                    Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                            builder: (context) => EditPage(
-                                                  title: "电话",
-                                                  value: userInfo.telephone,
-                                                  type: "input",
-                                                  isAllowEmpty: false,
-                                                  field: "telphone",
-                                                )));
+                                    useDialog(usernameController,
+                                        userInfo.telephone, '电话', false);
                                   },
                                   child: Row(
                                     mainAxisAlignment: MainAxisAlignment.center,
@@ -141,16 +226,8 @@ class _MovieUserPageState extends State<MovieUserPage> {
                             padding: ThemeStyle.columnPadding,
                             child: InkWell(
                               onTap: () {
-                                Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (context) => EditPage(
-                                              title: "邮箱",
-                                              value: userInfo.email,
-                                              type: "input",
-                                              isAllowEmpty: false,
-                                              field: "email",
-                                            )));
+                                useDialog(emailController, userInfo.email ?? '',
+                                    '邮箱', false);
                               },
                               child: Row(
                                 mainAxisAlignment: MainAxisAlignment.center,
@@ -174,18 +251,7 @@ class _MovieUserPageState extends State<MovieUserPage> {
                             decoration: ThemeStyle.bottomDecoration,
                             padding: ThemeStyle.columnPadding,
                             child: InkWell(
-                                onTap: () {
-                                  Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                          builder: (context) => EditPage(
-                                                title: "出生年月日",
-                                                value: userInfo.birthday,
-                                                type: "date",
-                                                isAllowEmpty: true,
-                                                field: "birthday",
-                                              )));
-                                },
+                                onTap: useDatePicker,
                                 child: Row(
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: <Widget>[
@@ -208,16 +274,16 @@ class _MovieUserPageState extends State<MovieUserPage> {
                               padding: ThemeStyle.columnPadding,
                               child: InkWell(
                                 onTap: () {
-                                  Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                          builder: (context) => EditPage(
-                                                title: "性别",
-                                                value: userInfo.sex,
-                                                type: "radio",
-                                                isAllowEmpty: false,
-                                                field: "sex",
-                                              )));
+                                  // Navigator.push(
+                                  //     context,
+                                  //     MaterialPageRoute(
+                                  //         builder: (context) => EditPage(
+                                  //               title: "性别",
+                                  //               value: userInfo.sex,
+                                  //               type: "radio",
+                                  //               isAllowEmpty: false,
+                                  //               field: "sex",
+                                  //             )));
                                 },
                                 child: Row(
                                   mainAxisAlignment: MainAxisAlignment.center,
@@ -241,16 +307,8 @@ class _MovieUserPageState extends State<MovieUserPage> {
                               padding: ThemeStyle.columnPadding,
                               child: InkWell(
                                 onTap: () {
-                                  Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                          builder: (context) => EditPage(
-                                                title: "个性签名",
-                                                value: userInfo.sign,
-                                                type: "input",
-                                                isAllowEmpty: false,
-                                                field: "sign",
-                                              )));
+                                  useDialog(signController,
+                                      userInfo.email ?? '', '签名', false);
                                 },
                                 child: Row(
                                   mainAxisAlignment: MainAxisAlignment.center,
@@ -278,16 +336,8 @@ class _MovieUserPageState extends State<MovieUserPage> {
                                       ThemeSize.containerPadding),
                               child: InkWell(
                                 onTap: () {
-                                  Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                          builder: (context) => EditPage(
-                                                title: "地区",
-                                                value: userInfo.region,
-                                                type: "input",
-                                                isAllowEmpty: false,
-                                                field: "region",
-                                              )));
+                                  useDialog(regionController,
+                                      userInfo.region ?? '', '地区', false);
                                 },
                                 child: Row(
                                   mainAxisAlignment: MainAxisAlignment.center,
@@ -321,7 +371,13 @@ class _MovieUserPageState extends State<MovieUserPage> {
                       width: double.infinity,
                       child: FlatButton(
                         onPressed: () {
-                          _showDialog(context);
+                          showCustomDialog(context, SizedBox(), '确认退出？', () {
+                            Navigator.pushAndRemoveUntil(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => LoginPage()),
+                                (route) => route == null);
+                          });
                         },
                         child:
                             Text("退出登录", style: TextStyle(color: Colors.white)),
@@ -418,45 +474,5 @@ class _MovieUserPageState extends State<MovieUserPage> {
           fontSize: ThemeSize.middleFontSize, color: ThemeColors.activeColor),
       textAlign: TextAlign.center,
     ));
-  }
-}
-
-enum Action { Ok, Cancel }
-
-Future _showDialog(context) async {
-  final action = await showCupertinoDialog(
-    context: context,
-    builder: (context) {
-      return CupertinoAlertDialog(
-        title: Text('确认退出？'),
-        actions: [
-          CupertinoDialogAction(
-            child: Text('确认'),
-            onPressed: () {
-              Navigator.pop(context, Action.Ok);
-            },
-          ),
-          CupertinoDialogAction(
-            child: Text('取消'),
-            isDestructiveAction: true,
-            onPressed: () {
-              Navigator.pop(context, Action.Cancel);
-            },
-          ),
-        ],
-      );
-    },
-  );
-
-  switch (action) {
-    case Action.Ok:
-      Navigator.pushAndRemoveUntil(
-          context,
-          MaterialPageRoute(builder: (context) => LoginPage()),
-          (route) => route == null);
-      break;
-    case Action.Cancel:
-      break;
-    default:
   }
 }
