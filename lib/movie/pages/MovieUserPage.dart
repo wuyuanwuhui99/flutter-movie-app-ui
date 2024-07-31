@@ -1,13 +1,15 @@
 import 'package:flutter/material.dart';
 import 'dart:io';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'dart:convert';
 import 'package:flutter/cupertino.dart';
+import '../../common/config.dart';
 import 'package:provider/provider.dart';
 import 'package:image_picker/image_picker.dart';
 import '../../common/constant.dart';
 import '../provider/UserInfoProvider.dart';
 import 'LoginPage.dart';
-import 'EditPage.dart';
 import '../model/UserInfoModel.dart';
 import '../../theme/ThemeColors.dart';
 import '../../theme/ThemeSize.dart';
@@ -21,12 +23,12 @@ class MovieUserPage extends StatefulWidget {
 }
 
 class _MovieUserPageState extends State<MovieUserPage> {
-  UserInfoModel userInfo;
-  TextEditingController usernameController = new TextEditingController();
-  TextEditingController telController = new TextEditingController();
-  TextEditingController emailController = new TextEditingController();
-  TextEditingController signController = new TextEditingController();
-  TextEditingController regionController = new TextEditingController();
+  TextEditingController usernameController = new TextEditingController();// 姓名
+  TextEditingController telController = new TextEditingController();// 电话
+  TextEditingController emailController = new TextEditingController();// 邮箱
+  TextEditingController signController = new TextEditingController();// 签名
+  TextEditingController regionController = new TextEditingController();// 地区
+  UserInfoProvider provider;
 
   ///@author: wuwenqiang
   ///@description: 修改用户信息弹窗
@@ -69,8 +71,8 @@ class _MovieUserPageState extends State<MovieUserPage> {
   /// @date: 2024-07-30 22:58
   useDatePicker(){
     int year = 0, month = 0, day = 0;
-    List patter = userInfo.birthday != null && userInfo.birthday != ""
-        ? userInfo.birthday.split("-")
+    List patter = provider.userInfo.birthday != null && provider.userInfo.birthday != ""
+        ? provider.userInfo.birthday.split("-")
         : [];
     if (patter.length > 0) {
       year = int.parse(patter[0]);
@@ -114,18 +116,35 @@ class _MovieUserPageState extends State<MovieUserPage> {
       useRootNavigator: true, // 是否为根导航器
     ).then((DateTime date) {
       if (date == null) return;
-      setState(() {
-        userInfo.birthday = date.year.toString() +
-            "-" +
-            date.month.toString() +
-            "-" +
-            date.day.toString();
-      });
+      String value = "${date.year.toString()}-${date.month.toString()}-${date.day.toString()}";
+      useSave(value, 'birthday', '出生年月', false);
     });
   }
+
+  ///@author: wuwenqiang
+  ///@description: 保存更新用户信息
+  /// @date: 2024-07-30 22:58
+  useSave(dynamic value,String field,String name,bool isRequire) async {
+    if (!isRequire && value == "") {
+      Fluttertoast.showToast(
+          msg: "$name不能为空",
+          toastLength: Toast.LENGTH_SHORT,
+          gravity: ToastGravity.CENTER,
+          fontSize: ThemeSize.middleFontSize);
+      return;
+    }
+    // await EasyLoading.show();
+    Map myUserInfo = provider.userInfo.toMap();
+    myUserInfo[field] = value;
+    updateUserData(myUserInfo).then((value) async {
+      provider.setUserInfo(UserInfoModel.fromJson(myUserInfo));
+      // await EasyLoading.dismiss(animation: true);
+    }).catchError(() {});
+  }
+
   @override
   Widget build(BuildContext context) {
-    userInfo = Provider.of<UserInfoProvider>(context).userInfo;
+    provider = Provider.of<UserInfoProvider>(context,listen: true);
     return Scaffold(
         backgroundColor: ThemeColors.colorBg,
         body: SafeArea(
@@ -145,7 +164,9 @@ class _MovieUserPageState extends State<MovieUserPage> {
                                   bottom: ThemeSize.containerPadding),
                               child: InkWell(
                                   onTap: () {
-                                    _showSelectionDialog(context, 0);
+                                    showSelectionDialog(["相机","相册"],(String value){
+                                      getImage(value == "相机" ? getImage(ImageSource.camera) : ImageSource.gallery);
+                                    });
                                   },
                                   child: Row(
                                     mainAxisAlignment: MainAxisAlignment.center,
@@ -157,7 +178,7 @@ class _MovieUserPageState extends State<MovieUserPage> {
                                       ClipOval(
                                         child: Image.network(
                                           //从全局的provider中获取用户信息
-                                          HOST + userInfo.avater,
+                                          HOST + provider.userInfo.avater,
                                           height: ThemeSize.bigAvater,
                                           width: ThemeSize.bigAvater,
                                           fit: BoxFit.cover,
@@ -176,7 +197,7 @@ class _MovieUserPageState extends State<MovieUserPage> {
                             padding: ThemeStyle.columnPadding,
                             child: InkWell(
                               onTap: () {
-                                useDialog(usernameController, userInfo.username,
+                                useDialog(usernameController, provider.userInfo.username,
                                     '昵称', true);
                               },
                               child: Row(
@@ -186,7 +207,7 @@ class _MovieUserPageState extends State<MovieUserPage> {
                                     child: Text("昵称"),
                                     flex: 1,
                                   ),
-                                  Text(userInfo.username),
+                                  Text(provider.userInfo.username),
                                   SizedBox(width: ThemeSize.smallMargin),
                                   Image.asset(
                                       "lib/assets/images/icon_arrow.png",
@@ -203,7 +224,7 @@ class _MovieUserPageState extends State<MovieUserPage> {
                               child: InkWell(
                                   onTap: () {
                                     useDialog(usernameController,
-                                        userInfo.telephone, '电话', false);
+                                        provider.userInfo.telephone, '电话', false);
                                   },
                                   child: Row(
                                     mainAxisAlignment: MainAxisAlignment.center,
@@ -212,7 +233,7 @@ class _MovieUserPageState extends State<MovieUserPage> {
                                         child: Text("电话"),
                                         flex: 1,
                                       ),
-                                      Text(userInfo.telephone),
+                                      Text(provider.userInfo.telephone),
                                       SizedBox(width: ThemeSize.smallMargin),
                                       Image.asset(
                                           "lib/assets/images/icon_arrow.png",
@@ -226,7 +247,7 @@ class _MovieUserPageState extends State<MovieUserPage> {
                             padding: ThemeStyle.columnPadding,
                             child: InkWell(
                               onTap: () {
-                                useDialog(emailController, userInfo.email ?? '',
+                                useDialog(emailController, provider.userInfo.email ?? '',
                                     '邮箱', false);
                               },
                               child: Row(
@@ -236,7 +257,7 @@ class _MovieUserPageState extends State<MovieUserPage> {
                                     child: Text("邮箱"),
                                     flex: 1,
                                   ),
-                                  Text(userInfo.email),
+                                  Text(provider.userInfo.email),
                                   SizedBox(width: ThemeSize.smallMargin),
                                   Image.asset(
                                       "lib/assets/images/icon_arrow.png",
@@ -259,7 +280,7 @@ class _MovieUserPageState extends State<MovieUserPage> {
                                       child: Text("出生年月日"),
                                       flex: 1,
                                     ),
-                                    Text(userInfo.birthday),
+                                    Text(provider.userInfo.birthday??""),
                                     SizedBox(width: ThemeSize.smallMargin),
                                     Image.asset(
                                         "lib/assets/images/icon_arrow.png",
@@ -274,16 +295,9 @@ class _MovieUserPageState extends State<MovieUserPage> {
                               padding: ThemeStyle.columnPadding,
                               child: InkWell(
                                 onTap: () {
-                                  // Navigator.push(
-                                  //     context,
-                                  //     MaterialPageRoute(
-                                  //         builder: (context) => EditPage(
-                                  //               title: "性别",
-                                  //               value: userInfo.sex,
-                                  //               type: "radio",
-                                  //               isAllowEmpty: false,
-                                  //               field: "sex",
-                                  //             )));
+                                  showSelectionDialog(["男","女"],(String value){
+                                    useSave(SexNameMap[value],'sex','性别',false);
+                                  });
                                 },
                                 child: Row(
                                   mainAxisAlignment: MainAxisAlignment.center,
@@ -292,7 +306,7 @@ class _MovieUserPageState extends State<MovieUserPage> {
                                       child: Text("性别"),
                                       flex: 1,
                                     ),
-                                    Text(userInfo.sex),
+                                    Text(provider.userInfo.sex != null ? SexValueMap[provider.userInfo.sex] : ''),
                                     SizedBox(width: ThemeSize.smallMargin),
                                     Image.asset(
                                         "lib/assets/images/icon_arrow.png",
@@ -308,7 +322,7 @@ class _MovieUserPageState extends State<MovieUserPage> {
                               child: InkWell(
                                 onTap: () {
                                   useDialog(signController,
-                                      userInfo.email ?? '', '签名', false);
+                                      provider.userInfo.email ?? '', '签名', false);
                                 },
                                 child: Row(
                                   mainAxisAlignment: MainAxisAlignment.center,
@@ -317,9 +331,7 @@ class _MovieUserPageState extends State<MovieUserPage> {
                                       child: Text("个性签名"),
                                       flex: 1,
                                     ),
-                                    Text(userInfo.sign != null
-                                        ? userInfo.sign
-                                        : ""),
+                                    Text(provider.userInfo.sign ?? ""),
                                     SizedBox(width: ThemeSize.smallMargin),
                                     Image.asset(
                                         "lib/assets/images/icon_arrow.png",
@@ -337,7 +349,7 @@ class _MovieUserPageState extends State<MovieUserPage> {
                               child: InkWell(
                                 onTap: () {
                                   useDialog(regionController,
-                                      userInfo.region ?? '', '地区', false);
+                                      provider.userInfo.region ?? '', '地区', false);
                                 },
                                 child: Row(
                                   mainAxisAlignment: MainAxisAlignment.center,
@@ -346,9 +358,7 @@ class _MovieUserPageState extends State<MovieUserPage> {
                                       child: Text("地区"),
                                       flex: 1,
                                     ),
-                                    Text(userInfo.region != null
-                                        ? userInfo.region
-                                        : ""),
+                                    Text(provider.userInfo.region ?? ""),
                                     SizedBox(width: ThemeSize.smallMargin),
                                     Image.asset(
                                         "lib/assets/images/icon_arrow.png",
@@ -387,19 +397,42 @@ class _MovieUserPageState extends State<MovieUserPage> {
                 ))));
   }
 
-  Future getImage(ImageSource source, int type) async {
+  Future getImage(ImageSource source) async {
     File image = await ImagePicker.pickImage(source: source);
     List<int> imageBytes = await image.readAsBytes();
     String base64Str = "data:image/png;base64," + base64Encode(imageBytes);
     Map avaterMap = {"img": base64Str};
     updateAvaterService(avaterMap).then((res) {
-      userInfo.avater = res.data;
-      Provider.of<UserInfoProvider>(context, listen: false)
-          .setUserInfo(userInfo);
+      provider.userInfo.avater = res.data;
+      provider.setUserInfo(provider.userInfo);
     });
   }
 
-  void _showSelectionDialog(BuildContext context, int type) {
+  ///@author: wuwenqiang
+  ///@description: 底部弹出选项
+  /// @date: 2024-07-31 23:07
+  void showSelectionDialog(List<String> options, Function onTap) {
+    List<Widget> optionWidgetList = [];
+    int index = -1;
+    options.forEach((element) {
+      index++;
+      optionWidgetList.add(Container(
+        height: ThemeSize.buttonHeight,
+        child: InkWell(
+          child: _itemCreat(context, element),
+          onTap: () {
+            Navigator.pop(context);
+            onTap(element);
+          },
+        ),
+      ));
+      if(index != options.length){
+        optionWidgetList.add(Container(
+            height: 1,
+            width: double.infinity,
+            color: ThemeColors.colorBg));
+      }
+    });
     showModalBottomSheet(
       context: context,
       isScrollControlled: false,
@@ -419,31 +452,8 @@ class _MovieUserPageState extends State<MovieUserPage> {
                     borderRadius: BorderRadius.all(
                         Radius.circular(ThemeSize.middleRadius)),
                   ),
-                  child: Column(children: [
-                    Container(
-                      height: ThemeSize.buttonHeight,
-                      child: InkWell(
-                        child: _itemCreat(context, '相机'),
-                        onTap: () {
-                          Navigator.pop(context);
-                          getImage(ImageSource.camera, type);
-                        },
-                      ),
-                    ),
-                    Container(
-                        height: 1,
-                        width: double.infinity,
-                        color: ThemeColors.colorBg),
-                    Container(
-                        height: ThemeSize.buttonHeight,
-                        child: InkWell(
-                          child: _itemCreat(context, '相册'),
-                          onTap: () {
-                            Navigator.pop(context);
-                            getImage(ImageSource.gallery, type);
-                          },
-                        ))
-                  ])),
+                  child: Column(children: optionWidgetList
+                  )),
               InkWell(
                 child: Container(
                   margin: EdgeInsets.all(ThemeSize.containerPadding),

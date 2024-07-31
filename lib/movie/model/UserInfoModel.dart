@@ -4,7 +4,7 @@ class UserInfoModel{
   String createDate;
   String email;
   String role;
-  String sex;
+  int sex;
   String telephone;
   String updateDate;
   String userId;
