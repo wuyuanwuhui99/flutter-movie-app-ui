@@ -23,57 +23,95 @@ class MovieUserPage extends StatefulWidget {
 }
 
 class _MovieUserPageState extends State<MovieUserPage> {
-  TextEditingController usernameController = new TextEditingController();// 姓名
-  TextEditingController telController = new TextEditingController();// 电话
-  TextEditingController emailController = new TextEditingController();// 邮箱
-  TextEditingController signController = new TextEditingController();// 签名
-  TextEditingController regionController = new TextEditingController();// 地区
+  TextEditingController usernameController = new TextEditingController(); // 姓名
+  TextEditingController telController = new TextEditingController(); // 电话
+  TextEditingController emailController = new TextEditingController(); // 邮箱
+  TextEditingController signController = new TextEditingController(); // 签名
+  TextEditingController regionController = new TextEditingController(); // 地区
   UserInfoProvider provider;
+  bool hasChange = false;
+  bool loading = false;
 
   ///@author: wuwenqiang
   ///@description: 修改用户信息弹窗
   /// @date: 2024-07-30 22:58
-  useDialog(TextEditingController controller, String text, String name,
-      bool isRequire) {
+  useDialog(TextEditingController controller, String text, String name,String field, bool isRequire) {
     controller.text = text;
     showCustomDialog(
         context,
-        Scaffold(
-            body: Column(children: [
-          Center(child: Text('修改$name')),
-          Row(
-            children: [
-              Text(name),
-              SizedBox(width: ThemeSize.smallMargin),
-              Expanded(
-                  flex: 1,
-                  child: TextField(
-                      controller: controller,
-                      cursorColor: Colors.grey, //设置光标
-                      decoration: InputDecoration(
-                        hintText: '请输入$name',
-                        hintStyle: TextStyle(
-                            fontSize: ThemeSize.smallFontSize,
-                            color: Colors.grey),
-                        border: InputBorder.none,
-                        contentPadding:
-                            EdgeInsets.only(bottom: ThemeSize.smallMargin),
-                      )))
-            ],
-          )
-        ])),
+        Row(
+          children: [
+            Text(name),
+            SizedBox(width: ThemeSize.smallMargin),
+            Expanded(
+                flex: 1,
+                child: Card(
+                    color: ThemeColors.disableColor,
+                    shape: RoundedRectangleBorder(
+                      borderRadius:
+                          BorderRadius.circular(ThemeSize.middleRadius),
+                    ),
+                    elevation: 0,
+                    child: TextField(
+                        onChanged: (value){
+                          hasChange = value != text;
+                        },
+                        textAlignVertical: TextAlignVertical.top,
+                        controller: controller,
+                        cursorColor: Colors.grey, //设置光标
+                        decoration: InputDecoration(
+                          contentPadding:
+                              EdgeInsets.only(left: ThemeSize.miniMargin),
+                          hintText: '请输入$name',
+                          hintStyle: TextStyle(
+                              fontSize: ThemeSize.smallFontSize,
+                              color: Colors.grey),
+                          border: InputBorder.none,
+                        ))))
+          ],
+        ),
         name,
-        () {});
+        () {
+          useSave(controller.text,name,field,isRequire);
+        });
+  }
+
+  void useSave(dynamic value, String name,String field, bool isRequire) {
+    if (!hasChange || loading) return;
+    loading = true;
+    if (isRequire && value == "") {
+      Fluttertoast.showToast(
+          msg: "${name}不能为空",
+          toastLength: Toast.LENGTH_SHORT,
+          gravity: ToastGravity.CENTER,
+          fontSize: ThemeSize.middleFontSize);
+      loading = false;
+    }else{
+      // await EasyLoading.show();
+      Map myUserInfo = provider.userInfo.toMap();
+      myUserInfo[field] = value;
+      updateUserData(myUserInfo).then((value) async {
+        hasChange = false;
+        provider.setUserInfo(UserInfoModel.fromJson(myUserInfo));
+        // await EasyLoading.dismiss(animation: true);
+        Navigator.pop(context);
+        loading = false;
+      }).catchError(() {
+        loading = false;
+      });
+    }
+
   }
 
   ///@author: wuwenqiang
   ///@description: 生日
   /// @date: 2024-07-30 22:58
-  useDatePicker(){
+  useDatePicker() {
     int year = 0, month = 0, day = 0;
-    List patter = provider.userInfo.birthday != null && provider.userInfo.birthday != ""
-        ? provider.userInfo.birthday.split("-")
-        : [];
+    List patter =
+        provider.userInfo.birthday != null && provider.userInfo.birthday != ""
+            ? provider.userInfo.birthday.split("-")
+            : [];
     if (patter.length > 0) {
       year = int.parse(patter[0]);
       month = int.parse(patter[1]);
@@ -116,35 +154,16 @@ class _MovieUserPageState extends State<MovieUserPage> {
       useRootNavigator: true, // 是否为根导航器
     ).then((DateTime date) {
       if (date == null) return;
-      String value = "${date.year.toString()}-${date.month.toString()}-${date.day.toString()}";
-      useSave(value, 'birthday', '出生年月', false);
+      String value =
+          "${date.year.toString()}-${date.month.toString()}-${date.day.toString()}";
+      hasChange = true;
+      useSave(value, '出生年月','birthday' ,false);
     });
-  }
-
-  ///@author: wuwenqiang
-  ///@description: 保存更新用户信息
-  /// @date: 2024-07-30 22:58
-  useSave(dynamic value,String field,String name,bool isRequire) async {
-    if (!isRequire && value == "") {
-      Fluttertoast.showToast(
-          msg: "$name不能为空",
-          toastLength: Toast.LENGTH_SHORT,
-          gravity: ToastGravity.CENTER,
-          fontSize: ThemeSize.middleFontSize);
-      return;
-    }
-    // await EasyLoading.show();
-    Map myUserInfo = provider.userInfo.toMap();
-    myUserInfo[field] = value;
-    updateUserData(myUserInfo).then((value) async {
-      provider.setUserInfo(UserInfoModel.fromJson(myUserInfo));
-      // await EasyLoading.dismiss(animation: true);
-    }).catchError(() {});
   }
 
   @override
   Widget build(BuildContext context) {
-    provider = Provider.of<UserInfoProvider>(context,listen: true);
+    provider = Provider.of<UserInfoProvider>(context, listen: true);
     return Scaffold(
         backgroundColor: ThemeColors.colorBg,
         body: SafeArea(
@@ -164,8 +183,11 @@ class _MovieUserPageState extends State<MovieUserPage> {
                                   bottom: ThemeSize.containerPadding),
                               child: InkWell(
                                   onTap: () {
-                                    showSelectionDialog(["相机","相册"],(String value){
-                                      getImage(value == "相机" ? getImage(ImageSource.camera) : ImageSource.gallery);
+                                    showSelectionDialog(["相机", "相册"],
+                                        (String value) {
+                                      getImage(value == "相机"
+                                          ? getImage(ImageSource.camera)
+                                          : ImageSource.gallery);
                                     });
                                   },
                                   child: Row(
@@ -197,8 +219,8 @@ class _MovieUserPageState extends State<MovieUserPage> {
                             padding: ThemeStyle.columnPadding,
                             child: InkWell(
                               onTap: () {
-                                useDialog(usernameController, provider.userInfo.username,
-                                    '昵称', true);
+                                useDialog(usernameController,
+                                    provider.userInfo.username, '昵称','username', true);
                               },
                               child: Row(
                                 mainAxisAlignment: MainAxisAlignment.center,
@@ -223,8 +245,12 @@ class _MovieUserPageState extends State<MovieUserPage> {
                               padding: ThemeStyle.columnPadding,
                               child: InkWell(
                                   onTap: () {
-                                    useDialog(usernameController,
-                                        provider.userInfo.telephone, '电话', false);
+                                    useDialog(
+                                        usernameController,
+                                        provider.userInfo.telephone,
+                                        '电话',
+                                        'telephone',
+                                        false);
                                   },
                                   child: Row(
                                     mainAxisAlignment: MainAxisAlignment.center,
@@ -247,8 +273,8 @@ class _MovieUserPageState extends State<MovieUserPage> {
                             padding: ThemeStyle.columnPadding,
                             child: InkWell(
                               onTap: () {
-                                useDialog(emailController, provider.userInfo.email ?? '',
-                                    '邮箱', false);
+                                useDialog(emailController,
+                                    provider.userInfo.email ?? '', '邮箱','email', false);
                               },
                               child: Row(
                                 mainAxisAlignment: MainAxisAlignment.center,
@@ -280,7 +306,7 @@ class _MovieUserPageState extends State<MovieUserPage> {
                                       child: Text("出生年月日"),
                                       flex: 1,
                                     ),
-                                    Text(provider.userInfo.birthday??""),
+                                    Text(provider.userInfo.birthday ?? ""),
                                     SizedBox(width: ThemeSize.smallMargin),
                                     Image.asset(
                                         "lib/assets/images/icon_arrow.png",
@@ -295,8 +321,11 @@ class _MovieUserPageState extends State<MovieUserPage> {
                               padding: ThemeStyle.columnPadding,
                               child: InkWell(
                                 onTap: () {
-                                  showSelectionDialog(["男","女"],(String value){
-                                    useSave(SexNameMap[value],'sex','性别',false);
+                                  showSelectionDialog(["男", "女"],
+                                      (String value) {
+                                    hasChange = true;
+                                    useSave(
+                                        SexNameMap[value], 'sex', '性别', false);
                                   });
                                 },
                                 child: Row(
@@ -306,7 +335,9 @@ class _MovieUserPageState extends State<MovieUserPage> {
                                       child: Text("性别"),
                                       flex: 1,
                                     ),
-                                    Text(provider.userInfo.sex != null ? SexValueMap[provider.userInfo.sex] : ''),
+                                    Text(provider.userInfo.sex != null
+                                        ? SexValueMap[provider.userInfo.sex]
+                                        : ''),
                                     SizedBox(width: ThemeSize.smallMargin),
                                     Image.asset(
                                         "lib/assets/images/icon_arrow.png",
@@ -321,8 +352,12 @@ class _MovieUserPageState extends State<MovieUserPage> {
                               padding: ThemeStyle.columnPadding,
                               child: InkWell(
                                 onTap: () {
-                                  useDialog(signController,
-                                      provider.userInfo.email ?? '', '签名', false);
+                                  useDialog(
+                                      signController,
+                                      provider.userInfo.sign ?? '',
+                                      '签名',
+                                      'sign',
+                                      false);
                                 },
                                 child: Row(
                                   mainAxisAlignment: MainAxisAlignment.center,
@@ -348,8 +383,12 @@ class _MovieUserPageState extends State<MovieUserPage> {
                                       ThemeSize.containerPadding),
                               child: InkWell(
                                 onTap: () {
-                                  useDialog(regionController,
-                                      provider.userInfo.region ?? '', '地区', false);
+                                  useDialog(
+                                      regionController,
+                                      provider.userInfo.region ?? '',
+                                      '地区',
+                                      'region',
+                                      false);
                                 },
                                 child: Row(
                                   mainAxisAlignment: MainAxisAlignment.center,
@@ -426,11 +465,9 @@ class _MovieUserPageState extends State<MovieUserPage> {
           },
         ),
       ));
-      if(index != options.length){
+      if (index != options.length) {
         optionWidgetList.add(Container(
-            height: 1,
-            width: double.infinity,
-            color: ThemeColors.colorBg));
+            height: 1, width: double.infinity, color: ThemeColors.colorBg));
       }
     });
     showModalBottomSheet(
@@ -452,8 +489,7 @@ class _MovieUserPageState extends State<MovieUserPage> {
                     borderRadius: BorderRadius.all(
                         Radius.circular(ThemeSize.middleRadius)),
                   ),
-                  child: Column(children: optionWidgetList
-                  )),
+                  child: Column(children: optionWidgetList)),
               InkWell(
                 child: Container(
                   margin: EdgeInsets.all(ThemeSize.containerPadding),

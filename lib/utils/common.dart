@@ -1,5 +1,6 @@
 // md5 加密
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 
 import '../common/constant.dart';
 
@@ -52,7 +53,7 @@ Future showCustomDialog(BuildContext context,Widget body,String name,Function ok
     builder: (context) {
       return CupertinoAlertDialog(
         title: Text('修改$name'),
-          content:body,
+        content:body,
         actions: [
           CupertinoDialogAction(
             child: Text('确认'),
