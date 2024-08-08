@@ -39,6 +39,8 @@ class _MusicCirclePageState extends State<MusicCirclePage>
   CommentModel firstCommentModel;// 一级评论
   CommentModel replyCommentModel;// 回复的评论
   bool loading = false;
+  EasyRefreshController easyRefreshController = EasyRefreshController();
+
   @override
   void initState() {
     super.initState();
@@ -68,6 +70,7 @@ class _MusicCirclePageState extends State<MusicCirclePage>
           circleList.add(CircleModel.fromJson(item));
         });
       });
+      easyRefreshController.finishLoad(success: true,noMore: circleList.length == total);
     });
   }
 
@@ -569,7 +572,16 @@ class _MusicCirclePageState extends State<MusicCirclePage>
         child: Container(
           width: MediaQuery.of(context).size.width,
           child: EasyRefresh(
-            footer: MaterialFooter(),
+              controller: easyRefreshController,
+              footer: ClassicalFooter(
+                loadText: '上拉加载',
+                loadReadyText: '准备加载',
+                loadingText: '加载中...',
+                loadedText: '加载完成',
+                noMoreText: '没有更多',
+                bgColor: Colors.transparent,
+                textColor: ThemeColors.disableColor,
+              ),
             onLoad: () async {
               pageNum++;
               if (circleOverlayEntry != null) circleOverlayEntry.remove();

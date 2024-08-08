@@ -1,6 +1,5 @@
 // md5 加密
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
 
 import '../common/constant.dart';
 

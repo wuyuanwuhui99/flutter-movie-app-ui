@@ -53,8 +53,15 @@ class _MusicClassifyListPageState extends State<MusicClassifyListPage>
                   flex: 1,
                   child: EasyRefresh(
                     controller: easyRefreshController,
-                    footer:
-                        total > pageNum * PAGE_SIZE ? MaterialFooter() : null,
+                    footer: ClassicalFooter(
+                      loadText: '上拉加载',
+                      loadReadyText: '准备加载',
+                      loadingText: '加载中...',
+                      loadedText: '加载完成',
+                      noMoreText: '没有更多',
+                      bgColor: Colors.transparent,
+                      textColor: ThemeColors.disableColor,
+                    ),
                     onLoad: () async {
                       if (total > pageNum * PAGE_SIZE) {
                         pageNum++;
@@ -130,6 +137,7 @@ class _MusicClassifyListPageState extends State<MusicClassifyListPage>
         musicList
             .addAll(value.data.map((e) => MusicModel.fromJson(e)).toList());
         total = value.total;
+        easyRefreshController.finishLoad(success: true,noMore: musicList.length == total);
       });
     });
   }

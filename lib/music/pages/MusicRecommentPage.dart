@@ -35,6 +35,7 @@ class _MusicRecommentPageState extends State<MusicRecommentPage>
   ];
   MusicModel currentPlayingMusicModel;
   bool playing;
+  EasyRefreshController easyRefreshController = EasyRefreshController();
 
   @override
   void initState() {
@@ -66,6 +67,7 @@ class _MusicRecommentPageState extends State<MusicRecommentPage>
           musicModelList.add(MusicModel.fromJson(item));
         });
       });
+      easyRefreshController.finishLoad(success: true,noMore: musicModelList.length == total);
     });
   }
 
@@ -179,7 +181,16 @@ class _MusicRecommentPageState extends State<MusicRecommentPage>
     return Container(
       width: MediaQuery.of(context).size.width,
       child: EasyRefresh(
-        footer: MaterialFooter(),
+        controller: easyRefreshController,
+        footer: ClassicalFooter(
+          loadText: '上拉加载',
+          loadReadyText: '准备加载',
+          loadingText: '加载中...',
+          loadedText: '加载完成',
+          noMoreText: '没有更多',
+          bgColor: Colors.transparent,
+          textColor: ThemeColors.disableColor,
+        ),
         onLoad: () async {
           pageNum++;
           if (total <= musicModelList.length) {

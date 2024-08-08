@@ -1,8 +1,8 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyrefresh/easy_refresh.dart';
-import 'package:flutter_easyrefresh/material_footer.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import '../../theme/ThemeColors.dart';
 import '../service/serverMethod.dart';
 import '../component/SearchCommponent.dart';
 import '../component/AvaterComponent.dart';
@@ -26,23 +26,19 @@ class _MovieHomePageState extends State<MovieHomePage>
   @override
   bool get wantKeepAlive => true;
 
-  List<Widget> categoryList = [];
+  List<CategoryModel> categoryList = [];
 
   List<CategoryModel> allCategoryLists = [];
 
-  int pageNum = 1;
+  EasyRefreshController easyRefreshController = EasyRefreshController();
 
   void _getCategoryItem() {
-    if (pageNum < allCategoryLists.length) {
+    if (categoryList.length < allCategoryLists.length) {
       setState(() {
-        CategoryModel item = allCategoryLists[pageNum];
-        categoryList.add(CategoryComponent(
-          key: GlobalKey(),
-          category: item.category,
-          classify: item.classify,
-        ));
+        categoryList.add(allCategoryLists[categoryList.length]);
       });
     }
+    easyRefreshController.finishLoad(success: true,noMore: categoryList.length == allCategoryLists.length);
   }
 
   @override
@@ -52,19 +48,10 @@ class _MovieHomePageState extends State<MovieHomePage>
         allCategoryLists.add(CategoryModel.fromJson(element));
       }); // 顶部轮播组件数
       setState(() {
-        allCategoryLists.sublist(0, 2).forEach((CategoryModel item) {
-          categoryList.add(CategoryComponent(
-            category: item.category,
-            classify: item.classify
-          ));
-        });
+        categoryList.addAll(allCategoryLists.sublist(0, 2));
       });
     });
     super.initState();
-  }
-
-  Widget init(BuildContext context) {
-
   }
 
   @override
@@ -102,10 +89,18 @@ class _MovieHomePageState extends State<MovieHomePage>
           Expanded(
               flex: 1,
               child: EasyRefresh(
-                  footer: MaterialFooter(),
+                controller: easyRefreshController,
+                  footer: ClassicalFooter(
+                    loadText: '上拉加载',
+                    loadReadyText: '准备加载',
+                    loadingText: '加载中...',
+                    loadedText: '加载完成',
+                    noMoreText: '没有更多',
+                    bgColor: Colors.transparent,
+                    textColor: ThemeColors.disableColor,
+                  ),
                   onLoad: () async {
-                    pageNum++;
-                    if (pageNum >= allCategoryLists.length) {
+                    if (categoryList.length == allCategoryLists.length) {
                       Fluttertoast.showToast(
                           msg: "已经到底了",
                           toastLength: Toast.LENGTH_SHORT,
@@ -127,7 +122,10 @@ class _MovieHomePageState extends State<MovieHomePage>
                         ],
                       ),
                       Column(
-                        children: categoryList,
+                        children: categoryList.map((item) => CategoryComponent(
+                            category: item.category,
+                            classify: item.classify,
+                          )).toList(),
                       )
                     ],
                   )))

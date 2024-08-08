@@ -74,6 +74,7 @@ class _SearchMusicPageState extends State<MusicSearchPage> {
           musicList.add(MusicModel.fromJson(item));
         }); // 顶部轮播组件数
       });
+      easyRefreshController.finishLoad(success: true,noMore: musicList.length == total);
     }).catchError(() {
       setState(() {
         loading = false;
@@ -92,13 +93,20 @@ class _SearchMusicPageState extends State<MusicSearchPage> {
             padding: ThemeStyle.paddingBox,
             child: EasyRefresh(
               controller: easyRefreshController,
-              footer: total > musicList.length ? MaterialFooter() : null,
+              footer: ClassicalFooter(
+                loadText: '上拉加载',
+                loadReadyText: '准备加载',
+                loadingText: '加载中...',
+                loadedText: '加载完成',
+                noMoreText: '没有更多',
+                bgColor: Colors.transparent,
+                textColor: ThemeColors.disableColor,
+              ),
               onLoad: () async {
                 if (total > musicList.length) {
                   pageNum++;
                   goSearch();
                 } else {
-                  // easyRefreshController
                   Fluttertoast.showToast(
                       msg: "已经到底了",
                       toastLength: Toast.LENGTH_SHORT,

@@ -32,6 +32,7 @@ class _MusicFavoriteListPageState extends State<MusicFavoriteListPage>
   int total = 0;
   final int pageSize = 20;
   PlayerMusicProvider provider;
+  EasyRefreshController easyRefreshController = EasyRefreshController();
 
   @override
   void initState() {
@@ -52,6 +53,7 @@ class _MusicFavoriteListPageState extends State<MusicFavoriteListPage>
         musicList
             .addAll(value.data.map((e) => MusicModel.fromJson(e)).toList());
       });
+      easyRefreshController.finishLoad(success: true,noMore: musicList.length == total);
     });
   }
 
@@ -71,7 +73,16 @@ class _MusicFavoriteListPageState extends State<MusicFavoriteListPage>
                 Expanded(
                     flex: 1,
                     child: EasyRefresh(
-                      footer: MaterialFooter(),
+                      controller: easyRefreshController,
+                      footer: ClassicalFooter(
+                        loadText: '上拉加载',
+                        loadReadyText: '准备加载',
+                        loadingText: '加载中...',
+                        loadedText: '加载完成',
+                        noMoreText: '没有更多',
+                        bgColor: Colors.transparent,
+                        textColor: ThemeColors.disableColor,
+                      ),
                       onLoad: () async {
                         if (total > pageNum * pageSize) {
                           pageNum++;

@@ -26,6 +26,7 @@ class _MusicSingerPageState extends State<MusicSingerPage>
   int pageSize = 20; // 每页条数
   List<MusicAuthorModel> musicAuthorList = [];
   List<SingerCategoryModel> singerCategoryList = []; // 播放记录列表
+  EasyRefreshController easyRefreshController = EasyRefreshController();
 
   @override
   void initState() {
@@ -53,6 +54,7 @@ class _MusicSingerPageState extends State<MusicSingerPage>
           musicAuthorList.add(MusicAuthorModel.fromJson(item));
         });
       });
+      easyRefreshController.finishLoad(success: true,noMore: musicAuthorList.length == total);
     });
   }
 
@@ -68,7 +70,16 @@ class _MusicSingerPageState extends State<MusicSingerPage>
         body: SafeArea(
             top: true,
             child: EasyRefresh(
-              footer: MaterialFooter(),
+              controller: easyRefreshController,
+              footer: ClassicalFooter(
+                loadText: '上拉加载',
+                loadReadyText: '准备加载',
+                loadingText: '加载中...',
+                loadedText: '加载完成',
+                noMoreText: '没有更多',
+                bgColor: Colors.transparent,
+                textColor: ThemeColors.disableColor,
+              ),
               child: Container(
                 width: MediaQuery.of(context).size.width,
                 padding: ThemeStyle.paddingBox,

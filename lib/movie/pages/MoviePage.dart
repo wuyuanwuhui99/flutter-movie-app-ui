@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_easyrefresh/easy_refresh.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:flutter_easyrefresh/material_footer.dart';
+import '../../theme/ThemeColors.dart';
 import '../service/serverMethod.dart';
 import '../component/SearchCommponent.dart';
 import '../component/AvaterComponent.dart';
@@ -22,10 +22,9 @@ class _MoviePageState extends State<MoviePage>
     with AutomaticKeepAliveClientMixin {
   @override
   bool get wantKeepAlive => true;
-  List<Widget> categoryList = [];
+  List<CategoryModel> categoryList = [];
   List<CategoryModel> allCategoryLists = [];
-
-  int pageNum = 1;
+  EasyRefreshController easyRefreshController = EasyRefreshController();
 
   @override
   void initState() {
@@ -35,25 +34,17 @@ class _MoviePageState extends State<MoviePage>
         return CategoryModel.fromJson(element);
       }).toList();
       setState(() {
-        allCategoryLists.sublist(0, 2).forEach((item) {
-          categoryList.add(CategoryComponent(
-            category: item.category,
-            classify: item.classify,
-          ));
-        });
+        categoryList.addAll(allCategoryLists.sublist(0, 2));
       });
     });
   }
 
   void _getCategoryItem() {
-    if (pageNum < allCategoryLists.length) {
+    if (categoryList.length < allCategoryLists.length) {
       setState(() {
-        var item = allCategoryLists[pageNum];
-        categoryList.add(CategoryComponent(
-          category: item.category,
-          classify: item.classify,
-        ));
+        categoryList.add(allCategoryLists[categoryList.length]);
       });
+      easyRefreshController.finishLoad(success: true,noMore: categoryList.length == allCategoryLists.length);
     }
   }
 
@@ -89,10 +80,18 @@ class _MoviePageState extends State<MoviePage>
         Expanded(
           flex: 1,
           child: EasyRefresh(
-              footer: MaterialFooter(),
+              controller: easyRefreshController,
+              footer: ClassicalFooter(
+                loadText: '上拉加载',
+                loadReadyText: '准备加载',
+                loadingText: '加载中...',
+                loadedText: '加载完成',
+                noMoreText: '没有更多',
+                bgColor: Colors.transparent,
+                textColor: ThemeColors.disableColor,
+              ),
               onLoad: () async {
-                pageNum++;
-                if (pageNum >= allCategoryLists.length) {
+                if (categoryList.length == allCategoryLists.length) {
                   Fluttertoast.showToast(
                       msg: "已经到底了",
                       toastLength: Toast.LENGTH_SHORT,
@@ -109,7 +108,10 @@ class _MoviePageState extends State<MoviePage>
                 children: <Widget>[
                   Column(children: <Widget>[SwiperComponent(classify: "电影")]),
                   Column(
-                    children: categoryList,
+                    children: categoryList.map((item) => CategoryComponent(
+                      category: item.category,
+                      classify: item.classify,
+                    )).toList(),
                   )
                 ],
               )),

@@ -29,9 +29,9 @@ class _MusicHomePageState extends State<MusicHomePage>
     with AutomaticKeepAliveClientMixin {
   @override
   bool get wantKeepAlive => true;
-  int pageNum = 1;
   List<MusicClassifyModel> currentClassifiesList = [];
   List<MusicClassifyModel> allClassifies = [];
+  EasyRefreshController easyRefreshController = EasyRefreshController();
 
   @override
   void initState() {
@@ -52,10 +52,11 @@ class _MusicHomePageState extends State<MusicHomePage>
   }
 
   void _getCategoryItem() {
-    if (pageNum < allClassifies.length) {
+    if (currentClassifiesList.length < allClassifies.length) {
       setState(() {
-        currentClassifiesList.add(allClassifies[pageNum]);
+        currentClassifiesList.add(allClassifies[currentClassifiesList.length]);
       });
+      easyRefreshController.finishLoad(success: true,noMore: currentClassifiesList.length == allClassifies.length);
     }
   }
 
@@ -77,10 +78,18 @@ class _MusicHomePageState extends State<MusicHomePage>
           Expanded(
               flex: 1,
               child: EasyRefresh(
-                footer: MaterialFooter(),
+                controller: easyRefreshController,
+                footer: ClassicalFooter(
+                  loadText: '上拉加载',
+                  loadReadyText: '准备加载',
+                  loadingText: '加载中...',
+                  loadedText: '加载完成',
+                  noMoreText: '没有更多',
+                  bgColor: Colors.transparent,
+                  textColor: ThemeColors.disableColor,
+                ),
                 onLoad: () async {
-                  pageNum++;
-                  if (pageNum >= allClassifies.length) {
+                  if (currentClassifiesList.length == allClassifies.length) {
                     Fluttertoast.showToast(
                         msg: "已经到底了",
                         toastLength: Toast.LENGTH_SHORT,
