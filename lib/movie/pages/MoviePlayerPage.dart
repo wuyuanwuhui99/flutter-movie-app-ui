@@ -284,13 +284,14 @@ class _MoviePlayerPageState extends State<MoviePlayerPage> {
                       shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.only(
                               topLeft: Radius.circular(ThemeSize.middleRadius),
-                              topRight: Radius.circular(ThemeSize.middleRadius))),
+                              topRight:
+                                  Radius.circular(ThemeSize.middleRadius))),
                       isScrollControlled: true,
                       context: context,
                       builder: (BuildContext context) {
                         return Container(
                             height: MediaQuery.of(context).size.height * 0.8,
-                            child:  CommentComponent(
+                            child: CommentComponent(
                               type: CommentEnum.MOVIE,
                               relationId: widget.movieItem.id,
                             ));
