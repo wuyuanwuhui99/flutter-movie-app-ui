@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_easyrefresh/easy_refresh.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:movie/music/provider/PlayerMusicProvider.dart';
-import 'package:movie/router/index.dart';
 import 'package:provider/provider.dart';
 import 'dart:ui';
+import '../component/NavigatorTiitleComponent.dart';
+import '../provider/PlayerMusicProvider.dart';
+import '../../router/index.dart';
 import '../model/MusicClassifyModel.dart';
 import '../service/serverMethod.dart';
 import '../../theme/ThemeStyle.dart';
@@ -48,7 +49,7 @@ class _MusicClassifyListPageState extends State<MusicClassifyListPage>
             height: double.infinity,
             child: Column(
               children: [
-                buildTitleWidget(),
+                NavigatorTiitleComponent(title:widget.musicClassifyModel.classifyName),
                 Expanded(
                   flex: 1,
                   child: EasyRefresh(
@@ -103,27 +104,6 @@ class _MusicClassifyListPageState extends State<MusicClassifyListPage>
       provider.setPlayMusic(musicModel, true);
     }
     Routes.router.navigateTo(context, '/MusicPlayerPage');
-  }
-
-  ///@author: wuwenqiang
-  ///@description: 创建头部按钮
-  /// @date: 2024-07-13 17:33
-  Widget buildTitleWidget() {
-    return Container(
-        padding: ThemeStyle.padding,
-        decoration: BoxDecoration(color: ThemeColors.colorWhite),
-        child:
-            Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
-          InkWell(
-            child: Image.asset('lib/assets/images/icon_back.png',
-                width: ThemeSize.smallIcon, height: ThemeSize.smallIcon),
-            onTap: () {
-              Navigator.pop(context);
-            },
-          ),
-          Text(widget.musicClassifyModel.classifyName),
-          SizedBox(width: ThemeSize.smallIcon)
-        ]));
   }
 
   ///@author: wuwenqiang

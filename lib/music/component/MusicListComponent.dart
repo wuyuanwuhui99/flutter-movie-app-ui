@@ -28,27 +28,27 @@ class _MusicListComponentState extends State<MusicListComponent> {
   ///@description: 点赞和取消点赞
   ///@date: 2024-07-27 00:26
   void useLike(MusicModel musicModel) {
-    if(loading)return;
+    if (loading) return;
     if (musicModel.isLike == 0) {
-      insertMusicLikeService(musicModel.id).then((res){
+      insertMusicLikeService(musicModel.id).then((res) {
         loading = false;
-        if (res.data > 0){
-            setState(() {
-              musicModel.isLike = 1;
-            });
-          }
-      }).catchError((){
+        if (res.data > 0) {
+          setState(() {
+            musicModel.isLike = 1;
+          });
+        }
+      }).catchError(() {
         loading = false;
       });
     } else {
       deleteMusicLikeService(musicModel.id).then((res) {
         loading = false;
-        if (res.data > 0){
-            setState(() {
-              musicModel.isLike = 0;
-            });
-          }
-      }).catchError((){
+        if (res.data > 0) {
+          setState(() {
+            musicModel.isLike = 0;
+          });
+        }
+      }).catchError(() {
         loading = false;
       });
     }
@@ -63,34 +63,34 @@ class _MusicListComponentState extends State<MusicListComponent> {
     widget.musicList.forEach((ele) {
       int i = ++index;
       musicListWidget.add(InkWell(
-        onTap: (){
+        onTap: () {
           widget.onPlayMusic(ele, i);
         },
         child: Row(children: [
           ele.cover != null
               ? ClipOval(
-            child: Image.network(
-              //从全局的provider中获取用户信息
-              getMusicCover(ele.cover),
-              height: ThemeSize.middleAvater,
-              width: ThemeSize.middleAvater,
-              fit: BoxFit.cover,
-            ),
-          )
+                  child: Image.network(
+                    //从全局的provider中获取用户信息
+                    getMusicCover(ele.cover),
+                    height: ThemeSize.middleAvater,
+                    width: ThemeSize.middleAvater,
+                    fit: BoxFit.cover,
+                  ),
+                )
               : Container(
-            height: ThemeSize.middleAvater,
-            width: ThemeSize.middleAvater,
-            child: Center(
-                child: Image.asset(
-                  'lib/assets/images/icon_music.png',
-                  height: ThemeSize.smallIcon,
-                  width: ThemeSize.smallIcon,
-                  fit: BoxFit.cover,
-                )),
-            decoration: BoxDecoration(
-                borderRadius: BorderRadius.all(
-                    Radius.circular(ThemeSize.middleAvater))),
-          ),
+                  height: ThemeSize.middleAvater,
+                  width: ThemeSize.middleAvater,
+                  child: Center(
+                      child: Image.asset(
+                    'lib/assets/images/icon_music.png',
+                    height: ThemeSize.smallIcon,
+                    width: ThemeSize.smallIcon,
+                    fit: BoxFit.cover,
+                  )),
+                  decoration: BoxDecoration(
+                      borderRadius: BorderRadius.all(
+                          Radius.circular(ThemeSize.middleAvater))),
+                ),
           SizedBox(width: ThemeSize.containerPadding),
           Expanded(
             child: Text('${ele.authorName} - ${ele.songName}'),
@@ -99,19 +99,24 @@ class _MusicListComponentState extends State<MusicListComponent> {
           SizedBox(width: ThemeSize.containerPadding),
           Image.asset(
               provider.musicModel?.id == ele.id &&
-                  provider.playing &&
-                  provider.classifyName == widget.classifyName
+                      provider.playing &&
+                      provider.classifyName == widget.classifyName
                   ? 'lib/assets/images/icon_music_playing_grey.png'
                   : 'lib/assets/images/icon_music_play.png',
               width: ThemeSize.smallIcon,
               height: ThemeSize.smallIcon),
           SizedBox(width: ThemeSize.containerPadding),
           InkWell(
-            onTap: (){
+            onTap: () {
               this.useLike(ele);
             },
-            child: Image.asset(ele.isLike == 1 ? 'lib/assets/images/icon_like_active.png' :'lib/assets/images/icon_like.png',
-                width: ThemeSize.smallIcon, height: ThemeSize.smallIcon),),
+            child: Image.asset(
+                ele.isLike == 1
+                    ? 'lib/assets/images/icon_like_active.png'
+                    : 'lib/assets/images/icon_like.png',
+                width: ThemeSize.smallIcon,
+                height: ThemeSize.smallIcon),
+          ),
           SizedBox(width: ThemeSize.containerPadding),
           Image.asset('lib/assets/images/icon_music_menu.png',
               width: ThemeSize.smallIcon, height: ThemeSize.smallIcon),
@@ -127,7 +132,7 @@ class _MusicListComponentState extends State<MusicListComponent> {
         ));
       }
     });
-    return  Container(
+    return Container(
         padding: ThemeStyle.padding,
         decoration: ThemeStyle.boxDecoration,
         child: Column(children: musicListWidget));

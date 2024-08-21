@@ -21,7 +21,7 @@ class FavoriteComponent extends StatefulWidget {
 
 class _FavoriteComponentState extends State<FavoriteComponent> {
   List<FavoriteDirectoryModel> favoriteDirectory = []; // 收藏夹
-  List<int> selectedValues = [];// 选中的收藏夹id
+  List<int> selectedValues = []; // 选中的收藏夹id
   bool isCreateFavoriteDirectory = false; // 是否显示创建收藏夹界面
   TextEditingController favoriteNameController = TextEditingController();
   bool disableCreateBtn = true;
@@ -158,14 +158,15 @@ class _FavoriteComponentState extends State<FavoriteComponent> {
                     borderRadius: BorderRadius.all(
                         Radius.circular(ThemeSize.middleRadius))),
                 child: TextField(
-                  onChanged: (String value){
-                    setState(() {
-                      disableCreateBtn = value == '';
-                    });
-                  },
+                    onChanged: (String value) {
+                      setState(() {
+                        disableCreateBtn = value == '';
+                      });
+                    },
                     textAlign: TextAlign.start,
                     controller: favoriteNameController,
-                    cursorColor: Colors.grey, //设置光标
+                    cursorColor: Colors.grey,
+                    //设置光标
                     decoration: InputDecoration(
                       hintText: "请输入收藏夹名称",
                       hintStyle: TextStyle(
@@ -173,9 +174,8 @@ class _FavoriteComponentState extends State<FavoriteComponent> {
                           color: Colors.grey),
                       border: InputBorder.none,
                       contentPadding:
-                      EdgeInsets.only(bottom: ThemeSize.smallMargin),
-                    ))
-            ),
+                          EdgeInsets.only(bottom: ThemeSize.smallMargin),
+                    ))),
           )
         ]),
         SizedBox(height: ThemeSize.containerPadding),
@@ -202,46 +202,51 @@ class _FavoriteComponentState extends State<FavoriteComponent> {
           ],
         ),
         SizedBox(height: ThemeSize.containerPadding),
-        Opacity(opacity: disableCreateBtn ? 0.5 : 1,child: Container(
-          decoration: BoxDecoration(
-            color: Colors.red,
-            borderRadius:
-            BorderRadius.all(Radius.circular(ThemeSize.superRadius)),
-          ),
-          width: double.infinity,
-          height: ThemeSize.buttonHeight,
-          child: InkWell(
-              onTap: () {
-                if(favoriteNameController.text == ''){
-                  return Fluttertoast.showToast(
-                      msg: "请输入收藏夹名称",
-                      toastLength: Toast.LENGTH_SHORT,
-                      gravity: ToastGravity.CENTER,
-                      timeInSecForIos: 1,
-                      textColor: Colors.white,
-                      fontSize: ThemeSize.middleFontSize);
-                }
-                insertFavoriteDirectoryService(FavoriteDirectoryModel(name:favoriteNameController.text,cover:null)).then((value){
-                  Fluttertoast.showToast(
-                      msg: "创建收藏夹成功",
-                      toastLength: Toast.LENGTH_SHORT,
-                      gravity: ToastGravity.CENTER,
-                      timeInSecForIos: 1,
-                      textColor: Colors.white,
-                      fontSize: ThemeSize.middleFontSize);
-                  favoriteNameController.text = '';
-                  setState(() {
-                    favoriteDirectory.insert(0, FavoriteDirectoryModel.fromJson(value.data));
-                    isCreateFavoriteDirectory = false;
-                  });
-                });
-              },
-              child: Center(
-                  child: Text(
+        Opacity(
+            opacity: disableCreateBtn ? 0.5 : 1,
+            child: Container(
+              decoration: BoxDecoration(
+                color: Colors.red,
+                borderRadius:
+                    BorderRadius.all(Radius.circular(ThemeSize.superRadius)),
+              ),
+              width: double.infinity,
+              height: ThemeSize.buttonHeight,
+              child: InkWell(
+                  onTap: () {
+                    if (favoriteNameController.text == '') {
+                      return Fluttertoast.showToast(
+                          msg: "请输入收藏夹名称",
+                          toastLength: Toast.LENGTH_SHORT,
+                          gravity: ToastGravity.CENTER,
+                          timeInSecForIos: 1,
+                          textColor: Colors.white,
+                          fontSize: ThemeSize.middleFontSize);
+                    }
+                    insertFavoriteDirectoryService(FavoriteDirectoryModel(
+                            name: favoriteNameController.text, cover: null))
+                        .then((value) {
+                      Fluttertoast.showToast(
+                          msg: "创建收藏夹成功",
+                          toastLength: Toast.LENGTH_SHORT,
+                          gravity: ToastGravity.CENTER,
+                          timeInSecForIos: 1,
+                          textColor: Colors.white,
+                          fontSize: ThemeSize.middleFontSize);
+                      favoriteNameController.text = '';
+                      setState(() {
+                        favoriteDirectory.insert(
+                            0, FavoriteDirectoryModel.fromJson(value.data));
+                        isCreateFavoriteDirectory = false;
+                      });
+                    });
+                  },
+                  child: Center(
+                      child: Text(
                     '创建',
                     style: TextStyle(color: ThemeColors.colorWhite),
                   ))),
-        )),
+            )),
         SizedBox(height: ThemeSize.containerPadding),
         Container(
           decoration: BoxDecoration(

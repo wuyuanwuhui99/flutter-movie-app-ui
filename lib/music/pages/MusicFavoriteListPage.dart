@@ -13,6 +13,7 @@ import '../../theme/ThemeColors.dart';
 import '../../theme/ThemeSize.dart';
 import '../model/MusicModel.dart';
 import '../../utils/common.dart';
+import '../component/NavigatorTiitleComponent.dart';
 
 class MusicFavoriteListPage extends StatefulWidget {
   final FavoriteDirectoryModel favoriteDirectoryModel;
@@ -69,7 +70,7 @@ class _MusicFavoriteListPageState extends State<MusicFavoriteListPage>
             height: double.infinity,
             child: Column(
               children: [
-                buildTitleWidget(),
+                NavigatorTiitleComponent(title:'我的收藏夹'),
                 Expanded(
                     flex: 1,
                     child: EasyRefresh(
@@ -106,30 +107,6 @@ class _MusicFavoriteListPageState extends State<MusicFavoriteListPage>
             ),
           ),
         ));
-  }
-
-  ///@author: wuwenqiang
-  ///@description: 创建标题栏
-  /// @date: 2024-07-13 17:33
-  Widget buildTitleWidget() {
-    return Container(
-        padding: ThemeStyle.padding,
-        decoration: BoxDecoration(color: ThemeColors.colorWhite),
-        child:
-            Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
-          InkWell(
-            onTap: () {
-              Navigator.of(context).pop();
-            },
-            child: Image.asset("lib/assets/images/icon_back.png",
-                width: ThemeSize.smallIcon, height: ThemeSize.smallIcon),
-          ),
-          Expanded(flex: 1, child: Center(child: Text("我的收藏夹"))),
-          SizedBox(
-            width: ThemeSize.smallIcon,
-            height: ThemeSize.smallIcon,
-          ),
-        ]));
   }
 
   ///@author: wuwenqiang
