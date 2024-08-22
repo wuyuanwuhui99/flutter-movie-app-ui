@@ -49,7 +49,8 @@ class _MusicClassifyListPageState extends State<MusicClassifyListPage>
             height: double.infinity,
             child: Column(
               children: [
-                NavigatorTiitleComponent(title:widget.musicClassifyModel.classifyName),
+                NavigatorTiitleComponent(
+                    title: widget.musicClassifyModel.classifyName),
                 Expanded(
                   flex: 1,
                   child: EasyRefresh(
@@ -79,10 +80,14 @@ class _MusicClassifyListPageState extends State<MusicClassifyListPage>
                       }
                     },
                     child: Padding(
-                      padding: ThemeStyle.padding,
-                        child: MusicListComponent(musicList: musicList,classifyName: widget.musicClassifyModel.classifyName,onPlayMusic:(MusicModel musicModel,int index){
-                          usePlayRouter(musicModel,index);
-                    })),
+                        padding: ThemeStyle.padding,
+                        child: MusicListComponent(
+                            musicList: musicList,
+                            classifyName:
+                                widget.musicClassifyModel.classifyName,
+                            onPlayMusic: (MusicModel musicModel, int index) {
+                              usePlayRouter(musicModel, index);
+                            })),
                   ),
                 )
               ],
@@ -94,13 +99,19 @@ class _MusicClassifyListPageState extends State<MusicClassifyListPage>
   ///@author: wuwenqiang
   ///@description: 播放音乐列表
   /// @date: 2024-07-20 04:13
-  usePlayRouter(MusicModel musicModel,int index)async{
-    PlayerMusicProvider provider = Provider.of<PlayerMusicProvider>(context, listen: false);
-    if(provider.classifyName != widget.musicClassifyModel.classifyName){
-      await getMusicListByClassifyIdService(widget.musicClassifyModel.id, 1, MAX_FAVORITE_NUMBER,1).then((value) {
-        provider.setClassifyMusic(value.data.map((e) => MusicModel.fromJson(e)).toList(),index,widget.musicClassifyModel.classifyName);
+  usePlayRouter(MusicModel musicModel, int index) async {
+    PlayerMusicProvider provider =
+        Provider.of<PlayerMusicProvider>(context, listen: false);
+    if (provider.classifyName != widget.musicClassifyModel.classifyName) {
+      await getMusicListByClassifyIdService(
+              widget.musicClassifyModel.id, 1, MAX_FAVORITE_NUMBER, 1)
+          .then((value) {
+        provider.setClassifyMusic(
+            value.data.map((e) => MusicModel.fromJson(e)).toList(),
+            index,
+            widget.musicClassifyModel.classifyName);
       });
-    }else{
+    } else {
       provider.setPlayMusic(musicModel, true);
     }
     Routes.router.navigateTo(context, '/MusicPlayerPage');
@@ -117,7 +128,8 @@ class _MusicClassifyListPageState extends State<MusicClassifyListPage>
         musicList
             .addAll(value.data.map((e) => MusicModel.fromJson(e)).toList());
         total = value.total;
-        easyRefreshController.finishLoad(success: true,noMore: musicList.length == total);
+        easyRefreshController.finishLoad(
+            success: true, noMore: musicList.length == total);
       });
     });
   }

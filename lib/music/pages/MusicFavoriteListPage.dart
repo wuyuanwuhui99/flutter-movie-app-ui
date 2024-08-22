@@ -54,7 +54,8 @@ class _MusicFavoriteListPageState extends State<MusicFavoriteListPage>
         musicList
             .addAll(value.data.map((e) => MusicModel.fromJson(e)).toList());
       });
-      easyRefreshController.finishLoad(success: true,noMore: musicList.length == total);
+      easyRefreshController.finishLoad(
+          success: true, noMore: musicList.length == total);
     });
   }
 
@@ -70,7 +71,7 @@ class _MusicFavoriteListPageState extends State<MusicFavoriteListPage>
             height: double.infinity,
             child: Column(
               children: [
-                NavigatorTiitleComponent(title:'我的收藏夹'),
+                NavigatorTiitleComponent(title: '我的收藏夹'),
                 Expanded(
                     flex: 1,
                     child: EasyRefresh(
@@ -96,9 +97,14 @@ class _MusicFavoriteListPageState extends State<MusicFavoriteListPage>
                           children: [
                             buildCoverWidget(),
                             SizedBox(height: ThemeSize.containerPadding),
-                            MusicListComponent(musicList: musicList,classifyName: MUSIC_FAVORITE_NAME + widget.favoriteDirectoryModel.name,onPlayMusic:(MusicModel musicModel,int index){
-                              usePlayRouter(musicModel,index);
-                            })
+                            MusicListComponent(
+                                musicList: musicList,
+                                classifyName: MUSIC_FAVORITE_NAME +
+                                    widget.favoriteDirectoryModel.name,
+                                onPlayMusic:
+                                    (MusicModel musicModel, int index) {
+                                  usePlayRouter(musicModel, index);
+                                })
                           ],
                         ),
                       ),
@@ -150,14 +156,21 @@ class _MusicFavoriteListPageState extends State<MusicFavoriteListPage>
   ///@author: wuwenqiang
   ///@description: 播放音乐列表
   /// @date: 2024-07-20 04:13
-  usePlayRouter(MusicModel musicModel,int index)async{
-    PlayerMusicProvider provider = Provider.of<PlayerMusicProvider>(context, listen: false);
-    String classifyName = MUSIC_FAVORITE_NAME + widget.favoriteDirectoryModel.name;
-    if(provider.classifyName != classifyName){
-      await getMusicListByFavoriteIdService(widget.favoriteDirectoryModel.id, 1, MAX_FAVORITE_NUMBER).then((value) {
-        provider.setClassifyMusic(value.data.map((e) => MusicModel.fromJson(e)).toList(),index,classifyName);
+  usePlayRouter(MusicModel musicModel, int index) async {
+    PlayerMusicProvider provider =
+        Provider.of<PlayerMusicProvider>(context, listen: false);
+    String classifyName =
+        MUSIC_FAVORITE_NAME + widget.favoriteDirectoryModel.name;
+    if (provider.classifyName != classifyName) {
+      await getMusicListByFavoriteIdService(
+              widget.favoriteDirectoryModel.id, 1, MAX_FAVORITE_NUMBER)
+          .then((value) {
+        provider.setClassifyMusic(
+            value.data.map((e) => MusicModel.fromJson(e)).toList(),
+            index,
+            classifyName);
       });
-    }else{
+    } else {
       provider.setPlayMusic(musicModel, true);
     }
     Routes.router.navigateTo(context, '/MusicPlayerPage');
