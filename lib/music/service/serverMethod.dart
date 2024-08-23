@@ -53,11 +53,11 @@ Future<ResponseModel<List>> getMusicListByClassifyIdService(
 ///@author: wuwenqiang
 ///@description: 获取分类音乐列表
 /// @date: 2023-05-25 22:45
-Future<ResponseModel<List>> getSingerListService(
+Future<ResponseModel<List>> getMusicAuthorListService(
     String category, int pageNum, int pageSize) async {
   try {
     Response response = await dio.get(
-        "${servicePath['getSingerList']}?${category != '' && category != null ? "category=" + category + "&" : ""}pageNum=${pageNum}&pageSize=${pageSize}");
+        "${servicePath['getMusicAuthorList']}?${category != '' && category != null ? "category=" + category + "&" : ""}pageNum=${pageNum}&pageSize=${pageSize}");
     return ResponseModel.fromJson(response.data);
   } catch (e) {
     print('ERROR:======>${e}');
@@ -83,11 +83,11 @@ Future<ResponseModel<List>> getCircleListByTypeService(
 ///@author: wuwenqiang
 ///@description: 获取我关注的歌手
 /// @date: 2023-07-09 11:29
-Future<ResponseModel<List>> getMySingerService(
+Future<ResponseModel<List>> getMyLikeMusicAuthorService(
     int pageNum, int pageSize) async {
   try {
     Response response = await dio.get(
-        "${servicePath['getMySinger']}?pageNum=${pageNum}&pageSize=${pageSize}");
+        "${servicePath['getMyLikeMusicAuthor']}?pageNum=${pageNum}&pageSize=${pageSize}");
     return ResponseModel.fromJson(response.data);
   } catch (e) {
     print('ERROR:======>${e}');
@@ -185,9 +185,9 @@ Future<ResponseModel<List>> searchMusicService(
 ///@author: wuwenqiang
 ///@description: 获取歌手分类
 /// @date: 2024-02-27 22:51
-Future<ResponseModel<List>> getSingerCategoryService() async {
+Future<ResponseModel<List>> getMusicAuthorCategoryService() async {
   try {
-    Response response = await dio.get(servicePath['getSingerCategory']);
+    Response response = await dio.get(servicePath['getMusicAuthorCategory']);
     return ResponseModel<List>.fromJson(response.data);
   } catch (e) {
     print('ERROR:======>${e}');

@@ -396,7 +396,7 @@ class _MusicHomePageState extends State<MusicHomePage>
   // 获取歌手列表
   Widget buildSingerListWidget() {
     return FutureBuilder(
-        future: getSingerListService(null,1, 5),
+        future: getMusicAuthorListService(null,1, 5),
         builder: (context, snapshot) {
           if (snapshot.data == null) {
             return Container();

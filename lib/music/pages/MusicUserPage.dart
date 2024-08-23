@@ -288,7 +288,7 @@ class _MusicUserPageState extends State<MusicUserPage>
               ],
             ),
             FutureBuilder(
-                future: getMySingerService(1, 3),
+                future: getMyLikeMusicAuthorService(1, 3),
                 builder: (context, snapshot) {
                   if (snapshot.data == null) {
                     return Container();

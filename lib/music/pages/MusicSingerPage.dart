@@ -31,7 +31,7 @@ class _MusicSingerPageState extends State<MusicSingerPage>
   @override
   void initState() {
     super.initState();
-    getSingerCategoryService().then((res) {
+    getMusicAuthorCategoryService().then((res) {
       setState(() {
         res.data.forEach((item) {
           singerCategoryList.add(SingerCategoryModel.fromJson(item));
@@ -45,7 +45,7 @@ class _MusicSingerPageState extends State<MusicSingerPage>
   ///@description: 根据分类获取列表
   ///@date: 2024-02-28 22:20
   useSingerList() {
-    getSingerListService(
+    getMusicAuthorListService(
             singerCategoryList[activeIndex].category, pageNum, pageSize)
         .then((value) {
       setState(() {
