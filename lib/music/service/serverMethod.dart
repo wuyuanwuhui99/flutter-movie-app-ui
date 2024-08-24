@@ -54,10 +54,10 @@ Future<ResponseModel<List>> getMusicListByClassifyIdService(
 ///@description: 获取分类音乐列表
 /// @date: 2023-05-25 22:45
 Future<ResponseModel<List>> getMusicAuthorListService(
-    String category, int pageNum, int pageSize) async {
+    int categoryId, int pageNum, int pageSize) async {
   try {
     Response response = await dio.get(
-        "${servicePath['getMusicAuthorList']}?${category != '' && category != null ? "category=" + category + "&" : ""}pageNum=${pageNum}&pageSize=${pageSize}");
+        "${servicePath['getMusicAuthorList']}?categoryId=$categoryId&pageNum=$pageNum&pageSize=$pageSize");
     return ResponseModel.fromJson(response.data);
   } catch (e) {
     print('ERROR:======>${e}');

@@ -5,18 +5,19 @@ import '../service/serverMethod.dart';
 import '../../theme/ThemeStyle.dart';
 import '../../theme/ThemeSize.dart';
 import '../../theme/ThemeColors.dart';
-import '../model/SingerCategoryModel.dart';
+import '../model/MusicAuthorCategoryModel.dart';
 import '../model/MusicAuthorModel.dart';
 import '../../common/constant.dart';
+import '../component/NavigatorTiitleComponent.dart';
 
-class MusicSingerPage extends StatefulWidget {
-  MusicSingerPage({Key key}) : super(key: key);
+class MusicAuthorListPage extends StatefulWidget {
+  MusicAuthorListPage({Key key}) : super(key: key);
 
   @override
-  _MusicSingerPageState createState() => _MusicSingerPageState();
+  _MusicAuthorListPageState createState() => _MusicAuthorListPageState();
 }
 
-class _MusicSingerPageState extends State<MusicSingerPage>
+class _MusicAuthorListPageState extends State<MusicAuthorListPage>
     with AutomaticKeepAliveClientMixin, TickerProviderStateMixin {
   @override
   bool get wantKeepAlive => true;
@@ -25,7 +26,7 @@ class _MusicSingerPageState extends State<MusicSingerPage>
   int total = 0; // 总条数
   int pageSize = 20; // 每页条数
   List<MusicAuthorModel> musicAuthorList = [];
-  List<SingerCategoryModel> singerCategoryList = []; // 播放记录列表
+  List<MusicAuthorCategoryModel> authorCategoryList = []; // 播放记录列表
   EasyRefreshController easyRefreshController = EasyRefreshController();
 
   @override
@@ -34,7 +35,7 @@ class _MusicSingerPageState extends State<MusicSingerPage>
     getMusicAuthorCategoryService().then((res) {
       setState(() {
         res.data.forEach((item) {
-          singerCategoryList.add(SingerCategoryModel.fromJson(item));
+          authorCategoryList.add(MusicAuthorCategoryModel.fromJson(item));
         });
       });
       useSingerList();
@@ -46,7 +47,7 @@ class _MusicSingerPageState extends State<MusicSingerPage>
   ///@date: 2024-02-28 22:20
   useSingerList() {
     getMusicAuthorListService(
-            singerCategoryList[activeIndex].category, pageNum, pageSize)
+            authorCategoryList[activeIndex].id, pageNum, pageSize)
         .then((value) {
       setState(() {
         total = value.total;
@@ -69,29 +70,44 @@ class _MusicSingerPageState extends State<MusicSingerPage>
         backgroundColor: ThemeColors.colorBg,
         body: SafeArea(
             top: true,
-            child: EasyRefresh(
-              controller: easyRefreshController,
-              footer: ClassicalFooter(
-                loadText: '上拉加载',
-                loadReadyText: '准备加载',
-                loadingText: '加载中...',
-                loadedText: '加载完成',
-                noMoreText: '没有更多',
-                bgColor: Colors.transparent,
-                textColor: ThemeColors.disableColor,
+            child: Container(
+              width: double.infinity,
+              height: double.infinity,
+              child: Column(
+                children: [
+                  NavigatorTiitleComponent(title: '歌手分类'),
+                  Expanded(
+                      flex: 1,
+                      child: EasyRefresh(
+                        controller: easyRefreshController,
+                        footer: ClassicalFooter(
+                          loadText: '上拉加载',
+                          loadReadyText: '准备加载',
+                          loadingText: '加载中...',
+                          loadedText: '加载完成',
+                          noMoreText: '没有更多',
+                          bgColor: Colors.transparent,
+                          textColor: ThemeColors.disableColor,
+                        ),
+                        onLoad: () async {
+                            if (pageNum * pageSize < total) {
+                              useSingerList();
+                            }
+                        },
+                        child: Padding(
+                          padding: ThemeStyle.padding,
+                          child: Column(
+                            children: [
+                              buildCategory(),
+                              buildAuthorListWidget()
+                            ],
+                          ),
+                        ),
+                      )),
+                ],
               ),
-              child: Container(
-                width: MediaQuery.of(context).size.width,
-                padding: ThemeStyle.paddingBox,
-                child: Column(
-                    children: [buildCategory(), buildSingerListWidget()]),
-              ),
-              onLoad: () async {
-                if (pageNum * pageSize < total) {
-                  useSingerList();
-                }
-              },
-            )));
+            ),
+        ));
   }
 
   ///@author: wuwenqiang
@@ -119,7 +135,7 @@ class _MusicSingerPageState extends State<MusicSingerPage>
 
   List<Widget> buildGridItems(BuildContext context) {
     List<Widget> singerCategoryWidgetList = [];
-    for (int i = 0; i < singerCategoryList.length; i++) {
+    for (int i = 0; i < authorCategoryList.length; i++) {
       singerCategoryWidgetList.add(InkWell(
           onTap: () {
             setState(() {
@@ -133,8 +149,8 @@ class _MusicSingerPageState extends State<MusicSingerPage>
           child: Container(
             decoration: BoxDecoration(
               border: Border.all(
-                  color: singerCategoryList[activeIndex].category ==
-                          singerCategoryList[i].category
+                  color: authorCategoryList[activeIndex].id ==
+                          authorCategoryList[i].id
                       ? Colors.orange
                       : ThemeColors.borderColor),
               borderRadius:
@@ -142,10 +158,10 @@ class _MusicSingerPageState extends State<MusicSingerPage>
             ),
             child: Center(
                 child: Text(
-              singerCategoryList[i].category,
+              authorCategoryList[i].categoryName,
               style: TextStyle(
-                  color: singerCategoryList[activeIndex].category ==
-                          singerCategoryList[i].category
+                  color: authorCategoryList[activeIndex].categoryName ==
+                          authorCategoryList[i].categoryName
                       ? Colors.orange
                       : Colors.black),
             )),
@@ -157,7 +173,7 @@ class _MusicSingerPageState extends State<MusicSingerPage>
   ///@author: wuwenqiang
   ///@description: 歌手列表
   ///@date: 2024-02-28 22:20
-  Widget buildSingerListWidget() {
+  Widget buildAuthorListWidget() {
     int index = 0;
     return Container(
         decoration: ThemeStyle.boxDecoration,
@@ -186,6 +202,8 @@ class _MusicSingerPageState extends State<MusicSingerPage>
                       color: ThemeColors.colorBg, //边框颜色
                     ))),
               child: Row(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   ClipOval(
                     child: item.avatar != null && item.avatar != ""
@@ -204,7 +222,7 @@ class _MusicSingerPageState extends State<MusicSingerPage>
                             fit: BoxFit.cover),
                   ),
                   SizedBox(width: ThemeSize.containerPadding),
-                  Column(
+                  Expanded(flex: 1,child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(item.authorName),
@@ -216,8 +234,7 @@ class _MusicSingerPageState extends State<MusicSingerPage>
                             fontWeight: FontWeight.bold),
                       ),
                     ],
-                  ),
-                  Expanded(child: SizedBox(), flex: 1),
+                  )),
                   Image.asset("lib/assets/images/icon_music_play.png",
                       height: ThemeSize.smallIcon, width: ThemeSize.smallIcon),
                   SizedBox(width: ThemeSize.containerPadding),

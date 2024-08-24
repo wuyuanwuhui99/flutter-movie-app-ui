@@ -198,7 +198,7 @@ class _MusicHomePageState extends State<MusicHomePage>
                 Text("歌手")
               ],
             ),onTap: (){
-              Routes.router.navigateTo(context, '/MusicSingerPage');
+              Routes.router.navigateTo(context, '/MusicAuthorListPage');
             },),
             flex: 1,
           ),
@@ -261,7 +261,7 @@ class _MusicHomePageState extends State<MusicHomePage>
                 Expanded(child: SizedBox(), flex: 1),
                 InkWell(child: Text("更多"),onTap: (){
                   if( musicClassifyModel.classifyName == "推荐歌手"){
-
+                    Routes.router.navigateTo(context, '/MusicAuthorListPage');
                   }else{
                     Routes.router.navigateTo(context, '/MusicClassifyListPage?musicClassifyModel=${Uri.encodeComponent(json.encode(musicClassifyModel.toMap()))}');
                   }
@@ -269,7 +269,7 @@ class _MusicHomePageState extends State<MusicHomePage>
               ],
             ),
             musicClassifyModel.classifyName == "推荐歌手"
-                ? buildSingerListWidget()
+                ? buildMusicAuthorListWidget()
                 : buildMusicListByClassifyId(musicClassifyModel)
           ],
         ));
@@ -394,9 +394,9 @@ class _MusicHomePageState extends State<MusicHomePage>
   }
 
   // 获取歌手列表
-  Widget buildSingerListWidget() {
+  Widget buildMusicAuthorListWidget() {
     return FutureBuilder(
-        future: getMusicAuthorListService(null,1, 5),
+        future: getMusicAuthorListService(0,1, 5),
         builder: (context, snapshot) {
           if (snapshot.data == null) {
             return Container();

@@ -16,7 +16,7 @@ import '../movie/pages/MoviePlayerPage.dart';
 import '../movie/pages/MovieUserPage.dart';
 import '../movie/pages/NewMoviePage.dart';
 import '../music/pages/MusicIndexPage.dart';
-import '../music/pages/MusicSingerPage.dart';
+import '../music/pages/MusicAuthorListPage.dart';
 import '../music/pages/MusicSharePage.dart';
 import '../music/pages/MusicClassifyListPage.dart';
 import '../music/model/MusicClassifyModel.dart';
@@ -57,8 +57,8 @@ class Routes {
     router.define('/MusicIndexPage', handler: Handler(handlerFunc: (BuildContext context, Map<String, List<String>> params) {
       return MusicIndexPage();
     }));
-    router.define('/MusicSingerPage', handler: Handler(handlerFunc: (BuildContext context, Map<String, List<String>> params) {
-      return MusicSingerPage();
+    router.define('/MusicAuthorListPage', handler: Handler(handlerFunc: (BuildContext context, Map<String, List<String>> params) {
+      return MusicAuthorListPage();
     }));
     router.define('/MusicSharePage', handler: Handler(handlerFunc: (BuildContext context, Map<String, List<String>> params) {
       return MusicSharePage(musicModel:MusicModel.fromJson(jsonDecode(params['musicItem'].first)));

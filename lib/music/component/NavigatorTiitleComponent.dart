@@ -22,7 +22,7 @@ class NavigatorTiitleComponent extends StatelessWidget {
             child: Image.asset("lib/assets/images/icon_back.png",
                 width: ThemeSize.smallIcon, height: ThemeSize.smallIcon),
           ),
-          Expanded(flex: 1, child: Center(child: Text("我的收藏夹"))),
+          Expanded(flex: 1, child: Center(child: Text(title))),
           SizedBox(
             width: ThemeSize.smallIcon,
             height: ThemeSize.smallIcon,
