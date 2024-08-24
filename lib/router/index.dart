@@ -3,6 +3,8 @@ import 'dart:convert';
 import 'package:fluro/fluro.dart';
 import 'package:flutter/material.dart';
 import 'package:movie/movie/pages/MovieDetailPage.dart';
+import 'package:movie/music/model/MusicAuthorModel.dart';
+import 'package:movie/music/pages/MusicAuthorListPage.dart';
 import '../movie/pages/MovieIndexPage.dart';
 import '../movie/model/MovieDetailModel.dart';
 import '../music/model/FavoriteDirectoryModel.dart';
@@ -16,7 +18,7 @@ import '../movie/pages/MoviePlayerPage.dart';
 import '../movie/pages/MovieUserPage.dart';
 import '../movie/pages/NewMoviePage.dart';
 import '../music/pages/MusicIndexPage.dart';
-import '../music/pages/MusicAuthorListPage.dart';
+import '../music/pages/MusicAuthorCategoryPage.dart';
 import '../music/pages/MusicSharePage.dart';
 import '../music/pages/MusicClassifyListPage.dart';
 import '../music/model/MusicClassifyModel.dart';
@@ -57,8 +59,8 @@ class Routes {
     router.define('/MusicIndexPage', handler: Handler(handlerFunc: (BuildContext context, Map<String, List<String>> params) {
       return MusicIndexPage();
     }));
-    router.define('/MusicAuthorListPage', handler: Handler(handlerFunc: (BuildContext context, Map<String, List<String>> params) {
-      return MusicAuthorListPage();
+    router.define('/MusicAuthorCategoryPage', handler: Handler(handlerFunc: (BuildContext context, Map<String, List<String>> params) {
+      return MusicAuthorCategoryPage();
     }));
     router.define('/MusicSharePage', handler: Handler(handlerFunc: (BuildContext context, Map<String, List<String>> params) {
       return MusicSharePage(musicModel:MusicModel.fromJson(jsonDecode(params['musicItem'].first)));
@@ -69,6 +71,8 @@ class Routes {
     router.define('/MusicClassifyListPage', handler: Handler(handlerFunc: (BuildContext context, Map<String, List<String>> params) {
       return MusicClassifyListPage(musicClassifyModel:MusicClassifyModel.fromJson(jsonDecode(params['musicClassifyModel'].first)));
     }));
-
+    router.define('/MusicAuthorListPage', handler: Handler(handlerFunc: (BuildContext context, Map<String, List<String>> params) {
+      return MusicAuthorListPage(authorMode:MusicAuthorModel.fromJson(jsonDecode(params['authorModel'].first)));
+    }));
   }
 }

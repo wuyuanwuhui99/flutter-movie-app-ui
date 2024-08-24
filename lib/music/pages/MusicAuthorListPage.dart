@@ -1,17 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_easyrefresh/easy_refresh.dart';
-import 'package:flutter_easyrefresh/material_footer.dart';
+import 'package:provider/provider.dart';
+import '../model/MusicAuthorModel.dart';
+import '../component/MusicListComponent.dart';
+import '../model/MusicModel.dart';
+import '../provider/PlayerMusicProvider.dart';
+import '../../router/index.dart';
 import '../service/serverMethod.dart';
 import '../../theme/ThemeStyle.dart';
-import '../../theme/ThemeSize.dart';
 import '../../theme/ThemeColors.dart';
-import '../model/MusicAuthorCategoryModel.dart';
-import '../model/MusicAuthorModel.dart';
 import '../../common/constant.dart';
 import '../component/NavigatorTiitleComponent.dart';
 
 class MusicAuthorListPage extends StatefulWidget {
-  MusicAuthorListPage({Key key}) : super(key: key);
+  final MusicAuthorModel authorMode;
+  MusicAuthorListPage({Key key,this.authorMode}) : super(key: key);
 
   @override
   _MusicAuthorListPageState createState() => _MusicAuthorListPageState();
@@ -25,37 +28,29 @@ class _MusicAuthorListPageState extends State<MusicAuthorListPage>
   int pageNum = 1; // 总页数
   int total = 0; // 总条数
   int pageSize = 20; // 每页条数
-  List<MusicAuthorModel> musicAuthorList = [];
-  List<MusicAuthorCategoryModel> authorCategoryList = []; // 播放记录列表
+  List<MusicModel> musicList = [];
   EasyRefreshController easyRefreshController = EasyRefreshController();
+  PlayerMusicProvider provider;
 
   @override
   void initState() {
     super.initState();
-    getMusicAuthorCategoryService().then((res) {
-      setState(() {
-        res.data.forEach((item) {
-          authorCategoryList.add(MusicAuthorCategoryModel.fromJson(item));
-        });
-      });
-      useSingerList();
-    });
+    useMusicList();
   }
 
   ///@author: wuwenqiang
   ///@description: 根据分类获取列表
   ///@date: 2024-02-28 22:20
-  useSingerList() {
-    getMusicAuthorListService(
-            authorCategoryList[activeIndex].id, pageNum, pageSize)
+  useMusicList() {
+    getMusicListByAuthorIdService(widget.authorMode.authorId, pageNum, pageSize)
         .then((value) {
       setState(() {
         total = value.total;
         value.data.forEach((item) {
-          musicAuthorList.add(MusicAuthorModel.fromJson(item));
+          musicList.add(MusicModel.fromJson(item));
         });
       });
-      easyRefreshController.finishLoad(success: true,noMore: musicAuthorList.length == total);
+      easyRefreshController.finishLoad(success: true,noMore: musicList.length == total);
     });
   }
 
@@ -66,6 +61,7 @@ class _MusicAuthorListPageState extends State<MusicAuthorListPage>
 
   @override
   Widget build(BuildContext context) {
+    provider = Provider.of<PlayerMusicProvider>(context, listen: true);
     return Scaffold(
         backgroundColor: ThemeColors.colorBg,
         body: SafeArea(
@@ -75,7 +71,7 @@ class _MusicAuthorListPageState extends State<MusicAuthorListPage>
               height: double.infinity,
               child: Column(
                 children: [
-                  NavigatorTiitleComponent(title: '歌手分类'),
+                  NavigatorTiitleComponent(title: widget.authorMode.authorName),
                   Expanded(
                       flex: 1,
                       child: EasyRefresh(
@@ -91,17 +87,14 @@ class _MusicAuthorListPageState extends State<MusicAuthorListPage>
                         ),
                         onLoad: () async {
                             if (pageNum * pageSize < total) {
-                              useSingerList();
+                              useMusicList();
                             }
                         },
                         child: Padding(
                           padding: ThemeStyle.padding,
-                          child: Column(
-                            children: [
-                              buildCategory(),
-                              buildAuthorListWidget()
-                            ],
-                          ),
+                          child: MusicListComponent(musicList: musicList,classifyName: MUSIC_SEARCH_NAME ,onPlayMusic:(MusicModel musicModel,int index){
+                            usePlayRouter(musicModel,index);
+                          }),
                         ),
                       )),
                 ],
@@ -111,140 +104,12 @@ class _MusicAuthorListPageState extends State<MusicAuthorListPage>
   }
 
   ///@author: wuwenqiang
-  ///@description: 歌手分类
-  ///@date: 2024-02-28 22:20
-  Widget buildCategory() {
-    return Container(
-        decoration: ThemeStyle.boxDecoration,
-        margin: ThemeStyle.margin,
-        width:
-            MediaQuery.of(context).size.width - ThemeSize.containerPadding * 2,
-        padding: ThemeStyle.padding,
-        child: GridView.count(
-            mainAxisSpacing: ThemeSize.smallMargin,
-            //水平子 Widget 之间间距
-            crossAxisSpacing: ThemeSize.smallMargin,
-            //一行的 Widget 数量
-            crossAxisCount: 4,
-            physics: NeverScrollableScrollPhysics(),
-            shrinkWrap: true,
-            childAspectRatio: 3,
-            // 宽高比列
-            children: this.buildGridItems(context)));
-  }
-
-  List<Widget> buildGridItems(BuildContext context) {
-    List<Widget> singerCategoryWidgetList = [];
-    for (int i = 0; i < authorCategoryList.length; i++) {
-      singerCategoryWidgetList.add(InkWell(
-          onTap: () {
-            setState(() {
-              total = 0;
-              pageNum = 1;
-              activeIndex = i;
-              musicAuthorList.clear();
-              useSingerList();
-            });
-          },
-          child: Container(
-            decoration: BoxDecoration(
-              border: Border.all(
-                  color: authorCategoryList[activeIndex].id ==
-                          authorCategoryList[i].id
-                      ? Colors.orange
-                      : ThemeColors.borderColor),
-              borderRadius:
-                  BorderRadius.all(Radius.circular(ThemeSize.middleRadius)),
-            ),
-            child: Center(
-                child: Text(
-              authorCategoryList[i].categoryName,
-              style: TextStyle(
-                  color: authorCategoryList[activeIndex].categoryName ==
-                          authorCategoryList[i].categoryName
-                      ? Colors.orange
-                      : Colors.black),
-            )),
-          )));
+  ///@description: 播放音乐
+  ///@date: 2024-08-24 11:53
+  void usePlayRouter(MusicModel musicItem,int index){
+    if(musicItem.id != provider.musicModel?.id){
+      provider.insertMusic(musicItem, provider.playIndex);
     }
-    return singerCategoryWidgetList;
-  }
-
-  ///@author: wuwenqiang
-  ///@description: 歌手列表
-  ///@date: 2024-02-28 22:20
-  Widget buildAuthorListWidget() {
-    int index = 0;
-    return Container(
-        decoration: ThemeStyle.boxDecoration,
-        margin: ThemeStyle.margin,
-        width:
-            MediaQuery.of(context).size.width - ThemeSize.containerPadding * 2,
-        padding: EdgeInsets.only(
-            left: ThemeSize.containerPadding,
-            right: ThemeSize.containerPadding,
-            bottom: ThemeSize.containerPadding),
-        child: Column(
-            children: musicAuthorList.map((item) {
-          index++;
-          return Container(
-              padding: EdgeInsets.only(
-                  top: ThemeSize.containerPadding,
-                  bottom: index == musicAuthorList.length
-                      ? 0
-                      : ThemeSize.containerPadding),
-              decoration: index == musicAuthorList.length
-                  ? null
-                  : BoxDecoration(
-                      border: Border(
-                          bottom: BorderSide(
-                      width: 1, //宽度
-                      color: ThemeColors.colorBg, //边框颜色
-                    ))),
-              child: Row(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  ClipOval(
-                    child: item.avatar != null && item.avatar != ""
-                        ? Image.network(
-                            //从全局的provider中获取用户信息
-                            item.avatar.indexOf("http") != -1
-                                ? item.avatar.replaceAll("{size}", "480")
-                                : HOST + item.avatar,
-                            height: ThemeSize.middleAvater,
-                            width: ThemeSize.middleAvater,
-                            fit: BoxFit.cover,
-                          )
-                        : Image.asset("lib/assets/images/default_avater.png",
-                            height: ThemeSize.middleAvater,
-                            width: ThemeSize.middleAvater,
-                            fit: BoxFit.cover),
-                  ),
-                  SizedBox(width: ThemeSize.containerPadding),
-                  Expanded(flex: 1,child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(item.authorName),
-                      SizedBox(height: ThemeSize.miniMargin),
-                      Text(
-                        "${item.total.toString()}首",
-                        style: TextStyle(
-                            color: ThemeColors.disableColor,
-                            fontWeight: FontWeight.bold),
-                      ),
-                    ],
-                  )),
-                  Image.asset("lib/assets/images/icon_music_play.png",
-                      height: ThemeSize.smallIcon, width: ThemeSize.smallIcon),
-                  SizedBox(width: ThemeSize.containerPadding),
-                  Image.asset("lib/assets/images/icon_like.png",
-                      height: ThemeSize.smallIcon, width: ThemeSize.smallIcon),
-                  SizedBox(width: ThemeSize.containerPadding),
-                  Image.asset("lib/assets/images/icon_music_menu.png",
-                      height: ThemeSize.smallIcon, width: ThemeSize.smallIcon),
-                ],
-              ));
-        }).toList()));
+    Routes.router.navigateTo(context, '/MusicPlayerPage');
   }
 }

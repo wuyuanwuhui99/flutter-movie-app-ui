@@ -12,6 +12,7 @@ const servicePath = {
   'queryMusicLike': '/service/myMusic-getway/queryMusicLike',// 查询收藏
   'searchMusic': '/service/myMusic/searchMusic',// 音乐搜索
   'getMusicAuthorCategory':'/service/myMusic/getMusicAuthorCategory',// 获取歌手分类
+  'getMusicListByAuthorId':'/service/myMusic/getMusicListByAuthorId',// 根据歌手id获取歌曲列表
   'saveLike':'/service/social-getway/saveLike',// 新增点赞
   'deleteLike': '/service/social-getway/deleteLike',// 删除点赞
   'insertComment':'/service/social-getway/insertComment',// 新增评论

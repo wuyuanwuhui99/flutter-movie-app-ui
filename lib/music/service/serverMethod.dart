@@ -66,6 +66,21 @@ Future<ResponseModel<List>> getMusicAuthorListService(
 }
 
 ///@author: wuwenqiang
+///@description: 根据歌手id获取音乐列表
+/// @date: 2024-08-24 11:44
+Future<ResponseModel<List>> getMusicListByAuthorIdService(
+    int authorId, int pageNum, int pageSize) async {
+  try {
+    Response response = await dio.get(
+        "${servicePath['getMusicListByAuthorId']}?authorId=$authorId&pageNum=$pageNum&pageSize=$pageSize");
+    return ResponseModel.fromJson(response.data);
+  } catch (e) {
+    print('ERROR:======>${e}');
+    return null;
+  }
+}
+
+///@author: wuwenqiang
 ///@description: 获取分类音乐列表
 /// @date: 2023-05-25 22:45
 Future<ResponseModel<List>> getCircleListByTypeService(

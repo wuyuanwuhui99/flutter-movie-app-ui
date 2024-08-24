@@ -3,7 +3,6 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyrefresh/easy_refresh.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:flutter_easyrefresh/material_footer.dart';
 import 'package:provider/provider.dart';
 import '../model/MusicClassifyModel.dart';
 import '../model/MusicAuthorModel.dart';
@@ -198,7 +197,7 @@ class _MusicHomePageState extends State<MusicHomePage>
                 Text("歌手")
               ],
             ),onTap: (){
-              Routes.router.navigateTo(context, '/MusicAuthorListPage');
+              Routes.router.navigateTo(context, '/MusicAuthorCategoryPage');
             },),
             flex: 1,
           ),
@@ -261,7 +260,7 @@ class _MusicHomePageState extends State<MusicHomePage>
                 Expanded(child: SizedBox(), flex: 1),
                 InkWell(child: Text("更多"),onTap: (){
                   if( musicClassifyModel.classifyName == "推荐歌手"){
-                    Routes.router.navigateTo(context, '/MusicAuthorListPage');
+                    Routes.router.navigateTo(context, '/MusicAuthorCategoryPage');
                   }else{
                     Routes.router.navigateTo(context, '/MusicClassifyListPage?musicClassifyModel=${Uri.encodeComponent(json.encode(musicClassifyModel.toMap()))}');
                   }

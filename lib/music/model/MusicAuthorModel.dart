@@ -50,4 +50,23 @@ class MusicAuthorModel {
         total: json["total"]
     );
   }
+
+  Map<String, dynamic> toMap() {
+    return {
+      "id": id,
+      "authorId": authorId,
+      "authorName": authorName,
+      "language": language,
+      "isPublish": isPublish,
+      "avatar": avatar,
+      "type": type,
+      "country": country,
+      "birthday": birthday,
+      "identity": identity,
+      "rank": rank,
+      "createTime": createTime,
+      "updateTime": updateTime,
+      "total": total
+    };
+  }
 }
