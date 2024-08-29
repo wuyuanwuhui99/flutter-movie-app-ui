@@ -2,9 +2,9 @@ import 'dart:convert';
 
 import 'package:fluro/fluro.dart';
 import 'package:flutter/material.dart';
-import 'package:movie/movie/pages/MovieDetailPage.dart';
-import 'package:movie/music/model/MusicAuthorModel.dart';
-import 'package:movie/music/pages/MusicAuthorListPage.dart';
+import '../movie/pages/MovieDetailPage.dart';
+import '../music/model/MusicAuthorModel.dart';
+import '../music/pages/MusicAuthorListPage.dart';
 import '../movie/pages/MovieIndexPage.dart';
 import '../movie/model/MovieDetailModel.dart';
 import '../music/model/FavoriteDirectoryModel.dart';

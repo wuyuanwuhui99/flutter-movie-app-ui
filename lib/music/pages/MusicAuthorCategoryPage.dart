@@ -26,7 +26,6 @@ class _MusicAuthorCategoryPageState extends State<MusicAuthorCategoryPage>
   int activeIndex = 0; // 当前选中的分类
   int pageNum = 1; // 总页数
   int total = 0; // 总条数
-  int pageSize = 20; // 每页条数
   List<MusicAuthorModel> musicAuthorList = [];
   List<MusicAuthorCategoryModel> authorCategoryList = []; // 播放记录列表
   EasyRefreshController easyRefreshController = EasyRefreshController();
@@ -49,7 +48,7 @@ class _MusicAuthorCategoryPageState extends State<MusicAuthorCategoryPage>
   ///@date: 2024-02-28 22:20
   useMusicAuthorList() {
     getMusicAuthorListService(
-            authorCategoryList[activeIndex].id, pageNum, pageSize)
+            authorCategoryList[activeIndex].id, pageNum, PAGE_SIZE)
         .then((value) {
       setState(() {
         total = value.total;
@@ -92,7 +91,7 @@ class _MusicAuthorCategoryPageState extends State<MusicAuthorCategoryPage>
                           textColor: ThemeColors.disableColor,
                         ),
                         onLoad: () async {
-                            if (pageNum * pageSize < total) {
+                            if (pageNum * PAGE_SIZE < total) {
                               useMusicAuthorList();
                             }
                         },
@@ -119,8 +118,7 @@ class _MusicAuthorCategoryPageState extends State<MusicAuthorCategoryPage>
     return Container(
         decoration: ThemeStyle.boxDecoration,
         margin: ThemeStyle.margin,
-        width:
-            MediaQuery.of(context).size.width - ThemeSize.containerPadding * 2,
+        width: double.infinity,
         padding: ThemeStyle.padding,
         child: GridView.count(
             mainAxisSpacing: ThemeSize.smallMargin,
