@@ -47,7 +47,7 @@ class _MusicAuthorCategoryPageState extends State<MusicAuthorCategoryPage>
   ///@description: 根据分类获取列表
   ///@date: 2024-02-28 22:20
   useMusicAuthorList() {
-    getMusicAuthorListService(
+    getMusicAuthorListByCategoryIdService(
             authorCategoryList[activeIndex].id, pageNum, PAGE_SIZE)
         .then((value) {
       setState(() {

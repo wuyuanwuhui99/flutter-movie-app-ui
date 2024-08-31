@@ -1,6 +1,6 @@
 class MusicAuthorModel {
   int id;//主键
-  int authorId;// 歌手id
+  String authorId;// 歌手id
   String authorName;// 歌手名称
   String language;// 语言
   int isPublish;// 是否发布

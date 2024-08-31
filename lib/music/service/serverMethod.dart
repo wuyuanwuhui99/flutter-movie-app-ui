@@ -53,11 +53,11 @@ Future<ResponseModel<List>> getMusicListByClassifyIdService(
 ///@author: wuwenqiang
 ///@description: 获取分类音乐列表
 /// @date: 2023-05-25 22:45
-Future<ResponseModel<List>> getMusicAuthorListService(
+Future<ResponseModel<List>> getMusicAuthorListByCategoryIdService(
     int categoryId, int pageNum, int pageSize) async {
   try {
     Response response = await dio.get(
-        "${servicePath['getMusicAuthorList']}?categoryId=$categoryId&pageNum=$pageNum&pageSize=$pageSize");
+        "${servicePath['getMusicAuthorListByCategoryId']}?categoryId=$categoryId&pageNum=$pageNum&pageSize=$pageSize");
     return ResponseModel.fromJson(response.data);
   } catch (e) {
     print('ERROR:======>${e}');
@@ -69,7 +69,7 @@ Future<ResponseModel<List>> getMusicAuthorListService(
 ///@description: 根据歌手id获取音乐列表
 /// @date: 2024-08-24 11:44
 Future<ResponseModel<List>> getMusicListByAuthorIdService(
-    int authorId, int pageNum, int pageSize) async {
+    String authorId, int pageNum, int pageSize) async {
   try {
     Response response = await dio.get(
         "${servicePath['getMusicListByAuthorId']}?authorId=$authorId&pageNum=$pageNum&pageSize=$pageSize");

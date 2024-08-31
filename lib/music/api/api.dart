@@ -2,7 +2,7 @@ const servicePath = {
   'getKeywordMusic': '/service/myMusic/getKeywordMusic',//获取搜索关键词
   'getMusicClassify': '/service/myMusic/getMusicClassify',//获取分类歌曲
   'getMusicListByClassifyId': '/service/myMusic/getMusicListByClassifyId',//获取推荐音乐列表
-  'getMusicAuthorList': '/service/myMusic/getMusicAuthorList',// 获取歌手列表
+  'getMusicAuthorListByCategoryId': '/service/myMusic/getMusicAuthorListByCategoryId',// 获取歌手列表
   'getCircleListByType': '/service/circle/getCircleListByType',// 获取歌手列表
   'getMyLikeMusicAuthor': '/service/myMusic-getway/getMyLikeMusicAuthor',// 获取我关注的歌手
   'getMusicRecord': '/service/myMusic-getway/getMusicRecord',// 获取播放记录
