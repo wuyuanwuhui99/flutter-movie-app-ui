@@ -22,6 +22,7 @@ import '../component/CommentComponent.dart';
 import '../component/FavoriteComponent.dart';
 import '../../utils/HttpUtil.dart';
 import '../service/serverMethod.dart';
+import '../component/MusicAvaterComponent.dart';
 
 class MusicPlayerPage extends StatefulWidget {
   MusicPlayerPage({Key key}) : super(key: key);
@@ -113,10 +114,15 @@ class _MusicPlayerPageState extends State<MusicPlayerPage>
           ImageFiltered(
             imageFilter: ImageFilter.blur(
                 sigmaX: 50, sigmaY: 50, tileMode: TileMode.mirror),
-            child: Image.network(HOST + provider.musicModel.cover,
-                fit: BoxFit.cover,
-                height: MediaQuery.of(context).size.height,
-                width: MediaQuery.of(context).size.width),
+            child: provider.musicModel.cover != null && provider.musicModel.cover != ''
+                ? Image.network(getMusicCover(provider.musicModel.cover),
+                    fit: BoxFit.cover,
+                    height: MediaQuery.of(context).size.height,
+                    width: MediaQuery.of(context).size.width)
+                : Image.asset('lib/assets/images/default_cover.jpg',
+                    fit: BoxFit.cover,
+                    height: MediaQuery.of(context).size.height,
+                    width: MediaQuery.of(context).size.width),
           ),
           Container(
             width: MediaQuery.of(context).size.width,
@@ -183,16 +189,11 @@ class _MusicPlayerPageState extends State<MusicPlayerPage>
               child: Padding(
                   padding: EdgeInsets.all(ThemeSize.containerPadding * 4),
                   child: ClipOval(
-                      child: Image.network(
-                    HOST + provider.musicModel.cover,
-                    height: playerWidth -
-                        ThemeSize.smallMargin -
-                        ThemeSize.containerPadding * 3,
-                    width: playerWidth -
-                        ThemeSize.smallMargin -
-                        ThemeSize.containerPadding * 3,
-                    fit: BoxFit.cover,
-                  )))),
+                      child:
+                      MusicAvaterComponent(avater:provider.musicModel.cover,size:playerWidth -
+                          ThemeSize.smallMargin -
+                          ThemeSize.containerPadding * 3),
+                  ))),
         ));
   }
 

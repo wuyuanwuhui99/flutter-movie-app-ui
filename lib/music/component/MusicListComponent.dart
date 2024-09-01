@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import '../service/serverMethod.dart';
 import '../provider/PlayerMusicProvider.dart';
-import 'package:provider/provider.dart';
 import '../model/MusicModel.dart';
-import '../../utils/common.dart';
+import './MusicAvaterComponent.dart';
 import '../../theme/ThemeSize.dart';
 import '../../theme/ThemeStyle.dart';
 import '../../theme/ThemeColors.dart';
@@ -67,30 +67,7 @@ class _MusicListComponentState extends State<MusicListComponent> {
           widget.onPlayMusic(ele, i);
         },
         child: Row(children: [
-          ele.cover != null
-              ? ClipOval(
-                  child: Image.network(
-                    //从全局的provider中获取用户信息
-                    getMusicCover(ele.cover),
-                    height: ThemeSize.middleAvater,
-                    width: ThemeSize.middleAvater,
-                    fit: BoxFit.cover,
-                  ),
-                )
-              : Container(
-                  height: ThemeSize.middleAvater,
-                  width: ThemeSize.middleAvater,
-                  child: Center(
-                      child: Image.asset(
-                    'lib/assets/images/icon_music.png',
-                    height: ThemeSize.smallIcon,
-                    width: ThemeSize.smallIcon,
-                    fit: BoxFit.cover,
-                  )),
-                  decoration: BoxDecoration(
-                      borderRadius: BorderRadius.all(
-                          Radius.circular(ThemeSize.middleAvater))),
-                ),
+          MusicAvaterComponent(avater:ele.cover,size:ThemeSize.middleAvater),
           SizedBox(width: ThemeSize.containerPadding),
           Expanded(
             child: Text('${ele.authorName} - ${ele.songName}'),

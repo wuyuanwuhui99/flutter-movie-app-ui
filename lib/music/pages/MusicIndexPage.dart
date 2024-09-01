@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:movie/utils/common.dart';
 import '../../router/index.dart';
 import 'package:provider/provider.dart';
 import 'package:audioplayers/audioplayers.dart';
@@ -14,7 +15,7 @@ import './MusicUserPage.dart';
 import '../provider/PlayerMusicProvider.dart';
 import '../model/MusicModel.dart';
 import '../../utils/LocalStorageUtils.dart';
-import '../../common/constant.dart';
+import '../component/MusicAvaterComponent.dart';
 
 class MusicIndexPage extends StatefulWidget {
   MusicIndexPage({Key key}) : super(key: key);
@@ -225,12 +226,8 @@ class _MusicIndexPageState extends State<MusicIndexPage>
                     ? InkWell(
                     child: RotationTransition(
                         turns: _curveAnimation,
-                        child: ClipOval(
-                            child: Image.network(
-                              HOST + musicModel.cover,
-                              width: ThemeSize.minPlayIcon,
-                              height: ThemeSize.minPlayIcon,
-                            ))),
+                        child: MusicAvaterComponent(avater:musicModel.cover,size:ThemeSize.minPlayIcon),
+                    ),
                     onTap: () {
                       Routes.router.navigateTo(context, '/MusicPlayerPage');
                     })

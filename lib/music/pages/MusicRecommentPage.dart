@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_easyrefresh/easy_refresh.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:flutter_easyrefresh/material_footer.dart';
 import 'package:audioplayers/audioplayers.dart';
+import '../component/MusicAvaterComponent.dart';
+import 'package:provider/provider.dart';
 import '../../router/index.dart';
 import '../model/MusicModel.dart';
-import 'package:provider/provider.dart';
 import '../provider/PlayerMusicProvider.dart';
 import '../service/serverMethod.dart';
 import '../../theme/ThemeStyle.dart';
@@ -92,14 +92,7 @@ class _MusicRecommentPageState extends State<MusicRecommentPage>
                     (index + 1).toString(),
                   ))),
           SizedBox(width: ThemeSize.containerPadding),
-          ClipOval(
-              child: Image.network(
-            //从全局的provider中获取用户信息
-            HOST + musicModel.cover,
-            height: ThemeSize.middleAvater,
-            width: ThemeSize.middleAvater,
-            fit: BoxFit.cover,
-          )),
+          MusicAvaterComponent(size: ThemeSize.middleAvater,avater:musicModel.cover),
           SizedBox(width: ThemeSize.containerPadding),
           Expanded(
             child: Column(

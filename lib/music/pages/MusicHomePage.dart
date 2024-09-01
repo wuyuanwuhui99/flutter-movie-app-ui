@@ -1,8 +1,8 @@
 import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_easyrefresh/easy_refresh.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import '../../utils/common.dart';
 import 'package:provider/provider.dart';
 import '../model/MusicClassifyModel.dart';
 import '../model/MusicAuthorModel.dart';
@@ -16,6 +16,7 @@ import '../../theme/ThemeColors.dart';
 import '../../common/constant.dart';
 import '../../utils/LocalStorageUtils.dart';
 import '../../router/index.dart';
+import '../component/MusicAvaterComponent.dart';
 
 class MusicHomePage extends StatefulWidget {
   MusicHomePage({Key key}) : super(key: key);
@@ -46,7 +47,7 @@ class _MusicHomePageState extends State<MusicHomePage>
   }
 
   @override
-  deactivate(){
+  deactivate() {
     super.deactivate();
   }
 
@@ -55,7 +56,9 @@ class _MusicHomePageState extends State<MusicHomePage>
       setState(() {
         currentClassifiesList.add(allClassifies[currentClassifiesList.length]);
       });
-      easyRefreshController.finishLoad(success: true,noMore: currentClassifiesList.length == allClassifies.length);
+      easyRefreshController.finishLoad(
+          success: true,
+          noMore: currentClassifiesList.length == allClassifies.length);
     }
   }
 
@@ -120,15 +123,9 @@ class _MusicHomePageState extends State<MusicHomePage>
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: <Widget>[
-            ClipOval(
-              child: Image.network(
-                //从全局的provider中获取用户信息
-                HOST + Provider.of<UserInfoProvider>(context).userInfo.avater,
-                height: ThemeSize.middleAvater,
-                width: ThemeSize.middleAvater,
-                fit: BoxFit.cover,
-              ),
-            ),
+            MusicAvaterComponent(
+                avater: Provider.of<UserInfoProvider>(context).userInfo.avater,
+                size: ThemeSize.middleAvater),
             Expanded(
                 flex: 1,
                 child: Padding(
@@ -148,7 +145,7 @@ class _MusicHomePageState extends State<MusicHomePage>
                                 Provider.of<PlayerMusicProvider>(context);
                             if (musicProvider.musicModel == null) {
                               // 如果缓存中没有正在播放的歌曲，用推荐的歌曲作为正在播放的歌曲
-                              musicProvider.setPlayMusic( musicModel, false);
+                              musicProvider.setPlayMusic(musicModel, false);
                               LocalStorageUtils.setPlayMusic(musicModel);
                             }
                             keyword =
@@ -156,7 +153,8 @@ class _MusicHomePageState extends State<MusicHomePage>
                           }
                           return InkWell(
                               onTap: () {
-                                Routes.router.navigateTo(context, '/MusicSearchPage?keyword=${Uri.encodeComponent(keyword)}');
+                                Routes.router.navigateTo(context,
+                                    '/MusicSearchPage?keyword=${Uri.encodeComponent(keyword)}');
                               },
                               child: Container(
                                   height: ThemeSize.buttonHeight,
@@ -188,17 +186,20 @@ class _MusicHomePageState extends State<MusicHomePage>
         padding: ThemeStyle.padding,
         child: Row(children: [
           Expanded(
-            child: InkWell(child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Image.asset("lib/assets/images/icon_music_singer.png",
-                    width: ThemeSize.bigAvater, height: ThemeSize.bigAvater),
-                SizedBox(height: ThemeSize.smallMargin),
-                Text("歌手")
-              ],
-            ),onTap: (){
-              Routes.router.navigateTo(context, '/MusicAuthorCategoryPage');
-            },),
+            child: InkWell(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Image.asset("lib/assets/images/icon_music_singer.png",
+                      width: ThemeSize.bigAvater, height: ThemeSize.bigAvater),
+                  SizedBox(height: ThemeSize.smallMargin),
+                  Text("歌手")
+                ],
+              ),
+              onTap: () {
+                Routes.router.navigateTo(context, '/MusicAuthorCategoryPage');
+              },
+            ),
             flex: 1,
           ),
           Expanded(
@@ -242,7 +243,7 @@ class _MusicHomePageState extends State<MusicHomePage>
   Widget buildMuiscModuleByClassifyIdWidget(
       MusicClassifyModel musicClassifyModel) {
     return Container(
-      key: ValueKey(musicClassifyModel.classifyName),
+        key: ValueKey(musicClassifyModel.classifyName),
         decoration: ThemeStyle.boxDecoration,
         margin: ThemeStyle.margin,
         width:
@@ -258,13 +259,18 @@ class _MusicHomePageState extends State<MusicHomePage>
                 SizedBox(width: ThemeSize.smallMargin),
                 Text(musicClassifyModel.classifyName),
                 Expanded(child: SizedBox(), flex: 1),
-                InkWell(child: Text("更多"),onTap: (){
-                  if( musicClassifyModel.classifyName == "推荐歌手"){
-                    Routes.router.navigateTo(context, '/MusicAuthorCategoryPage');
-                  }else{
-                    Routes.router.navigateTo(context, '/MusicClassifyListPage?musicClassifyModel=${Uri.encodeComponent(json.encode(musicClassifyModel.toMap()))}');
-                  }
-                },)
+                InkWell(
+                  child: Text("更多"),
+                  onTap: () {
+                    if (musicClassifyModel.classifyName == "推荐歌手") {
+                      Routes.router
+                          .navigateTo(context, '/MusicAuthorCategoryPage');
+                    } else {
+                      Routes.router.navigateTo(context,
+                          '/MusicClassifyListPage?musicClassifyModel=${Uri.encodeComponent(json.encode(musicClassifyModel.toMap()))}');
+                    }
+                  },
+                )
               ],
             ),
             musicClassifyModel.classifyName == "推荐歌手"
@@ -276,7 +282,8 @@ class _MusicHomePageState extends State<MusicHomePage>
 
   // 获取音乐列表
   Widget buildMusicListByClassifyId(MusicClassifyModel classifyModel) {
-    PlayerMusicProvider provider = Provider.of<PlayerMusicProvider>(context, listen: false);
+    PlayerMusicProvider provider =
+        Provider.of<PlayerMusicProvider>(context, listen: false);
     return FutureBuilder(
         future: getMusicListByClassifyIdService(classifyModel.id, 1, 3, 1),
         builder: (context, snapshot) {
@@ -285,7 +292,7 @@ class _MusicHomePageState extends State<MusicHomePage>
           } else {
             List<MusicModel> musicModelList = [];
             List<Widget> musicWidgetList = [];
-            int i= -1;
+            int i = -1;
             snapshot.data.data.forEach((element) {
               int index = ++i;
               element['classifyId'] = classifyModel.id;
@@ -300,15 +307,8 @@ class _MusicHomePageState extends State<MusicHomePage>
                   ),
                   child: Row(
                     children: [
-                      ClipOval(
-                        child: Image.network(
-                          //从全局的provider中获取用户信息
-                          HOST + musicItem.cover,
-                          height: ThemeSize.bigAvater,
-                          width: ThemeSize.bigAvater,
-                          fit: BoxFit.cover,
-                        ),
-                      ),
+                      MusicAvaterComponent(
+                          size: ThemeSize.bigAvater, avater: musicItem.cover),
                       SizedBox(width: ThemeSize.containerPadding),
                       Expanded(
                         child: Column(
@@ -355,21 +355,36 @@ class _MusicHomePageState extends State<MusicHomePage>
                       ),
                       InkWell(
                           child: Image.asset(
-                            provider.playing && musicItem.id == provider.musicModel?.id
+                            provider.playing &&
+                                    musicItem.id == provider.musicModel?.id
                                 ? "lib/assets/images/icon_music_playing_grey.png"
                                 : "lib/assets/images/icon_music_play.png",
                             width: ThemeSize.smallIcon,
                             height: ThemeSize.smallIcon,
                           ),
-                          onTap:  () async {
-                            if(provider.classifyName != classifyModel.classifyName){
-                              await getMusicListByClassifyIdService(classifyModel.id, 1, MAX_FAVORITE_NUMBER, 1).then((value){
-                                provider.setClassifyMusic(value.data.map((element) => MusicModel.fromJson(element)).toList(),index,classifyModel.classifyName);
+                          onTap: () async {
+                            if (provider.classifyName !=
+                                classifyModel.classifyName) {
+                              await getMusicListByClassifyIdService(
+                                      classifyModel.id,
+                                      1,
+                                      MAX_FAVORITE_NUMBER,
+                                      1)
+                                  .then((value) {
+                                provider.setClassifyMusic(
+                                    value.data
+                                        .map((element) =>
+                                            MusicModel.fromJson(element))
+                                        .toList(),
+                                    index,
+                                    classifyModel.classifyName);
                               });
-                            }else if(musicItem.id != provider.musicModel?.id){
+                            } else if (musicItem.id !=
+                                provider.musicModel?.id) {
                               provider.setPlayMusic(musicItem, true);
                             }
-                            Routes.router.navigateTo(context, '/MusicPlayerPage');
+                            Routes.router
+                                .navigateTo(context, '/MusicPlayerPage');
                           }),
                       SizedBox(width: ThemeSize.containerPadding),
                       Image.asset(
@@ -395,7 +410,7 @@ class _MusicHomePageState extends State<MusicHomePage>
   // 获取歌手列表
   Widget buildMusicAuthorListWidget() {
     return FutureBuilder(
-        future: getMusicAuthorListByCategoryIdService(0,1, 5),
+        future: getMusicAuthorListByCategoryIdService(0, 1, 5),
         builder: (context, snapshot) {
           if (snapshot.data == null) {
             return Container();
@@ -414,32 +429,34 @@ class _MusicHomePageState extends State<MusicHomePage>
                       MusicAuthorModel.fromJson(item);
                   return Expanded(
                       flex: 1,
-                      child:
-                      InkWell(onTap: (){
-                        Routes.router.navigateTo(context, '/MusicAuthorListPage?authorModel=${Uri.encodeComponent(json.encode(item))}');
-                      },child: Column(
-                        children: [
-                          ClipOval(
-                            child: authorModel.avatar != null && authorModel.avatar != ""
-                                ? Image.network(
-                              //从全局的provider中获取用户信息
-                              authorModel.avatar.indexOf("http") != -1
-                                  ? authorModel.avatar.replaceAll("{size}", "480")
-                                  : HOST + authorModel.avatar,
-                              height: size,
-                              width: size,
-                              fit: BoxFit.cover,
-                            )
-                                : Image.asset("lib/assets/images/default_avater.png",
-                                height: size,
-                                width: size,
-                                fit: BoxFit.cover),
-                          ),
-                          SizedBox(height: ThemeSize.containerPadding),
-                          Text(authorModel.authorName)
-                        ],
-                      ),)
-                      );
+                      child: InkWell(
+                        onTap: () {
+                          Routes.router.navigateTo(context,
+                              '/MusicAuthorListPage?authorModel=${Uri.encodeComponent(json.encode(item))}');
+                        },
+                        child: Column(
+                          children: [
+                            ClipOval(
+                              child: authorModel.avatar != null &&
+                                      authorModel.avatar != ""
+                                  ? Image.network(
+                                      //从全局的provider中获取用户信息
+                                      getMusicCover(authorModel.avatar),
+                                      height: size,
+                                      width: size,
+                                      fit: BoxFit.cover,
+                                    )
+                                  : Image.asset(
+                                      "lib/assets/images/default_avater.png",
+                                      height: size,
+                                      width: size,
+                                      fit: BoxFit.cover),
+                            ),
+                            SizedBox(height: ThemeSize.containerPadding),
+                            Text(authorModel.authorName)
+                          ],
+                        ),
+                      ));
                 }).toList())
               ],
             );
