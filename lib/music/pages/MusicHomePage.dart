@@ -414,7 +414,10 @@ class _MusicHomePageState extends State<MusicHomePage>
                       MusicAuthorModel.fromJson(item);
                   return Expanded(
                       flex: 1,
-                      child: Column(
+                      child:
+                      InkWell(onTap: (){
+                        Routes.router.navigateTo(context, '/MusicAuthorListPage?authorModel=${Uri.encodeComponent(json.encode(item))}');
+                      },child: Column(
                         children: [
                           ClipOval(
                             child: authorModel.avatar != null && authorModel.avatar != ""
@@ -435,7 +438,8 @@ class _MusicHomePageState extends State<MusicHomePage>
                           SizedBox(height: ThemeSize.containerPadding),
                           Text(authorModel.authorName)
                         ],
-                      ));
+                      ),)
+                      );
                 }).toList())
               ],
             );
