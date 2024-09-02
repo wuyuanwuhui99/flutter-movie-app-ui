@@ -226,7 +226,7 @@ class _MusicIndexPageState extends State<MusicIndexPage>
                     ? InkWell(
                     child: RotationTransition(
                         turns: _curveAnimation,
-                        child: MusicAvaterComponent(avater:musicModel.cover,size:ThemeSize.minPlayIcon),
+                        child: MusicAvaterComponent(type:'music',name:'',avater:musicModel.cover,size:ThemeSize.minPlayIcon),
                     ),
                     onTap: () {
                       Routes.router.navigateTo(context, '/MusicPlayerPage');

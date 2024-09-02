@@ -190,7 +190,7 @@ class _MusicPlayerPageState extends State<MusicPlayerPage>
                   padding: EdgeInsets.all(ThemeSize.containerPadding * 4),
                   child: ClipOval(
                       child:
-                      MusicAvaterComponent(avater:provider.musicModel.cover,size:playerWidth -
+                      MusicAvaterComponent(type:'music',name:'',avater:provider.musicModel.cover,size:playerWidth -
                           ThemeSize.smallMargin -
                           ThemeSize.containerPadding * 3),
                   ))),

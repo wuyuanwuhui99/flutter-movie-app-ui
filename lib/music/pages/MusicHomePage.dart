@@ -124,6 +124,7 @@ class _MusicHomePageState extends State<MusicHomePage>
           crossAxisAlignment: CrossAxisAlignment.center,
           children: <Widget>[
             MusicAvaterComponent(
+                type:'music',name:'',
                 avater: Provider.of<UserInfoProvider>(context).userInfo.avater,
                 size: ThemeSize.middleAvater),
             Expanded(
@@ -308,6 +309,7 @@ class _MusicHomePageState extends State<MusicHomePage>
                   child: Row(
                     children: [
                       MusicAvaterComponent(
+                          type:'music',name:'',
                           size: ThemeSize.bigAvater, avater: musicItem.cover),
                       SizedBox(width: ThemeSize.containerPadding),
                       Expanded(
@@ -436,22 +438,7 @@ class _MusicHomePageState extends State<MusicHomePage>
                         },
                         child: Column(
                           children: [
-                            ClipOval(
-                              child: authorModel.avatar != null &&
-                                      authorModel.avatar != ""
-                                  ? Image.network(
-                                      //从全局的provider中获取用户信息
-                                      getMusicCover(authorModel.avatar),
-                                      height: size,
-                                      width: size,
-                                      fit: BoxFit.cover,
-                                    )
-                                  : Image.asset(
-                                      "lib/assets/images/default_avater.png",
-                                      height: size,
-                                      width: size,
-                                      fit: BoxFit.cover),
-                            ),
+                            MusicAvaterComponent(type:'author',avater:authorModel.avatar,size:size,name:authorModel.authorName[0]),
                             SizedBox(height: ThemeSize.containerPadding),
                             Text(authorModel.authorName)
                           ],

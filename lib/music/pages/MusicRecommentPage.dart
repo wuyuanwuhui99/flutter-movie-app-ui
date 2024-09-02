@@ -92,7 +92,7 @@ class _MusicRecommentPageState extends State<MusicRecommentPage>
                     (index + 1).toString(),
                   ))),
           SizedBox(width: ThemeSize.containerPadding),
-          MusicAvaterComponent(size: ThemeSize.middleAvater,avater:musicModel.cover),
+          MusicAvaterComponent(type:'music',name:'',size: ThemeSize.middleAvater,avater:musicModel.cover),
           SizedBox(width: ThemeSize.containerPadding),
           Expanded(
             child: Column(

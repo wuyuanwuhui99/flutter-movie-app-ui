@@ -67,7 +67,7 @@ class _MusicListComponentState extends State<MusicListComponent> {
           widget.onPlayMusic(ele, i);
         },
         child: Row(children: [
-          MusicAvaterComponent(avater:ele.cover,size:ThemeSize.middleAvater),
+          MusicAvaterComponent(type:'music',name:'',avater:ele.cover,size:ThemeSize.middleAvater),
           SizedBox(width: ThemeSize.containerPadding),
           Expanded(
             child: Text('${ele.authorName} - ${ele.songName}'),
