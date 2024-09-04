@@ -56,7 +56,7 @@ class _MusicRecommentPageState extends State<MusicRecommentPage>
   }
 
   void getRecommendMusicList(int pageNum, pageSize) {
-    getMusicListByClassifyIdService(1, pageNum, pageSize, 0).then((res) {
+    getMusicListByClassifyIdService(1, pageNum, pageSize, 1).then((res) {
       setState(() {
         total = res.total;
         res.data.forEach((item) {

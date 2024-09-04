@@ -42,7 +42,7 @@ Future<ResponseModel<List>> getMusicListByClassifyIdService(
     int classifyId, int pageNum, int pageSize, int isRedis) async {
   try {
     Response response = await dio.get(
-        "${servicePath['getMusicListByClassifyId']}?classifyId=${classifyId}&pageNum=${pageNum}&pageSize=${pageSize}&isRedis=${isRedis}");
+        "${servicePath['getMusicListByClassifyId']}?classifyId=$classifyId&pageNum=$pageNum&pageSize=$pageSize&isRedis=$isRedis");
     return ResponseModel.fromJson(response.data);
   } catch (e) {
     print('ERROR:======>${e}');

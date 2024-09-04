@@ -69,6 +69,7 @@ class PlayerMusicProvider with ChangeNotifier {
     _playMusicList = [];
     _unPlayMusicList =  List.from(musicList);
     _playing = true;
+    _playIndex = index;
     LocalStorageUtils.setPlayMusic(_musicModel);
     LocalStorageUtils.setMusicList(_musicList);
     LocalStorageUtils.setClassifyName(_classifyName);

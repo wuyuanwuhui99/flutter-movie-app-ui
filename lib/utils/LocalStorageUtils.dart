@@ -75,7 +75,7 @@ class LocalStorageUtils {
   ///  @author wuwenqiang
   static Future<LoopModeEnum> getLoopMode() async {
     final SharedPreferences prefs = await _prefs;
-    return prefs.getString(LOOP_STORAGE_KEY) != null ? LoopModeEnum.values.firstWhere((e) => e.toString() == prefs.getString("loopMode")) : LoopModeEnum.ORDER;
+    return prefs.getString(LOOP_STORAGE_KEY) != null ? LoopModeEnum.values.firstWhere((e) => e.toString() == prefs.getString(LOOP_STORAGE_KEY)) : LoopModeEnum.ORDER;
   }
 
   ///  @desc 把分类名称存入缓存

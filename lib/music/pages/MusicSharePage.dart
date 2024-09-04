@@ -7,7 +7,7 @@ import '../../theme/ThemeStyle.dart';
 import '../../theme/ThemeColors.dart';
 import '../../theme/ThemeSize.dart';
 import '../model/MusicModel.dart';
-import '../../utils/common.dart';
+import '../component/MusicAvaterComponent.dart';
 import '../../common/config.dart';
 
 class MusicSharePage extends StatefulWidget {
@@ -147,15 +147,7 @@ class _MusicSharePageState extends State<MusicSharePage>
       decoration: ThemeStyle.boxDecoration,
       padding: ThemeStyle.padding,
       child: Row(children: [
-        ClipOval(
-          child: Image.network(
-            //从全局的provider中获取用户信息
-            getMusicCover(widget.musicModel.cover),
-            height: ThemeSize.middleAvater,
-            width: ThemeSize.middleAvater,
-            fit: BoxFit.cover,
-          ),
-        ),
+        MusicAvaterComponent(type:'music',name:'',avater:widget.musicModel.cover,size:ThemeSize.middleAvater),
         SizedBox(width: ThemeSize.containerPadding),
         Text('${widget.musicModel.authorName} - ${widget.musicModel.songName}')
       ],),
