@@ -134,6 +134,7 @@ Future<ResponseModel<int>> insertMusicRecordService(
     MusicModel musicModel ) async {
     Map<String,dynamic>data = {
       "musicId":musicModel.id,
+      "version":'v1.0',
       "plotform": '${Platform.operatingSystem} ${Platform.operatingSystemVersion}'
     };
   try {
