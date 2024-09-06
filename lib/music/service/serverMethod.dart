@@ -131,11 +131,11 @@ Future<ResponseModel<List>> getMusicRecordService(
 ///@description: 获取我关注的歌手
 /// @date: 2023-11-20 22:15
 Future<ResponseModel<int>> insertMusicRecordService(
-    MusicModel musicModel ) async {
+    MusicModel musicModel,String version ) async {
     Map<String,dynamic>data = {
       "musicId":musicModel.id,
-      "version":'v1.0',
-      "plotform": '${Platform.operatingSystem} ${Platform.operatingSystemVersion}'
+      "version": version,
+      "platform": '${Platform.operatingSystem} ${Platform.operatingSystemVersion}'
     };
   try {
     Response response = await dio.post(servicePath['insertMusicRecord'],

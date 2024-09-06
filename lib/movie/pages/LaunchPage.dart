@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:movie/music/provider/PlayerMusicProvider.dart';
+import 'package:package_info_plus/package_info_plus.dart';
+import 'package:device_info_plus/device_info_plus.dart';
 import '../../router/index.dart';
 import '../service/serverMethod.dart';
 import '../../utils/HttpUtil.dart';
@@ -15,9 +18,15 @@ class LaunchPage extends StatefulWidget {
 }
 
 class LaunchPageState extends State<LaunchPage> {
+  UserInfoProvider userInfoprovider;
+  PlayerMusicProvider musicProvider;
+  String version;
 
   @override
   void initState() {
+    userInfoprovider =  Provider.of<UserInfoProvider>(context,listen: false);
+    musicProvider = Provider.of<PlayerMusicProvider>(context,listen: false);
+
     LocalStorageUtils.getToken().then((res){
       Future.delayed(const Duration(seconds: 1), () {
         // 这里是你想要延时执行的代码
@@ -28,7 +37,7 @@ class LaunchPageState extends State<LaunchPage> {
               String token = data.token;
               LocalStorageUtils.setToken(token);
               HttpUtil.getInstance().setToken(token);
-              Provider.of<UserInfoProvider>(context,listen: false).setUserInfo(UserInfoModel.fromJson(data.data));
+              userInfoprovider.setUserInfo(UserInfoModel.fromJson(data.data));
             }
             Routes.router.navigateTo(context, '/MovieIndexPage',replace: true);
           });
@@ -37,12 +46,14 @@ class LaunchPageState extends State<LaunchPage> {
         }
       });
     });
+     PackageInfo.fromPlatform().then((value){
+       musicProvider.setVersion(value.version);
+    });
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-
     return const Scaffold(
         backgroundColor: Colors.white,
         body: SafeArea(

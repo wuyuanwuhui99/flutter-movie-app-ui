@@ -38,6 +38,7 @@ dependencies:
   audioplayers: ^0.16.1
   flutter_lyric: ^1.0.0
   fluro: ^1.5.1
+  package_info_plus: ^0.5.0
 
 dev_dependencies:
   flutter_test:

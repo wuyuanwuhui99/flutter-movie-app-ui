@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:audioplayers/audioplayers.dart';
+import 'package:movie/movie/provider/UserInfoProvider.dart';
+import 'package:provider/provider.dart';
 import '../../utils/LocalStorageUtils.dart';
 import '../../common/constant.dart';
 import '../service/serverMethod.dart';
@@ -22,6 +24,11 @@ class PlayerMusicProvider with ChangeNotifier {
   int _playIndex = 0; // 音乐播放的下标
   String _classifyName = '';// 分类的名称
   LoopModeEnum _loopMode = LoopModeEnum.ORDER;
+  String _version;
+
+  void setVersion(String version){
+    _version = version;
+  }
 
   ///  @desc 设置正在播放额音乐
   ///  @data 2023-11-15 21:51
@@ -35,7 +42,7 @@ class PlayerMusicProvider with ChangeNotifier {
     }
     _playMusicList = <MusicModel>[];
     removeMusic();
-    if(playing)insertMusicRecordService(_musicModel);// 插入播放记录
+    if(playing)insertMusicRecordService(_musicModel,_version);// 插入播放记录
     LocalStorageUtils.setPlayMusic(_musicModel);
     notifyListeners();
   }
@@ -73,7 +80,7 @@ class PlayerMusicProvider with ChangeNotifier {
     LocalStorageUtils.setPlayMusic(_musicModel);
     LocalStorageUtils.setMusicList(_musicList);
     LocalStorageUtils.setClassifyName(_classifyName);
-    insertMusicRecordService(_musicModel);
+    insertMusicRecordService(_musicModel,_version);
     notifyListeners();
   }
 
@@ -114,7 +121,7 @@ class PlayerMusicProvider with ChangeNotifier {
     if(playIndex <= _musicList.length - 1 && playIndex >= 0){
       _musicModel = _musicList[playIndex];
       _playIndex = playIndex;
-      insertMusicRecordService(_musicModel);
+      insertMusicRecordService(_musicModel,_version);
       LocalStorageUtils.setPlayMusic(_musicModel);
       _player.play(HOST + _musicModel.localPlayUrl);
       removeMusic();
@@ -144,4 +151,6 @@ class PlayerMusicProvider with ChangeNotifier {
   get unPlayMusicList => _unPlayMusicList;
 
   get playMusicList => _playMusicList;
+
+  get version => _version;
 }
