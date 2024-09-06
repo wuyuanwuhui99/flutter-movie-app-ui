@@ -1,12 +1,12 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:audioplayers/audioplayers.dart';
-import 'package:movie/movie/provider/UserInfoProvider.dart';
-import 'package:provider/provider.dart';
 import '../../utils/LocalStorageUtils.dart';
 import '../../common/constant.dart';
 import '../service/serverMethod.dart';
 import '../model/MusicModel.dart';
-
+import '../model/MusicRecordModel.dart';
 enum  LoopModeEnum {
   ORDER,// 顺序播放
   RANDOM,// 随机播放
@@ -25,9 +25,15 @@ class PlayerMusicProvider with ChangeNotifier {
   String _classifyName = '';// 分类的名称
   LoopModeEnum _loopMode = LoopModeEnum.ORDER;
   String _version;
+  String _device;
+  String _platform = '${Platform.operatingSystem} ${Platform.operatingSystemVersion}';
 
   void setVersion(String version){
     _version = version;
+  }
+
+  void setDevice(String device){
+    _device = device;
   }
 
   ///  @desc 设置正在播放额音乐
@@ -42,7 +48,7 @@ class PlayerMusicProvider with ChangeNotifier {
     }
     _playMusicList = <MusicModel>[];
     removeMusic();
-    if(playing)insertMusicRecordService(_musicModel,_version);// 插入播放记录
+    if(playing)insertMusicRecordService(MusicRecordModel(musicId: _musicModel.id,version: _version,device: _device,platform:_platform));// 插入播放记录
     LocalStorageUtils.setPlayMusic(_musicModel);
     notifyListeners();
   }
@@ -80,7 +86,7 @@ class PlayerMusicProvider with ChangeNotifier {
     LocalStorageUtils.setPlayMusic(_musicModel);
     LocalStorageUtils.setMusicList(_musicList);
     LocalStorageUtils.setClassifyName(_classifyName);
-    insertMusicRecordService(_musicModel,_version);
+    insertMusicRecordService(MusicRecordModel(musicId: _musicModel.id,version: _version,device: _device,platform:_platform));
     notifyListeners();
   }
 
@@ -121,7 +127,7 @@ class PlayerMusicProvider with ChangeNotifier {
     if(playIndex <= _musicList.length - 1 && playIndex >= 0){
       _musicModel = _musicList[playIndex];
       _playIndex = playIndex;
-      insertMusicRecordService(_musicModel,_version);
+      insertMusicRecordService(MusicRecordModel(musicId: _musicModel.id,version: _version,device: _device,platform:_platform));
       LocalStorageUtils.setPlayMusic(_musicModel);
       _player.play(HOST + _musicModel.localPlayUrl);
       removeMusic();
@@ -153,4 +159,6 @@ class PlayerMusicProvider with ChangeNotifier {
   get playMusicList => _playMusicList;
 
   get version => _version;
+
+  get device => _device;
 }

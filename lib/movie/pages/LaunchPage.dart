@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:movie/music/provider/PlayerMusicProvider.dart';
 import 'package:package_info_plus/package_info_plus.dart';
@@ -49,6 +51,18 @@ class LaunchPageState extends State<LaunchPage> {
      PackageInfo.fromPlatform().then((value){
        musicProvider.setVersion(value.version);
     });
+    DeviceInfoPlugin deviceInfo = DeviceInfoPlugin();
+    if (Platform.isAndroid) {
+      deviceInfo.androidInfo.then((value){
+        musicProvider.setDevice(value.model);
+      });
+    } else if (Platform.isIOS) {
+      deviceInfo.iosInfo.then((value){
+        musicProvider.setDevice(value.model);
+      });
+    }else{
+      musicProvider.setDevice('Unknown');
+    }
     super.initState();
   }
 

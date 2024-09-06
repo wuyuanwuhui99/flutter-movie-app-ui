@@ -1,12 +1,11 @@
 import 'dart:async';
 import 'dart:io';
 import 'package:dio/dio.dart';
-import 'package:movie/movie/provider/UserInfoProvider.dart';
 import '../model/CircleModel.dart';
 import '../../common/config.dart';
 import '../model/CircleLikeModel.dart';
 import '../model/FavoriteDirectoryModel.dart';
-import '../model/MusicModel.dart';
+import '../model/MusicRecordModel.dart';
 import '../api/api.dart';
 import '../../utils/HttpUtil.dart';
 
@@ -131,15 +130,10 @@ Future<ResponseModel<List>> getMusicRecordService(
 ///@description: 获取我关注的歌手
 /// @date: 2023-11-20 22:15
 Future<ResponseModel<int>> insertMusicRecordService(
-    MusicModel musicModel,String version ) async {
-    Map<String,dynamic>data = {
-      "musicId":musicModel.id,
-      "version": version,
-      "platform": '${Platform.operatingSystem} ${Platform.operatingSystemVersion}'
-    };
+    MusicRecordModel musicModel) async {
   try {
     Response response = await dio.post(servicePath['insertMusicRecord'],
-        data: data);
+        data: musicModel.toMap());
     return ResponseModel.fromJson(response.data);
   } catch (e) {
     print('ERROR:======>${e}');

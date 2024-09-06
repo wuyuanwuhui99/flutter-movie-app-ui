@@ -39,6 +39,7 @@ dependencies:
   flutter_lyric: ^1.0.0
   fluro: ^1.5.1
   package_info_plus: ^0.5.0
+  device_info_plus: ^0.7.2
 
 dev_dependencies:
   flutter_test:
