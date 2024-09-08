@@ -13,7 +13,7 @@ import '../../theme/ThemeColors.dart';
 import '../../theme/ThemeSize.dart';
 import '../model/MusicModel.dart';
 import '../../utils/common.dart';
-import '../component/NavigatorTiitleComponent.dart';
+import '../component/NavigatorTitleComponent.dart';
 
 class MusicFavoriteListPage extends StatefulWidget {
   final FavoriteDirectoryModel favoriteDirectoryModel;
@@ -71,7 +71,7 @@ class _MusicFavoriteListPageState extends State<MusicFavoriteListPage>
             height: double.infinity,
             child: Column(
               children: [
-                NavigatorTiitleComponent(title: '我的收藏夹'),
+                NavigatorTitleComponent(title: '我的收藏夹'),
                 Expanded(
                     flex: 1,
                     child: EasyRefresh(

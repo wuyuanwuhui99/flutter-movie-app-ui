@@ -4,9 +4,9 @@ import '../../theme/ThemeColors.dart';
 import '../../theme/ThemeStyle.dart';
 
 /*-----------------------头像组件------------------------*/
-class NavigatorTiitleComponent extends StatelessWidget {
+class NavigatorTitleComponent extends StatelessWidget {
   final String title;
-  const NavigatorTiitleComponent({Key key,this.title}) : super(key: key);
+  const NavigatorTitleComponent({Key key,this.title}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

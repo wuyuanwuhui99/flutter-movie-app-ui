@@ -10,7 +10,7 @@ import '../service/serverMethod.dart';
 import '../../theme/ThemeStyle.dart';
 import '../../theme/ThemeColors.dart';
 import '../../common/constant.dart';
-import '../component/NavigatorTiitleComponent.dart';
+import '../component/NavigatorTitleComponent.dart';
 
 class MusicAuthorListPage extends StatefulWidget {
   final MusicAuthorModel authorMode;
@@ -71,7 +71,7 @@ class _MusicAuthorListPageState extends State<MusicAuthorListPage>
               height: double.infinity,
               child: Column(
                 children: [
-                  NavigatorTiitleComponent(title: widget.authorMode.authorName),
+                  NavigatorTitleComponent(title: widget.authorMode.authorName),
                   Expanded(
                       flex: 1,
                       child: EasyRefresh(

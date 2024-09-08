@@ -2,8 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_easyrefresh/easy_refresh.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:provider/provider.dart';
-import 'dart:ui';
-import '../component/NavigatorTiitleComponent.dart';
+import '../component/NavigatorTitleComponent.dart';
 import '../provider/PlayerMusicProvider.dart';
 import '../../router/index.dart';
 import '../model/MusicClassifyModel.dart';
@@ -49,7 +48,7 @@ class _MusicClassifyListPageState extends State<MusicClassifyListPage>
             height: double.infinity,
             child: Column(
               children: [
-                NavigatorTiitleComponent(
+                NavigatorTitleComponent(
                     title: widget.musicClassifyModel.classifyName),
                 Expanded(
                   flex: 1,

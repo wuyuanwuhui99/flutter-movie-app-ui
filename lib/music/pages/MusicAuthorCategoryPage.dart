@@ -2,7 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_easyrefresh/easy_refresh.dart';
-import 'package:movie/router/index.dart';
+import '../../router/index.dart';
 import '../service/serverMethod.dart';
 import '../../theme/ThemeStyle.dart';
 import '../../theme/ThemeSize.dart';
@@ -10,7 +10,7 @@ import '../../theme/ThemeColors.dart';
 import '../model/MusicAuthorCategoryModel.dart';
 import '../model/MusicAuthorModel.dart';
 import '../../common/constant.dart';
-import '../component/NavigatorTiitleComponent.dart';
+import '../component/NavigatorTitleComponent.dart';
 
 class MusicAuthorCategoryPage extends StatefulWidget {
   MusicAuthorCategoryPage({Key key}) : super(key: key);
@@ -76,7 +76,7 @@ class _MusicAuthorCategoryPageState extends State<MusicAuthorCategoryPage>
               height: double.infinity,
               child: Column(
                 children: [
-                  NavigatorTiitleComponent(title: '歌手分类'),
+                  NavigatorTitleComponent(title: '歌手分类'),
                   Expanded(
                       flex: 1,
                       child: EasyRefresh(

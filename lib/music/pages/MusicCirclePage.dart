@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_easyrefresh/material_footer.dart';
 import 'package:flutter_easyrefresh/easy_refresh.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:provider/provider.dart';
 import '../../common/config.dart';
 import '../model/CircleModel.dart';
 import '../../theme/ThemeStyle.dart';
@@ -14,7 +14,6 @@ import '../../movie/model/CommentModel.dart';
 import '../service/serverMethod.dart';
 import '../../movie/service/serverMethod.dart';
 import '../../movie/provider/UserInfoProvider.dart';
-import 'package:provider/provider.dart';
 
 class MusicCirclePage extends StatefulWidget {
   MusicCirclePage({Key key}) : super(key: key);
