@@ -181,7 +181,7 @@ class _MusicCategoryPageState extends State<MusicCategoryPage>
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Text(expand ? '收起' : '展开更多'),
+                  Text(expand ? '收起' : '展开更多',style: TextStyle(color: ThemeColors.subTitle)),
                   SizedBox(width: ThemeSize.smallMargin),
                   Transform.rotate(
                       angle: (expand ? 90 : 0) * pi / 180,
