@@ -1,7 +1,7 @@
 import 'dart:convert';
-
 import 'package:fluro/fluro.dart';
 import 'package:flutter/material.dart';
+import '../music/pages/MusicCategoryPage.dart';
 import '../movie/pages/MovieDetailPage.dart';
 import '../music/model/MusicAuthorModel.dart';
 import '../music/pages/MusicAuthorListPage.dart';
@@ -74,5 +74,9 @@ class Routes {
     router.define('/MusicAuthorListPage', handler: Handler(handlerFunc: (BuildContext context, Map<String, List<String>> params) {
       return MusicAuthorListPage(authorMode:MusicAuthorModel.fromJson(jsonDecode(params['authorModel'].first)));
     }));
+    router.define('/MusicCategoryPage', handler: Handler(handlerFunc: (BuildContext context, Map<String, List<String>> params) {
+      return MusicCategoryPage();
+    }));
+
   }
 }

@@ -185,7 +185,6 @@ https://gitee.com/wuyuanwuhui99/flutter-movie-app-ui
 
 react native版本参见：   
 https://github.com/wuyuanwuhui99/react-native-app-ui   
-https://gitee.com/wuyuanwuhui99/react-native-app-ui
 
 在线音乐和电影后端接口项目和sql语句：   
 https://github.com/wuyuanwuhui99/springboot-app-service   
@@ -201,11 +200,9 @@ https://gitee.com/wuyuanwuhui99/Harmony-arkts-movie-music-app-ui
 
 java安卓原生版本参见：   
 https://github.com/wuyuanwuhui99/android-java-movie-app-ui   
-https://gitee.com/wuyuanwuhui99/android-java-movie-app-ui
 
 kotlin安卓原生版本参见：   
 https://github.com/wuyuanwuhui99/android-kotlin-jetpack-movie-app   
-https://gitee.com/wuyuanwuhui99/android-kotlin-jetpack-movie-app
 
 微信小程序版本参见：   
 https://github.com/wuyuanwuhui99/weixin-movie-app-ui   
@@ -217,15 +214,12 @@ https://gitee.com/wuyuanwuhui99/uniapp-vite-vue3-ts-movie-app-ui
 
 vue2在线音乐项目：   
 https://github.com/wuyuanwuhui99/vue-music-app-ui   
-https://gitee.com/wuyuanwuhui99/vue-music-app-ui
 
 在线音乐后端项目：   
-https://github.com/wuyuanwuhui99/koa2-music-app-service   
-https://gitee.com/wuyuanwuhui99/koa2-music-app-service
+https://github.com/wuyuanwuhui99/koa2-music-app-service
 
 vue3+ts明日头条项目：   
-https://github.com/wuyuanwuhui99/vue3-ts-toutiao-app-ui   
-https://gitee.com/wuyuanwuhui99/vue3-ts-toutiao-app-ui
+https://github.com/wuyuanwuhui99/vue3-ts-toutiao-app-ui
 
 使用token做登录验证，/service/movie/接口不需要验证，/service/movie-getway/接口需要token验证   
 

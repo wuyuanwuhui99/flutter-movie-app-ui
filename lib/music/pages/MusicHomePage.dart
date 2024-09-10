@@ -2,7 +2,6 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyrefresh/easy_refresh.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import '../../utils/common.dart';
 import 'package:provider/provider.dart';
 import '../model/MusicClassifyModel.dart';
 import '../model/MusicAuthorModel.dart';
@@ -204,7 +203,11 @@ class _MusicHomePageState extends State<MusicHomePage>
             flex: 1,
           ),
           Expanded(
-            child: Column(
+            child: InkWell(
+              onTap: (){
+                Routes.router.navigateTo(context, '/MusicCategoryPage');
+              },
+              child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Image.asset("lib/assets/images/icon_music_classify.png",
@@ -212,7 +215,7 @@ class _MusicHomePageState extends State<MusicHomePage>
                 SizedBox(height: ThemeSize.smallMargin),
                 Text("分类歌曲")
               ],
-            ),
+            ),),
             flex: 1,
           ),
           Expanded(
