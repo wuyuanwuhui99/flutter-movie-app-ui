@@ -119,7 +119,7 @@ class _MoviePlayerPageState extends State<MoviePlayerPage> {
             }
             List<List<MovieUrlModel>> movieUrlGroup = [];
             for (int i = 0; i < playList.length; i++) {
-              if (i == 0) {
+              if (i == 0 && playList[0].url != null) {
                 url = playList[0].url;
               }
               int index = movieUrlGroup.indexWhere((element) {
@@ -137,109 +137,73 @@ class _MoviePlayerPageState extends State<MoviePlayerPage> {
                 margin: ThemeStyle.margin,
                 width: MediaQuery.of(context).size.width -
                     ThemeSize.containerPadding * 2,
-                child: Column(children: [
-                  _renderTab(movieUrlGroup),
-                  SizedBox(
-                      height: movieUrlGroup.length > 1
-                          ? ThemeSize.containerPadding
-                          : 0),
-                  _getPlaySeries(movieUrlGroup)
-                ]));
+                child: Column(children: _getPlaySeries(movieUrlGroup)));
           }
         });
   }
 
-  Widget _renderTab(List<List<MovieUrlModel>> movieUrlGroup) {
-    print(movieUrlGroup);
-    return Container(
-      width: MediaQuery.of(context).size.width - ThemeSize.containerPadding * 2,
-      height: 40,
-      child: ListView.builder(
-          scrollDirection: Axis.horizontal,
-          itemCount: movieUrlGroup.length,
-          itemBuilder: (BuildContext context, int index) {
-            return InkWell(
-                onTap: () {
+  List<Widget> _getPlaySeries(List<List<MovieUrlModel>> movieUrlGroup) {
+    List<Widget> playSeries = [];
+    for (int i = 0; i < movieUrlGroup.length; i++) {
+      List<Widget> urlWidgets = [];
+      for(int j = 0; j < movieUrlGroup[i].length; j++){
+        urlWidgets.add(
+            InkWell(
+                onTap: (){
                   setState(() {
-                    currentIndex = index;
+                    url = movieUrlGroup[i][j].url;
                   });
                 },
                 child: Container(
-                    padding: EdgeInsets.all(ThemeSize.smallMargin),
-                    decoration: BoxDecoration(
-                        border: Border(
-                            left: BorderSide(
-                                width: currentIndex == index
-                                    ? ThemeSize.borderWidth
-                                    : 0,
-                                color: currentIndex == index
-                                    ? ThemeColors.borderColor
-                                    : ThemeColors.colorWhite),
-                            right: BorderSide(
-                                width: currentIndex == index
-                                    ? ThemeSize.borderWidth
-                                    : 0,
-                                color: currentIndex == index
-                                    ? ThemeColors.borderColor
-                                    : ThemeColors.colorWhite),
-                            top: BorderSide(
-                                width: currentIndex == index
-                                    ? ThemeSize.borderWidth
-                                    : 0,
-                                color: currentIndex == index
-                                    ? ThemeColors.borderColor
-                                    : ThemeColors.colorWhite),
-                            bottom: BorderSide(
-                                width: currentIndex == index
-                                    ? 0
-                                    : ThemeSize.borderWidth,
-                                color: currentIndex == index
-                                    ? ThemeColors.colorWhite
-                                    : ThemeColors.borderColor))),
-                    child: Text(
-                        RegExp("^[0-9]+\$")
-                                .hasMatch(movieUrlGroup[index][0].playGroup)
-                            ? movieUrlGroup[index][0].playGroup
-                            : '线路${movieUrlGroup[index][0].playGroup}',
-                        style: TextStyle(
-                            color: currentIndex == index
-                                ? Colors.orange
-                                : Colors.black))));
-          }),
-    );
-  }
-
-  Widget _getPlaySeries(List<List<MovieUrlModel>> movieUrlGroup) {
-    List<Widget> playSeries = [];
-    for (int i = 0; i < movieUrlGroup[currentIndex].length; i++) {
-      playSeries.add(Container(
-        padding: ThemeStyle.padding,
-        decoration: BoxDecoration(
-            border: Border.all(
-                color: url == movieUrlGroup[currentIndex][i].url
-                    ? Colors.orange
-                    : ThemeColors.borderColor),
-            borderRadius:
-                BorderRadius.all(Radius.circular(ThemeSize.middleRadius))),
-        child: Center(
-          child: Text(movieUrlGroup[0][i].label,
-              style: TextStyle(
-                  color: url == movieUrlGroup[currentIndex][i].url
-                      ? Colors.orange
-                      : Colors.black)),
-        ),
+              padding: ThemeStyle.padding,
+              decoration: BoxDecoration(
+                  border: Border.all(
+                      color: url == movieUrlGroup[i][j].url
+                          ? Colors.orange
+                          : ThemeColors.borderColor),
+                  borderRadius:
+                  BorderRadius.all(Radius.circular(ThemeSize.middleRadius))),
+              child: Center(
+                child: Text(movieUrlGroup[i][j].label,
+                    style: TextStyle(
+                        color: url == movieUrlGroup[i][j].url
+                            ? Colors.orange
+                            : Colors.black)),
+              ),
+            )));
+      }
+      playSeries.add(Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(RegExp("^[0-9]+\$")
+              .hasMatch(movieUrlGroup[i][0].playGroup)
+              ? movieUrlGroup[i][0].playGroup
+              : '线路${movieUrlGroup[i][0].playGroup}'),
+          SizedBox(height: ThemeSize.containerPadding),
+          GridView.count(
+              crossAxisSpacing: ThemeSize.smallMargin,
+              mainAxisSpacing: ThemeSize.smallMargin,
+              //水平子 Widget 之间间距
+              crossAxisCount: ThemeSize.crossAxisCount,
+              //一行的 Widget 数量
+              physics: NeverScrollableScrollPhysics(),
+              shrinkWrap: true,
+              childAspectRatio: ThemeSize.childAspectRatio,
+              children: urlWidgets)
+        ],
       ));
+      if(i != movieUrlGroup.length - 1){
+        playSeries.add(SizedBox(height: ThemeSize.containerPadding));
+        playSeries.add(
+            Divider(
+              height: 1.0, // 横线的高度
+              color: ThemeColors.borderColor, // 横线的颜色
+              thickness: 1.0, // 横线的厚度
+            ));
+        playSeries.add(SizedBox(height: ThemeSize.containerPadding));
+      }
     }
-    return GridView.count(
-        crossAxisSpacing: ThemeSize.smallMargin,
-        mainAxisSpacing: ThemeSize.smallMargin,
-        //水平子 Widget 之间间距
-        crossAxisCount: ThemeSize.crossAxisCount,
-        //一行的 Widget 数量
-        physics: NeverScrollableScrollPhysics(),
-        shrinkWrap: true,
-        childAspectRatio: ThemeSize.childAspectRatio,
-        children: playSeries);
+    return playSeries;
   }
 
   Widget webViewWidget() {
