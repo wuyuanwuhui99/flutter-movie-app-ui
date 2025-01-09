@@ -146,23 +146,22 @@ class _MoviePlayerPageState extends State<MoviePlayerPage> {
     List<Widget> playSeries = [];
     for (int i = 0; i < movieUrlGroup.length; i++) {
       List<Widget> urlWidgets = [];
-      for(int j = 0; j < movieUrlGroup[i].length; j++){
-        urlWidgets.add(
-            InkWell(
-                onTap: (){
-                  setState(() {
-                    url = movieUrlGroup[i][j].url;
-                  });
-                },
-                child: Container(
+      for (int j = 0; j < movieUrlGroup[i].length; j++) {
+        urlWidgets.add(InkWell(
+            onTap: () {
+              setState(() {
+                url = movieUrlGroup[i][j].url;
+              });
+            },
+            child: Container(
               padding: ThemeStyle.padding,
               decoration: BoxDecoration(
                   border: Border.all(
                       color: url == movieUrlGroup[i][j].url
                           ? Colors.orange
                           : ThemeColors.borderColor),
-                  borderRadius:
-                  BorderRadius.all(Radius.circular(ThemeSize.middleRadius))),
+                  borderRadius: BorderRadius.all(
+                      Radius.circular(ThemeSize.middleRadius))),
               child: Center(
                 child: Text(movieUrlGroup[i][j].label,
                     style: TextStyle(
@@ -175,8 +174,7 @@ class _MoviePlayerPageState extends State<MoviePlayerPage> {
       playSeries.add(Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(RegExp("^[0-9]+\$")
-              .hasMatch(movieUrlGroup[i][0].playGroup)
+          Text(RegExp("^[0-9]+\$").hasMatch(movieUrlGroup[i][0].playGroup)
               ? movieUrlGroup[i][0].playGroup
               : '线路${movieUrlGroup[i][0].playGroup}'),
           SizedBox(height: ThemeSize.containerPadding),
@@ -192,14 +190,13 @@ class _MoviePlayerPageState extends State<MoviePlayerPage> {
               children: urlWidgets)
         ],
       ));
-      if(i != movieUrlGroup.length - 1){
+      if (i != movieUrlGroup.length - 1) {
         playSeries.add(SizedBox(height: ThemeSize.containerPadding));
-        playSeries.add(
-            Divider(
-              height: 1.0, // 横线的高度
-              color: ThemeColors.borderColor, // 横线的颜色
-              thickness: 1.0, // 横线的厚度
-            ));
+        playSeries.add(Divider(
+          height: 1.0, // 横线的高度
+          color: ThemeColors.borderColor, // 横线的颜色
+          thickness: 1.0, // 横线的厚度
+        ));
         playSeries.add(SizedBox(height: ThemeSize.containerPadding));
       }
     }
