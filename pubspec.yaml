@@ -46,8 +46,6 @@ dependencies:
   crypto: ^3.0.6
   flutter_easyloading: ^3.0.5
   image_picker: ^1.1.2
-  audioplayers: ^6.1.1
-  flutter_lyric: ^2.0.4+6
   fluro: ^2.0.5
   package_info_plus: ^8.1.4
   device_info_plus: ^11.2.2

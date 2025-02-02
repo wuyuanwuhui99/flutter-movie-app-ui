@@ -38,30 +38,25 @@ dart版本：3.4.3
 
 ## 使用的插件
 
-轮播：flutter_swiper: ^1.0.6   
+轮播：flutter_swiper: ^1.0.2   
 
-网络请求：dio: ^3.0.10   
+网络请求：dio: ^5.8.0+1   
 
-路由：fluro: ^1.5.1    
+路由：fluro: ^2.0.5    
 
-屏幕相关：flutter_screenutil: ^0.5.1   
+屏幕相关：flutter_screenutil: ^5.9.3   
 
-状态管理器: provider: ^3.1.0+1	
+状态管理器: provider: ^6.1.2	 
 
-下拉加载：flutter_easyrefresh: ^2.1.5
+下拉加载：flutter_easyrefresh: ^2.2.2   
 
-提示组件fluttertoast: ^3.0.3
+提示组件fluttertoast: ^8.2.10   
 
-缓存：shared_preferences: ^0.4.1
+缓存：shared_preferences: ^2.3.3   
 
-webview：webview_flutter: ^0.3.10+4
+webview：webview_flutter: ^4.8.0   
 
-路由：fluro: ^1.5.1
-
-音频播放器：audioplayers: ^0.16.1
-
-歌词：flutter_lyric: ^1.0.0
-
+路由：fluro: ^2.0.5   
 
 
 app功能
@@ -130,55 +125,50 @@ app功能
 
 后端接口项目和sql语句：   
 https://github.com/wuyuanwuhui99/springboot-app-service   
-https://gitee.com/wuyuanwuhui99/springboot-app-service
+https://gitee.com/wuyuanwuhui99/springboot-app-service   
 
-
-flutter电影项目参见:   
+flutter版本参见:   
 github地址：https://github.com/wuyuanwuhui99/flutter-movie-app-ui   
-gitee地址：https://hub.nuaa.cf/wuyuanwuhui99/flutter-movie-app-ui
+gitee地址：https://gitee.com/wuyuanwuhui99/flutter-movie-app-ui
 
 flutter音乐项目参见:   
 github地址：https://github.com/wuyuanwuhui99/flutter-music-app-ui   
-gitee地址：https://hub.nuaa.cf/wuyuanwuhui99/flutter-music-app-ui
+gitee地址：https://gitee.com/wuyuanwuhui99/flutter-music-app-ui
 
-react native电影参见:   
+react native版本参见:   
 github地址：https://github.com/wuyuanwuhui99/react-native-app-ui
 
-java安卓原生电影参见：  
+java安卓原生版本参见：  
 通用地址：https://github.com/wuyuanwuhui99/android-java-movie-app-ui   
-gitee地址：https://hub.nuaa.cf/wuyuanwuhui99/android-java-movie-app-ui
+gitee地址：https://gitee.com/wuyuanwuhui99/android-java-movie-app-ui
 
-uniapp电影参见：
+uniapp版本参见：
 github地址：https://github.com/wuyuanwuhui99/uniapp-vite-vue3-ts-movie-app-ui   
-gitee地址：https://gitee/wuyuanwuhui99/uniapp-vite-vue3-ts-movie-app-ui
+gitee地址：https://gitee.com/wuyuanwuhui99/uniapp-vite-vue3-ts-movie-app-ui
 
 uniapp音乐项目参见：
 github地址：https://github.com/wuyuanwuhui99/uniapp-vite-vue3-ts-music-app-ui   
-gitee地址：https://gitee/wuyuanwuhui99/uniapp-vite-vue3-ts-music-app-ui
+gitee地址：https://gitee.com/wuyuanwuhui99/uniapp-vite-vue3-ts-music-app-ui
 
 微信小程序版本参见：  
-通用地址：https://github.com/wuyuanwuhui99/weixin-movie-app-ui、  
-国内镜像地址：https://hub.nuaa.cf/wuyuanwuhui99/weixin-movie-app-ui
+github地址：https://github.com/wuyuanwuhui99/weixin-movie-app-ui、
 
-harmony鸿蒙电影参见:   
+harmony鸿蒙版本参见:   
 github地址：https://github.com/wuyuanwuhui99/Harmony_movie_app_ui   
-gitee地址：https://hub.nuaa.cf/wuyuanwuhui99/Harmony_movie_app_ui
+gitee地址：https://gitee.com/wuyuanwuhui99/Harmony_movie_app_ui
 
 harmony鸿蒙音乐项目参见:   
 github地址：https://github.com/wuyuanwuhui99/harmony_music_app_ui   
-gitee地址：https://hub.nuaa.cf/wuyuanwuhui99/harmony_music_app_ui
+gitee地址：https://gitee.com/wuyuanwuhui99/harmony_music_app_ui
 
 vue在线音乐项目：  
-通用地址：https://github.com/wuyuanwuhui99/vue-music-app-ui   
-国内镜像地址：https://hub.nuaa.cf/wuyuanwuhui99/vue-music-app-ui
+github地址：https://github.com/wuyuanwuhui99/vue-music-app-ui
 
 在线音乐后端项目：  
-通用地址：https://github.com/wuyuanwuhui99/koa2-music-app-service   
-国内镜像地址：https://hub.nuaa.cf/wuyuanwuhui99/koa2-music-app-service
+github地址：https://github.com/wuyuanwuhui99/koa2-music-app-service
 
 vue3+ts明日头条项目：  
-通用地址：https://github.com/wuyuanwuhui99/vue3-ts-toutiao-app-ui  
-国内镜像地址：https://hub.nuaa.cf/wuyuanwuhui99/vue3-ts-toutiao-app-ui
+github地址：https://github.com/wuyuanwuhui99/vue3-ts-toutiao-app-ui
 
 使用token做登录验证，/service/movie/接口不需要验证，/service/movie-getway/接口需要token验证   
 
