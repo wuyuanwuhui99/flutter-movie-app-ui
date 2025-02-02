@@ -13,7 +13,7 @@ class AvaterComponent extends StatelessWidget {
   Widget build(BuildContext context) {
     return InkWell(
       onTap: () {
-        Routes.router.navigateTo(context, '/MovieUserPage');
+        Routes.router.navigateTo(context, '/UserPage');
       },
       child: Container(
           width: size,

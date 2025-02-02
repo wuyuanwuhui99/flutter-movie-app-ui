@@ -299,9 +299,11 @@ Future<ResponseModel<List>> getRecommendSerivce(String classify) async {
 ///@author: wuwenqiang
 ///@description: 更新密码
 /// @date: 2021-04-20 23:57
-Future<ResponseModel<int>> updatePasswordService(Map map) async {
+Future<ResponseModel<int>> updatePasswordService(String oldPassword,String newPassword) async {
   try {
-    Response response = await dio.put(servicePath['updatePassword']!, data: map);
+    oldPassword = generateMd5(oldPassword);
+    newPassword = generateMd5(newPassword);
+    Response response = await dio.put(servicePath['updatePassword']!, data: {"oldPassword":oldPassword,"newPassword":newPassword});
     return ResponseModel.fromJson(response.data);
   } catch (e) {
     print('ERROR:======>${e}');

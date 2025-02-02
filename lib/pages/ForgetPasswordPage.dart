@@ -15,7 +15,7 @@ class ForgetPasswordPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    TextEditingController emailController = TextEditingController(text: "405873717@qq.com");
+    TextEditingController emailController = TextEditingController(text: "");
     return Scaffold(
         backgroundColor: ThemeColors.colorBg,
         body: SafeArea(

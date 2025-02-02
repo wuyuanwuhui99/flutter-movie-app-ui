@@ -5,7 +5,8 @@ import '../pages/MovieDetailPage.dart';
 import '../pages/MovieIndexPage.dart';
 import '../model/MovieDetailModel.dart';
 import '../pages/MoviePlayerPage.dart';
-import '../pages/MovieUserPage.dart';
+import '../pages/UpdatePasswordPage.dart';
+import '../pages/UserPage.dart';
 import '../pages/NewMoviePage.dart';
 import '../pages/LoginPage.dart';
 import '../pages/ForgetPasswordPage.dart';
@@ -31,11 +32,23 @@ class Routes {
     router.define('/MoviePlayerPage', handler: Handler(handlerFunc: (BuildContext? context, Map<String, List<String>> params) {
       return MoviePlayerPage(movieItem: MovieDetailModel.fromJson(json.decode(params["movieItem"]!.first)));
     }));
-    router.define('/MovieUserPage', handler: Handler(handlerFunc: (BuildContext? context, Map<String, List<String>> params) {
-      return MovieUserPage();
+    router.define('/UserPage', handler: Handler(handlerFunc: (BuildContext? context, Map<String, List<String>> params) {
+      return UserPage();
     }));
     router.define('/NewMoviePage', handler: Handler(handlerFunc: (BuildContext? context, Map<String, List<String>> params) {
       return NewMoviePage(movieItem:  MovieDetailModel.fromJson(json.decode(params["movieItem"]!.first)),);
+    }));
+    router.define('/UpdatePasswordPage', handler: Handler(handlerFunc: (BuildContext? context, Map<String, List<String>> params) {
+      return UpdatePasswordPage();
+    }));
+    router.define('/LoginPage', handler: Handler(handlerFunc: (BuildContext? context, Map<String, List<String>> params) {
+      return LoginPage();
+    }));
+    router.define('/ForgetPasswordPage', handler: Handler(handlerFunc: (BuildContext? context, Map<String, List<String>> params) {
+      return ForgetPasswordPage();
+    }));
+    router.define('/ResetPasswordPage', handler: Handler(handlerFunc: (BuildContext? context, Map<String, List<String>> params) {
+      return ResetPasswordPage(email: json.decode(params['email']!.first));
     }));
   }
 }

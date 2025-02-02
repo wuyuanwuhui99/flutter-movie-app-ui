@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import '../router/index.dart';
 import '../service/serverMethod.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import '../utils/crypto.dart';
 import '../provider/UserInfoProvider.dart';
 import 'package:provider/provider.dart';
 import '../utils/LocalStorageUtils.dart';
@@ -143,7 +142,7 @@ class LoginPage extends StatelessWidget {
                                   .setUserInfo(
                                       UserInfoModel.fromJson(res.data));
                               Routes.router.navigateTo(
-                                  context, '/MusicIndexPage',
+                                  context, '/MovieIndexPage',
                                   replace: true);
                             } else {
                               Fluttertoast.showToast(

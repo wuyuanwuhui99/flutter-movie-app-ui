@@ -170,7 +170,7 @@ class ResetPasswordPage extends StatelessWidget {
                                       .setUserInfo(
                                       UserInfoModel.fromJson(res.data));
                                   Routes.router.navigateTo(
-                                      context, '/MusicIndexPage',
+                                      context, '/MovieIndexPage',
                                       replace: true);
                                 } else {
                                   Fluttertoast.showToast(
