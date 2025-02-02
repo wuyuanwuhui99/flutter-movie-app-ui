@@ -17,10 +17,10 @@ class MovieHomePage extends StatefulWidget {
   const MovieHomePage({super.key});
 
   @override
-  _MovieHomePageState createState() => _MovieHomePageState();
+  MovieHomePageState createState() => MovieHomePageState();
 }
 
-class _MovieHomePageState extends State<MovieHomePage>
+class MovieHomePageState extends State<MovieHomePage>
     with AutomaticKeepAliveClientMixin {
   @override
   bool get wantKeepAlive => true;
@@ -31,7 +31,7 @@ class _MovieHomePageState extends State<MovieHomePage>
 
   EasyRefreshController easyRefreshController = EasyRefreshController();
 
-  void _getCategoryItem() {
+  void getCategoryItem() {
     if (categoryList.length < allCategoryLists.length) {
       setState(() {
         categoryList.add(allCategoryLists[categoryList.length]);
@@ -43,9 +43,9 @@ class _MovieHomePageState extends State<MovieHomePage>
   @override
   void initState() {
     getAllCategoryListByPageNameService("首页").then((res) {
-      res.data.forEach((element) {
+      for (var element in res.data) {
         allCategoryLists.add(CategoryModel.fromJson(element));
-      }); // 顶部轮播组件数
+      } // 顶部轮播组件数
       setState(() {
         categoryList.addAll(allCategoryLists.sublist(0, 2));
       });
@@ -109,7 +109,7 @@ class _MovieHomePageState extends State<MovieHomePage>
                           textColor: Colors.white,
                           fontSize: ThemeSize.middleFontSize);
                     } else {
-                      _getCategoryItem();
+                      getCategoryItem();
                     }
                   },
                   child: ListView(

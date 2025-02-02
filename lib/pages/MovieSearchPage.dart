@@ -53,7 +53,7 @@ class _MovieSearchPageState extends State<MovieSearchPage> {
               searching
                   ? Expanded(
                       flex: 1,
-                      child: searchResult.length == 0
+                      child: searchResult.isEmpty
                           ? Container(
                               decoration: ThemeStyle.boxDecoration,
                               padding: ThemeStyle.padding,
@@ -69,7 +69,7 @@ class _MovieSearchPageState extends State<MovieSearchPage> {
                       child: SingleChildScrollView(
                           child: Column(children: <Widget>[
                         buildHistorySearchWidget(),
-                        RecommendComponent(
+                        const RecommendComponent(
                             classify: "电影", direction: "vertical", title: "推荐")
                       ]))),
             ]),
@@ -122,7 +122,7 @@ class _MovieSearchPageState extends State<MovieSearchPage> {
                             SizedBox(height: ThemeSize.smallMargin),
                             Text(
                                 searchResult[index].star != null
-                                    ? "主演：" + searchResult[index].star
+                                    ? "主演：${searchResult[index].star}"
                                     : "",
                                 maxLines: 1,
                                 overflow: TextOverflow.ellipsis,
@@ -131,7 +131,7 @@ class _MovieSearchPageState extends State<MovieSearchPage> {
                             SizedBox(height: ThemeSize.smallMargin),
                             Text(
                                 searchResult[index].director != null
-                                    ? "导演：" + searchResult[index].director
+                                    ? "导演：${searchResult[index].director}"
                                     : "",
                                 maxLines: 1,
                                 overflow: TextOverflow.ellipsis,
@@ -140,7 +140,7 @@ class _MovieSearchPageState extends State<MovieSearchPage> {
                             SizedBox(height: ThemeSize.smallMargin),
                             Text(
                                 searchResult[index].type != null
-                                    ? "类型：" + searchResult[index].type
+                                    ? "类型：${searchResult[index].type}"
                                     : "",
                                 maxLines: 1,
                                 overflow: TextOverflow.ellipsis,
@@ -149,7 +149,7 @@ class _MovieSearchPageState extends State<MovieSearchPage> {
                             SizedBox(height: ThemeSize.smallMargin),
                             Text(
                                 searchResult[index].releaseTime != null
-                                    ? "上映时间：" + searchResult[index].releaseTime
+                                    ? "上映时间：${searchResult[index].releaseTime}"
                                     : "",
                                 maxLines: 1,
                                 overflow: TextOverflow.ellipsis,

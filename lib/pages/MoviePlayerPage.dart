@@ -59,7 +59,7 @@ class _MoviePlayerPageState extends State<MoviePlayerPage> {
   }
 
   void isFavorite() {
-    isFavoriteService(widget.movieItem.movieId).then((res) {
+    isFavoriteService(widget.movieItem.movieId!).then((res) {
       setState(() {
         isFavoriteFlag = res.data > 0;
       });
@@ -264,7 +264,7 @@ class _MoviePlayerPageState extends State<MoviePlayerPage> {
             onTap: () {
               if (isFavoriteFlag) {
                 //如果已经收藏过了，点击之后取消收藏
-                deleteFavoriteService(widget.movieItem.movieId).then((res) {
+                deleteFavoriteService(widget.movieItem.movieId!).then((res) {
                   if (res.data > 0) {
                     setState(() {
                       isFavoriteFlag = false;
@@ -311,7 +311,7 @@ class _MoviePlayerPageState extends State<MoviePlayerPage> {
               ),
               SizedBox(height: ThemeSize.smallMargin),
               Text(
-                widget.movieItem.star,
+                "${widget.movieItem.star}",
                 maxLines: 1,
                 overflow: TextOverflow.ellipsis,
               ),

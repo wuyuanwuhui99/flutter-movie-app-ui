@@ -1,14 +1,14 @@
 class MovieDetailModel {
   int id; //主键
-  int movieId; //电影id
+  int? movieId; //电影id
   String movieName; //电影名称
-  String director; //导演
-  String star; //主演
-  String type; //类型
+  String? director; //导演
+  String? star; //主演
+  String? type; //类型
   String? countryLanguage; //国家/语言
   String? viewingState; //观看状态
-  String releaseTime; //上映时间
-  String plot; //剧情
+  String? releaseTime; //上映时间
+  String? plot; //剧情
   String? updateTime; //更新时间
   String? isRecommend; //是否推荐，0:不推荐，1:推荐
   String img; //电影海报
@@ -29,15 +29,15 @@ class MovieDetailModel {
   MovieDetailModel(
       {
         required this.id,
-        required this.movieId,
+        this.movieId,
         required this.movieName,
-        required this.director,
-        required this.star,
-        required this.type,
+        this.director,
+        this.star,
+        this.type,
       this.countryLanguage,
       this.viewingState,
-        required this.releaseTime,
-        required this.plot,
+        this.releaseTime,
+        this.plot,
       this.updateTime,
       this.isRecommend,
         required this.img,

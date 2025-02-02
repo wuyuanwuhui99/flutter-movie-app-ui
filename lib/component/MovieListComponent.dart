@@ -36,7 +36,7 @@ class MovieListComponent extends StatelessWidget {
   Widget movieItemWidget(MovieDetailModel item, int index) {
     return Container(
       width: ThemeSize.movieWidth,
-      height: ThemeSize.movieHeight,
+      // height: ThemeSize.movieHeight,
       margin: EdgeInsets.only(
           left: direction == "horizontal" && index > 0 ? 10 : 0),
       child: Column(
@@ -50,7 +50,7 @@ class MovieListComponent extends StatelessWidget {
                   image: NetworkImage(item.localImg != null
                       ? HOST + item.localImg
                       : item.img))),
-          SizedBox(height: 10),
+          SizedBox(height:ThemeSize.miniMargin),
           Text(
             item.movieName,
             softWrap: true,

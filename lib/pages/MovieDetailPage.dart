@@ -41,7 +41,7 @@ class _MovieDetailPageState extends State<MovieDetailPage> {
                     child: Column(
                   children: <Widget>[
                     buildMovieInfoComponent(widget.movieItem, context),
-                    buildPlotComponent(widget.movieItem.plot),
+                    buildPlotComponent("${widget.movieItem.plot}"),
                     buildStarComponent(widget.movieItem.id),
                     widget.movieItem.label != null
                         ? YouLikesComponent(label: widget.movieItem.label ?? "")
@@ -114,7 +114,7 @@ class _MovieDetailPageState extends State<MovieDetailPage> {
                         : SizedBox(),
                     movieInfo.star != null
                         ? Text(
-                            movieInfo.star,
+                            "${movieInfo.star}",
                             style: TextStyle(
                                 fontSize: 16,
                                 color: Color.fromRGBO(187, 187, 187, 1)),

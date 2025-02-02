@@ -1,33 +1,26 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-import '../service/serverMethod.dart';
 import 'MovieHomePage.dart';
 import 'MoviePage.dart';
 import 'VideoPage.dart';
 import 'MovieMyPage.dart';
 import '../theme/ThemeColors.dart';
 import '../theme/ThemeSize.dart';
-import '../model/UserInfoModel.dart';
-import '../provider/UserInfoProvider.dart';
 
 
 class MovieIndexPage extends StatefulWidget {
-  _MovieIndexPageState createState() => _MovieIndexPageState();
+  const MovieIndexPage({super.key});
+
+  @override
+  MovieIndexPageState createState() => MovieIndexPageState();
 }
 
-class _MovieIndexPageState extends State<MovieIndexPage> {
+class MovieIndexPageState extends State<MovieIndexPage> {
   int _currentIndex = 0;
   List<Widget?> pages = [null, null, null, null];
   bool isInit = false;
   @override
   void initState(){
     super.initState();
-    getUserDataService().then((value){
-      Provider.of<UserInfoProvider>(context,listen: false).setUserInfo(UserInfoModel.fromJson(value.data));
-      setState(() {
-        isInit = true;
-      });
-    });
   }
 
   @override
@@ -47,55 +40,50 @@ class _MovieIndexPageState extends State<MovieIndexPage> {
 
   Widget bottomAppBarItem(int index) {
     //设置默认未选中的状态
-    TextStyle style = TextStyle(color: Colors.grey);
+    TextStyle style = const TextStyle(color: Colors.grey);
     if (_currentIndex == index) {
       //选中的话
-      style = TextStyle(color: Colors.orange);
+      style = const TextStyle(color: Colors.orange);
     }
     //构造返回的Widget
-    Widget item = Container(
-      padding: EdgeInsets.only(
-          top: ThemeSize.smallMargin, bottom: ThemeSize.smallMargin),
-      child: GestureDetector(
-        behavior: HitTestBehavior.opaque,
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: <Widget>[
-            Image.asset(icons[index],
-                color: _currentIndex == index ? Colors.orange : Colors.black,
-                width: ThemeSize.navigationIcon,
-                height: ThemeSize.navigationIcon),
-            SizedBox(height: ThemeSize.smallMargin),
-            Text(
-              titles[index],
-              style: TextStyle(color: _currentIndex == index ? Colors.orange : Colors.black),
-            )
-          ],
-        ),
-        onTap: () {
-          if (_currentIndex != index) {
-            setState(() {
-              _currentIndex = index;
-            });
-          }
-        },
+
+    return GestureDetector(
+      behavior: HitTestBehavior.opaque,
+      child: Column(
+        children: <Widget>[
+          Image.asset(icons[index],
+              color: _currentIndex == index ? Colors.orange : Colors.black,
+              width: ThemeSize.navigationIcon,
+              height: ThemeSize.navigationIcon),
+          SizedBox(height: ThemeSize.smallMargin),
+          Text(
+            titles[index],
+            style: TextStyle(color: _currentIndex == index ? Colors.orange : Colors.black),
+          )
+        ],
       ),
+      onTap: () {
+        if (_currentIndex != index) {
+          setState(() {
+            _currentIndex = index;
+          });
+        }
+      },
     );
-    return item;
   }
 
-  var _pageController = PageController();
+  final _pageController = PageController();
 
   Widget? _getPage() {
     if (pages[_currentIndex] == null) {
       if (_currentIndex == 0) {
-        pages[_currentIndex] = MovieHomePage();
+        pages[_currentIndex] = const MovieHomePage();
       } else if (_currentIndex == 1) {
-        pages[_currentIndex] = MoviePage();
+        pages[_currentIndex] = const MoviePage();
       } else if (_currentIndex == 2) {
         pages[_currentIndex] = VideoPage();
       } else if (_currentIndex == 3) {
-        pages[_currentIndex] = MovieMyPage();
+        pages[_currentIndex] = const MovieMyPage();
       }
     }
     return pages[_currentIndex];
@@ -103,35 +91,31 @@ class _MovieIndexPageState extends State<MovieIndexPage> {
 
   @override
   Widget build(BuildContext context) {
-    if(isInit){
-      return Scaffold(
-          backgroundColor: ThemeColors.colorBg,
-          body: SafeArea(
-              top: true,
-              child: PageView.builder(
-                  controller: _pageController,
-                  physics: NeverScrollableScrollPhysics(),
-                  onPageChanged: _pageChanged,
-                  itemCount: 4,
-                  itemBuilder: (context, index) {
-                    return _getPage();
-                  })),
-          bottomNavigationBar: BottomAppBar(
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: <Widget>[
-                  bottomAppBarItem(0),
-                  bottomAppBarItem(1),
-                  bottomAppBarItem(2),
-                  bottomAppBarItem(3)
-                ],
-              )));
-    }else{
-      return  Scaffold(body:  Center(
-        child: CircularProgressIndicator(),
-      ));
-    }
+    return Scaffold(
+        backgroundColor: ThemeColors.colorBg,
+        body: SafeArea(
+            top: true,
+            child: PageView.builder(
+                controller: _pageController,
+                physics: const NeverScrollableScrollPhysics(),
+                onPageChanged: _pageChanged,
+                itemCount: 4,
+                itemBuilder: (context, index) {
+                  return _getPage();
+                })),
+        bottomNavigationBar: BottomAppBar(
+            height:ThemeSize.bottomBarHeight,
+            color: ThemeColors.colorWhite,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: <Widget>[
+                bottomAppBarItem(0),
+                bottomAppBarItem(1),
+                bottomAppBarItem(2),
+                bottomAppBarItem(3)
+              ],
+            )));
 
   }
 

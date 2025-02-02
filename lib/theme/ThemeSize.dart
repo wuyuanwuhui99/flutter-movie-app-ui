@@ -34,5 +34,5 @@ class ThemeSize {
   static double minPlayIcon = 80;// 音乐播放器圈圈大小
   static double menuWidth = 180;// 弹出点赞和评论菜单的宽度
   static double menuHeight = 40;// 弹出点赞和评论菜单的高度
-  static double bottomBarHeight = 85;// 底部导航条高度
+  static double bottomBarHeight = 90;// 底部导航条高度
 }
