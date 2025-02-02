@@ -33,7 +33,7 @@ class Routes {
       return MoviePlayerPage(movieItem: MovieDetailModel.fromJson(json.decode(params["movieItem"]!.first)));
     }));
     router.define('/UserPage', handler: Handler(handlerFunc: (BuildContext? context, Map<String, List<String>> params) {
-      return UserPage();
+      return const UserPage();
     }));
     router.define('/NewMoviePage', handler: Handler(handlerFunc: (BuildContext? context, Map<String, List<String>> params) {
       return NewMoviePage(movieItem:  MovieDetailModel.fromJson(json.decode(params["movieItem"]!.first)),);
@@ -42,7 +42,7 @@ class Routes {
       return UpdatePasswordPage();
     }));
     router.define('/LoginPage', handler: Handler(handlerFunc: (BuildContext? context, Map<String, List<String>> params) {
-      return LoginPage();
+      return const LoginPage();
     }));
     router.define('/ForgetPasswordPage', handler: Handler(handlerFunc: (BuildContext? context, Map<String, List<String>> params) {
       return ForgetPasswordPage();
